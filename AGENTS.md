@@ -1,88 +1,76 @@
-# DeweyUI AGENTS 指南
+<!--VITE PLUS START-->
 
-## 项目概述
+# Using Vite+, the Unified Toolchain for the Web
 
-DeweyUI 是一个基于 React 19 的现代化 UI 组件库，采用 TypeScript 开发，支持 SCSS 样式系统。项目使用 pnpm 工作区管理，包含核心组件库、样式系统和示例应用。
+This project is using Vite+, a unified toolchain built on top of Vite, Rolldown, Vitest, tsdown, Oxlint, Oxfmt, and Vite Task. Vite+ wraps runtime management, package management, and frontend tooling in a single global CLI called `vp`. Vite+ is distinct from Vite, but it invokes Vite through `vp dev` and `vp build`.
 
-## 项目结构
+## Vite+ Workflow
 
-```
-/ui
-├── .trae/              # Trae IDE 配置
-│   └── rules/          # 项目规则配置
-├── apps/               # 应用示例
-│   ├── doc/            # Next.js 文档网站
-│   └── storybook/      # Storybook 组件展示
-├── packages/           # 核心包
-│   ├── config/         # ESLint 和 Stylelint 配置
-│   ├── react/          # React 组件库
-│   └── styles/         # 样式包（SCSS 和 CSS 令牌）
-├── package.json        # 项目根配置
-└── pnpm-workspace.yaml # 工作区配置
-```
+`vp` is a global binary that handles the full development lifecycle. Run `vp help` to print a list of commands and `vp <command> --help` for information about a specific command.
 
-## 开发环境要求
+### Start
 
-- **Node.js 版本**：22.21.1
-- **pnpm 版本**：10.12.4
+- create - Create a new project from a template
+- migrate - Migrate an existing project to Vite+
+- config - Configure hooks and agent integration
+- staged - Run linters on staged files
+- install (`i`) - Install dependencies
+- env - Manage Node.js versions
 
-## 开发流程
+### Develop
 
-### 安装依赖
+- dev - Run the development server
+- check - Run format, lint, and TypeScript type checks
+- lint - Lint code
+- fmt - Format code
+- test - Run tests
 
-```bash
-pnpm setup
-```
+### Execute
 
-### 构建项目
+- run - Run monorepo tasks
+- exec - Execute a command from local `node_modules/.bin`
+- dlx - Execute a package binary without installing it as a dependency
+- cache - Manage the task cache
 
-```bash
-pnpm build
-```
+### Build
 
-### 运行 Storybook
+- build - Build for production
+- pack - Build libraries
+- preview - Preview production build
 
-```bash
-cd apps/storybook
-pnpm dev
-```
+### Manage Dependencies
 
-### 运行文档网站
+Vite+ automatically detects and wraps the underlying package manager such as pnpm, npm, or Yarn through the `packageManager` field in `package.json` or package manager-specific lockfiles.
 
-```bash
-cd apps/doc
-pnpm dev
-```
+- add - Add packages to dependencies
+- remove (`rm`, `un`, `uninstall`) - Remove packages from dependencies
+- update (`up`) - Update packages to latest versions
+- dedupe - Deduplicate dependencies
+- outdated - Check for outdated packages
+- list (`ls`) - List installed packages
+- why (`explain`) - Show why a package is installed
+- info (`view`, `show`) - View package information from the registry
+- link (`ln`) / unlink - Manage local package links
+- pm - Forward a command to the package manager
 
-### 代码检查
+### Maintain
 
-```bash
-pnpm lint
-```
+- upgrade - Update `vp` itself to the latest version
 
-## 开发规范
+These commands map to their corresponding tools. For example, `vp dev --port 3000` runs Vite's dev server and works the same as Vite. `vp test` runs JavaScript tests through the bundled Vitest. The version of all tools can be checked using `vp --version`. This is useful when researching documentation, features, and bugs.
 
-### 配置抽象
+## Common Pitfalls
 
-- monorepo 中所有 packages 的 tsconfig、eslint 和 stylelint 配置实现都抽象封装在 `/packages/config` 中
-- 子包通过继承该配置进行使用，避免重复定义
+- **Using the package manager directly:** Do not use pnpm, npm, or Yarn directly. Vite+ can handle all package manager operations.
+- **Always use Vite commands to run tools:** Don't attempt to run `vp vitest` or `vp oxlint`. They do not exist. Use `vp test` and `vp lint` instead.
+- **Running scripts:** Vite+ commands take precedence over `package.json` scripts. If there is a `test` script defined in `scripts` that conflicts with the built-in `vp test` command, run it using `vp run test`.
+- **Do not install Vitest, Oxlint, Oxfmt, or tsdown directly:** Vite+ wraps these tools. They must not be installed directly. You cannot upgrade these tools by installing their latest versions. Always use Vite+ commands.
+- **Use Vite+ wrappers for one-off binaries:** Use `vp dlx` instead of package-manager-specific `dlx`/`npx` commands.
+- **Import JavaScript modules from `vite-plus`:** Instead of importing from `vite` or `vitest`, all modules should be imported from the project's `vite-plus` dependency. For example, `import { defineConfig } from 'vite-plus';` or `import { expect, test, vi } from 'vite-plus/test';`. You must not install `vitest` to import test utilities.
+- **Type-Aware Linting:** There is no need to install `oxlint-tsgolint`, `vp lint --type-aware` works out of the box.
 
-### 依赖管理
+## Review Checklist for Agents
 
-- 所有开发依赖（devDependencies）的版本号约束在项目根目录 `package.json` 中
-- 子包的 `package.json` 中使用 `"*"` 引用依赖版本，确保版本统一
-
-### 样式开发
-
-- 禁止使用 Tailwind CSS
-- 实现样式时使用 `module.css` 或 `modules.less` 格式
-
-### 命名规范
-
-- 文件夹和文件名（包括组件文件）均采用小写 + 横线（kebab-case）的命名方式
-- 禁止使用小驼峰、大驼峰或下划线的命名方式
-
-### 模块导出
-
-- 使用 `export` 而非 `export default` 进行模块导出
-- 每个文件夹必须包含 `index.ts` 文件，统一导出该文件夹下的所有模块
+- [ ] Run `vp install` after pulling remote changes and before getting started.
+- [ ] Run `vp check` and `vp test` to validate changes.
+<!--VITE PLUS END-->
