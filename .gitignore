@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Codex runtime state
+.codex/**
+!.codex/prompts/
+!.codex/prompts/**
