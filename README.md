@@ -1,6 +1,6 @@
-# Vite+ Monorepo Starter
+# Deweyou UI
 
-A starter for creating a Vite+ monorepo.
+A Vite+ monorepo for building and validating a reusable UI component library.
 
 ## Development
 
@@ -10,7 +10,7 @@ A starter for creating a Vite+ monorepo.
 vp run ready
 ```
 
-- Run the tests:
+- Run workspace tests:
 
 ```bash
 vp run test -r
@@ -22,8 +22,16 @@ vp run test -r
 vp run build -r
 ```
 
-- Run the development server:
+- Run the component preview site:
 
 ```bash
 vp run dev
 ```
+
+## Monorepo Rules
+
+- Reusable UI logic belongs in packages, not only in `website`.
+- Use `vp` commands for install, lint, format, test, pack, build, and preview
+  workflows.
+- Every user-visible component change must include automated tests and updated
+  preview coverage in `website`.
