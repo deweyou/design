@@ -5,7 +5,7 @@ packages:
   - tools/*
 
 catalog:
-  "@types/node": ^24
+  '@types/node': ^24
   typescript: ^5
   vite: npm:@voidzero-dev/vite-plus-core@latest
   vite-plus: ^0.1.11
@@ -13,12 +13,12 @@ catalog:
 
 catalogMode: prefer
 overrides:
-  vite: "catalog:"
-  vitest: "catalog:"
+  vite: 'catalog:'
+  vitest: 'catalog:'
 peerDependencyRules:
   allowAny:
     - vite
     - vitest
   allowedVersions:
-    vite: "*"
-    vitest: "*"
+    vite: '*'
+    vitest: '*'
