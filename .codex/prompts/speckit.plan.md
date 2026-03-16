@@ -86,5 +86,6 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 ## Key rules
 
-- Use absolute paths
+- When reading tool output, absolute paths are allowed if provided by scripts
+- When writing specs, plans, contracts, checklists, quickstarts, or tasks, use repository-relative paths only
 - ERROR on gate failures or unresolved clarifications
