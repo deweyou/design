@@ -1,0 +1,10 @@
+apps/
+specs/
+tests/
+.codex/
+.specify/
+.vite-hooks/
+.vscode/
+coverage/
+storybook-static/
+*.log

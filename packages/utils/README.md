@@ -1,23 +1,18 @@
-# tsdown-starter
+# utils
 
-A starter for creating a TypeScript package.
+Framework-agnostic helpers that other workspace packages can safely depend on.
 
-## Development
+## Source Layout
 
-- Install dependencies:
+- Each util must live in its own folder under `src/<util-name>/`.
+- Each util folder should colocate its logic and unit tests.
+- Keep `src/index.ts` as a thin barrel only.
 
-```bash
-npm install
-```
+## Public Entrypoints
 
-- Run the unit tests:
+- `@deweyou-ui/utils`: shared non-React helpers when the workspace actually needs them.
 
-```bash
-npm run test
-```
+## Dependency Direction
 
-- Build the library:
-
-```bash
-npm run build
-```
+- May depend on: platform APIs only.
+- Must not depend on: `@deweyou-ui/hooks`, `@deweyou-ui/styles`, `@deweyou-ui/components`, or app packages.

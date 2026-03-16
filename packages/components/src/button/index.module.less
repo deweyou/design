@@ -1,0 +1,40 @@
+.root {
+  --button-brand-bg: var(--ui-color-brand-bg);
+  --button-text-color: var(--ui-color-text-on-brand);
+  --button-border: color-mix(in srgb, var(--button-brand-bg) 72%, black);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 1px solid var(--button-border);
+  border-radius: 999px;
+  padding: 0.8rem 1.2rem;
+  font: 600 0.95rem/1 var(--ui-font-body);
+  color: var(--button-text-color);
+  background: var(--button-brand-bg);
+  cursor: pointer;
+  transition:
+    transform 140ms ease,
+    background 140ms ease,
+    border-color 140ms ease;
+}
+
+.root:hover {
+  background: var(--ui-color-brand-bg-hover);
+}
+
+.root:active {
+  background: var(--ui-color-brand-bg-active);
+  transform: translateY(1px);
+}
+
+.root:focus-visible {
+  outline: 2px solid var(--ui-color-focus-ring);
+  outline-offset: 2px;
+}
+
+.neutral {
+  --button-brand-bg: color-mix(in srgb, var(--ui-color-surface) 70%, white);
+  --button-text-color: var(--ui-color-text);
+}

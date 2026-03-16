@@ -74,3 +74,12 @@ These commands map to their corresponding tools. For example, `vp dev --port 300
 - [ ] Run `vp install` after pulling remote changes and before getting started.
 - [ ] Run `vp check` and `vp test` to validate changes.
 <!--VITE PLUS END-->
+
+## Active Technologies
+
+- TypeScript 5.x, React 19.x-compatible package APIs, Node.js 24.14.0 tooling baseline + vite-plus, React, Less, Storybook, TypeScript, CSS Modules (001-ui-monorepo-foundation)
+- File-based source and generated style artifacts only (001-ui-monorepo-foundation)
+
+## Recent Changes
+
+- 001-ui-monorepo-foundation: Added app/package monorepo boundaries, explicit style imports, controlled theme tokens, and Storybook/website surface separation

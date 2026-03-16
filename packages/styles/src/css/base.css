@@ -1,0 +1,30 @@
+:root {
+  color: var(--ui-color-text);
+  background: var(--ui-color-canvas);
+  font-family: var(--ui-font-body);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  color: var(--ui-color-text);
+  background:
+    radial-gradient(circle at top, rgba(255, 214, 180, 0.42), transparent 28rem),
+    linear-gradient(
+      180deg,
+      var(--ui-color-canvas),
+      color-mix(in srgb, var(--ui-color-canvas) 82%, black)
+    );
+}
+
+a {
+  color: var(--ui-color-link);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--ui-font-display);
+  margin: 0;
+}

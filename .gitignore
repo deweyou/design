@@ -8,9 +8,15 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+.pnpm-store
 dist
+build
+coverage
+storybook-static
 dist-ssr
 *.local
+.env*
+*.tsbuildinfo
 
 # Editor directories and files
 .vscode/*
@@ -18,6 +24,8 @@ dist-ssr
 !.vscode/settings.json
 .idea
 .DS_Store
+Thumbs.db
+*.tmp
 *.suo
 *.ntvs*
 *.njsproj

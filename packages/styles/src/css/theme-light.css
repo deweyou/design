@@ -1,0 +1,20 @@
+:root,
+[data-theme='light'] {
+  --ui-color-canvas: #f6f0e8;
+  --ui-color-surface: #fffaf2;
+  --ui-color-text: #211c1a;
+  --ui-color-text-muted: #655e5a;
+  --ui-color-border: #d7c8bb;
+  --ui-color-border-strong: #9c7f67;
+  --ui-color-brand-bg: #b35c20;
+  --ui-color-brand-bg-hover: #9b4d18;
+  --ui-color-brand-bg-active: #7f3d12;
+  --ui-color-text-on-brand: #fff6eb;
+  --ui-color-focus-ring: #1f6fe5;
+  --ui-color-link: #8b2f14;
+  --ui-radius-md: 0.9rem;
+  --ui-shadow-soft: 0 18px 40px rgba(64, 37, 20, 0.12);
+  --ui-font-body: 'IBM Plex Sans', 'Segoe UI', sans-serif;
+  --ui-font-display: 'Space Grotesk', 'Avenir Next', sans-serif;
+  --ui-font-mono: 'IBM Plex Mono', 'SFMono-Regular', monospace;
+}
