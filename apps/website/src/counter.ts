@@ -17,6 +17,6 @@ export const themePreviews: ThemePreview[] = [
   },
 ];
 
-export function applyThemeMode(mode: ThemePreview['mode']) {
+export const applyThemeMode = (mode: ThemePreview['mode']) => {
   document.documentElement.dataset.theme = mode;
-}
+};

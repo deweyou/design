@@ -1,6 +1,6 @@
 import { expect, test } from 'vite-plus/test';
 
-import { buttonCustomizationContract } from '../src';
+import { buttonCustomizationContract } from './index';
 
 test('button contract exposes root className and color-only overrides', () => {
   expect(buttonCustomizationContract.rootClassNameSupport).toBe(true);

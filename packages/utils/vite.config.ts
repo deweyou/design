@@ -5,6 +5,6 @@ import { defineConfig } from 'vite-plus';
 export default defineConfig({
   pack: tsdownConfig,
   test: {
-    include: ['tests/**/*.test.ts'],
+    include: ['tests/**/*.test.ts', 'src/**/*.test.ts'],
   },
 });

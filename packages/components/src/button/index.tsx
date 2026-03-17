@@ -22,7 +22,7 @@ export const buttonCustomizationContract = {
   ],
 } as const;
 
-export function FoundationButton({
+export const FoundationButton = ({
   className,
   label,
   tone = 'brand',
@@ -30,7 +30,7 @@ export function FoundationButton({
   type = 'button',
   children,
   ...props
-}: FoundationButtonProps) {
+}: FoundationButtonProps) => {
   return (
     <button
       {...props}
@@ -41,4 +41,4 @@ export function FoundationButton({
       {label ?? children}
     </button>
   );
-}
+};

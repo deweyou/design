@@ -77,9 +77,27 @@ These commands map to their corresponding tools. For example, `vp dev --port 300
 
 ## Active Technologies
 
+- TypeScript 5.x, React 19.x-compatible package APIs, Node.js 24.14.0 baseline + `vite-plus`, React, Less, Storybook, CSS Modules, monorepo package workspaces (002-repo-conventions)
+- File-based source tree and generated package artifacts; no persistent runtime storage (002-repo-conventions)
+
 - TypeScript 5.x, React 19.x-compatible package APIs, Node.js 24.14.0 tooling baseline + vite-plus, React, Less, Storybook, TypeScript, CSS Modules (001-ui-monorepo-foundation)
 - File-based source and generated style artifacts only (001-ui-monorepo-foundation)
 
 ## Recent Changes
 
 - 001-ui-monorepo-foundation: Added app/package monorepo boundaries, explicit style imports, controlled theme tokens, and Storybook/website surface separation
+- 002-repo-conventions: Added repository governance for arrow functions, TSX-first React authoring, kebab-case naming, and colocated unit tests in governed packages
+
+## Repository Conventions
+
+- Functions default to arrow-function style in governed source files. Use a function declaration only when a framework boundary, hoisting requirement, or external API makes it the safer choice, and document the exception in the change.
+- React components must be authored in TSX files. Do not introduce `React.createElement`-style component authoring in packages or demo apps unless a concrete tooling limitation is documented.
+- New or renamed files and folders in governed areas must use lowercase names with hyphen separators.
+- In `packages/components`, `packages/hooks`, and `packages/utils`, each governed source unit lives in its own `src/<unit-name>/` directory.
+- Each governed source unit keeps its local entry file and unit test together as `index` and `index.test` within that unit directory.
+- Preserve package root entrypoints when relocating source files so consumers keep importing from the documented package surface.
+- Top-level package `tests/` directories are reserved for cross-cutting or workspace-boundary coverage once a governed unit has its own colocated unit test.
+- Commit messages must use the format `<type>(<scope>): <summary>` when a scope is meaningful, or `<type>: <summary>` when it is not.
+- Preferred commit types are `feat`, `fix`, `refactor`, `docs`, `test`, `build`, and `chore`.
+- Keep commit subjects imperative, lowercase, and focused on one logical change set.
+- The repository enforces this format through `.vite-hooks/commit-msg`.
