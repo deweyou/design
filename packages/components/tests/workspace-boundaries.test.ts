@@ -5,7 +5,7 @@ import { expect, test } from 'vite-plus/test';
 
 const root = resolve(import.meta.dirname, '../../..');
 
-test('workspace package manifests preserve the expected dependency direction', () => {
+test('cross-package boundary coverage stays in top-level tests', () => {
   const componentPackage = JSON.parse(
     readFileSync(resolve(root, 'packages/components/package.json'), 'utf8'),
   ) as { dependencies: Record<string, string> };

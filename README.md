@@ -42,6 +42,15 @@ vp run dev
 - Reusable UI logic belongs in packages, not in apps.
 - Use `vp` commands for install, lint, format, test, pack, build, and preview
   workflows.
+- Functions default to arrow functions in governed packages and demo-app source.
+- React components should be authored in TSX files instead of `React.createElement`
+  patterns.
+- Governed files and folders use lowercase names with hyphen separators.
+- In `packages/components`, `packages/hooks`, and `packages/utils`, each source
+  unit lives in its own `src/<unit-name>/` directory with colocated `index` and
+  `index.test` files.
+- Commit messages use `<type>(<scope>): <summary>` when a scope is useful, or
+  `<type>: <summary>` otherwise.
 - Consumers must import global styles from `@deweyou-ui/styles/theme.css` explicitly.
 - `apps/website` owns public guidance; `apps/storybook` stays focused on internal review.
 - Every user-visible component change must include automated tests and updated preview coverage in `apps/website`.

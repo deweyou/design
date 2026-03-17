@@ -1,0 +1,42 @@
+#!/usr/bin/env sh
+
+set -eu
+
+msg_file="$1"
+subject="$(sed -n '1p' "$msg_file" | tr -d '\r')"
+
+if [ -z "$subject" ]; then
+  echo "Commit message subject cannot be empty." >&2
+  exit 1
+fi
+
+case "$subject" in
+  Merge\ *|Revert\ *|fixup!\ *|squash!\ *)
+    exit 0
+    ;;
+esac
+
+pattern='^(feat|fix|refactor|docs|test|build|chore)(\([a-z0-9-]+\))?: [a-z0-9][a-z0-9 /-]*$'
+
+if printf '%s\n' "$subject" | grep -Eq "$pattern"; then
+  exit 0
+fi
+
+cat >&2 <<'EOF'
+Invalid commit message.
+
+Use:
+  <type>(<scope>): <summary>
+or:
+  <type>: <summary>
+
+Examples:
+  feat(button): add loading state
+  refactor(repo-conventions): enforce authoring rules
+  docs: update repository conventions
+
+Allowed types:
+  feat, fix, refactor, docs, test, build, chore
+EOF
+
+exit 1
