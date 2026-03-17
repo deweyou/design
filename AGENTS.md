@@ -77,6 +77,9 @@ These commands map to their corresponding tools. For example, `vp dev --port 300
 
 ## Active Technologies
 
+- TypeScript 5.x, React 19.x-compatible APIs, Node.js 24.14.0 baseline + vite-plus, React, React DOM, Storybook 10.2.19, `tdesign-icons-svg`, and existing `@deweyou-ui/styles` tokens (004-icon-package)
+- File-based source, package metadata, and generated build artifacts only (004-icon-package)
+
 - TypeScript 5.x, React 19.x-compatible APIs, Node.js 24.14.0 baseline + vite-plus, Storybook 10.2 target line, React, React DOM, TypeScrip (003-upgrade-storybook)
 - File-based source, config, and generated preview artifacts only (003-upgrade-storybook)
 

@@ -11,6 +11,7 @@
   "dependencies": {
     "@deweyou-ui/components": "workspace:*",
     "@deweyou-ui/hooks": "workspace:*",
+    "@deweyou-ui/icons": "workspace:*",
     "@deweyou-ui/styles": "workspace:*",
     "react": "catalog:",
     "react-dom": "catalog:"

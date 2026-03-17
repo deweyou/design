@@ -12,6 +12,9 @@ test('cross-package boundary coverage stays in top-level tests', () => {
   const hooksPackage = JSON.parse(
     readFileSync(resolve(root, 'packages/hooks/package.json'), 'utf8'),
   ) as { dependencies: Record<string, string> };
+  const iconsPackage = JSON.parse(
+    readFileSync(resolve(root, 'packages/icons/package.json'), 'utf8'),
+  ) as { dependencies?: Record<string, string> };
   const stylesPackage = JSON.parse(
     readFileSync(resolve(root, 'packages/styles/package.json'), 'utf8'),
   ) as { dependencies?: Record<string, string> };
@@ -23,5 +26,10 @@ test('cross-package boundary coverage stays in top-level tests', () => {
   expect(hooksPackage.dependencies).toMatchObject({
     '@deweyou-ui/utils': 'workspace:*',
   });
+  expect(iconsPackage.dependencies).toMatchObject({
+    react: 'catalog:',
+    'tdesign-icons-svg': 'catalog:',
+  });
+  expect(iconsPackage.dependencies ?? {}).not.toHaveProperty('@deweyou-ui/components');
   expect(stylesPackage.dependencies ?? {}).not.toHaveProperty('@deweyou-ui/components');
 });
