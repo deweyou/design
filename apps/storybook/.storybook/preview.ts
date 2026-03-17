@@ -5,7 +5,10 @@ import '@deweyou-ui/styles/theme.css';
 const preview: Preview = {
   parameters: {
     layout: 'centered',
-    controls: { expanded: true },
+    controls: {
+      expanded: true,
+      sort: 'requiredFirst',
+    },
     backgrounds: {
       default: 'canvas',
       values: [

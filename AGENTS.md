@@ -77,6 +77,9 @@ These commands map to their corresponding tools. For example, `vp dev --port 300
 
 ## Active Technologies
 
+- TypeScript 5.x, React 19.x-compatible APIs, Node.js 24.14.0 baseline + vite-plus, Storybook 10.2 target line, React, React DOM, TypeScrip (003-upgrade-storybook)
+- File-based source, config, and generated preview artifacts only (003-upgrade-storybook)
+
 - TypeScript 5.x, React 19.x-compatible package APIs, Node.js 24.14.0 baseline + `vite-plus`, React, Less, Storybook, CSS Modules, monorepo package workspaces (002-repo-conventions)
 - File-based source tree and generated package artifacts; no persistent runtime storage (002-repo-conventions)
 

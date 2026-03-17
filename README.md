@@ -9,7 +9,7 @@ A Vite+ monorepo for building and validating an opinionated React UI library.
 - `packages/styles`: token sources, Less bridge files, and explicit global CSS entrypoints.
 - `packages/components`: reusable components with CSS Modules and root `className` overrides.
 - `apps/website`: public documentation, theme guidance, and curated demos.
-- `apps/storybook`: internal review surface for state coverage and exploratory development.
+- `apps/storybook`: Storybook 10 internal review surface for state coverage and exploratory development.
 
 ## Development
 
@@ -37,6 +37,12 @@ vp run build -r
 vp run dev
 ```
 
+- Run internal Storybook review:
+
+```bash
+vp run storybook#dev
+```
+
 ## Monorepo Rules
 
 - Reusable UI logic belongs in packages, not in apps.
@@ -53,4 +59,5 @@ vp run dev
   `<type>: <summary>` otherwise.
 - Consumers must import global styles from `@deweyou-ui/styles/theme.css` explicitly.
 - `apps/website` owns public guidance; `apps/storybook` stays focused on internal review.
+- Storybook runs on the repository-standard `vp run storybook#dev` workflow and defaults to port `6106`.
 - Every user-visible component change must include automated tests and updated preview coverage in `apps/website`.

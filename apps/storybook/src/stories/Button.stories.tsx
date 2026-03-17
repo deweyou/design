@@ -6,6 +6,13 @@ const meta = {
   title: 'Internal review/FoundationButton',
   component: FoundationButton,
   tags: ['autodocs'],
+  parameters: {
+    docs: {
+      description: {
+        component: 'Internal review baseline story used to validate the Storybook 10 upgrade.',
+      },
+    },
+  },
   args: {
     label: 'Internal review button',
   },
