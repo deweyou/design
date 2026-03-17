@@ -101,6 +101,80 @@
   margin-top: 18px;
 }
 
+.icon-layout {
+  display: grid;
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.icon-panel {
+  padding: 24px;
+  border: 1px solid var(--ui-color-border);
+  border-radius: 24px;
+  background: color-mix(in srgb, var(--ui-color-surface) 92%, white);
+  box-shadow: var(--ui-shadow-soft);
+}
+
+.icon-panel h2 {
+  margin-bottom: 10px;
+  font-size: 1.45rem;
+}
+
+.icon-contract,
+.icon-usage-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.icon-contract {
+  margin-top: 16px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.icon-contract > div,
+.icon-usage-card,
+.icon-card {
+  padding: 16px;
+  border: 1px solid var(--ui-color-border);
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--ui-color-canvas) 84%, transparent);
+}
+
+.icon-contract code,
+.icon-card code {
+  display: block;
+  margin-top: 8px;
+  color: var(--ui-color-text-muted);
+  font: 0.82rem/1.4 var(--ui-font-mono);
+}
+
+.icon-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+
+.icon-card,
+.icon-usage-card {
+  display: grid;
+  gap: 10px;
+  justify-items: start;
+}
+
+.icon-card svg,
+.icon-usage-card svg {
+  color: var(--ui-color-brand-bg);
+}
+
+.icon-usage-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 14px;
+}
+
+.icon-usage-card h3 {
+  font-size: 1rem;
+}
+
 .token-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -155,7 +229,9 @@
 
 @media (max-width: 900px) {
   .grid,
-  .token-grid {
+  .token-grid,
+  .icon-contract,
+  .icon-usage-grid {
     grid-template-columns: 1fr;
   }
 

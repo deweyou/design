@@ -6,6 +6,7 @@ import { useThemeMode } from '@deweyou-ui/hooks';
 import '@deweyou-ui/styles/theme.css';
 
 import { applyThemeMode, themePreviews } from './counter';
+import { IconGuidance } from './pages/icons';
 import './style.css';
 
 const ThemeSwitcher = () => {
@@ -130,6 +131,7 @@ const App = () => (
         </div>
       </div>
     </section>
+    <IconGuidance />
     <p className="footer-note">
       Storybook remains available for internal review matrices and exploratory states, while the
       website owns official setup and curated examples.

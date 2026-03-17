@@ -5,7 +5,15 @@ export default defineConfig({
     '*': 'vp check --fix',
   },
   lint: {
-    ignorePatterns: ['dist/**', 'coverage/**', 'storybook-static/**', 'specs/**'],
+    ignorePatterns: [
+      'dist/**',
+      'coverage/**',
+      'storybook-static/**',
+      'specs/**',
+      'packages/**/dist/**',
+      'packages/**/src/generated/**',
+      'packages/**/src/exports/**',
+    ],
     options: { typeAware: true, typeCheck: true },
     plugins: ['typescript', 'react', 'unicorn'],
     overrides: [
@@ -29,6 +37,14 @@ export default defineConfig({
     ],
   },
   fmt: {
+    ignorePatterns: [
+      'dist/**',
+      'coverage/**',
+      'storybook-static/**',
+      'packages/**/dist/**',
+      'packages/**/src/generated/**',
+      'packages/**/src/exports/**',
+    ],
     singleQuote: true,
   },
 });
