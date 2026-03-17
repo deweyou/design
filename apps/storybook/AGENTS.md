@@ -10,3 +10,4 @@ Applies to `apps/storybook`.
 - Do not duplicate full public documentation from `apps/website`.
 - Import global styles explicitly from `@deweyou-ui/styles/theme.css`.
 - Keep stories focused on component states, edge cases, and review workflows.
+- Keep Storybook dependencies aligned on one release line and avoid reintroducing deprecated legacy add-on packages.

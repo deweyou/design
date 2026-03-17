@@ -4,9 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "storybook dev -p 6006",
-    "build": "storybook build",
-    "test": "vp test"
+    "dev": "storybook dev -p 7777 --disable-telemetry --no-open",
+    "build": "storybook build"
   },
   "dependencies": {
     "@deweyou-ui/components": "workspace:*",
@@ -15,11 +14,9 @@
     "react-dom": "catalog:"
   },
   "devDependencies": {
-    "@storybook/addon-essentials": "catalog:",
-    "@storybook/addon-interactions": "catalog:",
+    "@storybook/addon-docs": "catalog:",
     "@storybook/react": "catalog:",
     "@storybook/react-vite": "catalog:",
-    "@storybook/test": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "storybook": "catalog:",

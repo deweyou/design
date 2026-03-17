@@ -3,11 +3,9 @@ packages:
   - packages/*
 
 catalog:
-  '@storybook/addon-essentials': ^8.6.15
-  '@storybook/addon-interactions': ^8.6.15
-  '@storybook/react': ^8.6.18
-  '@storybook/react-vite': ^8.6.15
-  '@storybook/test': ^8.6.15
+  '@storybook/addon-docs': 10.2.19
+  '@storybook/react': 10.2.19
+  '@storybook/react-vite': 10.2.19
   '@tsdown/css': ^0.21.3
   '@types/node': ^24
   '@types/react': ^19.1.13
@@ -16,7 +14,7 @@ catalog:
   less: ^4.4.1
   react: ^19.1.1
   react-dom: ^19.1.1
-  storybook: ^8.6.15
+  storybook: 10.2.19
   typescript: ^5
   vite: npm:@voidzero-dev/vite-plus-core@latest
   vite-plus: ^0.1.11
