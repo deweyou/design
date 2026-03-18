@@ -77,22 +77,22 @@ These commands map to their corresponding tools. For example, `vp dev --port 300
 
 ## Active Technologies
 
-- TypeScript 5.x, React 19.x-compatible APIs, Node.js 24.14.0 baseline + vite-plus, React, React DOM, Storybook 10.2.19, `tdesign-icons-svg`, and existing `@deweyou-ui/styles` tokens (004-icon-package)
-- File-based source, package metadata, and generated build artifacts only (004-icon-package)
+- TypeScript 5.x, React 19.x-compatible APIs, Node.js 24.14.0 baseline + vite-plus, React, React DOM, Storybook 10.2.19, `tdesign-icons-svg`, and existing `@deweyou-ui/styles` tokens (20260317-icon-package)
+- File-based source, package metadata, and generated build artifacts only (20260317-icon-package)
 
-- TypeScript 5.x, React 19.x-compatible APIs, Node.js 24.14.0 baseline + vite-plus, Storybook 10.2 target line, React, React DOM, TypeScrip (003-upgrade-storybook)
-- File-based source, config, and generated preview artifacts only (003-upgrade-storybook)
+- TypeScript 5.x, React 19.x-compatible APIs, Node.js 24.14.0 baseline + vite-plus, Storybook 10.2 target line, React, React DOM, TypeScrip (20260317-upgrade-storybook)
+- File-based source, config, and generated preview artifacts only (20260317-upgrade-storybook)
 
-- TypeScript 5.x, React 19.x-compatible package APIs, Node.js 24.14.0 baseline + `vite-plus`, React, Less, Storybook, CSS Modules, monorepo package workspaces (002-repo-conventions)
-- File-based source tree and generated package artifacts; no persistent runtime storage (002-repo-conventions)
+- TypeScript 5.x, React 19.x-compatible package APIs, Node.js 24.14.0 baseline + `vite-plus`, React, Less, Storybook, CSS Modules, monorepo package workspaces (20260317-repo-conventions)
+- File-based source tree and generated package artifacts; no persistent runtime storage (20260317-repo-conventions)
 
-- TypeScript 5.x, React 19.x-compatible package APIs, Node.js 24.14.0 tooling baseline + vite-plus, React, Less, Storybook, TypeScript, CSS Modules (001-ui-monorepo-foundation)
-- File-based source and generated style artifacts only (001-ui-monorepo-foundation)
+- TypeScript 5.x, React 19.x-compatible package APIs, Node.js 24.14.0 tooling baseline + vite-plus, React, Less, Storybook, TypeScript, CSS Modules (20260316-ui-monorepo-foundation)
+- File-based source and generated style artifacts only (20260316-ui-monorepo-foundation)
 
 ## Recent Changes
 
-- 001-ui-monorepo-foundation: Added app/package monorepo boundaries, explicit style imports, controlled theme tokens, and Storybook/website surface separation
-- 002-repo-conventions: Added repository governance for arrow functions, TSX-first React authoring, kebab-case naming, and colocated unit tests in governed packages
+- 20260316-ui-monorepo-foundation: Added app/package monorepo boundaries, explicit style imports, controlled theme tokens, and Storybook/website surface separation
+- 20260317-repo-conventions: Added repository governance for arrow functions, TSX-first React authoring, kebab-case naming, and colocated unit tests in governed packages
 
 ## Repository Conventions
 

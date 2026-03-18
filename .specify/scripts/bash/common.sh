@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # Common functions and variables for all scripts
 
+readonly FEATURE_PREFIX_PATTERN='([0-9]{3}|[0-9]{8})'
+
 # Get repository root, with fallback for non-git repositories
 get_repo_root() {
     if git rev-parse --show-toplevel >/dev/null 2>&1; then
@@ -37,7 +39,7 @@ get_current_branch() {
         for dir in "$specs_dir"/*; do
             if [[ -d "$dir" ]]; then
                 local dirname=$(basename "$dir")
-                if [[ "$dirname" =~ ^([0-9]{3})- ]]; then
+                if [[ "$dirname" =~ ^${FEATURE_PREFIX_PATTERN}- ]]; then
                     local number=${BASH_REMATCH[1]}
                     number=$((10#$number))
                     if [[ "$number" -gt "$highest" ]]; then
@@ -72,9 +74,9 @@ check_feature_branch() {
         return 0
     fi
 
-    if [[ ! "$branch" =~ ^[0-9]{3}- ]]; then
+    if [[ ! "$branch" =~ ^${FEATURE_PREFIX_PATTERN}- ]]; then
         echo "ERROR: Not on a feature branch. Current branch: $branch" >&2
-        echo "Feature branches should be named like: 001-feature-name" >&2
+        echo "Feature branches should be named like: 20260318-feature-name (or legacy 001-feature-name)" >&2
         return 1
     fi
 
@@ -90,8 +92,44 @@ find_feature_dir_by_prefix() {
     local branch_name="$2"
     local specs_dir="$repo_root/specs"
 
-    # Extract numeric prefix from branch (e.g., "004" from "004-whatever")
-    if [[ ! "$branch_name" =~ ^([0-9]{3})- ]]; then
+    # Exact directory match takes priority and is required for date-based prefixes,
+    # because multiple specs can share the same YYYYMMDD prefix.
+    if [[ -d "$specs_dir/$branch_name" ]]; then
+        echo "$specs_dir/$branch_name"
+        return
+    fi
+
+    # If the branch extends an existing feature branch name (for example
+    # "20260317-icon-package-fix-docs"), prefer the longest matching feature dir.
+    local exactish_matches=()
+    if [[ -d "$specs_dir" ]]; then
+        for dir in "$specs_dir"/*; do
+            [[ -d "$dir" ]] || continue
+            local dirname
+            dirname=$(basename "$dir")
+            if [[ "$branch_name" == "$dirname"-* ]]; then
+                exactish_matches+=("$dirname")
+            fi
+        done
+    fi
+
+    if [[ ${#exactish_matches[@]} -eq 1 ]]; then
+        echo "$specs_dir/${exactish_matches[0]}"
+        return
+    elif [[ ${#exactish_matches[@]} -gt 1 ]]; then
+        local longest_match=""
+        local candidate=""
+        for candidate in "${exactish_matches[@]}"; do
+            if [[ ${#candidate} -gt ${#longest_match} ]]; then
+                longest_match="$candidate"
+            fi
+        done
+        echo "$specs_dir/$longest_match"
+        return
+    fi
+
+    # Extract feature prefix from branch (e.g. "20260318" or legacy "004")
+    if [[ ! "$branch_name" =~ ^${FEATURE_PREFIX_PATTERN}- ]]; then
         # If branch doesn't have numeric prefix, fall back to exact match
         echo "$specs_dir/$branch_name"
         return
@@ -119,7 +157,7 @@ find_feature_dir_by_prefix() {
     else
         # Multiple matches - this shouldn't happen with proper naming convention
         echo "ERROR: Multiple spec directories found with prefix '$prefix': ${matches[*]}" >&2
-        echo "Please ensure only one spec directory exists per numeric prefix." >&2
+        echo "Please ensure only one spec directory exists per feature prefix." >&2
         return 1
     fi
 }
@@ -250,4 +288,3 @@ except Exception:
     # callers check [ -n "$TEMPLATE" ] to detect "not found".
     return 0
 }
-
