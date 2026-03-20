@@ -61,3 +61,4 @@ vp run storybook#dev
 - `apps/website` owns public guidance; `apps/storybook` stays focused on internal review.
 - Storybook runs on the repository-standard `vp run storybook#dev` workflow and defaults to port `6106`.
 - Every user-visible component change must include automated tests and updated preview coverage in `apps/website`.
+- Generated documents under `specs/` must use Simplified Chinese, except for literal code identifiers, commands, paths, protocol fields, and third-party API names.

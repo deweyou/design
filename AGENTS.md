@@ -107,3 +107,4 @@ These commands map to their corresponding tools. For example, `vp dev --port 300
 - Preferred commit types are `feat`, `fix`, `refactor`, `docs`, `test`, `build`, and `chore`.
 - Keep commit subjects imperative, lowercase, and focused on one logical change set.
 - The repository enforces this format through `.vite-hooks/commit-msg`.
+- Generated documents under `specs/` must use Simplified Chinese, except for literal code identifiers, commands, paths, protocol fields, and third-party API names.
