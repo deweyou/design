@@ -13,7 +13,11 @@
   --ui-color-link: #b6e2cc;
   --ui-radius-md: 0.9rem;
   --ui-shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.34);
-  --ui-font-body: 'IBM Plex Sans', 'Segoe UI', sans-serif;
-  --ui-font-display: 'Space Grotesk', 'Avenir Next', sans-serif;
+  --ui-font-body: 'Source Han Serif CN Web', 'Songti SC', 'STSong', 'SimSun', 'NSimSun', serif;
+  --ui-font-display: 'Source Han Serif CN Web', 'Songti SC', 'STSong', 'SimSun', 'NSimSun', serif;
   --ui-font-mono: 'IBM Plex Mono', 'SFMono-Regular', monospace;
+  --ui-font-weight-body: 400;
+  --ui-font-weight-emphasis: 500;
+  --ui-font-weight-title: 600;
+  --ui-font-weight-strong: 700;
 }

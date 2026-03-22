@@ -16,6 +16,33 @@ import './style.css';
 const colorOptions = ['neutral', 'primary'] as const;
 const sizeOptions = ['extra-small', 'small', 'medium', 'large', 'extra-large'] as const;
 const shapeOptions = ['rect', 'rounded', 'pill'] as const;
+const typographyTiers = [
+  {
+    body: '正文层级默认覆盖组件文案、按钮、表单说明与普通数据文本。',
+    label: 'Body / 400',
+    tierClass: 'typography-tier-body',
+  },
+  {
+    body: '次强调层级适合标签、状态和需要轻度抬升的信息。',
+    label: 'Emphasis / 500',
+    tierClass: 'typography-tier-emphasis',
+  },
+  {
+    body: '标题层级用于页面标题、卡片标题和较强的信息分区。',
+    label: 'Title / 600',
+    tierClass: 'typography-tier-title',
+  },
+  {
+    body: '强强调层级用于更突出的标题、统计摘要和关键提示。',
+    label: 'Strong / 700',
+    tierClass: 'typography-tier-strong',
+  },
+] as const;
+const typographyMixRows = [
+  'Typography Contract 2026 / 版本 2.003R / 价格 ¥299.00 / 完成率 97%',
+  'Publish changes / 审核剩余 14 分钟 / Build v1.4.0 / Delta +12.8%',
+  '订单编号 VC-2026-0318 / 截止 2026-03-22 14:30 / 税率 13%',
+] as const;
 
 const supportRows = [
   {
@@ -114,6 +141,42 @@ const App = () => (
         <span>Storybook: internal review matrix</span>
         <span>Website: public usage guidance</span>
       </div>
+    </section>
+
+    <section className="typography-grid">
+      <article className="typography-panel">
+        <h2>Typography direction</h2>
+        <p>
+          Deweyou UI now uses a Source Han Serif CN default stack for both body and display text.
+          The package keeps the serif direction unified across components, then falls back to
+          `Songti SC` / `STSong` on `macOS` and `SimSun` / `NSimSun` on `Windows` when the bundled
+          font is not ready.
+        </p>
+        <div className="typography-card-list">
+          {typographyTiers.map((tier) => (
+            <article key={tier.label} className="typography-card">
+              <span>{tier.label}</span>
+              <p className={tier.tierClass}>{tier.body}</p>
+            </article>
+          ))}
+        </div>
+      </article>
+      <article className="typography-panel">
+        <h2>Mixed-script review</h2>
+        <div className="typography-card-list">
+          {typographyMixRows.map((row) => (
+            <article key={row} className="typography-card">
+              <p className="typography-tier-body">{row}</p>
+            </article>
+          ))}
+          <article className="typography-card">
+            <code className="snippet">{'const buildVersion = "v1.4.0";'}</code>
+            <p>
+              Code and fixed-width identifiers stay on `--ui-font-mono` as an explicit exception.
+            </p>
+          </article>
+        </div>
+      </article>
     </section>
 
     <section className="grid">

@@ -29,8 +29,32 @@ export const internalPrimitives = {
     soft: '0 18px 40px rgba(24, 33, 29, 0.12)',
   },
   font: {
-    body: '"IBM Plex Sans", "Segoe UI", sans-serif',
-    display: '"Space Grotesk", "Avenir Next", sans-serif',
+    body: '"Source Han Serif CN Web", "Songti SC", "STSong", "SimSun", "NSimSun", serif',
+    display: '"Source Han Serif CN Web", "Songti SC", "STSong", "SimSun", "NSimSun", serif',
     mono: '"IBM Plex Mono", "SFMono-Regular", monospace',
+    roles: {
+      body: {
+        defaultWeightTier: 'body',
+        usageScope: 'body text, buttons, forms, and data cells',
+      },
+      display: {
+        defaultWeightTier: 'title',
+        usageScope: 'headings and stronger content hierarchy',
+      },
+      mono: {
+        defaultWeightTier: 'body',
+        usageScope: 'code, fixed-width identifiers, and explicit exceptions',
+      },
+    },
+    fallbacks: {
+      macos: ['Songti SC', 'STSong'],
+      windows: ['SimSun', 'NSimSun'],
+    },
+    weights: {
+      body: '400',
+      emphasis: '500',
+      title: '600',
+      strong: '700',
+    },
   },
 } as const;

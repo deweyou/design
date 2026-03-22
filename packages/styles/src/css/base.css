@@ -2,6 +2,7 @@
   color: var(--ui-color-text);
   background: var(--ui-color-canvas);
   font-family: var(--ui-font-body);
+  font-weight: var(--ui-font-weight-body);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -10,6 +11,16 @@
 body {
   color: var(--ui-color-text);
   background: var(--ui-color-canvas);
+  font-family: var(--ui-font-body);
+  font-weight: var(--ui-font-weight-body);
+  line-height: 1.6;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
 }
 
 a {
@@ -20,5 +31,48 @@ h1,
 h2,
 h3 {
   font-family: var(--ui-font-display);
+  font-weight: var(--ui-font-weight-title);
   margin: 0;
+}
+
+h4,
+h5,
+h6 {
+  font-family: var(--ui-font-display);
+  font-weight: var(--ui-font-weight-strong);
+  margin: 0;
+}
+
+b,
+strong,
+th,
+dt {
+  font-weight: var(--ui-font-weight-emphasis);
+}
+
+code,
+pre,
+kbd,
+samp {
+  font-family: var(--ui-font-mono);
+}
+
+.typography-tier-body {
+  font-family: var(--ui-font-body);
+  font-weight: var(--ui-font-weight-body);
+}
+
+.typography-tier-emphasis {
+  font-family: var(--ui-font-body);
+  font-weight: var(--ui-font-weight-emphasis);
+}
+
+.typography-tier-title {
+  font-family: var(--ui-font-display);
+  font-weight: var(--ui-font-weight-title);
+}
+
+.typography-tier-strong {
+  font-family: var(--ui-font-display);
+  font-weight: var(--ui-font-weight-strong);
 }

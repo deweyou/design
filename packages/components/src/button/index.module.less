@@ -37,7 +37,7 @@
   background: var(--button-background);
   color: var(--button-text-color);
   cursor: pointer;
-  font: 600 var(--button-font-size) / 1.25 var(--ui-font-body);
+  font: 600 var(--button-font-size) / 1.4 var(--ui-font-body);
   overflow-wrap: normal;
   text-align: center;
   text-decoration: none;
@@ -83,6 +83,8 @@
 }
 
 .contentLabel {
+  display: block;
+  line-height: 1.4;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -181,7 +183,20 @@
   white-space: normal;
 }
 
+.link .contentLabel {
+  overflow: visible;
+  text-overflow: clip;
+}
+
 .link:hover:not(:disabled) {
+  text-decoration: underline;
+  text-decoration-color: currentColor;
+  text-decoration-skip-ink: auto;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.24em;
+}
+
+.link:hover:not(:disabled) .contentLabel {
   text-decoration: underline;
   text-decoration-color: currentColor;
   text-decoration-skip-ink: auto;

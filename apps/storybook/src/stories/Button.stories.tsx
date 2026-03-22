@@ -8,6 +8,32 @@ import { SearchIcon } from '@deweyou-ui/icons/search';
 const colorOptions = ['neutral', 'primary'] as const;
 const sizeOptions = ['extra-small', 'small', 'medium', 'large', 'extra-large'] as const;
 const shapeOptions = ['rect', 'rounded', 'pill'] as const;
+const typographyTiers = [
+  {
+    className: 'typography-tier-body',
+    example: '正文层级：组件文案默认使用宋体方向，适合按钮、表单与说明文本。',
+    label: 'Body / 400',
+  },
+  {
+    className: 'typography-tier-emphasis',
+    example: '次强调层级：适合标签、状态说明和需要轻度抬升的信息。',
+    label: 'Emphasis / 500',
+  },
+  {
+    className: 'typography-tier-title',
+    example: '标题层级：为页面标题、卡片标题和更强信息层级准备。',
+    label: 'Title / 600',
+  },
+  {
+    className: 'typography-tier-strong',
+    example: '强强调层级：用于更突出的标题或重点提示。',
+    label: 'Strong / 700',
+  },
+] as const;
+const typographyMixSamples = [
+  'Typography Contract 2026 / 版本 2.003R / 价格 ¥299.00 / 完成率 97%',
+  'Publish changes / 审核剩余 14 分钟 / Build v1.4.0 / Delta +12.8%',
+] as const;
 
 const storyStyles = {
   boundaryGrid: {
@@ -47,6 +73,17 @@ const storyStyles = {
     display: 'flex',
     flexWrap: 'wrap',
     gap: '10px',
+  },
+  typographyGrid: {
+    display: 'grid',
+    gap: '14px',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+    width: 'min(1040px, 100%)',
+  },
+  typographySample: {
+    display: 'grid',
+    gap: '10px',
+    lineHeight: 1.6,
   },
 } as const;
 
@@ -257,6 +294,52 @@ const InvalidCombinationPreview = () => {
   );
 };
 
+const TypographyContractPreview = () => {
+  return (
+    <div style={storyStyles.matrix}>
+      <article style={storyStyles.card}>
+        <strong>Type tiers</strong>
+        <div style={storyStyles.typographyGrid}>
+          {typographyTiers.map((tier) => (
+            <article key={tier.label} style={storyStyles.card}>
+              <span style={storyStyles.meta}>{tier.label}</span>
+              <div className={tier.className} style={storyStyles.typographySample}>
+                {tier.example}
+              </div>
+            </article>
+          ))}
+        </div>
+      </article>
+      <article style={storyStyles.card}>
+        <strong>Mixed-script review</strong>
+        <div style={storyStyles.typographyGrid}>
+          {typographyMixSamples.map((sample) => (
+            <article key={sample} style={storyStyles.card}>
+              <div className="typography-tier-body" style={storyStyles.typographySample}>
+                {sample}
+              </div>
+              <code style={storyStyles.meta}>Source Han Serif CN + platform fallback audit</code>
+            </article>
+          ))}
+          <article style={storyStyles.card}>
+            <div className="typography-tier-body" style={storyStyles.typographySample}>
+              默认字体未就绪时，`macOS` 应退回 `Songti SC` / `STSong`，`Windows` 应退回 `SimSun` /
+              `NSimSun`。
+            </div>
+            <code style={storyStyles.meta}>Fallback expectation</code>
+          </article>
+          <article style={storyStyles.card}>
+            <code>{'const buildVersion = "v1.4.0";'}</code>
+            <span style={storyStyles.meta}>
+              Code and fixed-width identifiers stay on `--ui-font-mono`.
+            </span>
+          </article>
+        </div>
+      </article>
+    </div>
+  );
+};
+
 export const Variants: Story = {
   render: () => <VariantGallery />,
 };
@@ -279,4 +362,8 @@ export const Boundaries: Story = {
 
 export const InvalidCombinations: Story = {
   render: () => <InvalidCombinationPreview />,
+};
+
+export const TypographyContract: Story = {
+  render: () => <TypographyContractPreview />,
 };
