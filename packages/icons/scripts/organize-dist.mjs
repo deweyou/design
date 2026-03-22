@@ -67,32 +67,74 @@ const joinClassName = (...parts) => {
 };
 
 const resolveIconSize = (size) => {
+  if (size === undefined) {
+    return '1em';
+  }
+
   if (typeof size === 'number') {
     return size;
   }
 
-  return iconSizeMap[size ?? 'medium'];
+  return iconSizeMap[size];
+};
+
+const resolveIconViewBox = (viewBox) => {
+  const parts = viewBox.trim().split(/\\s+/).map(Number);
+
+  if (parts.length !== 4 || parts.some((value) => Number.isNaN(value))) {
+    return viewBox;
+  }
+
+  const [x, y, width, height] = parts;
+
+  if (width === height) {
+    return viewBox;
+  }
+
+  const squareSize = Math.max(width, height);
+  const nextX = x - (squareSize - width) / 2;
+  const nextY = y - (squareSize - height) / 2;
+
+  return \`\${nextX} \${nextY} \${squareSize} \${squareSize}\`;
+};
+
+const createIconWrapperStyle = (resolvedSize, style) => {
+  return {
+    alignItems: 'center',
+    display: 'inline-flex',
+    flex: 'none',
+    height: resolvedSize,
+    justifyContent: 'center',
+    lineHeight: 0,
+    verticalAlign: 'middle',
+    width: resolvedSize,
+    ...style,
+  };
 };
 
 export const renderIcon = ({ className, definition, label, name, size, style }) => {
   const resolvedSize = resolveIconSize(size);
+  const resolvedViewBox = resolveIconViewBox(definition.viewBox);
 
-  return jsx('svg', {
+  return jsx('span', {
     'aria-hidden': label ? undefined : true,
     'aria-label': label,
     className: joinClassName('dy-icon', className),
     'data-icon-name': name,
-    fill: 'none',
-    focusable: 'false',
     role: label ? 'img' : undefined,
-    style: {
-      flex: 'none',
-      height: resolvedSize,
-      width: resolvedSize,
-      ...style,
-    },
-    viewBox: definition.viewBox,
-    dangerouslySetInnerHTML: { __html: definition.body },
+    style: createIconWrapperStyle(resolvedSize, style),
+    children: jsx('svg', {
+      'aria-hidden': true,
+      dangerouslySetInnerHTML: { __html: definition.body },
+      fill: 'none',
+      focusable: 'false',
+      style: {
+        display: 'block',
+        height: '100%',
+        width: '100%',
+      },
+      viewBox: resolvedViewBox,
+    }),
   });
 };
 `;

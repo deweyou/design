@@ -1,31 +1,63 @@
 .root {
-  --button-brand-bg: var(--ui-color-brand-bg);
-  --button-text-color: var(--ui-color-text-on-brand);
-  --button-border: color-mix(in srgb, var(--button-brand-bg) 72%, black);
+  --button-background: transparent;
+  --button-background-active: transparent;
+  --button-background-hover: transparent;
+  --button-border-color: transparent;
+  --button-filled-background: var(--ui-color-text);
+  --button-filled-background-hover: color-mix(
+    in srgb,
+    var(--ui-color-text) 84%,
+    var(--ui-color-surface)
+  );
+  --button-filled-background-active: color-mix(in srgb, var(--ui-color-text) 92%, black);
+  --button-filled-border-color: var(--ui-color-text);
+  --button-filled-text-color: var(--ui-color-canvas);
+  --button-font-size: 0.95rem;
+  --button-ghost-background-active: color-mix(in srgb, var(--ui-color-text) 10%, transparent);
+  --button-ghost-background-hover: color-mix(in srgb, var(--ui-color-text) 6%, transparent);
+  --button-ghost-text-color: var(--ui-color-text);
+  --button-link-text-color: var(--ui-color-text);
+  --button-outlined-background-active: color-mix(in srgb, var(--ui-color-text) 10%, transparent);
+  --button-outlined-background-hover: color-mix(in srgb, var(--ui-color-text) 6%, transparent);
+  --button-outlined-border-color: var(--ui-color-border-strong);
+  --button-outlined-text-color: var(--ui-color-text);
+  --button-padding: 0.6rem;
+  --button-radius: 0.8rem;
+  --button-text-color: var(--ui-color-text);
 
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  border: 1px solid var(--button-border);
-  border-radius: 999px;
-  padding: 0.8rem 1.2rem;
-  font: 600 0.95rem/1 var(--ui-font-body);
+  gap: 0.55rem;
+  max-width: 100%;
+  min-width: 0;
+  padding: var(--button-padding);
+  border: 1px solid var(--button-border-color);
+  border-radius: var(--button-radius);
+  background: var(--button-background);
   color: var(--button-text-color);
-  background: var(--button-brand-bg);
   cursor: pointer;
+  font: 600 var(--button-font-size) / 1.25 var(--ui-font-body);
+  overflow-wrap: normal;
+  text-align: center;
+  text-decoration: none;
   transition:
-    transform 140ms ease,
     background 140ms ease,
-    border-color 140ms ease;
+    border-color 140ms ease,
+    color 140ms ease,
+    box-shadow 140ms ease,
+    transform 140ms ease;
+  vertical-align: middle;
+  white-space: nowrap;
 }
 
-.root:hover {
-  background: var(--ui-color-brand-bg-hover);
+.root:hover:not(:disabled) {
+  background: var(--button-background-hover);
+  border-color: var(--button-border-color);
 }
 
-.root:active {
-  background: var(--ui-color-brand-bg-active);
+.root:active:not(:disabled) {
+  background: var(--button-background-active);
   transform: translateY(1px);
 }
 
@@ -34,7 +66,166 @@
   outline-offset: 2px;
 }
 
-.neutral {
-  --button-brand-bg: color-mix(in srgb, var(--ui-color-surface) 70%, white);
-  --button-text-color: var(--ui-color-text);
+.root:disabled {
+  cursor: not-allowed;
+  opacity: 0.56;
+  transform: none;
+}
+
+.root > :global(.dy-icon) {
+  flex: none;
+}
+
+.contentGraphic {
+  display: inline-flex;
+  flex: none;
+  min-width: 0;
+}
+
+.contentLabel {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: inherit;
+}
+
+.colorNeutral {
+  --button-filled-background: var(--ui-color-text);
+  --button-filled-background-hover: color-mix(
+    in srgb,
+    var(--ui-color-text) 84%,
+    var(--ui-color-surface)
+  );
+  --button-filled-background-active: color-mix(in srgb, var(--ui-color-text) 92%, black);
+  --button-filled-border-color: var(--ui-color-text);
+  --button-filled-text-color: var(--ui-color-canvas);
+  --button-outlined-background-hover: color-mix(in srgb, var(--ui-color-text) 6%, transparent);
+  --button-outlined-background-active: color-mix(in srgb, var(--ui-color-text) 10%, transparent);
+  --button-outlined-border-color: var(--ui-color-border-strong);
+  --button-outlined-text-color: var(--ui-color-text);
+  --button-ghost-background-hover: color-mix(in srgb, var(--ui-color-text) 6%, transparent);
+  --button-ghost-background-active: color-mix(in srgb, var(--ui-color-text) 10%, transparent);
+  --button-ghost-text-color: var(--ui-color-text);
+  --button-link-text-color: var(--ui-color-text);
+}
+
+.colorPrimary {
+  --button-filled-background: var(--ui-color-brand-bg);
+  --button-filled-background-hover: var(--ui-color-brand-bg-hover);
+  --button-filled-background-active: var(--ui-color-brand-bg-active);
+  --button-filled-border-color: var(--ui-color-brand-bg);
+  --button-filled-text-color: var(--ui-color-text-on-brand);
+  --button-outlined-background-hover: color-mix(in srgb, var(--ui-color-brand-bg) 10%, transparent);
+  --button-outlined-background-active: color-mix(
+    in srgb,
+    var(--ui-color-brand-bg) 18%,
+    transparent
+  );
+  --button-outlined-border-color: var(--ui-color-brand-bg);
+  --button-outlined-text-color: var(--ui-color-brand-bg);
+  --button-ghost-background-hover: color-mix(
+    in srgb,
+    var(--ui-color-brand-bg) 12%,
+    var(--ui-color-surface)
+  );
+  --button-ghost-background-active: color-mix(
+    in srgb,
+    var(--ui-color-brand-bg) 20%,
+    var(--ui-color-surface)
+  );
+  --button-ghost-text-color: var(--ui-color-brand-bg);
+  --button-link-text-color: var(--ui-color-link);
+}
+
+.filled {
+  --button-background: var(--button-filled-background);
+  --button-background-hover: var(--button-filled-background-hover);
+  --button-background-active: var(--button-filled-background-active);
+  --button-border-color: var(--button-filled-border-color);
+  --button-text-color: var(--button-filled-text-color);
+}
+
+.outlined {
+  --button-background: transparent;
+  --button-background-hover: var(--button-outlined-background-hover);
+  --button-background-active: var(--button-outlined-background-active);
+  --button-border-color: var(--button-outlined-border-color);
+  --button-text-color: var(--button-outlined-text-color);
+}
+
+.ghost {
+  --button-background: transparent;
+  --button-background-hover: var(--button-ghost-background-hover);
+  --button-background-active: var(--button-ghost-background-active);
+  --button-border-color: transparent;
+  --button-radius: 0.4rem;
+  --button-text-color: var(--button-ghost-text-color);
+  font-weight: 500;
+  gap: 0.4rem;
+  padding-block: 0.32rem;
+  padding-inline: 0.32rem;
+}
+
+.link {
+  --button-background: transparent;
+  --button-background-hover: transparent;
+  --button-background-active: transparent;
+  --button-border-color: transparent;
+  --button-radius: 0.4rem;
+  --button-text-color: var(--button-link-text-color);
+  font-weight: 500;
+  gap: 0.35rem;
+  overflow-wrap: anywhere;
+  padding-block: 0.14rem;
+  padding-inline: 0.24rem;
+  white-space: normal;
+}
+
+.link:hover:not(:disabled) {
+  text-decoration: underline;
+  text-decoration-color: currentColor;
+  text-decoration-skip-ink: auto;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.24em;
+}
+
+.sizeExtraSmall {
+  --button-font-size: 0.75rem;
+  --button-padding: 0.34rem;
+}
+
+.sizeSmall {
+  --button-font-size: 0.84rem;
+  --button-padding: 0.44rem;
+}
+
+.sizeMedium {
+  --button-font-size: 0.95rem;
+  --button-padding: 0.6rem;
+}
+
+.sizeLarge {
+  --button-font-size: 1rem;
+  --button-padding: 0.72rem;
+}
+
+.sizeExtraLarge {
+  --button-font-size: 1.08rem;
+  --button-padding: 0.86rem;
+}
+
+.shapeAuto {
+  --button-radius: 0.8rem;
+}
+
+.shapeRect {
+  --button-radius: 0;
+}
+
+.shapeRounded {
+  --button-radius: 0.4rem;
+}
+
+.shapePill {
+  --button-radius: 999px;
 }

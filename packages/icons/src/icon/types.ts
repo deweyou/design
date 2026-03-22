@@ -39,9 +39,33 @@ export type IconCatalogEntry<Name extends string = string> = {
 };
 
 export const resolveIconSize = (size: number | IconSize | undefined) => {
+  if (size === undefined) {
+    return '1em';
+  }
+
   if (typeof size === 'number') {
     return size;
   }
 
-  return iconSizeMap[size ?? 'medium'];
+  return iconSizeMap[size];
+};
+
+export const resolveIconViewBox = (viewBox: string) => {
+  const parts = viewBox.trim().split(/\s+/).map(Number);
+
+  if (parts.length !== 4 || parts.some((value) => Number.isNaN(value))) {
+    return viewBox;
+  }
+
+  const [x, y, width, height] = parts;
+
+  if (width === height) {
+    return viewBox;
+  }
+
+  const squareSize = Math.max(width, height);
+  const nextX = x - (squareSize - width) / 2;
+  const nextY = y - (squareSize - height) / 2;
+
+  return `${nextX} ${nextY} ${squareSize} ${squareSize}`;
 };

@@ -12,8 +12,8 @@ const preview: Preview = {
     backgrounds: {
       default: 'canvas',
       values: [
-        { name: 'canvas', value: '#f6f0e8' },
-        { name: 'dark', value: '#1f1916' },
+        { name: 'canvas', value: '#ffffff' },
+        { name: 'dark', value: '#000000' },
       ],
     },
   },

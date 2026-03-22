@@ -1,5 +1,1 @@
-export {
-  FoundationButton,
-  buttonCustomizationContract,
-  type FoundationButtonProps,
-} from './button';
+export { Button, type ButtonProps } from './button';
