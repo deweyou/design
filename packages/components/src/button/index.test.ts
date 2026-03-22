@@ -23,6 +23,12 @@ test('button falls back to label when children are omitted', () => {
   expect(markup).toContain('>Continue<');
 });
 
+test('button falls back to label when children only contain placeholders', () => {
+  const markup = renderToStaticMarkup(createElement(Button, { label: 'Continue' }, false, '', []));
+
+  expect(markup).toContain('>Continue<');
+});
+
 test('button prefers children over label when both are provided', () => {
   const markup = renderToStaticMarkup(
     createElement(Button, { label: 'Legacy label' }, 'Children win'),
@@ -106,18 +112,37 @@ test('button separates graphic and text content so only the label is truncated',
   expect(markup).toContain(styles.contentLabel);
 });
 
+test('button treats text-producing custom components as visible text content', () => {
+  const ButtonLabel = () => {
+    return 'Save changes';
+  };
+
+  const markup = renderToStaticMarkup(createElement(Button, null, createElement(ButtonLabel)));
+
+  expect(markup).toContain('Save changes');
+  expect(markup).toContain(styles.contentLabel);
+  expect(markup).toContain('data-icon-only="false"');
+});
+
 test('button allows icon-only content when an accessible name is provided', () => {
+  const SearchIcon = () => {
+    return createElement('svg', { 'aria-hidden': true, viewBox: '0 0 16 16' });
+  };
+
+  SearchIcon.displayName = 'SearchIcon';
+
   const markup = renderToStaticMarkup(
     createElement(
       Button,
       { 'aria-label': 'Open search', shape: 'pill' },
-      createElement('svg', { 'aria-hidden': true, viewBox: '0 0 16 16' }),
+      createElement(SearchIcon),
     ),
   );
 
   expect(markup).toContain('aria-label="Open search"');
   expect(markup).toContain('data-icon-only="true"');
   expect(markup).toContain('data-shape="pill"');
+  expect(markup).toContain(styles.contentGraphic);
 });
 
 test('button rejects shape on ghost and link variants', () => {
@@ -140,13 +165,13 @@ test('button rejects shape on ghost and link variants', () => {
 });
 
 test('button rejects icon-only content without an accessible name', () => {
+  const SearchIcon = () => {
+    return createElement('svg', { 'aria-hidden': true, viewBox: '0 0 16 16' });
+  };
+
+  SearchIcon.displayName = 'SearchIcon';
+
   expect(() =>
-    renderToStaticMarkup(
-      createElement(
-        Button,
-        { variant: 'filled' },
-        createElement('svg', { 'aria-hidden': true, viewBox: '0 0 16 16' }),
-      ),
-    ),
+    renderToStaticMarkup(createElement(Button, { variant: 'filled' }, createElement(SearchIcon))),
   ).toThrow('requires aria-label or aria-labelledby');
 });

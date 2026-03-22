@@ -168,7 +168,25 @@ const shapeClassNames: Record<ButtonShape, string> = {
   pill: styles.shapePill,
 };
 
-const contentHasVisibleText = (content: ReactNode): boolean => {
+type ButtonContentKind = 'empty' | 'text' | 'graphic' | 'unknown';
+
+const combineContentKinds = (kinds: ButtonContentKind[]): ButtonContentKind => {
+  if (kinds.some((kind) => kind === 'text')) {
+    return 'text';
+  }
+
+  if (kinds.some((kind) => kind === 'unknown')) {
+    return 'unknown';
+  }
+
+  if (kinds.some((kind) => kind === 'graphic')) {
+    return 'graphic';
+  }
+
+  return 'empty';
+};
+
+const hasRenderableContent = (content: ReactNode): boolean => {
   if (content === null || content === undefined || typeof content === 'boolean') {
     return false;
   }
@@ -182,16 +200,77 @@ const contentHasVisibleText = (content: ReactNode): boolean => {
   }
 
   if (Array.isArray(content)) {
-    return content.some(contentHasVisibleText);
+    return content.some(hasRenderableContent);
+  }
+
+  if (isValidElement(content) && content.type === Fragment) {
+    const props = content.props as { children?: ReactNode } | null;
+
+    return hasRenderableContent(props?.children);
+  }
+
+  return isValidElement(content);
+};
+
+const getElementDisplayName = (content: ReactNode): string | undefined => {
+  if (!isValidElement(content)) {
+    return undefined;
+  }
+
+  const elementType = content.type as string | { displayName?: string; name?: string } | undefined;
+
+  if (typeof elementType === 'string') {
+    return elementType;
+  }
+
+  return elementType?.displayName ?? elementType?.name;
+};
+
+const looksLikeGraphicElement = (content: ReactNode): boolean => {
+  const elementName = getElementDisplayName(content);
+
+  if (!elementName) {
+    return false;
+  }
+
+  return elementName === 'svg' || elementName === 'img' || elementName.endsWith('Icon');
+};
+
+const resolveContentKind = (content: ReactNode): ButtonContentKind => {
+  if (content === null || content === undefined || typeof content === 'boolean') {
+    return 'empty';
+  }
+
+  if (typeof content === 'string') {
+    return content.trim().length > 0 ? 'text' : 'empty';
+  }
+
+  if (typeof content === 'number') {
+    return 'text';
+  }
+
+  if (Array.isArray(content)) {
+    return combineContentKinds(content.map(resolveContentKind));
+  }
+
+  if (isValidElement(content) && content.type === Fragment) {
+    const props = content.props as { children?: ReactNode } | null;
+
+    return resolveContentKind(props?.children);
+  }
+
+  if (looksLikeGraphicElement(content)) {
+    return 'graphic';
   }
 
   if (isValidElement(content)) {
     const props = content.props as { children?: ReactNode } | null;
+    const childKind = resolveContentKind(props?.children);
 
-    return contentHasVisibleText(props?.children);
+    return childKind === 'empty' ? 'unknown' : childKind;
   }
 
-  return false;
+  return 'unknown';
 };
 
 const hasAccessibleName = (props: ButtonProps): boolean => {
@@ -238,7 +317,9 @@ const resolveButtonShape = (
 };
 
 const validateButtonContent = (content: ReactNode, props: ButtonProps) => {
-  if (contentHasVisibleText(content)) {
+  const contentKind = resolveContentKind(content);
+
+  if (contentKind === 'text' || contentKind === 'unknown') {
     return;
   }
 
@@ -269,7 +350,9 @@ const flattenButtonContent = (content: ReactNode): ReactNode[] => {
 
 const renderButtonContent = (content: ReactNode): ReactNode => {
   return flattenButtonContent(content).map((item, index) => {
-    if (contentHasVisibleText(item)) {
+    const contentKind = resolveContentKind(item);
+
+    if (contentKind === 'text' || contentKind === 'unknown') {
       return (
         <span className={styles.contentLabel} key={`label-${index}`}>
           {item}
@@ -299,8 +382,8 @@ export const Button = ({
   variant = 'filled',
   ...props
 }: ButtonProps) => {
-  const content = children ?? label;
-  const hasVisibleText = contentHasVisibleText(content);
+  const content = hasRenderableContent(children) ? children : label;
+  const contentKind = resolveContentKind(content);
   const isShapeable = isShapeableVariant(variant);
   const resolvedShape = resolveButtonShape(variant, shape);
   const resolvedShapeClassName = resolvedShape
@@ -324,7 +407,7 @@ export const Button = ({
       )}
       data-color={color}
       data-disabled={props.disabled ? 'true' : 'false'}
-      data-icon-only={hasVisibleText ? 'false' : 'true'}
+      data-icon-only={contentKind === 'graphic' ? 'true' : 'false'}
       data-shape={resolvedShape ?? 'none'}
       data-size={size}
       data-variant={variant}
