@@ -9,13 +9,7 @@
 
 body {
   color: var(--ui-color-text);
-  background:
-    radial-gradient(circle at top, rgba(255, 214, 180, 0.42), transparent 28rem),
-    linear-gradient(
-      180deg,
-      var(--ui-color-canvas),
-      color-mix(in srgb, var(--ui-color-canvas) 82%, black)
-    );
+  background: var(--ui-color-canvas);
 }
 
 a {

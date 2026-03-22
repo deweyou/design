@@ -1,16 +1,16 @@
 [data-theme='dark'] {
-  --ui-color-canvas: #1f1916;
-  --ui-color-surface: #2b231f;
-  --ui-color-text: #f6ecdf;
-  --ui-color-text-muted: #d8c5b3;
-  --ui-color-border: #614838;
-  --ui-color-border-strong: #8d6b55;
-  --ui-color-brand-bg: #e28641;
-  --ui-color-brand-bg-hover: #ed995c;
-  --ui-color-brand-bg-active: #c96d29;
-  --ui-color-text-on-brand: #fff6eb;
-  --ui-color-focus-ring: #73adff;
-  --ui-color-link: #ffd4b0;
+  --ui-color-canvas: #000000;
+  --ui-color-surface: #0f1311;
+  --ui-color-text: #edf3ef;
+  --ui-color-text-muted: #b8c6be;
+  --ui-color-border: #38443f;
+  --ui-color-border-strong: #5a6c64;
+  --ui-color-brand-bg: #729b89;
+  --ui-color-brand-bg-hover: #85ad9c;
+  --ui-color-brand-bg-active: #5e8574;
+  --ui-color-text-on-brand: #f7fbf8;
+  --ui-color-focus-ring: #9ec8b4;
+  --ui-color-link: #b6e2cc;
   --ui-radius-md: 0.9rem;
   --ui-shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.34);
   --ui-font-body: 'IBM Plex Sans', 'Segoe UI', sans-serif;

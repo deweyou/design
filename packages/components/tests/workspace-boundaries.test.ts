@@ -23,6 +23,8 @@ test('cross-package boundary coverage stays in top-level tests', () => {
     '@deweyou-ui/hooks': 'workspace:*',
     '@deweyou-ui/styles': 'workspace:*',
   });
+  expect(componentPackage.dependencies ?? {}).not.toHaveProperty('@deweyou-ui/icons');
+  expect(componentPackage.dependencies ?? {}).not.toHaveProperty('@storybook/react');
   expect(hooksPackage.dependencies).toMatchObject({
     '@deweyou-ui/utils': 'workspace:*',
   });

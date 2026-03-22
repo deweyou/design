@@ -1,19 +1,19 @@
 :root,
 [data-theme='light'] {
-  --ui-color-canvas: #f6f0e8;
-  --ui-color-surface: #fffaf2;
-  --ui-color-text: #211c1a;
-  --ui-color-text-muted: #655e5a;
-  --ui-color-border: #d7c8bb;
-  --ui-color-border-strong: #9c7f67;
-  --ui-color-brand-bg: #b35c20;
-  --ui-color-brand-bg-hover: #9b4d18;
-  --ui-color-brand-bg-active: #7f3d12;
-  --ui-color-text-on-brand: #fff6eb;
-  --ui-color-focus-ring: #1f6fe5;
-  --ui-color-link: #8b2f14;
+  --ui-color-canvas: #ffffff;
+  --ui-color-surface: #fbfcfb;
+  --ui-color-text: #18211d;
+  --ui-color-text-muted: #5f6d66;
+  --ui-color-border: #cfd8d3;
+  --ui-color-border-strong: #91a198;
+  --ui-color-brand-bg: #5f8f7a;
+  --ui-color-brand-bg-hover: #527d6a;
+  --ui-color-brand-bg-active: #456a59;
+  --ui-color-text-on-brand: #f7fbf8;
+  --ui-color-focus-ring: #6fa690;
+  --ui-color-link: #3f6f5b;
   --ui-radius-md: 0.9rem;
-  --ui-shadow-soft: 0 18px 40px rgba(64, 37, 20, 0.12);
+  --ui-shadow-soft: 0 18px 40px rgba(24, 33, 29, 0.12);
   --ui-font-body: 'IBM Plex Sans', 'Segoe UI', sans-serif;
   --ui-font-display: 'Space Grotesk', 'Avenir Next', sans-serif;
   --ui-font-mono: 'IBM Plex Mono', 'SFMono-Regular', monospace;

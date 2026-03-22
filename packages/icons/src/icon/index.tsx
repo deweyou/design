@@ -2,7 +2,7 @@ import { startTransition, useEffect, useState, type ReactElement } from 'react';
 
 import { hasIconName, loadIconDefinition, type IconName } from '../icon-registry';
 
-import { BaseIcon } from './base-icon';
+import { BaseIcon, createIconWrapperStyle } from './base-icon';
 import { resolveIconSize, type IconDefinition, type SharedIconProps } from './types';
 
 export type IconProps = SharedIconProps & {
@@ -24,13 +24,7 @@ const IconPlaceholder = ({ className, label, name, size, style }: IconProps): Re
       data-icon-loading="true"
       data-icon-name={name}
       role={label ? 'img' : undefined}
-      style={{
-        display: 'inline-block',
-        flex: 'none',
-        height: resolvedSize,
-        width: resolvedSize,
-        ...style,
-      }}
+      style={createIconWrapperStyle(resolvedSize, style)}
     />
   );
 };

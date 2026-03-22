@@ -1,17 +1,17 @@
 export const internalPrimitives = {
   color: {
-    neutralCanvas: '#f6f0e8',
-    neutralSurface: '#fffaf2',
-    neutralInk: '#211c1a',
-    neutralInkMuted: '#655e5a',
-    borderSoft: '#d7c8bb',
-    borderStrong: '#9c7f67',
-    brandAmber: '#b35c20',
-    brandAmberHover: '#9b4d18',
-    brandAmberActive: '#7f3d12',
-    brandText: '#fff6eb',
-    focusRing: '#1f6fe5',
-    link: '#8b2f14',
+    neutralCanvas: '#ffffff',
+    neutralSurface: '#fbfcfb',
+    neutralInk: '#18211d',
+    neutralInkMuted: '#5f6d66',
+    borderSoft: '#cfd8d3',
+    borderStrong: '#91a198',
+    brandAmber: '#5f8f7a',
+    brandAmberHover: '#527d6a',
+    brandAmberActive: '#456a59',
+    brandText: '#f7fbf8',
+    focusRing: '#6fa690',
+    link: '#3f6f5b',
   },
   radius: {
     sm: '0.5rem',
@@ -26,7 +26,7 @@ export const internalPrimitives = {
     xl: '2.5rem',
   },
   shadow: {
-    soft: '0 18px 40px rgba(64, 37, 20, 0.12)',
+    soft: '0 18px 40px rgba(24, 33, 29, 0.12)',
   },
   font: {
     body: '"IBM Plex Sans", "Segoe UI", sans-serif',

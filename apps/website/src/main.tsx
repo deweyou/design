@@ -1,13 +1,64 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-import { FoundationButton } from '@deweyou-ui/components';
+import { Button } from '@deweyou-ui/components';
 import { useThemeMode } from '@deweyou-ui/hooks';
+import { AddIcon } from '@deweyou-ui/icons/add';
+import { ChevronRightIcon } from '@deweyou-ui/icons/chevron-right';
+import { MenuIcon } from '@deweyou-ui/icons/menu';
+import { SearchIcon } from '@deweyou-ui/icons/search';
 import '@deweyou-ui/styles/theme.css';
 
 import { applyThemeMode, themePreviews } from './counter';
 import { IconGuidance } from './pages/icons';
 import './style.css';
+
+const colorOptions = ['neutral', 'primary'] as const;
+const sizeOptions = ['extra-small', 'small', 'medium', 'large', 'extra-large'] as const;
+const shapeOptions = ['rect', 'rounded', 'pill'] as const;
+
+const supportRows = [
+  {
+    color: 'neutral by default, primary optional',
+    defaultShape: 'rounded',
+    example: <Button>Publish changes</Button>,
+    feedback: 'Solid hierarchy with monochrome-by-default emphasis',
+    shapes: 'rect, rounded, pill',
+    variant: 'filled',
+  },
+  {
+    color: 'neutral by default, primary optional',
+    defaultShape: 'rounded',
+    example: (
+      <Button color="primary" variant="outlined">
+        Review copy
+      </Button>
+    ),
+    feedback: 'Outlined supporting action with optional accent border',
+    shapes: 'rect, rounded, pill',
+    variant: 'outlined',
+  },
+  {
+    color: 'neutral by default, primary optional',
+    defaultShape: 'N/A',
+    example: <Button variant="ghost">Inline toolbar</Button>,
+    feedback: 'Background hover feedback that can stay neutral or turn accent',
+    shapes: 'Not supported',
+    variant: 'ghost',
+  },
+  {
+    color: 'neutral by default, primary optional',
+    defaultShape: 'N/A',
+    example: (
+      <Button color="primary" variant="link">
+        Read migration
+      </Button>
+    ),
+    feedback: 'Underline hover feedback with optional accent text and underline',
+    shapes: 'Not supported',
+    variant: 'link',
+  },
+] as const;
 
 const ThemeSwitcher = () => {
   const { mode, setMode, toggleMode } = useThemeMode('light');
@@ -15,18 +66,23 @@ const ThemeSwitcher = () => {
   return (
     <div aria-label="Theme modes" className="preview-actions">
       {themePreviews.map((preview) => (
-        <FoundationButton
+        <Button
           key={preview.mode}
           aria-pressed={mode === preview.mode}
-          label={preview.label}
+          color={mode === preview.mode ? 'primary' : 'neutral'}
+          size="small"
+          variant={mode === preview.mode ? 'filled' : 'outlined'}
           onClick={() => {
             applyThemeMode(preview.mode);
             setMode(preview.mode);
           }}
-          tone={mode === preview.mode ? 'brand' : 'neutral'}
-        />
+        >
+          {preview.label}
+        </Button>
       ))}
-      <FoundationButton label="Toggle mode" onClick={toggleMode} />
+      <Button size="small" variant="ghost" onClick={toggleMode}>
+        Toggle mode
+      </Button>
     </div>
   );
 };
@@ -34,107 +90,275 @@ const ThemeSwitcher = () => {
 const App = () => (
   <main className="shell">
     <section className="hero">
-      <p className="eyebrow">UI Monorepo Foundation</p>
-      <h1>Package boundaries first. Themes explicit. Docs public.</h1>
+      <p className="eyebrow">Button Contract</p>
+      <h1>One `Button` API, four variants, two color modes, explicit shape support.</h1>
       <p className="hero-copy">
-        Deweyou UI now separates reusable utilities, hooks, styles, and components from app
-        surfaces. Consumers import global styles intentionally, switch Theme modes without
-        undocumented behavior, and keep Brand token overrides limited to color.
+        Deweyou UI exposes buttons through `Button` and `ButtonProps`. The public model is now
+        organized around `variant`, `color`, `size`, and `shape`. Buttons stay monochrome by
+        default, and only opt into theme accent color when `color=&quot;primary&quot;` is set.
+        Icon-only usage remains a content mode with an accessibility requirement instead of a
+        dedicated variant.
       </p>
       <div className="hero-actions">
-        <FoundationButton label="Installation" />
-        <FoundationButton label="Theme modes" tone="neutral" />
+        <Button>Default neutral</Button>
+        <Button color="primary" variant="outlined" shape="pill">
+          Accent review
+        </Button>
+        <Button color="primary" variant="link">
+          Read the color note
+          <ChevronRightIcon />
+        </Button>
       </div>
       <div className="meta">
-        <span>apps/website: public guidance</span>
-        <span>apps/storybook: internal review</span>
-        <span>@deweyou-ui/styles/theme.css: explicit setup</span>
+        <span>@deweyou-ui/components: Button + ButtonProps</span>
+        <span>Storybook: internal review matrix</span>
+        <span>Website: public usage guidance</span>
       </div>
     </section>
-    <section className="grid" style={{ marginTop: '20px' }}>
+
+    <section className="grid">
       <article className="card">
-        <svg aria-hidden="true" className="card-icon">
-          <use href="/icons.svg#package" />
-        </svg>
-        <h2>Installation</h2>
+        <h2>Unified public API</h2>
         <p>
-          Import <code>@deweyou-ui/styles/theme.css</code> once, then consume components from the
-          reusable packages. Global styles remain visible in setup instead of being injected by
-          component code.
+          The standard path is now just `Button` and `ButtonProps`. `FoundationButton`,
+          `FoundationButtonProps`, and `buttonCustomizationContract` are no longer the documented
+          public surface.
         </p>
+        <code className="snippet">
+          {'<Button color="primary" variant="outlined" shape="pill">Review</Button>'}
+        </code>
       </article>
       <article className="card">
-        <svg aria-hidden="true" className="card-icon">
-          <use href="/icons.svg#theme" />
-        </svg>
-        <h2>Theme modes</h2>
+        <h2>Color modes</h2>
         <p>
-          First-class light and dark outputs share the same structural tokens. Only the documented
-          public color surface is intended for consumer overrides.
+          `neutral` is the default across every variant, including `filled`. Set
+          `color=&quot;primary&quot;` only when the action should opt into theme accent for fill,
+          border, hover, text, or underline.
         </p>
+        <div className="button-row">
+          <Button>Neutral filled</Button>
+          <Button color="primary">Primary filled</Button>
+        </div>
       </article>
       <article className="card">
-        <svg aria-hidden="true" className="card-icon">
-          <use href="/icons.svg#review" />
-        </svg>
-        <h2>Brand token overrides</h2>
+        <h2>Feedback modes</h2>
         <p>
-          Adjust brand expression with a small set of CSS variables while layout, spacing, radius,
-          typography, and motion remain library-owned.
+          `ghost` and `link` stay lightweight on purpose. The distinction comes from hover behavior,
+          not a second shape system: background feedback for `ghost`, underline feedback for `link`.
         </p>
+        <div className="button-row">
+          <Button variant="ghost">Ghost action</Button>
+          <Button color="primary" variant="link">
+            Primary link
+          </Button>
+        </div>
+      </article>
+      <article className="card">
+        <h2>Icon-only content</h2>
+        <p>
+          Icons are content, not a dedicated variant. Any button without visible text must provide
+          `aria-label` or `aria-labelledby`.
+        </p>
+        <div className="button-row">
+          <Button aria-label="Add item">
+            <AddIcon />
+          </Button>
+          <Button aria-label="Open menu" variant="outlined" shape="pill">
+            <MenuIcon />
+          </Button>
+        </div>
       </article>
     </section>
+
     <section className="layout">
       <div className="preview-panel">
         <h2>Curated preview</h2>
         <p className="preview-note">
-          Keyboard reachable controls, semantic headings, and a single component example are enough
-          for the foundation baseline.
+          Review neutral defaults, primary accent opt-in, shapeable buttons, icon-only content, and
+          theme switching without relying on any private contract object.
         </p>
         <div className="preview-stage">
           <ThemeSwitcher />
           <div className="preview-frame">
-            <FoundationButton label="Foundation button" />
+            <div className="button-showcase">
+              <div className="button-row">
+                <Button>Neutral filled</Button>
+                <Button variant="outlined">Review copy</Button>
+                <Button variant="ghost">Toolbar action</Button>
+                <Button variant="link">Read details</Button>
+              </div>
+              <div className="button-row">
+                <Button color="primary">Primary filled</Button>
+                <Button color="primary" variant="outlined">
+                  Primary outlined
+                </Button>
+                <Button color="primary" variant="ghost">
+                  Primary ghost
+                </Button>
+                <Button color="primary" variant="link">
+                  Primary link
+                </Button>
+              </div>
+              <div className="button-row">
+                <Button color="primary" shape="rect">
+                  Rect primary
+                </Button>
+                <Button color="primary" shape="pill" variant="outlined">
+                  Pill secondary
+                </Button>
+                <Button aria-label="Open search">
+                  <SearchIcon />
+                </Button>
+                <Button size="extra-small" variant="outlined">
+                  This extra-small button stays single-line by default, even when the copy gets
+                  verbose.
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
       <div className="split-panel">
-        <h2>Public token surface</h2>
-        <div className="token-grid">
-          <div>
-            <strong>Brand background</strong>
-            <code>--ui-color-brand-bg</code>
-          </div>
-          <div>
-            <strong>Brand hover</strong>
-            <code>--ui-color-brand-bg-hover</code>
-          </div>
-          <div>
-            <strong>Brand active</strong>
-            <code>--ui-color-brand-bg-active</code>
-          </div>
-          <div>
-            <strong>Text on brand</strong>
-            <code>--ui-color-text-on-brand</code>
-          </div>
-          <div>
-            <strong>Focus emphasis</strong>
-            <code>--ui-color-focus-ring</code>
-          </div>
-          <div>
-            <strong>Link emphasis</strong>
-            <code>--ui-color-link</code>
-          </div>
-        </div>
-        <div style={{ marginTop: '18px' }}>
-          <div className="brand-swatch">Brand token preview</div>
+        <h2>Support matrix</h2>
+        <div className="button-matrix">
+          {supportRows.map((row) => (
+            <article key={row.variant} className="matrix-card">
+              <div className="matrix-header">
+                <strong>{row.variant}</strong>
+                {row.example}
+              </div>
+              <span>{row.feedback}</span>
+              <code>Color: {row.color}</code>
+              <code>Shapes: {row.shapes}</code>
+              <code>Default shape: {row.defaultShape}</code>
+            </article>
+          ))}
         </div>
       </div>
     </section>
+
+    <section className="button-guidance-grid">
+      <article className="button-panel">
+        <h2>Color rules</h2>
+        <div className="button-boundary-grid">
+          <div className="boundary-card">
+            <strong>Default neutral</strong>
+            <div className="button-row">
+              {colorOptions.slice(0, 1).map((color) => (
+                <React.Fragment key={color}>
+                  <Button color={color}>Filled</Button>
+                  <Button color={color} variant="outlined">
+                    Outlined
+                  </Button>
+                  <Button color={color} variant="ghost">
+                    Ghost
+                  </Button>
+                  <Button color={color} variant="link">
+                    Link
+                  </Button>
+                </React.Fragment>
+              ))}
+            </div>
+          </div>
+          <div className="boundary-card">
+            <strong>Primary opt-in</strong>
+            <div className="button-row">
+              <Button color="primary">Filled</Button>
+              <Button color="primary" variant="outlined">
+                Outlined
+              </Button>
+              <Button color="primary" variant="ghost">
+                Ghost
+              </Button>
+              <Button color="primary" variant="link">
+                Link
+              </Button>
+            </div>
+          </div>
+          <div className="boundary-card">
+            <strong>Contract</strong>
+            <p>
+              `color` defaults to `neutral`. Only `primary` applies theme accent to fill, border,
+              hover feedback, text, and underline.
+            </p>
+          </div>
+        </div>
+      </article>
+      <article className="button-panel">
+        <h2>Size scale</h2>
+        <div className="button-size-list">
+          {sizeOptions.map((size) => (
+            <div key={size} className="button-size-row">
+              <code>{size}</code>
+              <Button size={size} variant="outlined">
+                {size} button
+              </Button>
+            </div>
+          ))}
+        </div>
+      </article>
+      <article className="button-panel">
+        <h2>Shape rules</h2>
+        <div className="button-boundary-grid">
+          <div className="boundary-card">
+            <strong>`filled`</strong>
+            <div className="button-row">
+              {shapeOptions.map((shape) => (
+                <Button key={shape} shape={shape}>
+                  {shape}
+                </Button>
+              ))}
+            </div>
+          </div>
+          <div className="boundary-card">
+            <strong>`outlined`</strong>
+            <div className="button-row">
+              {shapeOptions.map((shape) => (
+                <Button key={shape} shape={shape} variant="outlined">
+                  {shape}
+                </Button>
+              ))}
+            </div>
+          </div>
+          <div className="boundary-card">
+            <strong>`ghost` and `link`</strong>
+            <p>
+              Shape is intentionally unsupported. Invalid combinations throw a descriptive error.
+            </p>
+          </div>
+        </div>
+      </article>
+      <article className="button-panel">
+        <h2>Boundary guidance</h2>
+        <div className="button-boundary-grid">
+          <div className="boundary-card">
+            <strong>Disabled</strong>
+            <div className="button-row">
+              <Button disabled>Save</Button>
+              <Button disabled variant="outlined">
+                Review
+              </Button>
+            </div>
+          </div>
+          <div className="boundary-card">
+            <strong>Focus-visible</strong>
+            <p>Use keyboard Tab to inspect the shared focus ring across every supported variant.</p>
+          </div>
+          <div className="boundary-card">
+            <strong>Invalid combos</strong>
+            <code className="snippet">
+              Button variant &quot;link&quot; does not support the shape prop.
+            </code>
+          </div>
+        </div>
+      </article>
+    </section>
+
     <IconGuidance />
     <p className="footer-note">
-      Storybook remains available for internal review matrices and exploratory states, while the
-      website owns official setup and curated examples.
+      Storybook owns the exhaustive review matrix. The website keeps the public guidance concise:
+      use `Button`, pick a documented `variant`, keep `color` neutral by default, and only reach for
+      `shape` with `filled` or `outlined`.
     </p>
   </main>
 );

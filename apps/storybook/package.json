@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "storybook dev -p 7777 --disable-telemetry --no-open",
+    "dev": "storybook dev -p 6106 --disable-telemetry --no-open",
     "build": "storybook build"
   },
   "dependencies": {

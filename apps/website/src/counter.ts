@@ -8,12 +8,12 @@ export const themePreviews: ThemePreview[] = [
   {
     mode: 'light',
     label: 'Light',
-    description: 'Warm editorial surfaces for public documentation and curated demos.',
+    description: 'Clean white surfaces for public documentation and curated demos.',
   },
   {
     mode: 'dark',
     label: 'Dark',
-    description: 'Higher-contrast review mode for late-night component inspection.',
+    description: 'Pure black review mode for late-night component inspection.',
   },
 ];
 
