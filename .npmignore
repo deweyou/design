@@ -8,3 +8,11 @@ tests/
 coverage/
 storybook-static/
 *.log
+node_modules/
+.pnpm-store/
+dist/
+build/
+.env*
+.DS_Store
+Thumbs.db
+*.tmp

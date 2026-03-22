@@ -1,9 +1,13 @@
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { expect, test } from 'vite-plus/test';
 
 import { Button, type ButtonProps } from './index';
 import styles from './index.module.less';
+
+const stylesheet = readFileSync(resolve(import.meta.dirname, 'index.module.less'), 'utf8');
 
 test('button defaults to filled medium with the rounded shape and native button semantics', () => {
   const markup = renderToStaticMarkup(createElement(Button, null, 'Save'));
@@ -174,4 +178,17 @@ test('button rejects icon-only content without an accessible name', () => {
   expect(() =>
     renderToStaticMarkup(createElement(Button, { variant: 'filled' }, createElement(SearchIcon))),
   ).toThrow('requires aria-label or aria-labelledby');
+});
+
+test('link variant keeps underline hover feedback attached to the label text', () => {
+  expect(stylesheet).toContain('font: 600 var(--button-font-size) / 1.4 var(--ui-font-body);');
+  expect(stylesheet).toContain('.contentLabel {');
+  expect(stylesheet).toContain('display: block;');
+  expect(stylesheet).toContain('line-height: 1.4;');
+  expect(stylesheet).toContain('.link .contentLabel');
+  expect(stylesheet).toContain('overflow: visible;');
+  expect(stylesheet).toContain('text-overflow: clip;');
+  expect(stylesheet).toContain('.link:hover:not(:disabled) .contentLabel');
+  expect(stylesheet).toContain('text-decoration: underline;');
+  expect(stylesheet).toContain('text-underline-offset: 0.24em;');
 });

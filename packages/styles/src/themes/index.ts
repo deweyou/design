@@ -18,6 +18,10 @@ export const lightTheme = {
   '--ui-font-body': internalPrimitives.font.body,
   '--ui-font-display': internalPrimitives.font.display,
   '--ui-font-mono': internalPrimitives.font.mono,
+  '--ui-font-weight-body': internalPrimitives.font.weights.body,
+  '--ui-font-weight-emphasis': internalPrimitives.font.weights.emphasis,
+  '--ui-font-weight-title': internalPrimitives.font.weights.title,
+  '--ui-font-weight-strong': internalPrimitives.font.weights.strong,
 } as const;
 
 export const darkTheme = {

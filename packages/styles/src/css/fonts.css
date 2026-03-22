@@ -1,0 +1,31 @@
+@font-face {
+  font-family: 'Source Han Serif CN Web';
+  src: url('../assets/fonts/SourceHanSerifCN-Regular.otf') format('opentype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Source Han Serif CN Web';
+  src: url('../assets/fonts/SourceHanSerifCN-Medium.otf') format('opentype');
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Source Han Serif CN Web';
+  src: url('../assets/fonts/SourceHanSerifCN-SemiBold.otf') format('opentype');
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Source Han Serif CN Web';
+  src: url('../assets/fonts/SourceHanSerifCN-Bold.otf') format('opentype');
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
