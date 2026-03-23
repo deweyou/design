@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Button } from '@deweyou-ui/components';
+import { Button, IconButton } from '@deweyou-ui/components';
 import { AddIcon } from '@deweyou-ui/icons/add';
 import { MenuIcon } from '@deweyou-ui/icons/menu';
 import { SearchIcon } from '@deweyou-ui/icons/search';
@@ -49,6 +49,7 @@ const storyStyles = {
     color: 'var(--ui-color-text)',
     display: 'grid',
     gap: '12px',
+    minWidth: 0,
     padding: '18px',
   },
   grid: {
@@ -61,6 +62,12 @@ const storyStyles = {
     display: 'grid',
     gap: '18px',
     width: 'min(1040px, 100%)',
+  },
+  longLabelPreview: {
+    minWidth: 0,
+    overflow: 'hidden',
+    maxWidth: '100%',
+    width: 'min(260px, 100%)',
   },
   meta: {
     color: 'var(--ui-color-text-muted)',
@@ -95,7 +102,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Internal review matrix for the Button public API, color emphasis, shape support, content-mode boundaries, and invalid-combination guidance.',
+          'Internal review matrix for the Button / IconButton public API, color emphasis, shape support, explicit icon entry, and invalid-combination guidance.',
       },
     },
   },
@@ -174,14 +181,13 @@ const SizeGallery = () => {
             <Button color="primary" size={size} variant="outlined">
               Review
             </Button>
-            <Button
+            <IconButton
               aria-label={`Open search at ${size}`}
               color="primary"
+              icon={<SearchIcon />}
               size={size}
               variant="ghost"
-            >
-              <SearchIcon />
-            </Button>
+            />
           </div>
         </article>
       ))}
@@ -236,16 +242,24 @@ const BoundaryGallery = () => {
           <Button disabled variant="outlined">
             Review
           </Button>
-          <Button aria-label="Open menu" disabled variant="ghost">
-            <MenuIcon />
-          </Button>
+          <IconButton aria-label="Open menu" disabled icon={<MenuIcon />} variant="ghost" />
         </div>
       </article>
       <article style={storyStyles.card}>
         <strong>Long label</strong>
-        <Button size="extra-small" variant="outlined">
-          This extra-small button keeps a single-line action label, even when the copy gets verbose.
-        </Button>
+        <div style={storyStyles.longLabelPreview}>
+          <Button
+            size="extra-small"
+            style={{ boxSizing: 'border-box', maxWidth: '100%', width: '100%' }}
+            variant="outlined"
+          >
+            This extra-small button keeps a single-line action label, even when the copy gets
+            verbose.
+          </Button>
+        </div>
+        <span style={storyStyles.meta}>
+          Constrained-width preview for single-line truncation audit
+        </span>
       </article>
       <article style={storyStyles.card}>
         <strong>Focus-visible</strong>
@@ -258,18 +272,30 @@ const BoundaryGallery = () => {
         </span>
       </article>
       <article style={storyStyles.card}>
-        <strong>Icon-only content</strong>
+        <strong>Explicit icon buttons</strong>
         <div style={storyStyles.row}>
-          <Button aria-label="Open search">
-            <SearchIcon />
+          <IconButton aria-label="Open search" icon={<SearchIcon />} />
+          <Button.Icon aria-label="Add item" icon={<AddIcon />} shape="pill" variant="outlined" />
+        </div>
+        <span style={storyStyles.meta}>
+          Use `IconButton` or `Button.Icon` for square icon actions. Graphic-only `children` no
+          longer request a special layout mode by themselves.
+        </span>
+      </article>
+      <article style={storyStyles.card}>
+        <strong>Icon + text</strong>
+        <div style={storyStyles.row}>
+          <Button icon={<SearchIcon />}>Search results</Button>
+          <Button icon={<AddIcon />} variant="outlined">
+            Add item
           </Button>
-          <Button aria-label="Add item" shape="pill" variant="outlined">
-            <AddIcon />
+          <Button variant="link">
+            Read migration
+            <MenuIcon />
           </Button>
         </div>
         <span style={storyStyles.meta}>
-          Any button without visible text must provide aria-label or aria-labelledby. This is a
-          content boundary, not a special layout mode.
+          Visible text keeps Button in the content-density model, even when an icon is present.
         </span>
       </article>
     </div>
@@ -289,7 +315,7 @@ const InvalidCombinationPreview = () => {
         width: 'min(720px, 100%)',
       }}
     >
-      {`Button variant "link" does not support the shape prop.\nButton requires aria-label or aria-labelledby when no visible text is rendered.`}
+      {`Button variant "link" does not support the shape prop.\nIconButton does not support the "link" variant. Use Button with visible text for link actions.\nButton no longer infers icon-only mode from children. Pass the graphic through the icon prop or use IconButton/Button.Icon.`}
     </pre>
   );
 };

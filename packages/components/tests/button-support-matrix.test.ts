@@ -4,6 +4,7 @@ import { expect, test } from 'vite-plus/test';
 
 import {
   Button,
+  IconButton,
   type ButtonProps,
   buttonColorOptions,
   buttonDefaultShapeByVariant,
@@ -11,10 +12,18 @@ import {
   buttonShapeSupport,
   buttonSizeOptions,
   buttonVariantOptions,
+  iconButtonVariantOptions,
 } from '../src/button/index';
 
-test('button support matrix matches the documented variants, sizes, and shapes', () => {
+const SearchIcon = () => {
+  return createElement('svg', { 'aria-hidden': true, viewBox: '0 0 16 16' });
+};
+
+SearchIcon.displayName = 'SearchIcon';
+
+test('button support matrix matches the documented text and icon button variants', () => {
   expect(buttonVariantOptions).toEqual(['filled', 'outlined', 'ghost', 'link']);
+  expect(iconButtonVariantOptions).toEqual(['filled', 'outlined', 'ghost']);
   expect(buttonColorOptions).toEqual(['neutral', 'primary']);
   expect(buttonSizeOptions).toEqual(['extra-small', 'small', 'medium', 'large', 'extra-large']);
   expect(buttonShapeOptions).toEqual(['rect', 'rounded', 'pill']);
@@ -30,20 +39,26 @@ test('button support matrix matches the documented variants, sizes, and shapes',
   });
 });
 
-test('button renders supported shapes instead of silently falling back', () => {
+test('button and icon button render supported shapes instead of silently falling back', () => {
   const filledMarkup = renderToStaticMarkup(
     createElement(Button, { shape: 'rect', variant: 'filled' }, 'Primary'),
   );
-  const outlinedMarkup = renderToStaticMarkup(
-    createElement(Button, { color: 'primary', shape: 'pill', variant: 'outlined' }, 'Secondary'),
+  const iconMarkup = renderToStaticMarkup(
+    createElement(IconButton, {
+      'aria-label': 'Open search',
+      color: 'primary',
+      icon: createElement(SearchIcon),
+      shape: 'pill',
+      variant: 'outlined',
+    }),
   );
 
   expect(filledMarkup).toContain('data-shape="rect"');
-  expect(outlinedMarkup).toContain('data-shape="pill"');
-  expect(outlinedMarkup).toContain('data-color="primary"');
+  expect(iconMarkup).toContain('data-shape="pill"');
+  expect(iconMarkup).toContain('data-color="primary"');
 });
 
-test('button rejects unsupported variant and shape combinations with a descriptive error', () => {
+test('button rejects unsupported shape combinations with a descriptive error', () => {
   const invalidLinkProps = {
     shape: 'rect',
     variant: 'link',
@@ -62,14 +77,20 @@ test('button rejects unsupported variant and shape combinations with a descripti
   ).toThrow('does not support the shape prop');
 });
 
-test('button requires an accessible name when no visible text is rendered', () => {
+test('button and icon button keep the explicit icon boundary in the support matrix', () => {
   expect(() =>
     renderToStaticMarkup(
-      createElement(
-        Button,
-        { variant: 'outlined' },
-        createElement('svg', { 'aria-hidden': true, viewBox: '0 0 16 16' }),
-      ),
+      createElement(Button, { 'aria-label': 'Open search' }, createElement(SearchIcon)),
     ),
-  ).toThrow('requires aria-label or aria-labelledby');
+  ).toThrow('no longer infers icon-only mode from children');
+
+  expect(() =>
+    renderToStaticMarkup(
+      createElement(IconButton, {
+        'aria-label': 'Open search',
+        icon: createElement(SearchIcon),
+        variant: 'link' as never,
+      }),
+    ),
+  ).toThrow('does not support the "link" variant');
 });

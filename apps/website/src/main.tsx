@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-import { Button } from '@deweyou-ui/components';
+import { Button, IconButton } from '@deweyou-ui/components';
 import { useThemeMode } from '@deweyou-ui/hooks';
 import { AddIcon } from '@deweyou-ui/icons/add';
 import { ChevronRightIcon } from '@deweyou-ui/icons/chevron-right';
@@ -118,13 +118,11 @@ const App = () => (
   <main className="shell">
     <section className="hero">
       <p className="eyebrow">Button Contract</p>
-      <h1>One `Button` API, four variants, two color modes, explicit shape support.</h1>
+      <h1>One `Button` API, plus explicit `IconButton` and `Button.Icon` entries.</h1>
       <p className="hero-copy">
-        Deweyou UI exposes buttons through `Button` and `ButtonProps`. The public model is now
-        organized around `variant`, `color`, `size`, and `shape`. Buttons stay monochrome by
-        default, and only opt into theme accent color when `color=&quot;primary&quot;` is set.
-        Icon-only usage remains a content mode with an accessibility requirement instead of a
-        dedicated variant.
+        Deweyou UI exposes text actions through `Button` and icon-only actions through `IconButton`
+        or `Button.Icon`. The public model keeps `variant`, `color`, `size`, and `shape`, then adds
+        an explicit `icon` slot so mixed-content buttons do not rely on hidden icon-only heuristics.
       </p>
       <div className="hero-actions">
         <Button>Default neutral</Button>
@@ -137,7 +135,7 @@ const App = () => (
         </Button>
       </div>
       <div className="meta">
-        <span>@deweyou-ui/components: Button + ButtonProps</span>
+        <span>@deweyou-ui/components: Button, ButtonProps, IconButton, IconButtonProps</span>
         <span>Storybook: internal review matrix</span>
         <span>Website: public usage guidance</span>
       </div>
@@ -183,12 +181,11 @@ const App = () => (
       <article className="card">
         <h2>Unified public API</h2>
         <p>
-          The standard path is now just `Button` and `ButtonProps`. `FoundationButton`,
-          `FoundationButtonProps`, and `buttonCustomizationContract` are no longer the documented
-          public surface.
+          The standard text-button path is `Button` and `ButtonProps`. Explicit icon-only actions
+          now use `IconButton`, while `Button.Icon` keeps the same runtime contract as an alias.
         </p>
         <code className="snippet">
-          {'<Button color="primary" variant="outlined" shape="pill">Review</Button>'}
+          {'<Button icon={<SearchIcon />} color="primary" variant="outlined">Search</Button>'}
         </code>
       </article>
       <article className="card">
@@ -217,18 +214,14 @@ const App = () => (
         </div>
       </article>
       <article className="card">
-        <h2>Icon-only content</h2>
+        <h2>Explicit icon actions</h2>
         <p>
-          Icons are content, not a dedicated variant. Any button without visible text must provide
-          `aria-label` or `aria-labelledby`.
+          Square icon actions are now explicit. Use `IconButton` or `Button.Icon`, and always
+          provide `aria-label` or `aria-labelledby`.
         </p>
         <div className="button-row">
-          <Button aria-label="Add item">
-            <AddIcon />
-          </Button>
-          <Button aria-label="Open menu" variant="outlined" shape="pill">
-            <MenuIcon />
-          </Button>
+          <IconButton aria-label="Add item" icon={<AddIcon />} />
+          <Button.Icon aria-label="Open menu" icon={<MenuIcon />} shape="pill" variant="outlined" />
         </div>
       </article>
     </section>
@@ -237,8 +230,8 @@ const App = () => (
       <div className="preview-panel">
         <h2>Curated preview</h2>
         <p className="preview-note">
-          Review neutral defaults, primary accent opt-in, shapeable buttons, icon-only content, and
-          theme switching without relying on any private contract object.
+          Review neutral defaults, primary accent opt-in, text-button density, explicit icon-button
+          entries, and theme switching without relying on any private contract object.
         </p>
         <div className="preview-stage">
           <ThemeSwitcher />
@@ -269,9 +262,8 @@ const App = () => (
                 <Button color="primary" shape="pill" variant="outlined">
                   Pill secondary
                 </Button>
-                <Button aria-label="Open search">
-                  <SearchIcon />
-                </Button>
+                <Button icon={<SearchIcon />}>Search</Button>
+                <IconButton aria-label="Open search" icon={<SearchIcon />} />
                 <Button size="extra-small" variant="outlined">
                   This extra-small button stays single-line by default, even when the copy gets
                   verbose.
@@ -408,9 +400,9 @@ const App = () => (
             <p>Use keyboard Tab to inspect the shared focus ring across every supported variant.</p>
           </div>
           <div className="boundary-card">
-            <strong>Invalid combos</strong>
+            <strong>Mode boundaries</strong>
             <code className="snippet">
-              Button variant &quot;link&quot; does not support the shape prop.
+              Button no longer infers icon-only mode from graphic-only children.
             </code>
           </div>
         </div>
@@ -420,8 +412,9 @@ const App = () => (
     <IconGuidance />
     <p className="footer-note">
       Storybook owns the exhaustive review matrix. The website keeps the public guidance concise:
-      use `Button`, pick a documented `variant`, keep `color` neutral by default, and only reach for
-      `shape` with `filled` or `outlined`.
+      use `Button` for visible-text actions, use `IconButton` or `Button.Icon` for square icon
+      actions, keep `color` neutral by default, and only reach for `shape` with `filled` or
+      `outlined`.
     </p>
   </main>
 );
