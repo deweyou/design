@@ -35,3 +35,28 @@ test('cross-package boundary coverage stays in top-level tests', () => {
   expect(iconsPackage.dependencies ?? {}).not.toHaveProperty('@deweyou-ui/components');
   expect(stylesPackage.dependencies ?? {}).not.toHaveProperty('@deweyou-ui/components');
 });
+
+test('button and icon button stay owned by the components package root entry', () => {
+  const componentPackage = JSON.parse(
+    readFileSync(resolve(root, 'packages/components/package.json'), 'utf8'),
+  ) as {
+    exports: Record<string, { default?: string; import?: string; types?: string } | string>;
+    files: string[];
+  };
+  const componentEntry = readFileSync(resolve(root, 'packages/components/src/index.ts'), 'utf8');
+
+  expect(componentEntry).toContain('Button');
+  expect(componentEntry).toContain('IconButton');
+  expect(componentEntry).toContain("from './button'");
+  expect(componentPackage.files).toEqual(['dist', 'src']);
+  expect(componentPackage.exports).toMatchObject({
+    '.': {
+      default: './dist/index.js',
+      import: './dist/index.js',
+      types: './src/index.ts',
+    },
+    './style.css': './dist/style.css',
+  });
+  expect(componentPackage.exports).not.toHaveProperty('./button');
+  expect(componentPackage.exports).not.toHaveProperty('./icon-button');
+});

@@ -12,7 +12,8 @@
   --button-filled-background-active: color-mix(in srgb, var(--ui-color-text) 92%, black);
   --button-filled-border-color: var(--ui-color-text);
   --button-filled-text-color: var(--ui-color-canvas);
-  --button-font-size: 0.95rem;
+  --button-font-size: 0.875rem;
+  --button-gap: 0.55rem;
   --button-ghost-background-active: color-mix(in srgb, var(--ui-color-text) 10%, transparent);
   --button-ghost-background-hover: color-mix(in srgb, var(--ui-color-text) 6%, transparent);
   --button-ghost-text-color: var(--ui-color-text);
@@ -21,23 +22,28 @@
   --button-outlined-background-hover: color-mix(in srgb, var(--ui-color-text) 6%, transparent);
   --button-outlined-border-color: var(--ui-color-border-strong);
   --button-outlined-text-color: var(--ui-color-text);
-  --button-padding: 0.6rem;
+  --button-padding-block: 0.34rem;
+  --button-padding-inline: 0.72rem;
   --button-radius: 0.8rem;
+  --button-square-size: calc(
+    (var(--button-font-size) * 1.25) + (var(--button-padding-block) * 2) + 2px
+  );
   --button-text-color: var(--ui-color-text);
 
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.55rem;
+  gap: var(--button-gap);
   max-width: 100%;
   min-width: 0;
-  padding: var(--button-padding);
+  padding-block: var(--button-padding-block);
+  padding-inline: var(--button-padding-inline);
   border: 1px solid var(--button-border-color);
   border-radius: var(--button-radius);
   background: var(--button-background);
   color: var(--button-text-color);
   cursor: pointer;
-  font: 600 var(--button-font-size) / 1.4 var(--ui-font-body);
+  font: 600 var(--button-font-size) / 1.25 var(--ui-font-body);
   overflow-wrap: normal;
   text-align: center;
   text-decoration: none;
@@ -76,6 +82,23 @@
   flex: none;
 }
 
+.modeTextOnly {
+  --button-gap: 0;
+}
+
+.modeTextWithIcon {
+  --button-gap: 0.5rem;
+}
+
+.modeIconButton {
+  --button-gap: 0;
+
+  min-inline-size: var(--button-square-size);
+  padding: 0;
+  inline-size: var(--button-square-size);
+  block-size: var(--button-square-size);
+}
+
 .contentGraphic {
   display: inline-flex;
   flex: none;
@@ -84,7 +107,9 @@
 
 .contentLabel {
   display: block;
-  line-height: 1.4;
+  line-height: 1.25;
+  padding-block-end: 0.08em;
+  margin-block-end: -0.08em;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -163,9 +188,8 @@
   --button-radius: 0.4rem;
   --button-text-color: var(--button-ghost-text-color);
   font-weight: 500;
-  gap: 0.4rem;
-  padding-block: 0.32rem;
-  padding-inline: 0.32rem;
+  padding-block: 0.3rem;
+  padding-inline: 0.38rem;
 }
 
 .link {
@@ -206,27 +230,32 @@
 
 .sizeExtraSmall {
   --button-font-size: 0.75rem;
-  --button-padding: 0.34rem;
+  --button-padding-block: 0.22rem;
+  --button-padding-inline: 0.46rem;
 }
 
 .sizeSmall {
-  --button-font-size: 0.84rem;
-  --button-padding: 0.44rem;
+  --button-font-size: 0.8125rem;
+  --button-padding-block: 0.28rem;
+  --button-padding-inline: 0.58rem;
 }
 
 .sizeMedium {
-  --button-font-size: 0.95rem;
-  --button-padding: 0.6rem;
+  --button-font-size: 0.875rem;
+  --button-padding-block: 0.34rem;
+  --button-padding-inline: 0.72rem;
 }
 
 .sizeLarge {
-  --button-font-size: 1rem;
-  --button-padding: 0.72rem;
+  --button-font-size: 0.9375rem;
+  --button-padding-block: 0.4rem;
+  --button-padding-inline: 0.84rem;
 }
 
 .sizeExtraLarge {
-  --button-font-size: 1.08rem;
-  --button-padding: 0.86rem;
+  --button-font-size: 1rem;
+  --button-padding-block: 0.48rem;
+  --button-padding-inline: 0.98rem;
 }
 
 .shapeAuto {
