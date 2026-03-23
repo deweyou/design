@@ -22,6 +22,31 @@ export const publicThemeTokens = [
     defaultThemeValue: internalPrimitives.color.brandText,
   },
   {
+    name: 'dangerBackground',
+    cssVar: '--ui-color-danger-bg',
+    defaultThemeValue: internalPrimitives.color.dangerBg,
+  },
+  {
+    name: 'dangerBackgroundHover',
+    cssVar: '--ui-color-danger-bg-hover',
+    defaultThemeValue: internalPrimitives.color.dangerBgHover,
+  },
+  {
+    name: 'dangerBackgroundActive',
+    cssVar: '--ui-color-danger-bg-active',
+    defaultThemeValue: internalPrimitives.color.dangerBgActive,
+  },
+  {
+    name: 'dangerText',
+    cssVar: '--ui-color-danger-text',
+    defaultThemeValue: internalPrimitives.color.dangerText,
+  },
+  {
+    name: 'textOnDanger',
+    cssVar: '--ui-color-text-on-danger',
+    defaultThemeValue: internalPrimitives.color.dangerTextOnBg,
+  },
+  {
     name: 'focusRing',
     cssVar: '--ui-color-focus-ring',
     defaultThemeValue: internalPrimitives.color.focusRing,
@@ -36,6 +61,8 @@ export const semanticTokens = {
   textMuted: '--ui-color-text-muted',
   border: '--ui-color-border',
   borderStrong: '--ui-color-border-strong',
+  dangerBg: '--ui-color-danger-bg',
+  dangerText: '--ui-color-danger-text',
   radiusMd: '--ui-radius-md',
   shadowSoft: '--ui-shadow-soft',
 } as const;

@@ -10,6 +10,11 @@
   --ui-color-brand-bg-hover: #527d6a;
   --ui-color-brand-bg-active: #456a59;
   --ui-color-text-on-brand: #f7fbf8;
+  --ui-color-danger-bg: #a33f39;
+  --ui-color-danger-bg-hover: #8f332e;
+  --ui-color-danger-bg-active: #732723;
+  --ui-color-danger-text: #8b2a25;
+  --ui-color-text-on-danger: #fff6f5;
   --ui-color-focus-ring: #6fa690;
   --ui-color-link: #3f6f5b;
   --ui-radius-md: 0.9rem;

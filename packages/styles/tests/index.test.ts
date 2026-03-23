@@ -8,6 +8,11 @@ test('styles package exposes the documented public color token surface', () => {
     '--ui-color-brand-bg-hover',
     '--ui-color-brand-bg-active',
     '--ui-color-text-on-brand',
+    '--ui-color-danger-bg',
+    '--ui-color-danger-bg-hover',
+    '--ui-color-danger-bg-active',
+    '--ui-color-danger-text',
+    '--ui-color-text-on-danger',
     '--ui-color-focus-ring',
     '--ui-color-link',
   ]);

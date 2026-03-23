@@ -1,11 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { useRef, useState } from 'react';
 
 import { Button, IconButton } from '@deweyou-ui/components';
 import { AddIcon } from '@deweyou-ui/icons/add';
 import { MenuIcon } from '@deweyou-ui/icons/menu';
 import { SearchIcon } from '@deweyou-ui/icons/search';
 
-const colorOptions = ['neutral', 'primary'] as const;
+const colorOptions = ['neutral', 'primary', 'danger'] as const;
 const sizeOptions = ['extra-small', 'small', 'medium', 'large', 'extra-large'] as const;
 const shapeOptions = ['rect', 'rounded', 'pill'] as const;
 const typographyTiers = [
@@ -102,7 +103,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Internal review matrix for the Button / IconButton public API, color emphasis, shape support, explicit icon entry, and invalid-combination guidance.',
+          'Internal review matrix for the Button / IconButton public API, native prop passthrough, loading feedback, color emphasis, shape support, and explicit icon entry guidance.',
       },
     },
   },
@@ -162,10 +163,164 @@ const ColorGallery = () => {
           <span style={storyStyles.meta}>
             {color === 'neutral'
               ? 'Neutral is the default and keeps all variants monochrome.'
-              : 'Primary opts variants into theme color, including hover, border, text, and underline.'}
+              : color === 'primary'
+                ? 'Primary opts variants into theme color, including hover, border, text, and underline.'
+                : 'Danger uses the same variant system but shifts emphasis to destructive actions.'}
           </span>
         </article>
       ))}
+    </div>
+  );
+};
+
+const PublicPropsGallery = () => {
+  const [captureCount, setCaptureCount] = useState(0);
+  const [clickCount, setClickCount] = useState(0);
+  const [submitCount, setSubmitCount] = useState(0);
+  const focusTargetRef = useRef<HTMLButtonElement>(null);
+
+  return (
+    <div style={storyStyles.boundaryGrid}>
+      <article style={storyStyles.card}>
+        <strong>Click events</strong>
+        <div style={storyStyles.row}>
+          <Button
+            onClick={() => {
+              setClickCount((count) => count + 1);
+            }}
+            onClickCapture={() => {
+              setCaptureCount((count) => count + 1);
+            }}
+            variant="outlined"
+          >
+            Trigger handlers
+          </Button>
+        </div>
+        <span style={storyStyles.meta}>{`capture ${captureCount} / bubble ${clickCount}`}</span>
+      </article>
+      <article style={storyStyles.card}>
+        <strong>htmlType + form</strong>
+        <form
+          style={storyStyles.row}
+          onSubmit={(event) => {
+            event.preventDefault();
+            setSubmitCount((count) => count + 1);
+          }}
+        >
+          <Button color="primary" htmlType="submit" type="reset">
+            Submit with htmlType
+          </Button>
+          <Button type="reset" variant="ghost">
+            Reset form
+          </Button>
+        </form>
+        <span style={storyStyles.meta}>
+          {`submit count ${submitCount}. htmlType wins over the native type prop when both are present.`}
+        </span>
+      </article>
+      <article style={storyStyles.card}>
+        <strong>href + target anchor mode</strong>
+        <div style={storyStyles.row}>
+          <Button href="/contracts/button" target="_blank" variant="ghost">
+            Pass metadata
+          </Button>
+          <IconButton
+            aria-label="Open search metadata preview"
+            href="/search"
+            icon={<SearchIcon />}
+            target="_blank"
+            variant="outlined"
+          />
+        </div>
+        <span style={storyStyles.meta}>
+          `href` switches the root to a real anchor. `target` is only valid when `href` is present.
+        </span>
+      </article>
+      <article style={storyStyles.card}>
+        <strong>Ref forwarding</strong>
+        <div style={storyStyles.row}>
+          <Button ref={focusTargetRef} variant="outlined">
+            Focus target
+          </Button>
+          <Button
+            onClick={() => {
+              focusTargetRef.current?.focus();
+            }}
+            size="small"
+          >
+            Focus via ref
+          </Button>
+        </div>
+        <span style={storyStyles.meta}>Forwarded refs resolve to the rendered root DOM node.</span>
+      </article>
+    </div>
+  );
+};
+
+const LoadingGallery = () => {
+  return (
+    <div style={storyStyles.boundaryGrid}>
+      <article style={storyStyles.card}>
+        <strong>Text button loading</strong>
+        <div style={storyStyles.row}>
+          <Button loading>Saving changes</Button>
+          <Button icon={<SearchIcon />} loading variant="outlined">
+            Searching
+          </Button>
+        </div>
+        <span style={storyStyles.meta}>
+          Loading prepends the spinner, keeps text visible, and blocks repeated activation.
+        </span>
+      </article>
+      <article style={storyStyles.card}>
+        <strong>Danger loading</strong>
+        <div style={storyStyles.row}>
+          <Button color="danger" loading>
+            Delete item
+          </Button>
+          <Button color="danger" loading variant="ghost">
+            Archive thread
+          </Button>
+        </div>
+        <span style={storyStyles.meta}>
+          Danger remains a color choice, not a separate variant or mode.
+        </span>
+      </article>
+      <article style={storyStyles.card}>
+        <strong>Icon-only loading</strong>
+        <div style={storyStyles.row}>
+          <IconButton
+            aria-label="Refreshing search results"
+            icon={<SearchIcon />}
+            loading
+            variant="outlined"
+          />
+          <Button.Icon aria-label="Syncing menu state" icon={<MenuIcon />} loading />
+        </div>
+        <span style={storyStyles.meta}>
+          Icon-only entries replace the original icon with the spinner and still require an
+          accessible name.
+        </span>
+      </article>
+      <article style={storyStyles.card}>
+        <strong>Loading + disabled</strong>
+        <div style={storyStyles.row}>
+          <Button disabled loading variant="outlined">
+            Publishing
+          </Button>
+          <IconButton
+            aria-label="Refreshing disabled action"
+            disabled
+            icon={<AddIcon />}
+            loading
+            variant="ghost"
+          />
+        </div>
+        <span style={storyStyles.meta}>
+          Loading keeps the disabled-like visual treatment without switching to a `not-allowed`
+          cursor.
+        </span>
+      </article>
     </div>
   );
 };
@@ -427,6 +582,14 @@ export const Variants: Story = {
 
 export const Colors: Story = {
   render: () => <ColorGallery />,
+};
+
+export const PublicProps: Story = {
+  render: () => <PublicPropsGallery />,
+};
+
+export const LoadingStates: Story = {
+  render: () => <LoadingGallery />,
 };
 
 export const Sizes: Story = {

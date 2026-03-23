@@ -59,12 +59,12 @@
   white-space: nowrap;
 }
 
-.root:hover:not(:disabled) {
+.root:hover:not([data-disabled='true']) {
   background: var(--button-background-hover);
   border-color: var(--button-border-color-hover);
 }
 
-.root:active:not(:disabled) {
+.root:active:not([data-disabled='true']) {
   background: var(--button-background-active);
   transform: translateY(1px);
 }
@@ -74,10 +74,14 @@
   outline-offset: 2px;
 }
 
-.root:disabled {
+.root[data-disabled='true'] {
   cursor: not-allowed;
   opacity: 0.56;
   transform: none;
+}
+
+.root[data-loading='true'][data-disabled='true'] {
+  cursor: default;
 }
 
 .root > :global(.dy-icon) {
@@ -107,6 +111,18 @@
   min-width: 0;
   position: relative;
   z-index: 1;
+}
+
+.loadingIndicator {
+  inline-size: 1em;
+  block-size: 1em;
+  border: 0.12em solid currentColor;
+  border-inline-end-color: transparent;
+  border-radius: 999px;
+  box-sizing: border-box;
+  display: inline-block;
+  flex: none;
+  animation: button-loading-spin 0.9s linear infinite;
 }
 
 .contentLabel {
@@ -201,6 +217,42 @@
   --button-link-text-color: var(--ui-color-link);
 }
 
+.colorDanger {
+  --button-filled-background: var(--ui-color-danger-bg);
+  --button-filled-background-hover: var(--ui-color-danger-bg-hover);
+  --button-filled-background-active: var(--ui-color-danger-bg-active);
+  --button-filled-border-color: var(--ui-color-danger-bg);
+  --button-filled-text-color: var(--ui-color-text-on-danger);
+  --button-outlined-background-hover: color-mix(
+    in srgb,
+    var(--ui-color-danger-bg) 10%,
+    transparent
+  );
+  --button-outlined-background-active: color-mix(
+    in srgb,
+    var(--ui-color-danger-bg) 18%,
+    transparent
+  );
+  --button-outlined-border-color: color-mix(
+    in srgb,
+    var(--ui-color-danger-bg) 30%,
+    var(--ui-color-surface)
+  );
+  --button-outlined-text-color: var(--ui-color-danger-text);
+  --button-ghost-background-hover: color-mix(
+    in srgb,
+    var(--ui-color-danger-bg) 12%,
+    var(--ui-color-surface)
+  );
+  --button-ghost-background-active: color-mix(
+    in srgb,
+    var(--ui-color-danger-bg) 20%,
+    var(--ui-color-surface)
+  );
+  --button-ghost-text-color: var(--ui-color-danger-text);
+  --button-link-text-color: var(--ui-color-danger-text);
+}
+
 .filled {
   --button-background: var(--button-filled-background);
   --button-background-hover: var(--button-filled-background-hover);
@@ -256,21 +308,31 @@
   text-decoration-line: none;
 }
 
-.link:hover:not(:disabled) {
+.link:hover:not([data-disabled='true']) {
   text-decoration: none;
 }
 
-.link:hover:not(:disabled) .contentLabel {
+.link:hover:not([data-disabled='true']) .contentLabel {
   text-decoration: none;
 }
 
-.link:hover:not(:disabled) .linkUnderlineDecoration {
+.link:hover:not([data-disabled='true']) .linkUnderlineDecoration {
   clip-path: inset(0 0 0 0 round 999px);
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .loadingIndicator {
+    animation-duration: 1.8s;
+  }
+
   .linkUnderlineDecoration {
     transition: none;
+  }
+}
+
+@keyframes button-loading-spin {
+  to {
+    transform: rotate(360deg);
   }
 }
 

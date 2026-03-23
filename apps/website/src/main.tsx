@@ -13,7 +13,7 @@ import { applyThemeMode, themePreviews } from './counter';
 import { IconGuidance } from './pages/icons';
 import './style.css';
 
-const colorOptions = ['neutral', 'primary'] as const;
+const colorOptions = ['neutral', 'primary', 'danger'] as const;
 const sizeOptions = ['extra-small', 'small', 'medium', 'large', 'extra-large'] as const;
 const shapeOptions = ['rect', 'rounded', 'pill'] as const;
 const typographyTiers = [
@@ -46,7 +46,7 @@ const typographyMixRows = [
 
 const supportRows = [
   {
-    color: 'neutral by default, primary optional',
+    color: 'neutral by default, primary or danger optional',
     defaultShape: 'rounded',
     example: <Button>Publish changes</Button>,
     feedback: 'Solid hierarchy with monochrome-by-default emphasis',
@@ -54,7 +54,7 @@ const supportRows = [
     variant: 'filled',
   },
   {
-    color: 'neutral by default, primary optional',
+    color: 'neutral by default, primary or danger optional',
     defaultShape: 'rounded',
     example: (
       <Button color="primary" variant="outlined">
@@ -67,27 +67,158 @@ const supportRows = [
     variant: 'outlined',
   },
   {
-    color: 'neutral by default, primary optional',
+    color: 'neutral by default, primary or danger optional',
     defaultShape: 'N/A',
-    example: <Button variant="ghost">Inline toolbar</Button>,
-    feedback: 'Background hover feedback that can stay neutral or turn accent',
+    example: (
+      <Button color="danger" variant="ghost">
+        Destructive helper
+      </Button>
+    ),
+    feedback: 'Background hover feedback can stay neutral, turn accent, or signal destructive work',
     shapes: 'Not supported',
     variant: 'ghost',
   },
   {
-    color: 'neutral by default, primary optional',
+    color: 'neutral by default, primary or danger optional',
     defaultShape: 'N/A',
     example: (
-      <Button color="primary" variant="link">
-        Read migration
+      <Button color="danger" variant="link">
+        Review deletion policy
       </Button>
     ),
     feedback:
-      'Underline hover feedback reveals from left to right by default, with accent color only when `primary` is chosen',
+      'Underline hover feedback reveals from left to right by default, while `primary` and `danger` change the semantic emphasis only',
     shapes: 'Not supported',
     variant: 'link',
   },
 ] as const;
+
+const PublicPropsPreview = () => {
+  const [captureCount, setCaptureCount] = React.useState(0);
+  const [clickCount, setClickCount] = React.useState(0);
+  const [submitCount, setSubmitCount] = React.useState(0);
+  const focusTargetRef = React.useRef<HTMLButtonElement>(null);
+
+  return (
+    <div className="button-boundary-grid">
+      <div className="boundary-card">
+        <strong>Click handlers</strong>
+        <div className="button-row">
+          <Button
+            onClick={() => {
+              setClickCount((count) => count + 1);
+            }}
+            onClickCapture={() => {
+              setCaptureCount((count) => count + 1);
+            }}
+            variant="outlined"
+          >
+            Trigger handlers
+          </Button>
+        </div>
+        <p>{`capture ${captureCount} / bubble ${clickCount}`}</p>
+      </div>
+      <div className="boundary-card">
+        <strong>Form semantics</strong>
+        <form
+          className="button-row"
+          onSubmit={(event) => {
+            event.preventDefault();
+            setSubmitCount((count) => count + 1);
+          }}
+        >
+          <Button color="primary" htmlType="submit" type="reset">
+            Submit with htmlType
+          </Button>
+          <Button type="reset" variant="ghost">
+            Reset form
+          </Button>
+        </form>
+        <p>{`submitted ${submitCount} times. htmlType wins over the native type prop when both are present.`}</p>
+      </div>
+      <div className="boundary-card">
+        <strong>href / target + ref</strong>
+        <div className="button-row">
+          <Button href="/components/button" target="_blank" variant="ghost">
+            Open docs
+          </Button>
+          <IconButton
+            aria-label="Open search metadata preview"
+            href="/search"
+            icon={<SearchIcon />}
+            target="_blank"
+            variant="outlined"
+          />
+          <Button ref={focusTargetRef} variant="outlined">
+            Focus target
+          </Button>
+          <Button
+            size="small"
+            onClick={() => {
+              focusTargetRef.current?.focus();
+            }}
+          >
+            Focus via ref
+          </Button>
+        </div>
+        <p>
+          `href` renders a real anchor, `target` requires `href`, and refs resolve to the rendered
+          root node.
+        </p>
+      </div>
+    </div>
+  );
+};
+
+const LoadingGuidancePreview = () => {
+  return (
+    <div className="button-boundary-grid">
+      <div className="boundary-card">
+        <strong>Text button loading</strong>
+        <div className="button-row">
+          <Button loading>Saving changes</Button>
+          <Button color="danger" loading>
+            Delete item
+          </Button>
+        </div>
+        <p>
+          Loading prepends the spinner, keeps the label visible, and blocks repeated activation.
+        </p>
+      </div>
+      <div className="boundary-card">
+        <strong>Icon-only loading</strong>
+        <div className="button-row">
+          <IconButton
+            aria-label="Refreshing search results"
+            icon={<SearchIcon />}
+            loading
+            variant="outlined"
+          />
+          <Button.Icon aria-label="Syncing menu state" icon={<MenuIcon />} loading />
+        </div>
+        <p>Icon-only actions replace the original icon with the spinner and still need a name.</p>
+      </div>
+      <div className="boundary-card">
+        <strong>Loading + disabled</strong>
+        <div className="button-row">
+          <Button disabled loading variant="outlined">
+            Publishing
+          </Button>
+          <IconButton
+            aria-label="Refreshing disabled action"
+            disabled
+            icon={<AddIcon />}
+            loading
+            variant="ghost"
+          />
+        </div>
+        <p>
+          Loading keeps the disabled-like visual state without switching to a `not-allowed` cursor.
+        </p>
+      </div>
+    </div>
+  );
+};
 
 const ThemeSwitcher = () => {
   const { mode, setMode, toggleMode } = useThemeMode('light');
@@ -124,12 +255,16 @@ const App = () => (
       <p className="hero-copy">
         Deweyou UI exposes text actions through `Button` and icon-only actions through `IconButton`
         or `Button.Icon`. The public model keeps `variant`, `color`, `size`, and `shape`, then adds
-        an explicit `icon` slot so mixed-content buttons do not rely on hidden icon-only heuristics.
+        an explicit `icon` slot plus `htmlType`, `href`, `target`, `loading`, and ref-forwarding so
+        common button semantics stay on the documented API surface.
       </p>
       <div className="hero-actions">
         <Button>Default neutral</Button>
         <Button color="primary" variant="outlined" shape="pill">
           Accent review
+        </Button>
+        <Button color="danger" loading>
+          Delete record
         </Button>
         <Button color="primary" variant="link">
           Read the color note
@@ -184,7 +319,8 @@ const App = () => (
         <h2>Unified public API</h2>
         <p>
           The standard text-button path is `Button` and `ButtonProps`. Explicit icon-only actions
-          now use `IconButton`, while `Button.Icon` keeps the same runtime contract as an alias.
+          now use `IconButton`, while `Button.Icon` keeps the same runtime contract as an alias and
+          shares the same ref-forwarding target.
         </p>
         <code className="snippet">
           {'<Button icon={<SearchIcon />} color="primary" variant="outlined">Search</Button>'}
@@ -194,12 +330,13 @@ const App = () => (
         <h2>Color modes</h2>
         <p>
           `neutral` is the default across every variant, including `filled`. Set
-          `color=&quot;primary&quot;` only when the action should opt into theme accent for fill,
-          border, hover, text, or underline.
+          `color=&quot;primary&quot;` for accent emphasis, or `color=&quot;danger&quot;` when the
+          action is destructive but should keep the same variant semantics.
         </p>
         <div className="button-row">
           <Button>Neutral filled</Button>
           <Button color="primary">Primary filled</Button>
+          <Button color="danger">Danger filled</Button>
         </div>
       </article>
       <article className="card">
@@ -232,7 +369,7 @@ const App = () => (
       <div className="preview-panel">
         <h2>Curated preview</h2>
         <p className="preview-note">
-          Review neutral defaults, primary accent opt-in, text-button density, explicit icon-button
+          Review neutral defaults, semantic color opt-in, loading feedback, explicit icon-button
           entries, and theme switching without relying on any private contract object.
         </p>
         <div className="preview-stage">
@@ -256,6 +393,16 @@ const App = () => (
                 <Button color="primary" variant="link">
                   Primary link
                 </Button>
+              </div>
+              <div className="button-row">
+                <Button color="danger">Danger filled</Button>
+                <Button color="danger" variant="outlined">
+                  Danger outlined
+                </Button>
+                <Button color="danger" loading variant="ghost">
+                  Deleting
+                </Button>
+                <IconButton aria-label="Refreshing search" icon={<SearchIcon />} loading />
               </div>
               <div className="button-row">
                 <Button color="primary" shape="rect">
@@ -333,10 +480,25 @@ const App = () => (
             </div>
           </div>
           <div className="boundary-card">
+            <strong>Danger emphasis</strong>
+            <div className="button-row">
+              <Button color="danger">Filled</Button>
+              <Button color="danger" variant="outlined">
+                Outlined
+              </Button>
+              <Button color="danger" variant="ghost">
+                Ghost
+              </Button>
+              <Button color="danger" variant="link">
+                Link
+              </Button>
+            </div>
+          </div>
+          <div className="boundary-card">
             <strong>Contract</strong>
             <p>
-              `color` defaults to `neutral`. Only `primary` applies theme accent to fill, border,
-              hover feedback, text, and underline.
+              `color` defaults to `neutral`. `primary` applies accent emphasis; `danger` keeps the
+              same interaction model but signals destructive intent.
             </p>
           </div>
         </div>
@@ -443,14 +605,24 @@ const App = () => (
           </div>
         </div>
       </article>
+      <article className="button-panel">
+        <h2>Public prop passthrough</h2>
+        <PublicPropsPreview />
+      </article>
+      <article className="button-panel">
+        <h2>Loading guidance</h2>
+        <LoadingGuidancePreview />
+      </article>
     </section>
 
     <IconGuidance />
     <p className="footer-note">
       Storybook owns the exhaustive review matrix. The website keeps the public guidance concise:
       use `Button` for visible-text actions, use `IconButton` or `Button.Icon` for square icon
-      actions, keep `color` neutral by default, rely on the built-in `link` underline reveal and
-      `outlined` border-color transition, and only reach for `shape` with `filled` or `outlined`.
+      actions, keep `color` neutral by default, use `danger` only for destructive actions, keep
+      `loading` as a temporary processing state, treat `htmlType` as the documented form-semantic
+      entry, and remember that `href` switches the root to an anchor while refs always follow the
+      rendered root node.
     </p>
   </main>
 );
