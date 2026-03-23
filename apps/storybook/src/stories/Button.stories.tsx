@@ -302,6 +302,61 @@ const BoundaryGallery = () => {
   );
 };
 
+const HoverFeedbackGallery = () => {
+  return (
+    <div style={storyStyles.matrix}>
+      <article style={storyStyles.card}>
+        <strong>Link underline reveal</strong>
+        <div style={storyStyles.row}>
+          <Button variant="link">Neutral link</Button>
+          <Button color="primary" variant="link">
+            Primary link
+          </Button>
+          <Button size="extra-small" variant="link">
+            Compact link
+          </Button>
+        </div>
+        <span style={storyStyles.meta}>
+          `link` 默认使用从左到右的下划线显现反馈，不再回退到第二套 hover 模式。
+        </span>
+      </article>
+      <article style={storyStyles.card}>
+        <strong>Outlined border transition</strong>
+        <div style={storyStyles.row}>
+          <Button variant="outlined">Neutral outlined</Button>
+          <Button color="primary" variant="outlined">
+            Primary outlined
+          </Button>
+          {shapeOptions.map((shape) => (
+            <Button key={shape} color="primary" shape={shape} variant="outlined">
+              {shape}
+            </Button>
+          ))}
+        </div>
+        <span style={storyStyles.meta}>
+          `outlined` 仅保留真实 border 的颜色过渡：默认低色度，hover 时平滑过渡到与文字一致的颜色。
+        </span>
+      </article>
+      <article style={storyStyles.card}>
+        <strong>Boundary audit</strong>
+        <div style={storyStyles.row}>
+          <Button disabled variant="link">
+            Disabled link
+          </Button>
+          <Button disabled variant="outlined">
+            Disabled outlined
+          </Button>
+          <Button variant="link">Keyboard audit</Button>
+        </div>
+        <span style={storyStyles.meta}>
+          Disabled buttons must stay static. Focus-visible remains the primary keyboard signal, and
+          reduced-motion users should still see restrained state changes.
+        </span>
+      </article>
+    </div>
+  );
+};
+
 const InvalidCombinationPreview = () => {
   return (
     <pre
@@ -384,6 +439,10 @@ export const ShapeSupport: Story = {
 
 export const Boundaries: Story = {
   render: () => <BoundaryGallery />,
+};
+
+export const HoverFeedback: Story = {
+  render: () => <HoverFeedbackGallery />,
 };
 
 export const InvalidCombinations: Story = {

@@ -3,6 +3,7 @@
   --button-background-active: transparent;
   --button-background-hover: transparent;
   --button-border-color: transparent;
+  --button-border-color-hover: var(--button-border-color);
   --button-filled-background: var(--ui-color-text);
   --button-filled-background-hover: color-mix(
     in srgb,
@@ -36,6 +37,7 @@
   gap: var(--button-gap);
   max-width: 100%;
   min-width: 0;
+  position: relative;
   padding-block: var(--button-padding-block);
   padding-inline: var(--button-padding-inline);
   border: 1px solid var(--button-border-color);
@@ -59,7 +61,7 @@
 
 .root:hover:not(:disabled) {
   background: var(--button-background-hover);
-  border-color: var(--button-border-color);
+  border-color: var(--button-border-color-hover);
 }
 
 .root:active:not(:disabled) {
@@ -103,6 +105,8 @@
   display: inline-flex;
   flex: none;
   min-width: 0;
+  position: relative;
+  z-index: 1;
 }
 
 .contentLabel {
@@ -112,8 +116,33 @@
   margin-block-end: -0.08em;
   min-width: 0;
   overflow: hidden;
+  position: relative;
   text-overflow: ellipsis;
   white-space: inherit;
+  z-index: 1;
+}
+
+.linkContent {
+  align-items: center;
+  display: inline-flex;
+  gap: var(--button-gap);
+  max-width: 100%;
+  padding-block-end: 0.08em;
+  margin-block-end: -0.08em;
+  position: relative;
+}
+
+.linkUnderlineDecoration {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: calc(-1 * 0.24em);
+  block-size: 0.08em;
+  border-radius: 999px;
+  background: currentColor;
+  pointer-events: none;
+  clip-path: inset(0 100% 0 0 round 999px);
+  transition: clip-path 260ms ease;
+  will-change: clip-path;
 }
 
 .colorNeutral {
@@ -128,7 +157,11 @@
   --button-filled-text-color: var(--ui-color-canvas);
   --button-outlined-background-hover: color-mix(in srgb, var(--ui-color-text) 6%, transparent);
   --button-outlined-background-active: color-mix(in srgb, var(--ui-color-text) 10%, transparent);
-  --button-outlined-border-color: var(--ui-color-border-strong);
+  --button-outlined-border-color: color-mix(
+    in srgb,
+    var(--ui-color-text) 14%,
+    var(--ui-color-surface)
+  );
   --button-outlined-text-color: var(--ui-color-text);
   --button-ghost-background-hover: color-mix(in srgb, var(--ui-color-text) 6%, transparent);
   --button-ghost-background-active: color-mix(in srgb, var(--ui-color-text) 10%, transparent);
@@ -148,7 +181,11 @@
     var(--ui-color-brand-bg) 18%,
     transparent
   );
-  --button-outlined-border-color: var(--ui-color-brand-bg);
+  --button-outlined-border-color: color-mix(
+    in srgb,
+    var(--ui-color-brand-bg) 32%,
+    var(--ui-color-surface)
+  );
   --button-outlined-text-color: var(--ui-color-brand-bg);
   --button-ghost-background-hover: color-mix(
     in srgb,
@@ -177,6 +214,7 @@
   --button-background-hover: var(--button-outlined-background-hover);
   --button-background-active: var(--button-outlined-background-active);
   --button-border-color: var(--button-outlined-border-color);
+  --button-border-color-hover: var(--button-outlined-text-color);
   --button-text-color: var(--button-outlined-text-color);
 }
 
@@ -204,28 +242,36 @@
   overflow-wrap: anywhere;
   padding-block: 0.14rem;
   padding-inline: 0.24rem;
+  text-decoration: none;
+  text-decoration-line: none;
   white-space: normal;
 }
 
 .link .contentLabel {
+  margin-block-end: 0;
   overflow: visible;
+  padding-block-end: 0;
   text-overflow: clip;
+  text-decoration: none;
+  text-decoration-line: none;
 }
 
 .link:hover:not(:disabled) {
-  text-decoration: underline;
-  text-decoration-color: currentColor;
-  text-decoration-skip-ink: auto;
-  text-decoration-thickness: 0.08em;
-  text-underline-offset: 0.24em;
+  text-decoration: none;
 }
 
 .link:hover:not(:disabled) .contentLabel {
-  text-decoration: underline;
-  text-decoration-color: currentColor;
-  text-decoration-skip-ink: auto;
-  text-decoration-thickness: 0.08em;
-  text-underline-offset: 0.24em;
+  text-decoration: none;
+}
+
+.link:hover:not(:disabled) .linkUnderlineDecoration {
+  clip-path: inset(0 0 0 0 round 999px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .linkUnderlineDecoration {
+    transition: none;
+  }
 }
 
 .sizeExtraSmall {

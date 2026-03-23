@@ -128,6 +128,7 @@
 .preview-stage,
 .button-showcase,
 .button-matrix,
+.motion-comparison-grid,
 .button-size-list,
 .button-boundary-grid,
 .icon-contract,
@@ -187,6 +188,10 @@
 
 .button-boundary-grid {
   grid-template-columns: 1fr;
+}
+
+.motion-comparison-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .boundary-card p,
@@ -252,6 +257,7 @@
   .button-guidance-grid,
   .typography-grid,
   .button-matrix,
+  .motion-comparison-grid,
   .button-size-row,
   .icon-contract,
   .icon-usage-grid {
