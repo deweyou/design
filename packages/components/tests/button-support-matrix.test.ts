@@ -24,7 +24,7 @@ SearchIcon.displayName = 'SearchIcon';
 test('button support matrix matches the documented text and icon button variants', () => {
   expect(buttonVariantOptions).toEqual(['filled', 'outlined', 'ghost', 'link']);
   expect(iconButtonVariantOptions).toEqual(['filled', 'outlined', 'ghost']);
-  expect(buttonColorOptions).toEqual(['neutral', 'primary']);
+  expect(buttonColorOptions).toEqual(['neutral', 'primary', 'danger']);
   expect(buttonSizeOptions).toEqual(['extra-small', 'small', 'medium', 'large', 'extra-large']);
   expect(buttonShapeOptions).toEqual(['rect', 'rounded', 'pill']);
   expect(buttonShapeSupport).toEqual({
@@ -85,6 +85,25 @@ test('button and icon button render supported shapes instead of silently falling
   expect(filledMarkup).toContain('data-shape="rect"');
   expect(iconMarkup).toContain('data-shape="pill"');
   expect(iconMarkup).toContain('data-color="primary"');
+});
+
+test('button support matrix includes danger and loading as independent state axes', () => {
+  const dangerMarkup = renderToStaticMarkup(
+    createElement(Button, { color: 'danger', variant: 'ghost' }, 'Delete'),
+  );
+  const loadingMarkup = renderToStaticMarkup(
+    createElement(IconButton, {
+      'aria-label': 'Open search',
+      color: 'danger',
+      icon: createElement(SearchIcon),
+      loading: true,
+      variant: 'outlined',
+    }),
+  );
+
+  expect(dangerMarkup).toContain('data-color="danger"');
+  expect(loadingMarkup).toContain('data-loading="true"');
+  expect(loadingMarkup).toContain('data-disabled="true"');
 });
 
 test('button rejects unsupported shape combinations with a descriptive error', () => {

@@ -1,4 +1,4 @@
-import { createElement } from 'react';
+import { createElement, createRef } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { expect, test } from 'vite-plus/test';
 
@@ -11,6 +11,8 @@ const SearchIcon = () => {
 SearchIcon.displayName = 'SearchIcon';
 
 const exampleButtonProps: import('../src').ButtonProps = {
+  href: '/docs/button',
+  htmlType: 'submit',
   color: 'primary',
   icon: createElement(SearchIcon),
   shape: 'pill',
@@ -21,10 +23,14 @@ const exampleButtonProps: import('../src').ButtonProps = {
 
 const exampleIconButtonProps: import('../src').IconButtonProps = {
   'aria-label': 'Open search',
-  color: 'primary',
+  color: 'danger',
+  href: '/docs/search',
+  htmlType: 'button',
   icon: createElement(SearchIcon),
+  loading: true,
   shape: 'pill',
   size: 'medium',
+  target: '_blank',
   variant: 'outlined',
 };
 
@@ -36,15 +42,35 @@ test('components root entry exposes Button and IconButton as the runtime public 
 });
 
 test('components root entry renders both Button and IconButton without any legacy contract object', () => {
-  const buttonMarkup = renderToStaticMarkup(createElement(components.Button, null, 'Publish'));
+  const buttonMarkup = renderToStaticMarkup(
+    createElement(components.Button, { href: '/publish' }, 'Publish'),
+  );
   const iconButtonMarkup = renderToStaticMarkup(
     createElement(components.IconButton, {
       'aria-label': 'Open search',
+      href: '/search',
       icon: createElement(SearchIcon),
     }),
   );
 
   expect(buttonMarkup).toContain('data-content-mode="text-only"');
+  expect(buttonMarkup.startsWith('<a')).toBe(true);
   expect(iconButtonMarkup).toContain('data-content-mode="icon-button"');
+  expect(iconButtonMarkup.startsWith('<a')).toBe(true);
   expect(components.Button.Icon).toBe(components.IconButton);
+});
+
+test('components root entry accepts HTMLButtonElement refs for Button and IconButton', () => {
+  const buttonRef = createRef<HTMLButtonElement>();
+  const iconButtonRef = createRef<HTMLButtonElement>();
+
+  void createElement(components.Button, { ref: buttonRef }, 'Publish');
+  void createElement(components.IconButton, {
+    'aria-label': 'Open search',
+    icon: createElement(SearchIcon),
+    ref: iconButtonRef,
+  });
+
+  expect(buttonRef.current).toBeNull();
+  expect(iconButtonRef.current).toBeNull();
 });

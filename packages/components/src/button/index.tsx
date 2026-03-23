@@ -1,4 +1,13 @@
-import { Fragment, isValidElement, type ButtonHTMLAttributes, type ReactNode } from 'react';
+import {
+  Fragment,
+  forwardRef,
+  isValidElement,
+  type AnchorHTMLAttributes,
+  type ButtonHTMLAttributes,
+  type MouseEvent,
+  type ReactNode,
+  type Ref,
+} from 'react';
 import classNames from 'classnames';
 
 import styles from './index.module.less';
@@ -26,7 +35,7 @@ export type IconButtonVariant = (typeof iconButtonVariantOptions)[number];
 /**
  * Supported color modes for the public button APIs.
  */
-export const buttonColorOptions = ['neutral', 'primary'] as const;
+export const buttonColorOptions = ['neutral', 'primary', 'danger'] as const;
 
 /**
  * Color emphasis for Button and IconButton.
@@ -71,6 +80,8 @@ export type ButtonShape = (typeof buttonShapeOptions)[number];
 
 type NonShapeableButtonVariant = Exclude<ButtonVariant, ShapeableButtonVariant>;
 type NonShapeableIconButtonVariant = Exclude<IconButtonVariant, ShapeableButtonVariant>;
+type ButtonDomProps = ButtonHTMLAttributes<HTMLButtonElement>;
+type AnchorDomProps = AnchorHTMLAttributes<HTMLAnchorElement>;
 
 /**
  * Documents which shapes are supported by each public button variant.
@@ -96,13 +107,22 @@ type SharedButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
    */
   children?: ReactNode;
   /**
-   * Color emphasis for the Button. Defaults to `neutral`; use `primary` to opt into theme color.
+   * Color emphasis for the Button. Defaults to `neutral`; use `primary` or `danger`
+   * to opt into semantic color.
    */
   color?: ButtonColor;
   /**
    * Disables interaction and keeps native disabled button semantics.
    */
   disabled?: boolean;
+  /**
+   * Passes through to the button root without changing semantics.
+   */
+  href?: string;
+  /**
+   * The documented button type alias. When provided, it wins over native `type`.
+   */
+  htmlType?: ButtonHTMLAttributes<HTMLButtonElement>['type'];
   /**
    * Explicit icon slot for Button and IconButton.
    */
@@ -112,9 +132,17 @@ type SharedButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
    */
   label?: ReactNode;
   /**
+   * Displays a leading loading spinner and blocks repeated activation.
+   */
+  loading?: boolean;
+  /**
    * Standard size scale for the Button. Defaults to `medium`.
    */
   size?: ButtonSize;
+  /**
+   * Passes through to the button root without changing semantics.
+   */
+  target?: string;
 };
 
 type SharedIconButtonProps = Omit<SharedButtonProps, 'children' | 'label'> & {
@@ -128,7 +156,7 @@ type SharedIconButtonProps = Omit<SharedButtonProps, 'children' | 'label'> & {
  * Public props for Deweyou UI Button.
  *
  * `variant` controls the visual treatment, `color` controls whether the button stays
- * monochrome or uses theme accent color, `size` controls the scale, `icon` provides the
+ * monochrome or uses theme semantic color, `size` controls the scale, `icon` provides the
  * explicit graphic slot, and `shape` is only available for `filled` and `outlined`.
  */
 export type ButtonProps =
@@ -169,6 +197,7 @@ const variantClassNames: Record<ButtonVariant | IconButtonVariant, string> = {
 };
 
 const colorClassNames: Record<ButtonColor, string> = {
+  danger: styles.colorDanger,
   neutral: styles.colorNeutral,
   primary: styles.colorPrimary,
 };
@@ -348,6 +377,22 @@ const resolveIconButtonVariant = (
   return variant;
 };
 
+const resolveButtonType = ({
+  htmlType,
+  nativeType,
+}: {
+  htmlType?: ButtonHTMLAttributes<HTMLButtonElement>['type'];
+  nativeType?: ButtonHTMLAttributes<HTMLButtonElement>['type'];
+}): ButtonHTMLAttributes<HTMLButtonElement>['type'] => {
+  return htmlType ?? nativeType ?? 'button';
+};
+
+const validateLinkProps = ({ href, target }: { href?: string; target?: string }): void => {
+  if (target && !href) {
+    throw new Error('Button target requires href.');
+  }
+};
+
 const resolveButtonShape = (
   variant: ButtonVariant | IconButtonVariant,
   shape?: ButtonShape,
@@ -393,6 +438,10 @@ const flattenButtonContent = (content: ReactNode): ReactNode[] => {
   }
 
   return [content];
+};
+
+const renderLoadingIndicator = (key: string): ReactNode => {
+  return <span aria-hidden className={styles.loadingIndicator} key={key} />;
 };
 
 const renderContentItem = ({ content, key }: { content: ReactNode; key: string }): ReactNode => {
@@ -456,53 +505,119 @@ const renderButtonContent = ({
 const renderButtonSurface = ({
   className,
   color,
+  href,
   icon,
+  loading = false,
   mode,
+  ref,
   shape,
   size,
   slotContent,
+  target,
   type,
   variant,
   ...props
 }: {
   className?: string;
   color: ButtonColor;
+  href?: string;
   icon: ReactNode;
+  loading?: boolean;
   mode: ButtonRenderMode;
+  ref?: Ref<HTMLElement>;
   shape?: ButtonShape;
   size: ButtonSize;
   slotContent: ReactNode;
+  target?: string;
   type: ButtonHTMLAttributes<HTMLButtonElement>['type'];
   variant: ButtonVariant | IconButtonVariant;
-} & ButtonHTMLAttributes<HTMLButtonElement>) => {
+} & ButtonHTMLAttributes<HTMLButtonElement>): ReactNode => {
   const resolvedShape = resolveButtonShape(variant, shape);
   const resolvedShapeClassName = resolvedShape
     ? shapeClassNames[resolvedShape]
     : isShapeableVariant(variant)
       ? styles.shapeAuto
       : undefined;
+  const resolvedDisabled = props.disabled || loading;
+  const { disabled: _disabled, onClick, onClickCapture, tabIndex, ...restProps } = props;
+  const resolvedClassName = classNames(
+    styles.root,
+    colorClassNames[color],
+    variantClassNames[variant],
+    sizeClassNames[size],
+    modeClassNames[mode],
+    resolvedShapeClassName,
+    className,
+  );
+  const commonDataProps = {
+    'aria-busy': loading || undefined,
+    className: resolvedClassName,
+    'data-color': color,
+    'data-content-mode': mode,
+    'data-disabled': resolvedDisabled ? 'true' : 'false',
+    'data-icon-only': mode === 'icon-button' ? 'true' : 'false',
+    'data-loading': loading ? 'true' : 'false',
+    'data-shape': resolvedShape ?? 'none',
+    'data-size': size,
+    'data-variant': variant,
+  };
+
+  if (href) {
+    const handleAnchorClickCapture = (event: MouseEvent<HTMLAnchorElement>) => {
+      if (resolvedDisabled) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        return;
+      }
+
+      onClickCapture?.(event as unknown as MouseEvent<HTMLButtonElement>);
+    };
+
+    const handleAnchorClick = (event: MouseEvent<HTMLAnchorElement>) => {
+      if (resolvedDisabled) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        return;
+      }
+
+      onClick?.(event as unknown as MouseEvent<HTMLButtonElement>);
+    };
+
+    const anchorProps = {
+      ...restProps,
+      ...commonDataProps,
+      'aria-disabled': resolvedDisabled || undefined,
+      href: resolvedDisabled ? undefined : href,
+      onClick: handleAnchorClick,
+      onClickCapture: handleAnchorClickCapture,
+      tabIndex: resolvedDisabled ? -1 : tabIndex,
+      target,
+    };
+
+    return (
+      <a {...(anchorProps as unknown as AnchorDomProps)} ref={ref as Ref<HTMLAnchorElement>}>
+        {renderButtonContent({
+          content: slotContent,
+          icon,
+          variant,
+        })}
+      </a>
+    );
+  }
+
+  const buttonProps = {
+    ...restProps,
+    ...commonDataProps,
+    disabled: resolvedDisabled,
+    onClick,
+    onClickCapture,
+    type,
+  };
 
   return (
-    <button
-      {...props}
-      className={classNames(
-        styles.root,
-        colorClassNames[color],
-        variantClassNames[variant],
-        sizeClassNames[size],
-        modeClassNames[mode],
-        resolvedShapeClassName,
-        className,
-      )}
-      data-color={color}
-      data-content-mode={mode}
-      data-disabled={props.disabled ? 'true' : 'false'}
-      data-icon-only={mode === 'icon-button' ? 'true' : 'false'}
-      data-shape={resolvedShape ?? 'none'}
-      data-size={size}
-      data-variant={variant}
-      type={type}
-    >
+    <button {...(buttonProps as ButtonDomProps)} ref={ref as Ref<HTMLButtonElement>}>
       {renderButtonContent({
         content: slotContent,
         icon,
@@ -515,16 +630,25 @@ const renderButtonSurface = ({
 /**
  * IconButton is the explicit square icon-button entry for Deweyou UI packages and apps.
  */
-export const IconButton = ({
-  className,
-  color = 'neutral',
-  icon,
-  shape,
-  size = 'medium',
-  type = 'button',
-  variant = 'filled',
-  ...props
-}: IconButtonProps) => {
+export const IconButton = forwardRef<HTMLElement, IconButtonProps>(function IconButton(
+  {
+    className,
+    color = 'neutral',
+    href,
+    htmlType,
+    icon,
+    loading = false,
+    shape,
+    size = 'medium',
+    target,
+    type,
+    variant = 'filled',
+    ...props
+  },
+  ref,
+) {
+  validateLinkProps({ href, target });
+
   if (!hasRenderableContent(icon)) {
     throw new Error('IconButton requires the icon prop.');
   }
@@ -536,37 +660,59 @@ export const IconButton = ({
   }
 
   const resolvedVariant = resolveIconButtonVariant(variant);
+  const resolvedType = resolveButtonType({
+    htmlType,
+    nativeType: type,
+  });
 
   return renderButtonSurface({
     ...props,
     className,
     color,
-    icon,
+    href,
+    icon: loading ? renderLoadingIndicator('icon-loading-indicator') : icon,
+    loading,
     mode: 'icon-button',
+    ref,
     shape,
     size,
     slotContent: null,
-    type,
+    target,
+    type: resolvedType,
     variant: resolvedVariant,
   });
-};
+});
 
-const ButtonBase = ({
-  children,
-  className,
-  color = 'neutral',
-  icon,
-  label,
-  shape,
-  size = 'medium',
-  type = 'button',
-  variant = 'filled',
-  ...props
-}: ButtonProps) => {
+const ButtonBase = forwardRef<HTMLElement, ButtonProps>(function ButtonBase(
+  {
+    children,
+    className,
+    color = 'neutral',
+    href,
+    htmlType,
+    icon,
+    label,
+    loading = false,
+    shape,
+    size = 'medium',
+    target,
+    type,
+    variant = 'filled',
+    ...props
+  },
+  ref,
+) {
+  validateLinkProps({ href, target });
+
   const content = hasRenderableContent(children) ? children : label;
   const contentAnalysis = analyzeContent(content);
   const explicitIconProvided = hasRenderableContent(icon);
   const textLikeContent = hasTextLikeContent(contentAnalysis);
+  const resolvedType = resolveButtonType({
+    htmlType,
+    nativeType: type,
+  });
+  const resolvedIcon = loading ? renderLoadingIndicator('button-loading-indicator') : icon;
 
   if (explicitIconProvided && !textLikeContent) {
     const resolvedVariant = resolveIconButtonVariant(variant);
@@ -581,12 +727,16 @@ const ButtonBase = ({
       ...props,
       className,
       color,
-      icon,
+      href,
+      icon: resolvedIcon,
+      loading,
       mode: 'icon-button',
+      ref,
       shape,
       size,
       slotContent: null,
-      type,
+      target,
+      type: resolvedType,
       variant: resolvedVariant,
     });
   }
@@ -605,15 +755,22 @@ const ButtonBase = ({
     ...props,
     className,
     color,
-    icon,
-    mode: explicitIconProvided || contentAnalysis.hasGraphic ? 'text-with-icon' : 'text-only',
+    href,
+    icon: resolvedIcon,
+    loading,
+    mode:
+      hasRenderableContent(resolvedIcon) || contentAnalysis.hasGraphic
+        ? 'text-with-icon'
+        : 'text-only',
+    ref,
     shape,
     size,
     slotContent: content,
-    type,
+    target,
+    type: resolvedType,
     variant,
   });
-};
+});
 
 type ButtonRuntimeComponent = typeof ButtonBase & {
   Icon: typeof IconButton;

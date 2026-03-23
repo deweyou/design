@@ -60,3 +60,28 @@ test('button and icon button stay owned by the components package root entry', (
   expect(componentPackage.exports).not.toHaveProperty('./button');
   expect(componentPackage.exports).not.toHaveProperty('./icon-button');
 });
+
+test('storybook button review matrix covers native prop passthrough and loading states', () => {
+  const storybookEntry = readFileSync(
+    resolve(root, 'apps/storybook/src/stories/Button.stories.tsx'),
+    'utf8',
+  );
+
+  expect(storybookEntry).toContain("['neutral', 'primary', 'danger']");
+  expect(storybookEntry).toContain('export const PublicProps');
+  expect(storybookEntry).toContain('export const LoadingStates');
+  expect(storybookEntry).toContain('htmlType');
+  expect(storybookEntry).toContain('loading');
+  expect(storybookEntry).toContain('focusTargetRef.current?.focus()');
+});
+
+test('website button guidance documents danger, loading, and ref boundaries', () => {
+  const websiteEntry = readFileSync(resolve(root, 'apps/website/src/main.tsx'), 'utf8');
+
+  expect(websiteEntry).toContain('Public prop passthrough');
+  expect(websiteEntry).toContain('Loading guidance');
+  expect(websiteEntry).toContain('htmlType');
+  expect(websiteEntry).toContain('loading');
+  expect(websiteEntry).toContain('focusTargetRef.current?.focus()');
+  expect(websiteEntry).toContain("['neutral', 'primary', 'danger']");
+});
