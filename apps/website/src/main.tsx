@@ -61,7 +61,8 @@ const supportRows = [
         Review copy
       </Button>
     ),
-    feedback: 'Outlined supporting action with optional accent border',
+    feedback:
+      'Outlined supporting action with a lower-chroma border that eases into the text color on hover',
     shapes: 'rect, rounded, pill',
     variant: 'outlined',
   },
@@ -81,7 +82,8 @@ const supportRows = [
         Read migration
       </Button>
     ),
-    feedback: 'Underline hover feedback with optional accent text and underline',
+    feedback:
+      'Underline hover feedback reveals from left to right by default, with accent color only when `primary` is chosen',
     shapes: 'Not supported',
     variant: 'link',
   },
@@ -384,6 +386,40 @@ const App = () => (
         </div>
       </article>
       <article className="button-panel">
+        <h2>Hover feedback</h2>
+        <div className="motion-comparison-grid">
+          <div className="boundary-card">
+            <strong>Link underline reveal</strong>
+            <div className="button-row">
+              <Button variant="link">Neutral link</Button>
+              <Button color="primary" variant="link">
+                Primary link
+              </Button>
+              <Button size="extra-small" variant="link">
+                Compact link
+              </Button>
+            </div>
+            <p>`link` 默认就是从左到右展开的下划线反馈，不再区分 fallback 和 opt-in 两套行为。</p>
+          </div>
+          <div className="boundary-card">
+            <strong>Outlined border transition</strong>
+            <div className="button-row">
+              <Button variant="outlined">Neutral outlined</Button>
+              <Button color="primary" variant="outlined">
+                Primary outlined
+              </Button>
+              <Button color="primary" shape="pill" variant="outlined">
+                Primary pill
+              </Button>
+            </div>
+            <p>
+              `outlined` 不再叠加额外描边层。默认边框保持更低色度，hover
+              时平滑过渡到与文字一致的颜色。
+            </p>
+          </div>
+        </div>
+      </article>
+      <article className="button-panel">
         <h2>Boundary guidance</h2>
         <div className="button-boundary-grid">
           <div className="boundary-card">
@@ -413,8 +449,8 @@ const App = () => (
     <p className="footer-note">
       Storybook owns the exhaustive review matrix. The website keeps the public guidance concise:
       use `Button` for visible-text actions, use `IconButton` or `Button.Icon` for square icon
-      actions, keep `color` neutral by default, and only reach for `shape` with `filled` or
-      `outlined`.
+      actions, keep `color` neutral by default, rely on the built-in `link` underline reveal and
+      `outlined` border-color transition, and only reach for `shape` with `filled` or `outlined`.
     </p>
   </main>
 );

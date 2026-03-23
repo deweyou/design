@@ -32,9 +32,11 @@ text / underline styling.
 ### Variants
 
 - `filled`: default primary action, supports `rect`, `rounded`, and `pill`
-- `outlined`: secondary action, supports `rect`, `rounded`, and `pill`
+- `outlined`: secondary action, supports `rect`, `rounded`, and `pill`; its border starts at a
+  lower chroma and eases into the text color on hover
 - `ghost`: lightweight action with background hover feedback, does not support `shape`
-- `link`: lightweight action with underline hover feedback, does not support `shape`
+- `link`: lightweight action with a left-to-right underline reveal on hover, does not support
+  `shape`
 
 ### Sizes
 
@@ -57,6 +59,8 @@ text / underline styling.
   from the platform instead of a custom role layer.
 - `Button` with visible text can add graphics through `icon` or mixed children without turning into
   a square icon button.
+- Hover feedback is an enhancement for pointer users only; keyboard users still rely on the shared
+  focus-visible ring, and disabled buttons do not expose hover affordances.
 - Button no longer infers square icon-button mode from graphic-only `children`.
 - Use `IconButton` or `Button.Icon` for explicit icon-only actions, and provide `aria-label` or
   `aria-labelledby`.
@@ -71,7 +75,7 @@ const primaryProps: ButtonProps = {
   color: 'primary',
   icon: <SearchIcon />,
   shape: 'pill',
-  variant: 'filled',
+  variant: 'outlined',
 };
 
 const iconButtonProps: IconButtonProps = {

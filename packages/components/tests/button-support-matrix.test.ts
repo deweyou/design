@@ -39,6 +39,35 @@ test('button support matrix matches the documented text and icon button variants
   });
 });
 
+test('button support matrix keeps link underline feedback and outlined shape coverage in the default contract', () => {
+  const linkMarkup = renderToStaticMarkup(createElement(Button, { variant: 'link' }, 'Link'));
+  const outlinedMarkup = renderToStaticMarkup(
+    createElement(Button, { shape: 'pill', variant: 'outlined' }, 'Outlined'),
+  );
+
+  expect(linkMarkup).toContain('data-variant="link"');
+  expect(linkMarkup).not.toContain('data-animated=');
+  expect(outlinedMarkup).toContain('data-variant="outlined"');
+  expect(outlinedMarkup).toContain('data-shape="pill"');
+});
+
+test('button support matrix keeps outlined shapes and compact link sizes compatible with the default contract', () => {
+  const rectMarkup = renderToStaticMarkup(
+    createElement(Button, { shape: 'rect', variant: 'outlined' }, 'Rect'),
+  );
+  const pillMarkup = renderToStaticMarkup(
+    createElement(Button, { shape: 'pill', variant: 'outlined' }, 'Pill'),
+  );
+  const compactLinkMarkup = renderToStaticMarkup(
+    createElement(Button, { size: 'extra-small', variant: 'link' }, 'Compact'),
+  );
+
+  expect(rectMarkup).toContain('data-shape="rect"');
+  expect(pillMarkup).toContain('data-shape="pill"');
+  expect(compactLinkMarkup).toContain('data-size="extra-small"');
+  expect(compactLinkMarkup).toContain('data-variant="link"');
+});
+
 test('button and icon button render supported shapes instead of silently falling back', () => {
   const filledMarkup = renderToStaticMarkup(
     createElement(Button, { shape: 'rect', variant: 'filled' }, 'Primary'),

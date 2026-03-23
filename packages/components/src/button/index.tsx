@@ -395,7 +395,7 @@ const flattenButtonContent = (content: ReactNode): ReactNode[] => {
   return [content];
 };
 
-const renderContentItem = (content: ReactNode, key: string): ReactNode => {
+const renderContentItem = ({ content, key }: { content: ReactNode; key: string }): ReactNode => {
   const analysis = analyzeContent(content);
 
   if (analysis.hasGraphic && !analysis.hasVisibleText && !analysis.hasUnknown) {
@@ -413,7 +413,15 @@ const renderContentItem = (content: ReactNode, key: string): ReactNode => {
   );
 };
 
-const renderButtonContent = (icon: ReactNode, content: ReactNode): ReactNode => {
+const renderButtonContent = ({
+  content,
+  icon,
+  variant,
+}: {
+  content: ReactNode;
+  icon: ReactNode;
+  variant: ButtonVariant | IconButtonVariant;
+}): ReactNode => {
   const renderedItems: ReactNode[] = [];
 
   if (hasRenderableContent(icon)) {
@@ -424,9 +432,25 @@ const renderButtonContent = (icon: ReactNode, content: ReactNode): ReactNode => 
     );
   }
 
-  return renderedItems.concat(
-    flattenButtonContent(content).map((item, index) => renderContentItem(item, `content-${index}`)),
+  const contentItems = renderedItems.concat(
+    flattenButtonContent(content).map((item, index) =>
+      renderContentItem({
+        content: item,
+        key: `content-${index}`,
+      }),
+    ),
   );
+
+  if (variant === 'link') {
+    return (
+      <span className={styles.linkContent}>
+        {contentItems}
+        <span aria-hidden className={styles.linkUnderlineDecoration} />
+      </span>
+    );
+  }
+
+  return contentItems;
 };
 
 const renderButtonSurface = ({
@@ -479,7 +503,11 @@ const renderButtonSurface = ({
       data-variant={variant}
       type={type}
     >
-      {renderButtonContent(icon, slotContent)}
+      {renderButtonContent({
+        content: slotContent,
+        icon,
+        variant,
+      })}
     </button>
   );
 };

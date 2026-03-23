@@ -55,6 +55,37 @@ test('button defaults to filled medium with rounded shape and text-only mode', (
   expect(markup).toContain('>Save<');
 });
 
+test('link buttons render the underline decoration by default without a legacy animation flag', () => {
+  const markup = renderToStaticMarkup(createElement(Button, { variant: 'link' }, 'Read details'));
+
+  expect(markup).not.toContain('data-animated=');
+  expect(markup).toContain(styles.link);
+  expect(markup).toContain(styles.linkContent);
+  expect(markup).toContain(styles.linkUnderlineDecoration);
+});
+
+test('link buttons with icon and text keep one underline decoration across the whole content row', () => {
+  const markup = renderToStaticMarkup(
+    createElement(Button, { icon: createElement(SearchIcon), variant: 'link' }, 'Read details'),
+  );
+
+  expect(markup).toContain(styles.linkContent);
+  expect(markup).toContain(styles.contentGraphic);
+  expect(markup).toContain(styles.contentLabel);
+  expect(markup.match(new RegExp(styles.linkUnderlineDecoration, 'g'))).toHaveLength(1);
+});
+
+test('outlined buttons rely on the native border instead of an extra overlay layer', () => {
+  const markup = renderToStaticMarkup(
+    createElement(Button, { shape: 'pill', variant: 'outlined' }, 'Review copy'),
+  );
+
+  expect(markup).toContain(styles.outlined);
+  expect(markup).toContain(styles.shapePill);
+  expect(markup).not.toContain('<svg');
+  expect(markup).not.toContain('outlinedAnimation');
+});
+
 test('button falls back to label when children are omitted', () => {
   const markup = renderToStaticMarkup(createElement(Button, { label: 'Continue' }));
 
@@ -203,11 +234,33 @@ test('icon button requires the icon prop', () => {
   );
 });
 
-test('button stylesheet protects descenders and keeps underline hover feedback on the link label text', () => {
+test('button stylesheet protects descenders and keeps the custom underline anchored to link labels', () => {
   expect(stylesheet).toContain('font: 600 var(--button-font-size) / 1.25 var(--ui-font-body);');
   expect(stylesheet).toContain('padding-block-end: 0.08em;');
   expect(stylesheet).toContain('margin-block-end: -0.08em;');
-  expect(stylesheet).toContain('.link .contentLabel');
-  expect(stylesheet).toContain('text-decoration: underline;');
-  expect(stylesheet).toContain('text-underline-offset: 0.24em;');
+  expect(stylesheet).toContain('.linkContent');
+  expect(stylesheet).toContain('.linkUnderlineDecoration');
+  expect(stylesheet).toContain('clip-path: inset(0 100% 0 0 round 999px);');
+});
+
+test('button stylesheet reveals the link underline on hover without falling back to native underline styling', () => {
+  expect(stylesheet).toContain('.link:hover:not(:disabled) .linkUnderlineDecoration');
+  expect(stylesheet).toContain('clip-path: inset(0 0 0 0 round 999px);');
+  expect(stylesheet).toContain('text-decoration-line: none;');
+  expect(stylesheet).not.toContain('text-decoration: underline;');
+});
+
+test('button stylesheet uses subdued outlined borders by default and transitions them to the text color on hover', () => {
+  expect(stylesheet).toContain('--button-border-color-hover: var(--button-outlined-text-color);');
+  expect(stylesheet).toContain('var(--ui-color-text) 14%');
+  expect(stylesheet).toContain('var(--ui-color-brand-bg) 32%');
+  expect(stylesheet).not.toContain('outlinedAnimation');
+  expect(stylesheet).not.toContain('@property --button-outline-progress');
+});
+
+test('button stylesheet keeps hover motion safe for disabled and reduced-motion scenarios', () => {
+  expect(stylesheet).toContain(':hover:not(:disabled)');
+  expect(stylesheet).toContain('@media (prefers-reduced-motion: reduce)');
+  expect(stylesheet).toContain('.linkUnderlineDecoration');
+  expect(stylesheet).not.toContain('.outlinedAnimationPath');
 });
