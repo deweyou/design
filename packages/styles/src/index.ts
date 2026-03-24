@@ -1,11 +1,20 @@
+import { textColorFamilyNames, textPaletteStepNames } from './primitives';
 import { publicThemeTokens } from './semantics';
 import { darkTheme, lightTheme } from './themes';
 
-export { internalPrimitives } from './primitives';
+export {
+  internalPrimitives,
+  textColorFamilyNames,
+  textPaletteStepNames,
+  type TextColorFamilyName,
+  type TextPaletteStepName,
+} from './primitives';
 export { publicThemeTokens, semanticTokens } from './semantics';
 export { darkTheme, lightTheme } from './themes';
 
 export const internalTypographyRoleNames = ['body', 'display', 'mono'] as const;
+export const internalTextPaletteFamilyNames = textColorFamilyNames;
+export const internalTextPaletteStepNames = textPaletteStepNames;
 
 function serializeTheme(selector: string, tokens: Record<string, string>) {
   const body = Object.entries(tokens)

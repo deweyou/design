@@ -60,19 +60,62 @@ samp {
 .typography-tier-body {
   font-family: var(--ui-font-body);
   font-weight: var(--ui-font-weight-body);
+  font-size: var(--ui-text-size-body);
+  line-height: var(--ui-text-line-height-body);
 }
 
 .typography-tier-emphasis {
   font-family: var(--ui-font-body);
   font-weight: var(--ui-font-weight-emphasis);
+  font-size: var(--ui-text-size-body);
+  line-height: var(--ui-text-line-height-body);
 }
 
 .typography-tier-title {
   font-family: var(--ui-font-display);
   font-weight: var(--ui-font-weight-title);
+  font-size: var(--ui-text-size-h4);
+  line-height: var(--ui-text-line-height-h4);
 }
 
 .typography-tier-strong {
   font-family: var(--ui-font-display);
   font-weight: var(--ui-font-weight-strong);
+  font-size: var(--ui-text-size-h3);
+  line-height: var(--ui-text-line-height-h3);
+}
+
+.typography-scale-caption {
+  font-size: var(--ui-text-size-caption);
+  line-height: var(--ui-text-line-height-caption);
+}
+
+.typography-scale-body {
+  font-size: var(--ui-text-size-body);
+  line-height: var(--ui-text-line-height-body);
+}
+
+.typography-scale-h1 {
+  font-size: var(--ui-text-size-h1);
+  line-height: var(--ui-text-line-height-h1);
+}
+
+.typography-scale-h2 {
+  font-size: var(--ui-text-size-h2);
+  line-height: var(--ui-text-line-height-h2);
+}
+
+.typography-scale-h3 {
+  font-size: var(--ui-text-size-h3);
+  line-height: var(--ui-text-line-height-h3);
+}
+
+.typography-scale-h4 {
+  font-size: var(--ui-text-size-h4);
+  line-height: var(--ui-text-line-height-h4);
+}
+
+.typography-scale-h5 {
+  font-size: var(--ui-text-size-h5);
+  line-height: var(--ui-text-line-height-h5);
 }

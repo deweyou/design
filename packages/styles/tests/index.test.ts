@@ -1,9 +1,14 @@
 import { expect, test } from 'vite-plus/test';
 
-import { internalPrimitives, internalTypographyRoleNames, publicThemeTokens } from '../src';
+import {
+  internalPrimitives,
+  internalTypographyRoleNames,
+  publicThemeTokens,
+  textColorFamilyNames,
+} from '../src';
 
 test('styles package exposes the documented public color token surface', () => {
-  expect(publicThemeTokens.map((token) => token.cssVar)).toEqual([
+  const expectedBaseTokens = [
     '--ui-color-brand-bg',
     '--ui-color-brand-bg-hover',
     '--ui-color-brand-bg-active',
@@ -15,6 +20,28 @@ test('styles package exposes the documented public color token surface', () => {
     '--ui-color-text-on-danger',
     '--ui-color-focus-ring',
     '--ui-color-link',
+    '--ui-text-size-body',
+    '--ui-text-line-height-body',
+    '--ui-text-size-caption',
+    '--ui-text-line-height-caption',
+    '--ui-text-size-h1',
+    '--ui-text-line-height-h1',
+    '--ui-text-size-h2',
+    '--ui-text-line-height-h2',
+    '--ui-text-size-h3',
+    '--ui-text-line-height-h3',
+    '--ui-text-size-h4',
+    '--ui-text-line-height-h4',
+    '--ui-text-size-h5',
+    '--ui-text-line-height-h5',
+  ];
+  const expectedTextPaletteTokens = textColorFamilyNames.flatMap((familyName) => {
+    return [`--ui-text-color-${familyName}`, `--ui-text-background-${familyName}`];
+  });
+
+  expect(publicThemeTokens.map((token) => token.cssVar)).toEqual([
+    ...expectedBaseTokens,
+    ...expectedTextPaletteTokens,
   ]);
 });
 

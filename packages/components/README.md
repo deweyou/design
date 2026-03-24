@@ -4,9 +4,76 @@ Reusable UI components with explicit theme imports and package-owned interaction
 
 ## Public Entrypoints
 
-- `@deweyou-ui/components`: exports `Button`, `ButtonProps`, `IconButton`, and `IconButtonProps`.
+- `@deweyou-ui/components`: exports `Button`, `ButtonProps`, `IconButton`, `IconButtonProps`, `Text`, and `TextProps`.
 - `Button` and `IconButton` both forward refs to the underlying root DOM node: `HTMLButtonElement`
   by default, `HTMLAnchorElement` when `href` is present.
+
+## Text
+
+`Text` is the shared typography primitive for Deweyou UI. The public API is organized around
+`variant`, four composable emphasis toggles, palette-backed `color` / `background`, and
+`lineClamp`, while standard node props continue to pass through to the rendered root element.
+
+### Props
+
+- `variant`: `'plain' | 'body' | 'caption' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5'`
+- `italic`: toggles italic presentation
+- `bold`: toggles stronger font weight
+- `underline`: toggles underline emphasis
+- `strikethrough`: toggles line-through emphasis
+- `color`: one of the documented 26 text color families, mapped to theme-owned text shades
+- `background`: one of the documented 26 highlight families, mapped to theme-owned highlight shades
+- `lineClamp`: positive integer maximum line count; invalid values are treated as unset
+- Standard node props such as `className`, `style`, `id`, `title`, `role`, `tabIndex`, `aria-*`,
+  `data-*`, and event handlers remain supported.
+
+### Variant Defaults
+
+- `plain`: default inline text on `<span>`
+- `body`: body copy on `<div>`
+- `caption`: smaller, weaker supporting copy on `<div>`
+- `h1` to `h5`: heading tiers on native `<h1>` to `<h5>`
+
+### Emphasis And Clamping
+
+- `italic`, `bold`, `underline`, and `strikethrough` can be combined freely.
+- `color` and `background` only accept the documented 26 families:
+  `red`, `orange`, `amber`, `yellow`, `lime`, `green`, `emerald`, `teal`, `cyan`, `sky`, `blue`,
+  `indigo`, `violet`, `purple`, `fuchsia`, `pink`, `rose`, `slate`, `gray`, `zinc`, `neutral`,
+  `stone`, `taupe`, `mauve`, `mist`, and `olive`.
+- `color` and `background` never expose raw `50`-`950` steps; the theme maps each family to a
+  deeper text shade and a lighter or darker highlight shade depending on the current theme.
+- `lineClamp` only activates for positive integers.
+- When `lineClamp` is valid, Text keeps the requested maximum line count and clips overflow with an
+  ellipsis-style truncation treatment.
+- When `lineClamp` is omitted or invalid, Text renders natural-length content with no truncation.
+
+### Usage
+
+```tsx
+import { Text, type TextProps } from '@deweyou-ui/components';
+
+const captionProps: TextProps = {
+  variant: 'caption',
+  italic: true,
+};
+
+<Text>默认行内文本</Text>;
+<Text variant="body">块级正文段落</Text>;
+<Text variant="caption" {...captionProps}>
+  说明文字会比正文更弱。
+</Text>;
+<Text variant="h2">原生标题层级</Text>;
+<Text bold underline>
+  组合强调
+</Text>;
+<Text background="amber" bold color="amber">
+  色卡高亮
+</Text>;
+<Text lineClamp={2} variant="body">
+  这是一段很长的文本，用于验证 lineClamp 在公开组件中的最大行数限制行为。
+</Text>;
+```
 
 ## Button
 

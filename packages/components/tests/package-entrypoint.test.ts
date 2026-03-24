@@ -34,14 +34,24 @@ const exampleIconButtonProps: import('../src').IconButtonProps = {
   variant: 'outlined',
 };
 
+const exampleTextProps: import('../src').TextProps = {
+  background: 'yellow',
+  children: '说明文字',
+  color: 'olive',
+  italic: true,
+  lineClamp: 2,
+  variant: 'caption',
+};
+
 void exampleButtonProps;
 void exampleIconButtonProps;
+void exampleTextProps;
 
-test('components root entry exposes Button and IconButton as the runtime public exports', () => {
-  expect(Object.keys(components).sort()).toEqual(['Button', 'IconButton']);
+test('components root entry exposes Button, IconButton, and Text as the runtime public exports', () => {
+  expect(Object.keys(components).sort()).toEqual(['Button', 'IconButton', 'Text']);
 });
 
-test('components root entry renders both Button and IconButton without any legacy contract object', () => {
+test('components root entry renders Button, IconButton, and Text without any legacy contract object', () => {
   const buttonMarkup = renderToStaticMarkup(
     createElement(components.Button, { href: '/publish' }, 'Publish'),
   );
@@ -52,11 +62,16 @@ test('components root entry renders both Button and IconButton without any legac
       icon: createElement(SearchIcon),
     }),
   );
+  const textMarkup = renderToStaticMarkup(
+    createElement(components.Text, { variant: 'body' }, '公开正文'),
+  );
 
   expect(buttonMarkup).toContain('data-content-mode="text-only"');
   expect(buttonMarkup.startsWith('<a')).toBe(true);
   expect(iconButtonMarkup).toContain('data-content-mode="icon-button"');
   expect(iconButtonMarkup.startsWith('<a')).toBe(true);
+  expect(textMarkup.startsWith('<div')).toBe(true);
+  expect(textMarkup).toContain('公开正文');
   expect(components.Button.Icon).toBe(components.IconButton);
 });
 

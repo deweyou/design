@@ -80,7 +80,8 @@
 .split-panel,
 .button-panel,
 .icon-panel,
-.typography-panel {
+.typography-panel,
+.text-panel {
   padding: 24px;
   border: 1px solid var(--ui-color-border);
   border-radius: 24px;
@@ -93,7 +94,8 @@
 .split-panel h2,
 .button-panel h2,
 .icon-panel h2,
-.typography-panel h2 {
+.typography-panel h2,
+.text-panel h2 {
   margin-bottom: 8px;
   font-size: 1.4rem;
 }
@@ -111,7 +113,8 @@
 .layout,
 .button-guidance-grid,
 .icon-layout,
-.typography-grid {
+.typography-grid,
+.text-contract-grid {
   display: grid;
   gap: 18px;
   margin-top: 18px;
@@ -125,6 +128,10 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.text-contract-grid {
+  grid-template-columns: 1fr;
+}
+
 .preview-stage,
 .button-showcase,
 .button-matrix,
@@ -133,7 +140,11 @@
 .button-boundary-grid,
 .icon-contract,
 .icon-usage-grid,
-.typography-card-list {
+.typography-card-list,
+.text-card-grid,
+.text-palette-grid,
+.text-reading-surface,
+.text-reading-section {
   display: grid;
   gap: 12px;
 }
@@ -156,7 +167,8 @@
 .icon-contract > div,
 .icon-usage-card,
 .icon-card,
-.typography-card {
+.typography-card,
+.text-card {
   padding: 16px;
   border: 1px solid var(--ui-color-border);
   border-radius: 18px;
@@ -205,9 +217,45 @@
   gap: 8px;
 }
 
+.text-card-grid {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.text-palette-grid {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.text-card {
+  display: grid;
+  gap: 10px;
+}
+
+.text-reading-surface {
+  margin-top: 16px;
+  padding: 18px;
+  border: 1px solid var(--ui-color-border);
+  border-radius: 18px;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--ui-color-surface) 92%, var(--ui-color-canvas)),
+      color-mix(in srgb, var(--ui-color-surface) 82%, var(--ui-color-canvas))
+    ),
+    var(--ui-color-surface);
+}
+
 .typography-card span {
   color: var(--ui-color-text-muted);
   font: 0.82rem/1.4 var(--ui-font-mono);
+}
+
+.text-card span {
+  color: var(--ui-color-text-muted);
+  font: 0.82rem/1.4 var(--ui-font-mono);
+}
+
+.text-prop-sample {
+  padding: 0.25rem 0;
 }
 
 .icon-contract {
@@ -242,7 +290,8 @@
   font-size: 1rem;
 }
 
-.typography-panel p {
+.typography-panel p,
+.text-panel p {
   margin: 0;
 }
 
@@ -256,6 +305,7 @@
   .grid,
   .button-guidance-grid,
   .typography-grid,
+  .text-contract-grid,
   .button-matrix,
   .motion-comparison-grid,
   .button-size-row,
