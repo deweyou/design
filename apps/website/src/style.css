@@ -154,7 +154,8 @@
 .text-card-grid,
 .text-palette-grid,
 .text-reading-surface,
-.text-reading-section {
+.text-reading-section,
+.popover-copy {
   display: grid;
   gap: 12px;
 }
@@ -235,6 +236,50 @@
   border: 1px solid var(--ui-color-border);
   border-radius: 18px;
   background: color-mix(in srgb, var(--ui-color-canvas) 72%, var(--ui-color-surface));
+}
+
+.popover-copy {
+  max-inline-size: 20rem;
+}
+
+.popover-copy p,
+.popover-portal-shell p {
+  color: var(--ui-color-text-muted);
+  margin: 0;
+}
+
+.popover-input {
+  background: var(--ui-color-canvas);
+  border: 1px solid var(--ui-color-border);
+  border-radius: 10px;
+  color: var(--ui-color-text);
+  font: inherit;
+  padding: 8px 10px;
+}
+
+.popover-input:focus-visible {
+  outline: 2px solid var(--ui-color-focus-ring);
+  outline-offset: 2px;
+}
+
+.popover-copy-plain {
+  padding: 14px;
+}
+
+.popover-portal-shell {
+  min-block-size: 140px;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  border: 1px dashed color-mix(in srgb, var(--ui-color-border) 84%, transparent);
+  border-radius: 18px;
+  background:
+    linear-gradient(
+      160deg,
+      color-mix(in srgb, var(--ui-color-brand-bg) 6%, var(--ui-color-canvas)),
+      color-mix(in srgb, var(--ui-color-surface) 82%, var(--ui-color-canvas))
+    ),
+    color-mix(in srgb, var(--ui-color-canvas) 72%, var(--ui-color-surface));
 }
 
 .matrix-card {

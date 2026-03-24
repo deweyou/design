@@ -25,6 +25,7 @@
   "dependencies": {
     "@deweyou-ui/hooks": "workspace:*",
     "@deweyou-ui/styles": "workspace:*",
+    "@floating-ui/react": "catalog:",
     "classnames": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:"
@@ -33,6 +34,7 @@
     "@tsdown/css": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
+    "jsdom": "catalog:",
     "less": "catalog:",
     "typescript": "catalog:",
     "vite-plus": "catalog:"

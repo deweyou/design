@@ -4,7 +4,7 @@ Reusable UI components with explicit theme imports and package-owned interaction
 
 ## Public Entrypoints
 
-- `@deweyou-ui/components`: exports `Button`, `ButtonProps`, `IconButton`, `IconButtonProps`, `Text`, and `TextProps`.
+- `@deweyou-ui/components`: exports `Button`, `ButtonProps`, `IconButton`, `IconButtonProps`, `Popover`, `PopoverProps`, `Text`, and `TextProps`.
 - `Button` and `IconButton` both forward refs to the underlying root DOM node: `HTMLButtonElement`
   by default, `HTMLAnchorElement` when `href` is present.
 
@@ -211,6 +211,77 @@ and `ghost`.
 - `aria-label` / `aria-labelledby`: required accessible name source
 
 `Button.Icon` is an alias of `IconButton`, not a separate implementation.
+
+## Popover
+
+`Popover` is the shared non-modal floating-content primitive for Deweyou UI. It anchors content to
+one trigger element, defaults to `click`, and keeps positioning, fallback, arrow, animation, and
+portal behavior inside `packages/components`.
+
+### Props
+
+- `content`: required floating panel content
+- `trigger`: `'click' | 'hover' | 'focus' | 'context-menu'` or an array; defaults to `click`
+- `placement`: `'top' | 'bottom' | 'left' | 'right' | 'left-top' | 'left-bottom' | 'right-top' | 'right-bottom'`
+- `visible`: controlled open state
+- `defaultVisible`: uncontrolled initial open state
+- `onVisibleChange`: visibility callback with a second `{ reason, event? }` payload
+- `mode`: `'card' | 'loose' | 'pure'`, defaults to `card`
+- `shape`: `'rect' | 'rounded'`, defaults to `rounded`
+- `offset`: gap between the trigger and the panel, defaults to `8`
+- `boundaryPadding`: safe distance from viewport or clipping boundaries, defaults to `16`
+- `popupPortalContainer`: custom portal parent node
+- `overlayClassName` / `overlayStyle`: pass-through props for the floating overlay node
+- `disabled`: blocks all opening paths
+- Standard trigger-root props such as `className`, `style`, `id`, `title`, `data-*`, `aria-*`,
+  and event handlers like `onClick` continue to pass through to the trigger element.
+
+### Behavior
+
+- Popover is non-modal by default and must not become a small Dialog replacement.
+- Internal panel clicks keep the Popover open unless the consuming content closes it explicitly.
+- `Escape` and outside press close the panel.
+- When closed from keyboard or dismissal paths, focus returns to the trigger element.
+- Multiple Popover instances stay independent; opening one does not implicitly close another.
+- Placement can fall back when the preferred side lacks space, but the public placement vocabulary
+  remains the documented eight options only.
+
+### Usage
+
+```tsx
+import { Button, Popover, type PopoverProps } from '@deweyou-ui/components';
+
+const reviewPopoverProps: PopoverProps = {
+  content: (
+    <div>
+      <strong>Review changes</strong>
+      <p>Popover is non-modal and keeps internal clicks open by default.</p>
+    </div>
+  ),
+  placement: 'right-bottom',
+  trigger: ['click', 'focus'],
+};
+
+<Popover {...reviewPopoverProps}>
+  <Button variant="outlined">Open review</Button>
+</Popover>;
+<Popover
+  content={<div style={{ padding: 12 }}>Pure content can remove inner padding.</div>}
+  mode="pure"
+  shape="rect"
+>
+  <Button>Pure popover</Button>
+</Popover>;
+```
+
+### Accessibility
+
+- The trigger exposes `aria-haspopup="dialog"`, `aria-expanded`, and a stable relationship to the
+  floating content node.
+- Popover keeps non-modal focus behavior: keyboard users can tab into and out of the content.
+- Do not use Popover when the content needs a true focus trap or modal screen-reader isolation;
+  use a Dialog instead.
+- `disabled` prevents opening and avoids misleading interactive feedback.
 
 ## Migration Notes
 
