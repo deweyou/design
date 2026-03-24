@@ -1,4 +1,4 @@
-export const textPaletteStepNames = [
+export const colorPaletteStepNames = [
   '50',
   '100',
   '200',
@@ -12,9 +12,9 @@ export const textPaletteStepNames = [
   '950',
 ] as const;
 
-export type TextPaletteStepName = (typeof textPaletteStepNames)[number];
+export type ColorPaletteStepName = (typeof colorPaletteStepNames)[number];
 
-export const textColorFamilyNames = [
+export const colorFamilyNames = [
   'red',
   'orange',
   'amber',
@@ -43,14 +43,25 @@ export const textColorFamilyNames = [
   'olive',
 ] as const;
 
-export type TextColorFamilyName = (typeof textColorFamilyNames)[number];
+export type ColorFamilyName = (typeof colorFamilyNames)[number];
+
+export const textPaletteStepNames = colorPaletteStepNames;
+export type TextPaletteStepName = ColorPaletteStepName;
+
+export const textColorFamilyNames = colorFamilyNames;
+export type TextColorFamilyName = ColorFamilyName;
+
+export const baseMonochrome = {
+  black: '#000000',
+  white: '#ffffff',
+} as const;
 
 type PaletteFamilyDefinition = {
   hue: number;
   saturation: number;
 };
 
-const textPaletteFamilyDefinitions = {
+const colorPaletteFamilyDefinitions = {
   red: { hue: 8, saturation: 82 },
   orange: { hue: 24, saturation: 86 },
   amber: { hue: 40, saturation: 88 },
@@ -77,9 +88,9 @@ const textPaletteFamilyDefinitions = {
   mauve: { hue: 284, saturation: 14 },
   mist: { hue: 204, saturation: 12 },
   olive: { hue: 72, saturation: 14 },
-} as const satisfies Record<TextColorFamilyName, PaletteFamilyDefinition>;
+} as const satisfies Record<ColorFamilyName, PaletteFamilyDefinition>;
 
-const textPaletteStepConfig = [
+const colorPaletteStepConfig = [
   ['50', { lightness: 98, saturationMultiplier: 0.18 }],
   ['100', { lightness: 95, saturationMultiplier: 0.28 }],
   ['200', { lightness: 89, saturationMultiplier: 0.42 }],
@@ -92,7 +103,7 @@ const textPaletteStepConfig = [
   ['900', { lightness: 27, saturationMultiplier: 0.6 }],
   ['950', { lightness: 18, saturationMultiplier: 0.46 }],
 ] as const satisfies ReadonlyArray<
-  readonly [TextPaletteStepName, { lightness: number; saturationMultiplier: number }]
+  readonly [ColorPaletteStepName, { lightness: number; saturationMultiplier: number }]
 >;
 
 const formatHsl = (hue: number, saturation: number, lightness: number) => {
@@ -101,7 +112,7 @@ const formatHsl = (hue: number, saturation: number, lightness: number) => {
 
 const createPaletteScale = ({ hue, saturation }: PaletteFamilyDefinition) => {
   return Object.fromEntries(
-    textPaletteStepConfig.map(([stepName, stepConfig]) => {
+    colorPaletteStepConfig.map(([stepName, stepConfig]) => {
       return [
         stepName,
         formatHsl(
@@ -111,35 +122,38 @@ const createPaletteScale = ({ hue, saturation }: PaletteFamilyDefinition) => {
         ),
       ];
     }),
-  ) as Record<TextPaletteStepName, string>;
+  ) as Record<ColorPaletteStepName, string>;
 };
 
-const textPalette = Object.fromEntries(
-  textColorFamilyNames.map((familyName) => {
-    return [familyName, createPaletteScale(textPaletteFamilyDefinitions[familyName])];
+export const colorPalette = Object.fromEntries(
+  colorFamilyNames.map((familyName) => {
+    return [familyName, createPaletteScale(colorPaletteFamilyDefinitions[familyName])];
   }),
-) as Record<TextColorFamilyName, Record<TextPaletteStepName, string>>;
+) as Record<ColorFamilyName, Record<ColorPaletteStepName, string>>;
 
 export const internalPrimitives = {
   color: {
-    neutralCanvas: '#ffffff',
-    neutralSurface: '#fbfcfb',
-    neutralInk: '#18211d',
-    neutralInkMuted: '#5f6d66',
-    borderSoft: '#cfd8d3',
-    borderStrong: '#91a198',
-    brandAmber: '#5f8f7a',
-    brandAmberHover: '#527d6a',
-    brandAmberActive: '#456a59',
-    brandText: '#f7fbf8',
-    dangerBg: '#a33f39',
-    dangerBgHover: '#8f332e',
-    dangerBgActive: '#732723',
-    dangerText: '#8b2a25',
-    dangerTextOnBg: '#fff6f5',
-    focusRing: '#6fa690',
-    link: '#3f6f5b',
-    textPalette,
+    black: baseMonochrome.black,
+    white: baseMonochrome.white,
+    neutralCanvas: baseMonochrome.white,
+    neutralSurface: colorPalette.neutral['50'],
+    neutralInk: colorPalette.neutral['950'],
+    neutralInkMuted: colorPalette.slate['700'],
+    borderSoft: colorPalette.slate['300'],
+    borderStrong: colorPalette.slate['400'],
+    brandBackground: colorPalette.emerald['700'],
+    brandBackgroundHover: colorPalette.emerald['800'],
+    brandBackgroundActive: colorPalette.emerald['900'],
+    textOnBrand: baseMonochrome.white,
+    dangerBackground: colorPalette.red['700'],
+    dangerBackgroundHover: colorPalette.red['800'],
+    dangerBackgroundActive: colorPalette.red['900'],
+    dangerText: colorPalette.red['800'],
+    textOnDanger: baseMonochrome.white,
+    focusRing: colorPalette.emerald['500'],
+    link: colorPalette.emerald['700'],
+    palette: colorPalette,
+    textPalette: colorPalette,
   },
   radius: {
     sm: '0.5rem',

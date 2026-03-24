@@ -8,6 +8,7 @@ import { ChevronRightIcon } from '@deweyou-ui/icons/chevron-right';
 import { MenuIcon } from '@deweyou-ui/icons/menu';
 import { SearchIcon } from '@deweyou-ui/icons/search';
 import '@deweyou-ui/styles/theme.css';
+import { colorFamilyNames } from '@deweyou-ui/styles';
 
 import { applyThemeMode, themePreviews } from './counter';
 import { IconGuidance } from './pages/icons';
@@ -79,33 +80,30 @@ const textDecorationRows = [
     copy: '组合样式可以叠加，而不是互相覆盖。',
   },
 ] as const;
-const textPaletteFamilies = [
-  'red',
-  'orange',
-  'amber',
-  'yellow',
-  'lime',
-  'green',
-  'emerald',
-  'teal',
-  'cyan',
-  'sky',
-  'blue',
-  'indigo',
-  'violet',
-  'purple',
-  'fuchsia',
-  'pink',
-  'rose',
-  'slate',
-  'gray',
-  'zinc',
-  'neutral',
-  'stone',
-  'taupe',
-  'mauve',
-  'mist',
-  'olive',
+const textPaletteFamilies = colorFamilyNames;
+const colorFoundationPreviewFamilies = colorFamilyNames.slice(0, 8);
+const colorFoundationPreviewSteps = ['50', '500', '950'] as const;
+const semanticColorRows = [
+  {
+    description: 'primary Button、品牌强调和重点 CTA 统一消费这组主题色。',
+    label: 'brand',
+    token: '--ui-color-brand-bg',
+  },
+  {
+    description: 'danger Button、破坏性提醒和相关文本统一消费这组主题色。',
+    label: 'danger',
+    token: '--ui-color-danger-bg',
+  },
+  {
+    description: '链接与焦点环保持统一语义，不允许组件层私自扩张颜色轴。',
+    label: 'link / focus',
+    token: '--ui-color-link',
+  },
+  {
+    description: 'surface、canvas、text、border 属于基础主题层，供所有消费方共享。',
+    label: 'surface system',
+    token: '--ui-color-surface',
+  },
 ] as const;
 const textClampSample =
   'Text 组件在设置 lineClamp 后会保留指定的最大显示行数，并通过省略提示仍有未显示内容；未设置时则保持自然延展。';
@@ -315,6 +313,69 @@ const ThemeSwitcher = () => {
   );
 };
 
+const ColorFoundationPreview = () => {
+  return (
+    <section className="color-grid">
+      <article className="color-panel">
+        <h2>Color foundation</h2>
+        <p>
+          所有颜色依赖先回到 `@deweyou-ui/styles` 的共享基础色卡：26 个颜色家族、11
+          个色阶，再加上纯黑白。 `Button`、`Text`
+          和后续组件都优先复用这套颜色事实来源，非必要不得新增特化 token。
+        </p>
+        <div className="color-family-grid">
+          {colorFoundationPreviewFamilies.map((family) => (
+            <article key={family} className="color-family-card">
+              <span>{family}</span>
+              <div className="color-step-row">
+                {colorFoundationPreviewSteps.map((step) => (
+                  <div
+                    key={step}
+                    className="color-swatch"
+                    style={{ background: `var(--ui-color-palette-${family}-${step})` }}
+                  >
+                    <code>{step}</code>
+                  </div>
+                ))}
+              </div>
+              <code className="color-meta">{`--ui-color-palette-${family}-*`}</code>
+            </article>
+          ))}
+        </div>
+      </article>
+      <article className="color-panel">
+        <h2>Governed semantic colors</h2>
+        <p>
+          现有主题色同样受统一治理。品牌色、危险色、链接色和焦点色都必须能追溯到共享基础色卡或纯黑白，不再允许组件自己扩展特化颜色。
+        </p>
+        <div className="semantic-color-grid">
+          {semanticColorRows.map((row) => (
+            <article key={row.label} className="semantic-color-card">
+              <div
+                aria-hidden="true"
+                className="semantic-color-swatch"
+                style={{ background: `var(${row.token})` }}
+              />
+              <strong>{row.label}</strong>
+              <code>{row.token}</code>
+              <p>{row.description}</p>
+            </article>
+          ))}
+        </div>
+        <div className="button-row">
+          <Button color="primary">Shared primary</Button>
+          <Button color="danger" variant="outlined">
+            Shared danger
+          </Button>
+          <Text background="emerald" bold color="emerald" variant="body">
+            Shared Text highlight
+          </Text>
+        </div>
+      </article>
+    </section>
+  );
+};
+
 const TextComponentPreview = () => {
   return (
     <section className="text-contract-grid">
@@ -483,6 +544,7 @@ const App = () => (
     </section>
 
     <TextComponentPreview />
+    <ColorFoundationPreview />
 
     <section className="grid">
       <article className="card">

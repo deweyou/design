@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Text } from '@deweyou-ui/components';
+import { colorFamilyNames } from '@deweyou-ui/styles';
 
 const weightSamples = [
   {
@@ -161,34 +162,7 @@ const textDecorationSamples = [
   },
 ] as const;
 
-const textPaletteFamilies = [
-  'red',
-  'orange',
-  'amber',
-  'yellow',
-  'lime',
-  'green',
-  'emerald',
-  'teal',
-  'cyan',
-  'sky',
-  'blue',
-  'indigo',
-  'violet',
-  'purple',
-  'fuchsia',
-  'pink',
-  'rose',
-  'slate',
-  'gray',
-  'zinc',
-  'neutral',
-  'stone',
-  'taupe',
-  'mauve',
-  'mist',
-  'olive',
-] as const;
+const textPaletteFamilies = colorFamilyNames;
 
 const longTextSample =
   '长文本摘要会在设置 lineClamp 后保持可读的最大行数，并在溢出时以省略形式提示仍有未显示内容。';
@@ -206,7 +180,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Preview for the default Songti-oriented typography contract plus the Text component contract, covering variants, palette-backed highlights, lineClamp boundaries, and long-form reading flow.',
+          'Preview for the default Songti-oriented typography contract plus the Text component contract, covering variants, shared-palette-backed highlights, lineClamp boundaries, and long-form reading flow.',
       },
     },
   },
@@ -296,6 +270,10 @@ const TextContractPreview = () => {
       </article>
       <article style={previewStyles.card}>
         <strong>Palette highlights</strong>
+        <span style={previewStyles.meta}>
+          `color` / `background` 直接复用 `@deweyou-ui/styles` 的共享基础色卡家族命名，不新增 Text
+          私有颜色集合。
+        </span>
         <div style={previewStyles.grid}>
           {textPaletteFamilies.map((family) => (
             <article key={family} style={previewStyles.card}>

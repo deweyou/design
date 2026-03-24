@@ -1,43 +1,65 @@
-import { internalPrimitives, textColorFamilyNames } from '../primitives';
+import { colorFamilyNames, colorPaletteStepNames, internalPrimitives } from '../primitives';
+
+const createPaletteCssVar = (familyName: string, stepName: string) => {
+  return `var(--ui-color-palette-${familyName}-${stepName})`;
+};
+
+const createMonochromeCssVar = (tokenName: 'black' | 'white') => {
+  return `var(--ui-color-${tokenName})`;
+};
+
+const createPaletteThemeSurface = () => {
+  return Object.fromEntries(
+    colorFamilyNames.flatMap((familyName) => {
+      return colorPaletteStepNames.map((stepName) => {
+        return [
+          `--ui-color-palette-${familyName}-${stepName}`,
+          internalPrimitives.color.palette[familyName][stepName],
+        ];
+      });
+    }),
+  ) as Record<`--ui-color-palette-${string}-${string}`, string>;
+};
 
 const createTextColorThemeSurface = (textShade: '200' | '800', backgroundShade: '100' | '900') => {
   return Object.fromEntries(
-    textColorFamilyNames.flatMap((familyName) => {
+    colorFamilyNames.flatMap((familyName) => {
       return [
-        [
-          `--ui-text-color-${familyName}`,
-          internalPrimitives.color.textPalette[familyName][textShade],
-        ],
-        [
-          `--ui-text-background-${familyName}`,
-          internalPrimitives.color.textPalette[familyName][backgroundShade],
-        ],
+        [`--ui-text-color-${familyName}`, createPaletteCssVar(familyName, textShade)],
+        [`--ui-text-background-${familyName}`, createPaletteCssVar(familyName, backgroundShade)],
       ];
     }),
   ) as Record<`--ui-text-${'color' | 'background'}-${string}`, string>;
 };
 
+const paletteThemeSurface = createPaletteThemeSurface();
 const lightTextColorThemeSurface = createTextColorThemeSurface('800', '100');
 const darkTextColorThemeSurface = createTextColorThemeSurface('200', '900');
 
+export const sharedColorTheme = {
+  '--ui-color-black': internalPrimitives.color.black,
+  '--ui-color-white': internalPrimitives.color.white,
+  '--ui-color-text-on-brand': createMonochromeCssVar('white'),
+  '--ui-color-text-on-danger': createMonochromeCssVar('white'),
+  ...paletteThemeSurface,
+} as const;
+
 export const lightTheme = {
-  '--ui-color-canvas': internalPrimitives.color.neutralCanvas,
-  '--ui-color-surface': internalPrimitives.color.neutralSurface,
-  '--ui-color-text': internalPrimitives.color.neutralInk,
-  '--ui-color-text-muted': internalPrimitives.color.neutralInkMuted,
-  '--ui-color-border': internalPrimitives.color.borderSoft,
-  '--ui-color-border-strong': internalPrimitives.color.borderStrong,
-  '--ui-color-brand-bg': internalPrimitives.color.brandAmber,
-  '--ui-color-brand-bg-hover': internalPrimitives.color.brandAmberHover,
-  '--ui-color-brand-bg-active': internalPrimitives.color.brandAmberActive,
-  '--ui-color-text-on-brand': internalPrimitives.color.brandText,
-  '--ui-color-danger-bg': internalPrimitives.color.dangerBg,
-  '--ui-color-danger-bg-hover': internalPrimitives.color.dangerBgHover,
-  '--ui-color-danger-bg-active': internalPrimitives.color.dangerBgActive,
-  '--ui-color-danger-text': internalPrimitives.color.dangerText,
-  '--ui-color-text-on-danger': internalPrimitives.color.dangerTextOnBg,
-  '--ui-color-focus-ring': internalPrimitives.color.focusRing,
-  '--ui-color-link': internalPrimitives.color.link,
+  '--ui-color-canvas': createMonochromeCssVar('white'),
+  '--ui-color-surface': createPaletteCssVar('neutral', '50'),
+  '--ui-color-text': createPaletteCssVar('neutral', '950'),
+  '--ui-color-text-muted': createPaletteCssVar('slate', '700'),
+  '--ui-color-border': createPaletteCssVar('slate', '300'),
+  '--ui-color-border-strong': createPaletteCssVar('slate', '400'),
+  '--ui-color-brand-bg': createPaletteCssVar('emerald', '700'),
+  '--ui-color-brand-bg-hover': createPaletteCssVar('emerald', '800'),
+  '--ui-color-brand-bg-active': createPaletteCssVar('emerald', '900'),
+  '--ui-color-danger-bg': createPaletteCssVar('red', '700'),
+  '--ui-color-danger-bg-hover': createPaletteCssVar('red', '800'),
+  '--ui-color-danger-bg-active': createPaletteCssVar('red', '900'),
+  '--ui-color-danger-text': createPaletteCssVar('red', '800'),
+  '--ui-color-focus-ring': createPaletteCssVar('emerald', '500'),
+  '--ui-color-link': createPaletteCssVar('emerald', '700'),
   '--ui-radius-md': internalPrimitives.radius.md,
   '--ui-shadow-soft': internalPrimitives.shadow.soft,
   '--ui-font-body': internalPrimitives.font.body,
@@ -66,23 +88,21 @@ export const lightTheme = {
 
 export const darkTheme = {
   ...lightTheme,
-  '--ui-color-canvas': '#000000',
-  '--ui-color-surface': '#0f1311',
-  '--ui-color-text': '#edf3ef',
-  '--ui-color-text-muted': '#b8c6be',
-  '--ui-color-border': '#38443f',
-  '--ui-color-border-strong': '#5a6c64',
-  '--ui-color-brand-bg': '#729b89',
-  '--ui-color-brand-bg-hover': '#85ad9c',
-  '--ui-color-brand-bg-active': '#5e8574',
-  '--ui-color-text-on-brand': '#f7fbf8',
-  '--ui-color-danger-bg': '#c16c65',
-  '--ui-color-danger-bg-hover': '#d3817a',
-  '--ui-color-danger-bg-active': '#ab5851',
-  '--ui-color-danger-text': '#ffb8b1',
-  '--ui-color-text-on-danger': '#fff7f6',
-  '--ui-color-focus-ring': '#9ec8b4',
-  '--ui-color-link': '#b6e2cc',
+  '--ui-color-canvas': createMonochromeCssVar('black'),
+  '--ui-color-surface': createPaletteCssVar('neutral', '950'),
+  '--ui-color-text': createPaletteCssVar('neutral', '100'),
+  '--ui-color-text-muted': createPaletteCssVar('slate', '400'),
+  '--ui-color-border': createPaletteCssVar('slate', '800'),
+  '--ui-color-border-strong': createPaletteCssVar('slate', '700'),
+  '--ui-color-brand-bg': createPaletteCssVar('emerald', '700'),
+  '--ui-color-brand-bg-hover': createPaletteCssVar('emerald', '600'),
+  '--ui-color-brand-bg-active': createPaletteCssVar('emerald', '800'),
+  '--ui-color-danger-bg': createPaletteCssVar('red', '700'),
+  '--ui-color-danger-bg-hover': createPaletteCssVar('red', '600'),
+  '--ui-color-danger-bg-active': createPaletteCssVar('red', '800'),
+  '--ui-color-danger-text': createPaletteCssVar('red', '200'),
+  '--ui-color-focus-ring': createPaletteCssVar('emerald', '300'),
+  '--ui-color-link': createPaletteCssVar('emerald', '300'),
   '--ui-shadow-soft': '0 18px 40px rgba(0, 0, 0, 0.34)',
   ...darkTextColorThemeSurface,
 } as const;

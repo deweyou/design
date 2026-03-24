@@ -32,6 +32,7 @@ packageJson.files = ['dist'];
 packageJson.types = './dist/index.d.mts';
 packageJson.exports = {
   '.': './dist/index.mjs',
+  './color.css': './dist/css/color.css',
   './theme.css': './dist/css/theme.css',
   './theme-light.css': './dist/css/theme-light.css',
   './theme-dark.css': './dist/css/theme-dark.css',

@@ -3,6 +3,7 @@ import { resolve } from 'node:path';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { expect, test } from 'vite-plus/test';
+import { colorFamilyNames } from '@deweyou-ui/styles';
 
 import { Text, textColorFamilyOptions, type TextProps } from './index';
 import styles from './index.module.less';
@@ -92,6 +93,7 @@ test('text supports palette-backed color and background props without arbitrary 
   const style = surface.props.style as Record<string, unknown>;
 
   expect(textColorFamilyOptions).toHaveLength(26);
+  expect(textColorFamilyOptions).toEqual(colorFamilyNames);
   expect(String(surface.props.className)).toContain(styles.highlighted);
   expect(style['--text-color-current']).toBe('var(--ui-text-color-violet)');
   expect(style['--text-background-current']).toBe('var(--ui-text-background-amber)');

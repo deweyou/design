@@ -27,6 +27,16 @@ a {
   color: var(--ui-color-link);
 }
 
+::selection {
+  background: color-mix(in srgb, var(--ui-color-brand-bg) 24%, var(--ui-color-canvas));
+  color: var(--ui-color-text);
+}
+
+mark {
+  background: color-mix(in srgb, var(--ui-color-brand-bg) 18%, var(--ui-color-canvas));
+  color: var(--ui-color-text);
+}
+
 h1,
 h2,
 h3 {

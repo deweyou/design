@@ -20,15 +20,26 @@ test('consumer setup keeps the global style import explicit', () => {
     resolve(root, 'apps/storybook/src/stories/Typography.stories.tsx'),
     'utf8',
   );
+  const storybookColor = readFileSync(
+    resolve(root, 'apps/storybook/src/stories/Color.stories.tsx'),
+    'utf8',
+  );
+  const lessBridge = readFileSync(resolve(root, 'packages/styles/src/less/bridge.less'), 'utf8');
 
   expect(websiteMain).toContain("import '@deweyou-ui/styles/theme.css';");
-  expect(websiteMain).toContain('Typography direction');
-  expect(websiteMain).toContain('Mixed-script review');
+  expect(websiteMain).toContain('Color foundation');
+  expect(websiteMain).toContain('非必要不得新增特化 token');
   expect(storybookPreview).toContain("import '@deweyou-ui/styles/theme.css';");
   expect(storybookStory).not.toContain('TypographyContract');
   expect(storybookTypography).toContain('ReadingSurface');
   expect(storybookTypography).toContain('FontWeights');
   expect(storybookTypography).toContain('Weight comparison');
-  expect(stylesReadme).toContain('Consumers should override only these color tokens in v1.');
+  expect(storybookColor).toContain('Shared color foundation');
+  expect(storybookColor).toContain('Use Storybook theme switching');
+  expect(stylesReadme).toContain('共享基础色卡');
+  expect(stylesReadme).toContain('非必要不得新增特化 token');
   expect(stylesReadme).toContain('Source Han Serif');
+  expect(lessBridge).toContain('@brand-bg');
+  expect(lessBridge).toContain('@danger-bg');
+  expect(lessBridge).toContain('@link');
 });
