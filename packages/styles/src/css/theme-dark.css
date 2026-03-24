@@ -7,12 +7,12 @@
   --ui-color-text-muted: var(--ui-color-palette-slate-400);
   --ui-color-border: var(--ui-color-palette-slate-800);
   --ui-color-border-strong: var(--ui-color-palette-slate-700);
-  --ui-color-brand-bg: var(--ui-color-palette-emerald-500);
-  --ui-color-brand-bg-hover: var(--ui-color-palette-emerald-400);
-  --ui-color-brand-bg-active: var(--ui-color-palette-emerald-600);
-  --ui-color-danger-bg: var(--ui-color-palette-red-500);
-  --ui-color-danger-bg-hover: var(--ui-color-palette-red-400);
-  --ui-color-danger-bg-active: var(--ui-color-palette-red-600);
+  --ui-color-brand-bg: var(--ui-color-palette-emerald-700);
+  --ui-color-brand-bg-hover: var(--ui-color-palette-emerald-600);
+  --ui-color-brand-bg-active: var(--ui-color-palette-emerald-800);
+  --ui-color-danger-bg: var(--ui-color-palette-red-700);
+  --ui-color-danger-bg-hover: var(--ui-color-palette-red-600);
+  --ui-color-danger-bg-active: var(--ui-color-palette-red-800);
   --ui-color-danger-text: var(--ui-color-palette-red-200);
   --ui-color-focus-ring: var(--ui-color-palette-emerald-300);
   --ui-color-link: var(--ui-color-palette-emerald-300);
