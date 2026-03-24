@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-import { Button, IconButton } from '@deweyou-ui/components';
+import { Button, IconButton, Text } from '@deweyou-ui/components';
 import { useThemeMode } from '@deweyou-ui/hooks';
 import { AddIcon } from '@deweyou-ui/icons/add';
 import { ChevronRightIcon } from '@deweyou-ui/icons/chevron-right';
@@ -43,6 +43,74 @@ const typographyMixRows = [
   'Publish changes / 审核剩余 14 分钟 / Build v1.4.0 / Delta +12.8%',
   '订单编号 VC-2026-0318 / 截止 2026-03-22 14:30 / 税率 13%',
 ] as const;
+const textVariantRows = [
+  {
+    variant: 'plain',
+    label: 'plain',
+    node: 'span',
+    copy: '支持常见文本层级时，plain 负责默认行内文本。',
+  },
+  { variant: 'body', label: 'body', node: 'div', copy: 'body 与 plain 同级，但用于块级正文段落。' },
+  {
+    variant: 'caption',
+    label: 'caption',
+    node: 'div',
+    copy: 'caption 更小、更轻，适合说明和元信息。',
+  },
+  {
+    variant: 'h1',
+    label: 'h1',
+    node: 'h1',
+    copy: 'h1 到 h5 默认渲染为对应的原生标题标签。',
+  },
+  { variant: 'h2', label: 'h2', node: 'h2', copy: 'h2 适合模块标题和二级层级抬升。' },
+  { variant: 'h3', label: 'h3', node: 'h3', copy: 'h3 适合子分组和卡片标题。' },
+  { variant: 'h4', label: 'h4', node: 'h4', copy: 'h4 适合作为辅助抬升标题。' },
+  { variant: 'h5', label: 'h5', node: 'h5', copy: 'h5 适合更紧凑的信息标题。' },
+] as const;
+const textDecorationRows = [
+  { label: 'italic', props: { italic: true }, copy: '斜体适合轻度语气变化。' },
+  { label: 'bold', props: { bold: true }, copy: '加粗适合更明确的强调。' },
+  { label: 'underline', props: { underline: true }, copy: '下划线可为重点信息加标记。' },
+  { label: 'strikethrough', props: { strikethrough: true }, copy: '删除线适合修订或失效文本。' },
+  {
+    label: 'combined',
+    props: { bold: true, italic: true, strikethrough: true, underline: true },
+    copy: '组合样式可以叠加，而不是互相覆盖。',
+  },
+] as const;
+const textPaletteFamilies = [
+  'red',
+  'orange',
+  'amber',
+  'yellow',
+  'lime',
+  'green',
+  'emerald',
+  'teal',
+  'cyan',
+  'sky',
+  'blue',
+  'indigo',
+  'violet',
+  'purple',
+  'fuchsia',
+  'pink',
+  'rose',
+  'slate',
+  'gray',
+  'zinc',
+  'neutral',
+  'stone',
+  'taupe',
+  'mauve',
+  'mist',
+  'olive',
+] as const;
+const textClampSample =
+  'Text 组件在设置 lineClamp 后会保留指定的最大显示行数，并通过省略提示仍有未显示内容；未设置时则保持自然延展。';
+const textReadingLead =
+  'Palette-backed highlight 让长文里的关键词、数值和中英混排摘要可以共享同一套语义色卡，而不是让消费方自己拼接任意颜色字符串。';
 
 const supportRows = [
   {
@@ -247,6 +315,106 @@ const ThemeSwitcher = () => {
   );
 };
 
+const TextComponentPreview = () => {
+  return (
+    <section className="text-contract-grid">
+      <article className="text-panel">
+        <h2>Text component</h2>
+        <p>
+          `Text` 现在负责统一的文本渲染入口，覆盖 `plain`、`body`、`caption` 与 `h1`-`h5`
+          这八种层级。标题类 variant 默认直接渲染为原生 `h1`-`h5`，正文和说明文字仍保持 `div`
+          根节点。
+        </p>
+        <div className="text-card-grid">
+          {textVariantRows.map((sample) => (
+            <article key={sample.label} className="text-card">
+              <span>{`${sample.label} / ${sample.node}`}</span>
+              <Text variant={sample.variant}>{sample.copy}</Text>
+            </article>
+          ))}
+        </div>
+      </article>
+      <article className="text-panel">
+        <h2>Decoration and emphasis</h2>
+        <div className="text-card-grid">
+          {textDecorationRows.map((sample) => (
+            <article key={sample.label} className="text-card">
+              <span>{sample.label}</span>
+              <Text variant="body" {...sample.props}>
+                {sample.copy}
+              </Text>
+            </article>
+          ))}
+        </div>
+      </article>
+      <article className="text-panel">
+        <h2>Palette-backed highlight</h2>
+        <p>
+          `color` 和 `background` 只接受 26
+          色族的合法名称，具体色阶会随主题自动映射。浅色主题使用较深字色与较浅底色，深色主题反转为较浅字色与较深底色。
+        </p>
+        <div className="text-palette-grid">
+          {textPaletteFamilies.map((family) => (
+            <article key={family} className="text-card">
+              <span>{family}</span>
+              <Text background={family} bold color={family} variant="body">
+                {`26 色族 / ${family} / Build v1.4.0 / ¥299.00`}
+              </Text>
+            </article>
+          ))}
+        </div>
+      </article>
+      <article className="text-panel">
+        <h2>Long copy and native heading roots</h2>
+        <div className="text-card-grid">
+          <article className="text-card">
+            <span>Unclamped body</span>
+            <Text variant="body">{textClampSample}</Text>
+          </article>
+          <article className="text-card">
+            <span>lineClamp</span>
+            <Text lineClamp={2} variant="body">
+              {textClampSample}
+            </Text>
+          </article>
+          <article className="text-card">
+            <span>Native heading</span>
+            <Text className="text-prop-sample" data-slot="help-copy" variant="h2">
+              标题 variant 会直接落到原生 heading 节点。
+            </Text>
+          </article>
+        </div>
+        <div className="text-reading-surface">
+          <Text variant="h2">Reading surface</Text>
+          <Text lineClamp={3} variant="body">
+            {textReadingLead}
+          </Text>
+          <div className="text-reading-section">
+            <Text variant="body">
+              在一段连续正文里，
+              <Text background="amber" bold color="amber" style={{ display: 'inline' }}>
+                重点摘要
+              </Text>
+              、
+              <Text color="violet" italic style={{ display: 'inline' }}>
+                语气变化
+              </Text>
+              和
+              <Text underline style={{ display: 'inline' }}>
+                数据引用
+              </Text>
+              应该可以自然组合。
+            </Text>
+            <Text variant="caption">
+              支持 mixed script：Q2 revenue +18.6% / 审核完成率 97% / 截止 2026-03-31。
+            </Text>
+          </div>
+        </div>
+      </article>
+    </section>
+  );
+};
+
 const App = () => (
   <main className="shell">
     <section className="hero">
@@ -313,6 +481,8 @@ const App = () => (
         </div>
       </article>
     </section>
+
+    <TextComponentPreview />
 
     <section className="grid">
       <article className="card">

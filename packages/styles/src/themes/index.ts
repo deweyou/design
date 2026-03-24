@@ -1,4 +1,24 @@
-import { internalPrimitives } from '../primitives';
+import { internalPrimitives, textColorFamilyNames } from '../primitives';
+
+const createTextColorThemeSurface = (textShade: '200' | '800', backgroundShade: '100' | '900') => {
+  return Object.fromEntries(
+    textColorFamilyNames.flatMap((familyName) => {
+      return [
+        [
+          `--ui-text-color-${familyName}`,
+          internalPrimitives.color.textPalette[familyName][textShade],
+        ],
+        [
+          `--ui-text-background-${familyName}`,
+          internalPrimitives.color.textPalette[familyName][backgroundShade],
+        ],
+      ];
+    }),
+  ) as Record<`--ui-text-${'color' | 'background'}-${string}`, string>;
+};
+
+const lightTextColorThemeSurface = createTextColorThemeSurface('800', '100');
+const darkTextColorThemeSurface = createTextColorThemeSurface('200', '900');
 
 export const lightTheme = {
   '--ui-color-canvas': internalPrimitives.color.neutralCanvas,
@@ -27,6 +47,21 @@ export const lightTheme = {
   '--ui-font-weight-emphasis': internalPrimitives.font.weights.emphasis,
   '--ui-font-weight-title': internalPrimitives.font.weights.title,
   '--ui-font-weight-strong': internalPrimitives.font.weights.strong,
+  '--ui-text-size-body': internalPrimitives.text.bodySize,
+  '--ui-text-line-height-body': internalPrimitives.text.bodyLineHeight,
+  '--ui-text-size-caption': internalPrimitives.text.captionSize,
+  '--ui-text-line-height-caption': internalPrimitives.text.captionLineHeight,
+  '--ui-text-size-h1': internalPrimitives.text.heading1Size,
+  '--ui-text-line-height-h1': internalPrimitives.text.heading1LineHeight,
+  '--ui-text-size-h2': internalPrimitives.text.heading2Size,
+  '--ui-text-line-height-h2': internalPrimitives.text.heading2LineHeight,
+  '--ui-text-size-h3': internalPrimitives.text.heading3Size,
+  '--ui-text-line-height-h3': internalPrimitives.text.heading3LineHeight,
+  '--ui-text-size-h4': internalPrimitives.text.heading4Size,
+  '--ui-text-line-height-h4': internalPrimitives.text.heading4LineHeight,
+  '--ui-text-size-h5': internalPrimitives.text.heading5Size,
+  '--ui-text-line-height-h5': internalPrimitives.text.heading5LineHeight,
+  ...lightTextColorThemeSurface,
 } as const;
 
 export const darkTheme = {
@@ -49,4 +84,5 @@ export const darkTheme = {
   '--ui-color-focus-ring': '#9ec8b4',
   '--ui-color-link': '#b6e2cc',
   '--ui-shadow-soft': '0 18px 40px rgba(0, 0, 0, 0.34)',
+  ...darkTextColorThemeSurface,
 } as const;

@@ -25,8 +25,8 @@ test('consumer setup keeps the global style import explicit', () => {
   expect(websiteMain).toContain('Typography direction');
   expect(websiteMain).toContain('Mixed-script review');
   expect(storybookPreview).toContain("import '@deweyou-ui/styles/theme.css';");
-  expect(storybookStory).toContain('TypographyContract');
-  expect(storybookStory).toContain('Typography Contract 2026');
+  expect(storybookStory).not.toContain('TypographyContract');
+  expect(storybookTypography).toContain('ReadingSurface');
   expect(storybookTypography).toContain('FontWeights');
   expect(storybookTypography).toContain('Weight comparison');
   expect(stylesReadme).toContain('Consumers should override only these color tokens in v1.');
