@@ -91,6 +91,30 @@ test('website typography guidance documents Text variants, palette highlights, a
   expect(websiteEntry).toContain('支持常见文本层级');
 });
 
+test('button and text keep consuming shared color sources instead of package-private tokens', () => {
+  const buttonStyles = readFileSync(
+    resolve(root, 'packages/components/src/button/index.module.less'),
+    'utf8',
+  );
+  const textSource = readFileSync(resolve(root, 'packages/components/src/text/index.tsx'), 'utf8');
+  const storybookColor = readFileSync(
+    resolve(root, 'apps/storybook/src/stories/Color.stories.tsx'),
+    'utf8',
+  );
+  const websiteEntry = readFileSync(resolve(root, 'apps/website/src/main.tsx'), 'utf8');
+
+  expect(textSource).toContain("from '@deweyou-ui/styles'");
+  expect(textSource).toContain('colorFamilyNames');
+  expect(buttonStyles).toContain('--ui-color-brand-bg');
+  expect(buttonStyles).toContain('--ui-color-danger-bg');
+  expect(buttonStyles).toContain('--ui-color-link');
+  expect(buttonStyles).not.toContain('--ui-color-palette-');
+  expect(storybookColor).toContain('Shared color foundation');
+  expect(storybookColor).toContain('Use Storybook theme switching');
+  expect(websiteEntry).toContain('Color foundation');
+  expect(websiteEntry).toContain('非必要不得新增特化 token');
+});
+
 test('storybook button review matrix covers native prop passthrough and loading states', () => {
   const storybookEntry = readFileSync(
     resolve(root, 'apps/storybook/src/stories/Button.stories.tsx'),

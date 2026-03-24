@@ -1,48 +1,56 @@
 import { expect, test } from 'vite-plus/test';
 
 import {
+  baseMonochrome,
+  colorFamilyNames,
+  colorPalette,
+  colorPaletteStepNames,
   internalPrimitives,
+  internalColorFamilyNames,
   internalTypographyRoleNames,
   publicThemeTokens,
   textColorFamilyNames,
 } from '../src';
 
-test('styles package exposes the documented public color token surface', () => {
-  const expectedBaseTokens = [
-    '--ui-color-brand-bg',
-    '--ui-color-brand-bg-hover',
-    '--ui-color-brand-bg-active',
-    '--ui-color-text-on-brand',
-    '--ui-color-danger-bg',
-    '--ui-color-danger-bg-hover',
-    '--ui-color-danger-bg-active',
-    '--ui-color-danger-text',
-    '--ui-color-text-on-danger',
-    '--ui-color-focus-ring',
-    '--ui-color-link',
-    '--ui-text-size-body',
-    '--ui-text-line-height-body',
-    '--ui-text-size-caption',
-    '--ui-text-line-height-caption',
-    '--ui-text-size-h1',
-    '--ui-text-line-height-h1',
-    '--ui-text-size-h2',
-    '--ui-text-line-height-h2',
-    '--ui-text-size-h3',
-    '--ui-text-line-height-h3',
-    '--ui-text-size-h4',
-    '--ui-text-line-height-h4',
-    '--ui-text-size-h5',
-    '--ui-text-line-height-h5',
-  ];
-  const expectedTextPaletteTokens = textColorFamilyNames.flatMap((familyName) => {
-    return [`--ui-text-color-${familyName}`, `--ui-text-background-${familyName}`];
-  });
+test('styles package exposes the documented semantic and foundational color token surface', () => {
+  const publicCssVars = publicThemeTokens.map((token) => token.cssVar);
 
-  expect(publicThemeTokens.map((token) => token.cssVar)).toEqual([
-    ...expectedBaseTokens,
-    ...expectedTextPaletteTokens,
+  expect(publicCssVars).toContain('--ui-color-black');
+  expect(publicCssVars).toContain('--ui-color-white');
+  expect(publicCssVars).toContain('--ui-color-brand-bg');
+  expect(publicCssVars).toContain('--ui-color-danger-bg');
+  expect(publicCssVars).toContain('--ui-color-link');
+  expect(publicCssVars).toContain('--ui-color-palette-red-50');
+  expect(publicCssVars).toContain('--ui-color-palette-olive-950');
+  expect(publicCssVars).toContain('--ui-text-color-emerald');
+  expect(publicCssVars).toContain('--ui-text-background-mist');
+});
+
+test('styles package exposes the shared palette foundation while keeping text aliases stable', () => {
+  expect(colorFamilyNames).toHaveLength(26);
+  expect(colorPaletteStepNames).toEqual([
+    '50',
+    '100',
+    '200',
+    '300',
+    '400',
+    '500',
+    '600',
+    '700',
+    '800',
+    '900',
+    '950',
   ]);
+  expect(textColorFamilyNames).toEqual(colorFamilyNames);
+  expect(internalColorFamilyNames).toEqual(colorFamilyNames);
+  expect(baseMonochrome).toEqual({
+    black: '#000000',
+    white: '#ffffff',
+  });
+  expect(colorPalette.emerald['700']).toBeTruthy();
+  expect(colorPalette.neutral['950']).toBeTruthy();
+  expect(internalPrimitives.color.palette).toEqual(colorPalette);
+  expect(internalPrimitives.color.textPalette).toEqual(colorPalette);
 });
 
 test('styles package keeps typography internal while defining the serif defaults', () => {

@@ -173,6 +173,14 @@ test('outlined buttons rely on the native border instead of an extra overlay lay
   expect(markup).not.toContain('outlinedAnimation');
 });
 
+test('button styles consume shared semantic theme tokens instead of raw palette steps', () => {
+  expect(stylesheet).toContain('--ui-color-brand-bg');
+  expect(stylesheet).toContain('--ui-color-danger-bg');
+  expect(stylesheet).toContain('--ui-color-link');
+  expect(stylesheet).toContain('--ui-color-focus-ring');
+  expect(stylesheet).not.toContain('--ui-color-palette-');
+});
+
 test('button falls back to label when children are omitted', () => {
   const markup = renderToStaticMarkup(createElement(Button, { label: 'Continue' }));
 

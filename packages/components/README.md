@@ -227,6 +227,7 @@ This Button refactor is a breaking public API change for `@deweyou-ui/components
 ## Theme Contract
 
 - Import `@deweyou-ui/styles/theme.css` explicitly in each consuming app.
+- `Text` 的 `color` / `background` 和 `Button` 的 `primary` / `danger` / `link` / focus 都应复用 `@deweyou-ui/styles` 的共享基础色卡或受治理的语义主题色。
 - Button reuses the documented public color tokens:
   `--ui-color-brand-bg`, `--ui-color-brand-bg-hover`, `--ui-color-brand-bg-active`,
   `--ui-color-text-on-brand`, `--ui-color-danger-bg`, `--ui-color-danger-bg-hover`,
@@ -234,6 +235,7 @@ This Button refactor is a breaking public API change for `@deweyou-ui/components
   `--ui-color-focus-ring`, and `--ui-color-link`.
 - `neutral` color mode stays on library-owned monochrome surfaces; `primary` and `danger` are the
   explicit semantic opt-in paths for accent and destructive emphasis.
+- 非必要不得新增特化 token；如果 Storybook `Color` story 和现有语义主题色已经能覆盖诉求，就不应再扩张组件公开颜色轴。
 - Layout, spacing, radius, and typography remain library-owned implementation details for this
   component contract.
 

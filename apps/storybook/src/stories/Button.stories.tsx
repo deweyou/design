@@ -65,7 +65,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Internal review matrix for the Button / IconButton public API, native prop passthrough, loading feedback, color emphasis, shape support, and explicit icon entry guidance.',
+          'Internal review matrix for the Button / IconButton public API, native prop passthrough, loading feedback, color emphasis, shape support, and the shared semantic color source from @deweyou-ui/styles.',
       },
     },
   },
@@ -126,8 +126,8 @@ const ColorGallery = () => {
             {color === 'neutral'
               ? 'Neutral is the default and keeps all variants monochrome.'
               : color === 'primary'
-                ? 'Primary opts variants into theme color, including hover, border, text, and underline.'
-                : 'Danger uses the same variant system but shifts emphasis to destructive actions.'}
+                ? 'Primary opts variants into the shared semantic brand color, including hover, border, text, and underline.'
+                : 'Danger uses the same variant system but shifts emphasis to destructive actions through the governed danger tokens.'}
           </span>
         </article>
       ))}

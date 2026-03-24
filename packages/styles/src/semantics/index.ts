@@ -1,55 +1,75 @@
-import { internalPrimitives, textColorFamilyNames } from '../primitives';
+import { colorFamilyNames, colorPaletteStepNames, internalPrimitives } from '../primitives';
 
-const textColorThemeTokens = textColorFamilyNames.flatMap((familyName) => {
+const paletteThemeTokens = colorFamilyNames.flatMap((familyName) => {
+  return colorPaletteStepNames.map((stepName) => {
+    return {
+      name: `colorPalette${familyName[0]!.toUpperCase()}${familyName.slice(1)}${stepName}`,
+      cssVar: `--ui-color-palette-${familyName}-${stepName}`,
+      defaultThemeValue: internalPrimitives.color.palette[familyName][stepName],
+    };
+  });
+});
+
+const textColorThemeTokens = colorFamilyNames.flatMap((familyName) => {
   return [
     {
       name: `textColor${familyName[0]!.toUpperCase()}${familyName.slice(1)}`,
       cssVar: `--ui-text-color-${familyName}`,
-      defaultThemeValue: internalPrimitives.color.textPalette[familyName]['800'],
+      defaultThemeValue: internalPrimitives.color.palette[familyName]['800'],
     },
     {
       name: `textBackground${familyName[0]!.toUpperCase()}${familyName.slice(1)}`,
       cssVar: `--ui-text-background-${familyName}`,
-      defaultThemeValue: internalPrimitives.color.textPalette[familyName]['100'],
+      defaultThemeValue: internalPrimitives.color.palette[familyName]['100'],
     },
   ];
 });
 
 export const publicThemeTokens = [
   {
+    name: 'colorBlack',
+    cssVar: '--ui-color-black',
+    defaultThemeValue: internalPrimitives.color.black,
+  },
+  {
+    name: 'colorWhite',
+    cssVar: '--ui-color-white',
+    defaultThemeValue: internalPrimitives.color.white,
+  },
+  {
     name: 'brandBackground',
     cssVar: '--ui-color-brand-bg',
-    defaultThemeValue: internalPrimitives.color.brandAmber,
+    defaultThemeValue: internalPrimitives.color.brandBackground,
   },
   {
     name: 'brandBackgroundHover',
     cssVar: '--ui-color-brand-bg-hover',
-    defaultThemeValue: internalPrimitives.color.brandAmberHover,
+    defaultThemeValue: internalPrimitives.color.brandBackgroundHover,
   },
   {
     name: 'brandBackgroundActive',
     cssVar: '--ui-color-brand-bg-active',
-    defaultThemeValue: internalPrimitives.color.brandAmberActive,
+    defaultThemeValue: internalPrimitives.color.brandBackgroundActive,
   },
   {
     name: 'textOnBrand',
     cssVar: '--ui-color-text-on-brand',
-    defaultThemeValue: internalPrimitives.color.brandText,
+    defaultThemeValue: internalPrimitives.color.textOnBrand,
   },
   {
     name: 'dangerBackground',
     cssVar: '--ui-color-danger-bg',
-    defaultThemeValue: internalPrimitives.color.dangerBg,
+    defaultThemeValue: internalPrimitives.color.dangerBackground,
   },
   {
     name: 'dangerBackgroundHover',
     cssVar: '--ui-color-danger-bg-hover',
-    defaultThemeValue: internalPrimitives.color.dangerBgHover,
+    defaultThemeValue: internalPrimitives.color.dangerBackgroundHover,
   },
   {
     name: 'dangerBackgroundActive',
     cssVar: '--ui-color-danger-bg-active',
-    defaultThemeValue: internalPrimitives.color.dangerBgActive,
+    defaultThemeValue: internalPrimitives.color.dangerBackgroundActive,
   },
   {
     name: 'dangerText',
@@ -59,7 +79,7 @@ export const publicThemeTokens = [
   {
     name: 'textOnDanger',
     cssVar: '--ui-color-text-on-danger',
-    defaultThemeValue: internalPrimitives.color.dangerTextOnBg,
+    defaultThemeValue: internalPrimitives.color.textOnDanger,
   },
   {
     name: 'focusRing',
@@ -137,18 +157,30 @@ export const publicThemeTokens = [
     cssVar: '--ui-text-line-height-h5',
     defaultThemeValue: internalPrimitives.text.heading5LineHeight,
   },
+  ...paletteThemeTokens,
   ...textColorThemeTokens,
 ] as const;
 
 export const semanticTokens = {
+  black: '--ui-color-black',
+  white: '--ui-color-white',
   surface: '--ui-color-surface',
   canvas: '--ui-color-canvas',
   text: '--ui-color-text',
   textMuted: '--ui-color-text-muted',
   border: '--ui-color-border',
   borderStrong: '--ui-color-border-strong',
+  brandBg: '--ui-color-brand-bg',
+  brandBgHover: '--ui-color-brand-bg-hover',
+  brandBgActive: '--ui-color-brand-bg-active',
+  textOnBrand: '--ui-color-text-on-brand',
   dangerBg: '--ui-color-danger-bg',
+  dangerBgHover: '--ui-color-danger-bg-hover',
+  dangerBgActive: '--ui-color-danger-bg-active',
   dangerText: '--ui-color-danger-text',
+  textOnDanger: '--ui-color-text-on-danger',
+  focusRing: '--ui-color-focus-ring',
+  link: '--ui-color-link',
   radiusMd: '--ui-radius-md',
   shadowSoft: '--ui-shadow-soft',
   textBodySize: '--ui-text-size-body',
@@ -166,7 +198,17 @@ export const semanticTokens = {
   textHeading5Size: '--ui-text-size-h5',
   textHeading5LineHeight: '--ui-text-line-height-h5',
   ...Object.fromEntries(
-    textColorFamilyNames.flatMap((familyName) => {
+    colorFamilyNames.flatMap((familyName) => {
+      return colorPaletteStepNames.map((stepName) => {
+        return [
+          `colorPalette${familyName[0]!.toUpperCase()}${familyName.slice(1)}${stepName}`,
+          `--ui-color-palette-${familyName}-${stepName}`,
+        ];
+      });
+    }),
+  ),
+  ...Object.fromEntries(
+    colorFamilyNames.flatMap((familyName) => {
       return [
         [
           `textColor${familyName[0]!.toUpperCase()}${familyName.slice(1)}`,

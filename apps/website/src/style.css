@@ -79,6 +79,7 @@
 .preview-panel,
 .split-panel,
 .button-panel,
+.color-panel,
 .icon-panel,
 .typography-panel,
 .text-panel {
@@ -93,6 +94,7 @@
 .preview-panel h2,
 .split-panel h2,
 .button-panel h2,
+.color-panel h2,
 .icon-panel h2,
 .typography-panel h2,
 .text-panel h2 {
@@ -111,6 +113,7 @@
 }
 
 .layout,
+.color-grid,
 .button-guidance-grid,
 .icon-layout,
 .typography-grid,
@@ -124,6 +127,10 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.color-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .typography-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
@@ -133,6 +140,9 @@
 }
 
 .preview-stage,
+.color-family-grid,
+.color-step-row,
+.semantic-color-grid,
 .button-showcase,
 .button-matrix,
 .motion-comparison-grid,
@@ -147,6 +157,58 @@
 .text-reading-section {
   display: grid;
   gap: 12px;
+}
+
+.color-family-grid {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.color-family-card,
+.semantic-color-card {
+  padding: 16px;
+  border: 1px solid var(--ui-color-border);
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--ui-color-canvas) 76%, var(--ui-color-surface));
+}
+
+.color-family-card {
+  display: grid;
+  gap: 10px;
+}
+
+.color-step-row {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.color-swatch,
+.semantic-color-swatch {
+  border: 1px solid color-mix(in srgb, var(--ui-color-border) 86%, transparent);
+  border-radius: 12px;
+}
+
+.color-swatch {
+  min-block-size: 56px;
+  padding: 8px;
+  color: var(--ui-color-text);
+}
+
+.color-meta,
+.semantic-color-card code {
+  font: 0.82rem/1.45 var(--ui-font-mono);
+}
+
+.semantic-color-grid {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.semantic-color-card {
+  display: grid;
+  gap: 8px;
+}
+
+.semantic-color-swatch {
+  block-size: 48px;
+  inline-size: 100%;
 }
 
 .preview-frame {
@@ -291,7 +353,9 @@
 }
 
 .typography-panel p,
-.text-panel p {
+.text-panel p,
+.color-panel p,
+.semantic-color-card p {
   margin: 0;
 }
 
@@ -304,6 +368,7 @@
 @media (max-width: 900px) {
   .grid,
   .button-guidance-grid,
+  .color-grid,
   .typography-grid,
   .text-contract-grid,
   .button-matrix,

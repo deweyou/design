@@ -3,12 +3,23 @@ import { resolve } from 'node:path';
 
 import { expect, test } from 'vite-plus/test';
 
-import { internalPrimitives, textColorFamilyNames, textPaletteStepNames } from '../src';
+import {
+  baseMonochrome,
+  colorFamilyNames,
+  colorPaletteStepNames,
+  darkTheme,
+  internalPrimitives,
+  lightTheme,
+  sharedColorTheme,
+  textColorFamilyNames,
+  textPaletteStepNames,
+} from '../src';
 
 const cssDir = resolve(import.meta.dirname, '../src/css');
 const fontsDir = resolve(import.meta.dirname, '../src/assets/fonts');
 
 test('theme outputs define light, dark, and default entrypoints', () => {
+  const color = readFileSync(resolve(cssDir, 'color.css'), 'utf8');
   const theme = readFileSync(resolve(cssDir, 'theme.css'), 'utf8');
   const light = readFileSync(resolve(cssDir, 'theme-light.css'), 'utf8');
   const dark = readFileSync(resolve(cssDir, 'theme-dark.css'), 'utf8');
@@ -18,7 +29,12 @@ test('theme outputs define light, dark, and default entrypoints', () => {
   expect(theme).toContain("@import './reset.css';");
   expect(theme).toContain("@import './fonts.css';");
   expect(theme).toContain("@import './base.css';");
+  expect(color).toContain('--ui-color-black');
+  expect(color).toContain('--ui-color-palette-red-50');
+  expect(color).toContain('--ui-color-palette-olive-950');
+  expect(light).toContain("@import './color.css';");
   expect(light).toContain('--ui-color-brand-bg');
+  expect(light).toContain('var(--ui-color-palette-emerald-700)');
   expect(light).toContain('--ui-font-body');
   expect(light).toContain('--ui-font-weight-title');
   expect(light).toContain('--ui-text-size-h1');
@@ -27,6 +43,7 @@ test('theme outputs define light, dark, and default entrypoints', () => {
   expect(light).toContain('--ui-text-background-olive');
   expect(light).toContain('Songti SC');
   expect(light).toContain('SimSun');
+  expect(dark).toContain("@import './color.css';");
   expect(dark).toContain('[data-theme');
   expect(dark).toContain('--ui-text-size-h5');
   expect(dark).toContain('--ui-text-color-violet');
@@ -42,8 +59,8 @@ test('theme outputs define light, dark, and default entrypoints', () => {
 });
 
 test('text palette primitives expose 26 color families and 11 steps per family', () => {
-  expect(textColorFamilyNames).toHaveLength(26);
-  expect(textPaletteStepNames).toEqual([
+  expect(colorFamilyNames).toHaveLength(26);
+  expect(colorPaletteStepNames).toEqual([
     '50',
     '100',
     '200',
@@ -56,10 +73,16 @@ test('text palette primitives expose 26 color families and 11 steps per family',
     '900',
     '950',
   ]);
+  expect(textColorFamilyNames).toEqual(colorFamilyNames);
+  expect(textPaletteStepNames).toEqual(colorPaletteStepNames);
+  expect(baseMonochrome).toEqual({
+    black: '#000000',
+    white: '#ffffff',
+  });
 
-  for (const familyName of textColorFamilyNames) {
-    expect(Object.keys(internalPrimitives.color.textPalette[familyName])).toEqual(
-      textPaletteStepNames,
+  for (const familyName of colorFamilyNames) {
+    expect(Object.keys(internalPrimitives.color.palette[familyName])).toEqual(
+      colorPaletteStepNames,
     );
   }
 });
@@ -68,12 +91,48 @@ test('theme outputs expose palette-backed text color and background tokens for e
   const light = readFileSync(resolve(cssDir, 'theme-light.css'), 'utf8');
   const dark = readFileSync(resolve(cssDir, 'theme-dark.css'), 'utf8');
 
-  for (const familyName of textColorFamilyNames) {
-    expect(light).toContain(`--ui-text-color-${familyName}`);
-    expect(light).toContain(`--ui-text-background-${familyName}`);
-    expect(dark).toContain(`--ui-text-color-${familyName}`);
-    expect(dark).toContain(`--ui-text-background-${familyName}`);
+  for (const familyName of colorFamilyNames) {
+    expect(light).toContain(
+      `--ui-text-color-${familyName}: var(--ui-color-palette-${familyName}-800)`,
+    );
+    expect(light).toContain(
+      `--ui-text-background-${familyName}: var(--ui-color-palette-${familyName}-100)`,
+    );
+    expect(dark).toContain(
+      `--ui-text-color-${familyName}: var(--ui-color-palette-${familyName}-200)`,
+    );
+    expect(dark).toContain(
+      `--ui-text-background-${familyName}: var(--ui-color-palette-${familyName}-900)`,
+    );
   }
+});
+
+test('theme outputs expose the shared color palette and monochrome tokens for every family and step', () => {
+  const color = readFileSync(resolve(cssDir, 'color.css'), 'utf8');
+
+  expect(color).toContain('--ui-color-black');
+  expect(color).toContain('--ui-color-white');
+
+  for (const familyName of colorFamilyNames) {
+    for (const stepName of colorPaletteStepNames) {
+      expect(color).toContain(`--ui-color-palette-${familyName}-${stepName}`);
+    }
+  }
+});
+
+test('semantic theme colors trace back to the shared palette foundation or monochrome tokens', () => {
+  expect(sharedColorTheme['--ui-color-black']).toBe(baseMonochrome.black);
+  expect(sharedColorTheme['--ui-color-white']).toBe(baseMonochrome.white);
+  expect(sharedColorTheme['--ui-color-text-on-brand']).toBe('var(--ui-color-white)');
+  expect(sharedColorTheme['--ui-color-text-on-danger']).toBe('var(--ui-color-white)');
+  expect(lightTheme['--ui-color-canvas']).toBe('var(--ui-color-white)');
+  expect(darkTheme['--ui-color-canvas']).toBe('var(--ui-color-black)');
+  expect(lightTheme['--ui-color-brand-bg']).toBe('var(--ui-color-palette-emerald-700)');
+  expect(lightTheme['--ui-color-danger-bg']).toBe('var(--ui-color-palette-red-700)');
+  expect(lightTheme['--ui-color-link']).toBe('var(--ui-color-palette-emerald-700)');
+  expect(darkTheme['--ui-color-brand-bg']).toBe('var(--ui-color-palette-emerald-500)');
+  expect(darkTheme['--ui-color-danger-bg']).toBe('var(--ui-color-palette-red-500)');
+  expect(darkTheme['--ui-color-link']).toBe('var(--ui-color-palette-emerald-300)');
 });
 
 test('fonts asset directory contains the vendored Source Han Serif CN files', () => {

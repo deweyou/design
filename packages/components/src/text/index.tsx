@@ -1,39 +1,13 @@
 import type { CSSProperties, HTMLAttributes, ReactNode } from 'react';
 import classNames from 'classnames';
+import { colorFamilyNames, type ColorFamilyName } from '@deweyou-ui/styles';
 
 import styles from './index.module.less';
 
-export const textColorFamilyOptions = [
-  'red',
-  'orange',
-  'amber',
-  'yellow',
-  'lime',
-  'green',
-  'emerald',
-  'teal',
-  'cyan',
-  'sky',
-  'blue',
-  'indigo',
-  'violet',
-  'purple',
-  'fuchsia',
-  'pink',
-  'rose',
-  'slate',
-  'gray',
-  'zinc',
-  'neutral',
-  'stone',
-  'taupe',
-  'mauve',
-  'mist',
-  'olive',
-] as const;
+export const textColorFamilyOptions = colorFamilyNames;
 
 export type TextVariant = 'plain' | 'body' | 'caption' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5';
-export type TextColorFamily = (typeof textColorFamilyOptions)[number];
+export type TextColorFamily = ColorFamilyName;
 
 export type TextProps = HTMLAttributes<HTMLElement> & {
   children?: ReactNode;
