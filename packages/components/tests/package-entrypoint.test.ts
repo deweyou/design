@@ -43,15 +43,27 @@ const exampleTextProps: import('../src').TextProps = {
   variant: 'caption',
 };
 
+const examplePopoverProps: import('../src').PopoverProps = {
+  children: createElement('button', { type: 'button' }, '打开浮层'),
+  content: '基础内容',
+  mode: 'card',
+  offset: 8,
+  overlayClassName: 'consumer-overlay',
+  placement: 'right-bottom',
+  shape: 'rounded',
+  trigger: ['click', 'focus'],
+};
+
 void exampleButtonProps;
 void exampleIconButtonProps;
+void examplePopoverProps;
 void exampleTextProps;
 
-test('components root entry exposes Button, IconButton, and Text as the runtime public exports', () => {
-  expect(Object.keys(components).sort()).toEqual(['Button', 'IconButton', 'Text']);
+test('components root entry exposes Button, IconButton, Popover, and Text as the runtime public exports', () => {
+  expect(Object.keys(components).sort()).toEqual(['Button', 'IconButton', 'Popover', 'Text']);
 });
 
-test('components root entry renders Button, IconButton, and Text without any legacy contract object', () => {
+test('components root entry renders Button, IconButton, Popover, and Text without any legacy contract object', () => {
   const buttonMarkup = renderToStaticMarkup(
     createElement(components.Button, { href: '/publish' }, 'Publish'),
   );
@@ -62,6 +74,13 @@ test('components root entry renders Button, IconButton, and Text without any leg
       icon: createElement(SearchIcon),
     }),
   );
+  const popoverMarkup = renderToStaticMarkup(
+    createElement(
+      components.Popover,
+      { content: createElement('span', null, '公开说明') },
+      createElement('button', { type: 'button' }, 'Open popover'),
+    ),
+  );
   const textMarkup = renderToStaticMarkup(
     createElement(components.Text, { variant: 'body' }, '公开正文'),
   );
@@ -70,6 +89,8 @@ test('components root entry renders Button, IconButton, and Text without any leg
   expect(buttonMarkup.startsWith('<a')).toBe(true);
   expect(iconButtonMarkup).toContain('data-content-mode="icon-button"');
   expect(iconButtonMarkup.startsWith('<a')).toBe(true);
+  expect(popoverMarkup).toContain('aria-haspopup="dialog"');
+  expect(popoverMarkup).toContain('Open popover');
   expect(textMarkup.startsWith('<div')).toBe(true);
   expect(textMarkup).toContain('公开正文');
   expect(components.Button.Icon).toBe(components.IconButton);

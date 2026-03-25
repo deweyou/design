@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-import { Button, IconButton, Text } from '@deweyou-ui/components';
+import { Button, IconButton, Popover, Text } from '@deweyou-ui/components';
 import { useThemeMode } from '@deweyou-ui/hooks';
 import { AddIcon } from '@deweyou-ui/icons/add';
 import { ChevronRightIcon } from '@deweyou-ui/icons/chevron-right';
@@ -476,6 +476,166 @@ const TextComponentPreview = () => {
   );
 };
 
+const PopoverComponentPreview = () => {
+  const [controlledVisible, setControlledVisible] = React.useState(false);
+  const [placement, setPlacement] = React.useState<'top' | 'bottom' | 'right-bottom'>(
+    'right-bottom',
+  );
+  const portalContainerRef = React.useRef<HTMLDivElement>(null);
+
+  return (
+    <section className="button-guidance-grid">
+      <article className="button-panel">
+        <h2>Popover component</h2>
+        <p>
+          `Popover` 是新的基础浮层入口。它默认用 `click` 打开，保持非模态，不会把焦点困在面板里；
+          同时支持受控状态、位置回退、自定义挂载容器和交互型内容。
+        </p>
+        <div className="button-boundary-grid">
+          <div className="boundary-card">
+            <strong>Default click</strong>
+            <div className="button-row">
+              <Popover
+                content={
+                  <div className="popover-copy">
+                    <strong>Review summary</strong>
+                    <p>默认卡片带 border、shadow、arrow，并会在外部点击或 `Escape` 时关闭。</p>
+                  </div>
+                }
+              >
+                <Button variant="outlined">Open summary</Button>
+              </Popover>
+            </div>
+          </div>
+          <div className="boundary-card">
+            <strong>Controlled + pure mode</strong>
+            <div className="button-row">
+              <Popover
+                content={
+                  <div className="popover-copy popover-copy-plain">
+                    <Text bold variant="body">
+                      Controlled content
+                    </Text>
+                    <Text color="slate" variant="caption">
+                      面板内点击默认保持打开；这里用显式动作关闭。
+                    </Text>
+                    <Button
+                      size="small"
+                      variant="ghost"
+                      onClick={() => {
+                        setControlledVisible(false);
+                      }}
+                    >
+                      Close popover
+                    </Button>
+                    <Button
+                      size="small"
+                      variant="ghost"
+                      onClick={() => {
+                        setControlledVisible(true);
+                      }}
+                    >
+                      Keep open
+                    </Button>
+                  </div>
+                }
+                mode="pure"
+                onVisibleChange={(nextVisible, details) => {
+                  if (nextVisible || details.reason === 'explicit-action') {
+                    setControlledVisible(nextVisible);
+                  }
+                }}
+                shape="rounded"
+                visible={controlledVisible}
+              >
+                <Button color="primary">
+                  {controlledVisible ? 'Popover open' : 'Open controlled'}
+                </Button>
+              </Popover>
+              <Button
+                size="small"
+                variant="ghost"
+                onClick={() => {
+                  setControlledVisible((value) => !value);
+                }}
+              >
+                Toggle state
+              </Button>
+            </div>
+          </div>
+          <div className="boundary-card">
+            <strong>Placement + custom portal</strong>
+            <div className="button-row">
+              {(['top', 'bottom', 'right-bottom'] as const).map((option) => (
+                <Button
+                  key={option}
+                  size="small"
+                  variant={placement === option ? 'filled' : 'outlined'}
+                  onClick={() => {
+                    setPlacement(option);
+                  }}
+                >
+                  {option}
+                </Button>
+              ))}
+            </div>
+            <div ref={portalContainerRef} className="popover-portal-shell">
+              <Popover
+                boundaryPadding={24}
+                content={
+                  <div className="popover-copy">
+                    <strong>Portal container</strong>
+                    <p>这个浮层挂到局部容器里，同时仍然保留位置回退和安全边距。</p>
+                  </div>
+                }
+                mode="loose"
+                placement={placement}
+                popupPortalContainer={portalContainerRef.current ?? undefined}
+                trigger={['click', 'focus']}
+              >
+                <Button>Open in review box</Button>
+              </Popover>
+            </div>
+          </div>
+          <div className="boundary-card">
+            <strong>Interactive content + disabled</strong>
+            <div className="button-row">
+              <Popover
+                content={
+                  <div className="popover-copy">
+                    <Text bold variant="body">
+                      Quick action
+                    </Text>
+                    <input
+                      aria-label="Quick action note"
+                      className="popover-input"
+                      placeholder="Focus should keep popover open"
+                    />
+                    <div className="button-row">
+                      <Button size="small">Apply</Button>
+                      <Button size="small" variant="ghost">
+                        Keep open
+                      </Button>
+                    </div>
+                  </div>
+                }
+                trigger={['click', 'focus']}
+              >
+                <Button icon={<SearchIcon />}>Interactive popover</Button>
+              </Popover>
+              <Popover content={<span>Disabled popover should never open.</span>} disabled>
+                <Button disabled variant="outlined">
+                  Disabled trigger
+                </Button>
+              </Popover>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+  );
+};
+
 const App = () => (
   <main className="shell">
     <section className="hero">
@@ -847,6 +1007,7 @@ const App = () => (
       </article>
     </section>
 
+    <PopoverComponentPreview />
     <IconGuidance />
     <p className="footer-note">
       Storybook owns the exhaustive review matrix. The website keeps the public guidance concise:
