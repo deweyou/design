@@ -12,20 +12,27 @@ test('repository guidance documents the shared authoring conventions', () => {
   const componentAgents = read('packages/components/AGENTS.md');
   const hookAgents = read('packages/hooks/AGENTS.md');
   const utilAgents = read('packages/utils/AGENTS.md');
+  const storybookAgents = read('apps/storybook/AGENTS.md');
+  const websiteAgents = read('apps/website/AGENTS.md');
 
-  expect(rootAgents).toContain('Functions default to arrow-function style');
-  expect(rootAgents).toContain('React components must be authored in TSX files');
-  expect(rootAgents).toContain('lowercase names with hyphen separators');
-  expect(rootAgents).toContain(
-    'Top-level package `tests/` directories are reserved for cross-cutting',
+  expect(rootAgents).toContain('函数默认使用箭头函数风格');
+  expect(rootAgents).toContain('React 组件必须使用 TSX 文件编写');
+  expect(rootAgents).toContain('小写名称并使用连字符分隔');
+  expect(rootAgents).toContain('package 顶层 `tests/` 目录只保留跨领域或 workspace 边界覆盖');
+  expect(rootAgents).not.toContain(
+    'This project is using Vite+, the unified toolchain built on top of Vite',
   );
 
   expect(componentAgents).toContain('index.test.ts');
-  expect(componentAgents).toContain('Use arrow functions by default');
+  expect(componentAgents).toContain('默认使用箭头函数');
+  expect(componentAgents).not.toContain('Applies to');
   expect(hookAgents).toContain('src/<hook-name>/');
-  expect(hookAgents).toContain('Use arrow functions by default');
-  expect(utilAgents).toContain('lowercase, hyphen-separated names');
-  expect(utilAgents).toContain('Top-level tests in `packages/utils/tests` are reserved');
+  expect(hookAgents).toContain('默认使用箭头函数');
+  expect(hookAgents).not.toContain('Only reusable React hooks belong here.');
+  expect(utilAgents).toContain('小写加连字符命名');
+  expect(utilAgents).toContain('`packages/utils/tests` 下的顶层测试');
+  expect(storybookAgents).toContain('仅用于内部评审和状态验证');
+  expect(websiteAgents).toContain('公开文档和精选 demo 的承载面');
 });
 
 test('repository automation records the lint and example-code constraints', () => {

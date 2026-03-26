@@ -5,6 +5,7 @@
     "noEmit": true,
     "module": "nodenext",
     "moduleResolution": "nodenext",
+    "allowArbitraryExtensions": true,
     "allowImportingTsExtensions": true,
     "esModuleInterop": true,
     "strict": true,

@@ -109,6 +109,10 @@ const textClampSample =
   'Text 组件在设置 lineClamp 后会保留指定的最大显示行数，并通过省略提示仍有未显示内容；未设置时则保持自然延展。';
 const textReadingLead =
   'Palette-backed highlight 让长文里的关键词、数值和中英混排摘要可以共享同一套语义色卡，而不是让消费方自己拼接任意颜色字符串。';
+const governanceNotes = [
+  'packages 默认复用 Vite+ 统一构建约定，只有公开产物确有需要时才保留例外配置。',
+  '仓库自有 AGENTS.md 正文统一使用简体中文，第三方依赖目录中的同名文件不在治理范围内。',
+] as const;
 
 const supportRows = [
   {
@@ -232,6 +236,19 @@ const PublicPropsPreview = () => {
           root node.
         </p>
       </div>
+    </div>
+  );
+};
+
+const GovernancePreview = () => {
+  return (
+    <div className="boundary-card">
+      <strong>Build governance</strong>
+      <ul>
+        {governanceNotes.map((note) => (
+          <li key={note}>{note}</li>
+        ))}
+      </ul>
     </div>
   );
 };
@@ -705,6 +722,12 @@ const App = () => (
 
     <TextComponentPreview />
     <ColorFoundationPreview />
+    <section className="button-guidance-grid">
+      <article className="button-panel">
+        <h2>Build governance</h2>
+        <GovernancePreview />
+      </article>
+    </section>
 
     <section className="grid">
       <article className="card">

@@ -6,6 +6,8 @@ import { defineConfig as definePackConfig } from 'vite-plus/pack';
 
 const srcDir = resolve(import.meta.dirname, 'src');
 const exportsDir = resolve(srcDir, 'exports');
+// Icons are an explicit exception to the default pack contract because each public icon gets its
+// own generated entrypoint under `dist/icons`.
 const iconEntryNames = readdirSync(exportsDir)
   .filter((file) => file.endsWith('.ts'))
   .map((file) => file.replace(/\.ts$/, ''));

@@ -3,22 +3,39 @@
   "version": "0.0.0",
   "description": "Reusable UI components for Deweyou UI.",
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "type": "module",
-  "types": "./src/index.ts",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./src/index.ts",
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "default": "./dist/index.js"
+    },
+    "./button": {
+      "types": "./dist/button/index.d.ts",
+      "import": "./dist/button/index.js",
+      "default": "./dist/button/index.js"
+    },
+    "./popover": {
+      "types": "./dist/popover/index.d.ts",
+      "import": "./dist/popover/index.js",
+      "default": "./dist/popover/index.js"
+    },
+    "./text": {
+      "types": "./dist/text/index.d.ts",
+      "import": "./dist/text/index.js",
+      "default": "./dist/text/index.js"
     },
     "./package.json": "./package.json",
     "./style.css": "./dist/style.css"
   },
+  "publishConfig": {
+    "directory": "dist"
+  },
   "scripts": {
-    "build": "vp build && tsc -p tsconfig.build.json",
+    "build": "vp build && tsc -p tsconfig.build.json && node ../utils/scripts/write-published-manifest.mjs .",
     "dev": "vp build --watch",
     "test": "vp test"
   },
@@ -26,9 +43,7 @@
     "@deweyou-ui/hooks": "workspace:*",
     "@deweyou-ui/styles": "workspace:*",
     "@floating-ui/react": "catalog:",
-    "classnames": "catalog:",
-    "react": "catalog:",
-    "react-dom": "catalog:"
+    "classnames": "catalog:"
   },
   "devDependencies": {
     "@tsdown/css": "catalog:",
@@ -38,5 +53,9 @@
     "less": "catalog:",
     "typescript": "catalog:",
     "vite-plus": "catalog:"
+  },
+  "peerDependencies": {
+    "react": "catalog:",
+    "react-dom": "catalog:"
   }
 }

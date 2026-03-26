@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Text } from '@deweyou-ui/components';
+import { Text } from '@deweyou-ui/components/text';
 import { colorFamilyNames } from '@deweyou-ui/styles';
 
 const weightSamples = [
@@ -67,6 +67,11 @@ const previewStyles = {
   stack: {
     display: 'grid',
     gap: '8px',
+  },
+  shell: {
+    display: 'grid',
+    gap: '12px',
+    width: 'min(920px, 100%)',
   },
   textBoundaryCard: {
     display: 'grid',
@@ -180,7 +185,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Preview for the default Songti-oriented typography contract plus the Text component contract, covering variants, shared-palette-backed highlights, lineClamp boundaries, and long-form reading flow.',
+          'Preview for the default Songti-oriented typography contract plus the direct `@deweyou-ui/components/text` contract, covering variants, shared-palette-backed highlights, lineClamp boundaries, and long-form reading flow.',
       },
     },
   },
@@ -189,6 +194,27 @@ const meta = {
 export default meta;
 
 type Story = StoryObj<typeof meta>;
+
+const EntrypointShell = () => {
+  return (
+    <div style={previewStyles.shell}>
+      <article style={previewStyles.card}>
+        <strong>Preferred subpath</strong>
+        <code>{`import { Text } from '@deweyou-ui/components/text';`}</code>
+        <span style={previewStyles.meta}>
+          Typography review 优先验证 `text` 子路径入口，不要求额外补充组件专属样式导入。
+        </span>
+      </article>
+      <article style={previewStyles.card}>
+        <strong>Root compatibility</strong>
+        <code>{`import { Text } from '@deweyou-ui/components';`}</code>
+        <span style={previewStyles.meta}>
+          根入口仍保留聚合消费能力，便于兼容已有页面和文档示例。
+        </span>
+      </article>
+    </div>
+  );
+};
 
 const FontWeightsPreview = () => {
   return (
@@ -234,6 +260,10 @@ const FontWeightsPreview = () => {
 
 export const FontWeights: Story = {
   render: () => <FontWeightsPreview />,
+};
+
+export const Entrypoints: Story = {
+  render: () => <EntrypointShell />,
 };
 
 const TextContractPreview = () => {

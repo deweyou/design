@@ -18,6 +18,8 @@
 - 非必要不得新增特化 token
 - 若出现新的颜色诉求，必须先证明共享基础色卡与现有语义主题色不足
 - 完整评审矩阵统一放在 Storybook 的 `Color` story，website 只保留公开指导
+- `packages/` 下默认应复用 Vite+ 统一构建约定；`@deweyou-ui/styles` 仅因静态样式资产复制和发布清单整理保留例外构建步骤
+- 仓库自有的 `AGENTS.md` 正文统一使用简体中文，便于与 `specs/` 文档和治理规则保持一致语言
 
 ## Public Entrypoints
 

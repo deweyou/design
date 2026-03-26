@@ -3,8 +3,7 @@
   "version": "0.0.0",
   "description": "Generated React icon components for all tdesign-icons-svg assets used by Deweyou UI.",
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "type": "module",
   "sideEffects": false,
@@ -11752,6 +11751,9 @@
       "default": "./dist/icons/zoom-out-filled.mjs"
     }
   },
+  "publishConfig": {
+    "directory": "dist"
+  },
   "scripts": {
     "build": "vp pack && node ./scripts/organize-dist.mjs",
     "dev": "vp pack --watch",
@@ -11759,7 +11761,6 @@
     "test": "vp test"
   },
   "dependencies": {
-    "react": "catalog:",
     "tdesign-icons-svg": "catalog:"
   },
   "devDependencies": {
@@ -11768,5 +11769,8 @@
     "react-dom": "catalog:",
     "typescript": "catalog:",
     "vite-plus": "catalog:"
+  },
+  "peerDependencies": {
+    "react": "catalog:"
   }
 }

@@ -3,6 +3,7 @@ import { resolve } from 'node:path';
 
 import { expect, test } from 'vite-plus/test';
 
+import { createPublishedPackageManifest } from '../../utils/src/package-manifest';
 import {
   baseMonochrome,
   colorFamilyNames,
@@ -143,4 +144,35 @@ test('fonts asset directory contains the vendored Source Han Serif CN files', ()
   expect(readFileSync(resolve(fontsDir, 'SourceHanSerifCN-Medium.otf'))).toBeTruthy();
   expect(readFileSync(resolve(fontsDir, 'SourceHanSerifCN-SemiBold.otf'))).toBeTruthy();
   expect(readFileSync(resolve(fontsDir, 'SourceHanSerifCN-Bold.otf'))).toBeTruthy();
+});
+
+test('styles publish manifest drops workspace-only metadata and rewrites dist-root entrypaths', () => {
+  const sourceManifest = JSON.parse(
+    readFileSync(resolve(import.meta.dirname, '../package.json'), 'utf8'),
+  ) as import('../../utils/src/package-manifest').PackageManifest;
+  const publishedManifest = createPublishedPackageManifest({
+    catalogVersions: {
+      less: '^4.4.1',
+      typescript: '^5',
+      'vite-plus': '^0.1.11',
+    },
+    manifest: sourceManifest,
+    workspaceVersions: {
+      '@deweyou-ui/styles': sourceManifest.version,
+    },
+  });
+
+  expect(publishedManifest.devDependencies).toBeUndefined();
+  expect(publishedManifest.files).toBeUndefined();
+  expect(publishedManifest.publishConfig).toBeUndefined();
+  expect(publishedManifest.types).toBe('./index.d.mts');
+  expect(publishedManifest.exports).toMatchObject({
+    '.': {
+      default: './index.mjs',
+      import: './index.mjs',
+      types: './index.d.mts',
+    },
+    './theme.css': './css/theme.css',
+    './less/bridge.less': './less/bridge.less',
+  });
 });

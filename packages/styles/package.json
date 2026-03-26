@@ -3,26 +3,16 @@
   "version": "0.0.0",
   "description": "Theme tokens, global CSS entrypoints, and Less bridges for Deweyou UI.",
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "type": "module",
-  "types": "./src/index.ts",
+  "types": "./dist/index.d.mts",
   "exports": {
-    ".": {
-      "types": "./src/index.ts",
-      "import": "./src/index.ts",
-      "default": "./src/index.ts"
-    },
-    "./color.css": "./dist/css/color.css",
-    "./theme.css": "./dist/css/theme.css",
-    "./theme-light.css": "./dist/css/theme-light.css",
-    "./theme-dark.css": "./dist/css/theme-dark.css",
-    "./reset.css": "./dist/css/reset.css",
-    "./base.css": "./dist/css/base.css",
-    "./less/bridge.less": "./dist/less/bridge.less",
-    "./less/mixins.less": "./dist/less/mixins.less",
+    ".": "./dist/index.mjs",
     "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "directory": "dist"
   },
   "scripts": {
     "build": "vp pack && node ./scripts/copy-assets.mjs",

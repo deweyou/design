@@ -3,16 +3,19 @@
   "version": "0.0.0",
   "description": "Framework-agnostic utilities for the Deweyou UI monorepo.",
   "files": [
-    "src"
+    "dist"
   ],
   "type": "module",
-  "types": "./src/index.ts",
+  "types": "./dist/index.d.mts",
   "exports": {
     ".": "./dist/index.mjs",
     "./package.json": "./package.json"
   },
+  "publishConfig": {
+    "directory": "dist"
+  },
   "scripts": {
-    "build": "vp pack",
+    "build": "vp pack && node ./scripts/write-published-manifest.mjs .",
     "dev": "vp pack --watch",
     "test": "vp test",
     "typecheck": "tsc --noEmit"

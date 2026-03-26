@@ -1,15 +1,15 @@
 # AGENTS
 
-## Scope
+## 适用范围
 
-Applies to `packages/hooks`.
+适用于 `packages/hooks`。
 
-## Constraints
+## 约束
 
-- Only reusable React hooks belong here.
-- Do not move framework-agnostic helpers into this package.
-- Put each hook in its own folder under `src/<hook-name>/` with `index.ts` and `index.test.ts`.
-- Use arrow functions by default for exported hooks and local helpers in this package.
-- Prefer standard TSX/TypeScript patterns over workaround-style React element factories.
-- Hooks may depend on `utils`, but not on `components`.
-- Keep top-level tests only for cross-cutting coverage once a hook has a colocated unit test.
+- 这里只放可复用的 React hooks。
+- 不要把与框架无关的 helpers 挪进这个包。
+- 每个 hook 都应放在 `src/<hook-name>/` 下，并包含 `index.ts` 和 `index.test.ts`。
+- 导出的 hooks 和本地 helper 默认使用箭头函数。
+- 优先使用标准 TSX/TypeScript 模式，不要引入绕路式的 React element factory 写法。
+- hooks 可以依赖 `utils`，但不能依赖 `components`。
+- 当 hook 已有 colocated 单测后，顶层 tests 只保留跨领域覆盖。

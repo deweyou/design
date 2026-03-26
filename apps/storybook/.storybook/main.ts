@@ -5,6 +5,9 @@ import type { StorybookConfig } from '@storybook/react-vite';
 const componentsEntry = fileURLToPath(
   new URL('../../../packages/components/src/index.ts', import.meta.url),
 );
+const componentsSourceDir = fileURLToPath(
+  new URL('../../../packages/components/src', import.meta.url),
+);
 const iconsSourceDir = fileURLToPath(new URL('../../../packages/icons/src', import.meta.url));
 const iconExportsDir = fileURLToPath(
   new URL('../../../packages/icons/src/exports', import.meta.url),
@@ -39,7 +42,11 @@ const config: StorybookConfig = {
         alias: [
           ...aliases,
           {
-            find: '@deweyou-ui/components',
+            find: /^@deweyou-ui\/components\/(.+)$/,
+            replacement: `${componentsSourceDir}/$1/index.tsx`,
+          },
+          {
+            find: /^@deweyou-ui\/components$/,
             replacement: componentsEntry,
           },
           {
@@ -51,27 +58,27 @@ const config: StorybookConfig = {
             replacement: iconsSourceDir,
           },
           {
-            find: '@deweyou-ui/styles/theme.css',
+            find: /^@deweyou-ui\/styles\/theme\.css$/,
             replacement: `${stylesCssDir}/theme.css`,
           },
           {
-            find: '@deweyou-ui/styles/theme-light.css',
+            find: /^@deweyou-ui\/styles\/theme-light\.css$/,
             replacement: `${stylesCssDir}/theme-light.css`,
           },
           {
-            find: '@deweyou-ui/styles/theme-dark.css',
+            find: /^@deweyou-ui\/styles\/theme-dark\.css$/,
             replacement: `${stylesCssDir}/theme-dark.css`,
           },
           {
-            find: '@deweyou-ui/styles/reset.css',
+            find: /^@deweyou-ui\/styles\/reset\.css$/,
             replacement: `${stylesCssDir}/reset.css`,
           },
           {
-            find: '@deweyou-ui/styles/base.css',
+            find: /^@deweyou-ui\/styles\/base\.css$/,
             replacement: `${stylesCssDir}/base.css`,
           },
           {
-            find: '@deweyou-ui/styles',
+            find: /^@deweyou-ui\/styles$/,
             replacement: stylesEntry,
           },
         ],

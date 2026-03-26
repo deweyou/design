@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useRef, useState } from 'react';
 
-import { Button, Popover, Text } from '@deweyou-ui/components';
+import { Button } from '@deweyou-ui/components/button';
+import { Popover } from '@deweyou-ui/components/popover';
+import { Text } from '@deweyou-ui/components/text';
 import { SearchIcon } from '@deweyou-ui/icons/search';
 
 const placementOptions = [
@@ -69,7 +71,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Internal review matrix for the Popover public API, including trigger combinations, eight-way placement vocabulary, boundary fallback, custom portal containers, non-modal keyboard behavior, and panel style modes.',
+          'Internal review matrix for the Popover public API, including the direct `@deweyou-ui/components/popover` subpath contract, trigger combinations, eight-way placement vocabulary, boundary fallback, custom portal containers, non-modal keyboard behavior, and panel style modes.',
       },
     },
   },

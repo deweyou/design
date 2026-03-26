@@ -1,17 +1,17 @@
 # AGENTS
 
-## Scope
+## 适用范围
 
-Applies to `packages/components`.
+适用于 `packages/components`。
 
-## Constraints
+## 约束
 
-- Put each component in its own folder under `src/<component-name>/`.
-- Inside each component folder, use `index.tsx` for implementation and `index.module.less` for scoped styles.
-- Keep the component's unit test beside the source as `src/<component-name>/index.test.ts`.
-- Use arrow functions by default for component and helper declarations in this package.
-- Use standard TSX instead of `React.createElement` unless there is a concrete tooling limitation.
-- Use `classnames` directly; do not add a local `cx` wrapper utility.
-- Components must not silently inject global styles.
-- Root `className` remains the primary public styling hook.
-- Top-level tests in `packages/components/tests` are for cross-package or workspace-boundary coverage only.
+- 每个组件都应放在 `src/<component-name>/` 下的独立目录中。
+- 每个组件目录内使用 `index.tsx` 作为实现入口，使用 `index.module.less` 承载局部样式。
+- 组件单测应与源码同目录放置为 `src/<component-name>/index.test.ts`。
+- 本包中的组件和辅助逻辑默认使用箭头函数。
+- 除非存在明确的工具限制，否则使用标准 TSX，而不是 `React.createElement`。
+- 直接使用 `classnames`，不要再套一层本地 `cx` 包装。
+- 组件不得静默注入全局样式。
+- 根节点 `className` 仍然是首要的公开样式钩子。
+- `packages/components/tests` 下的顶层测试只用于跨 package 或 workspace 边界覆盖。
