@@ -42,4 +42,29 @@ test('consumer setup keeps the global style import explicit', () => {
   expect(lessBridge).toContain('@brand-bg');
   expect(lessBridge).toContain('@danger-bg');
   expect(lessBridge).toContain('@link');
+  expect(websiteMain).not.toContain('@deweyou-ui/components/style.css');
+  expect(storybookPreview).not.toContain('@deweyou-ui/components/style.css');
+});
+
+test('subpath component stories do not require an extra component stylesheet import', () => {
+  const buttonStory = readFileSync(
+    resolve(root, 'apps/storybook/src/stories/Button.stories.tsx'),
+    'utf8',
+  );
+  const popoverStory = readFileSync(
+    resolve(root, 'apps/storybook/src/stories/Popover.stories.tsx'),
+    'utf8',
+  );
+  const typographyStory = readFileSync(
+    resolve(root, 'apps/storybook/src/stories/Typography.stories.tsx'),
+    'utf8',
+  );
+
+  expect(buttonStory).toContain('@deweyou-ui/components/button');
+  expect(popoverStory).toContain('@deweyou-ui/components/popover');
+  expect(popoverStory).toContain('@deweyou-ui/components/text');
+  expect(typographyStory).toContain('@deweyou-ui/components/text');
+  expect(buttonStory).not.toContain('@deweyou-ui/components/style.css');
+  expect(popoverStory).not.toContain('@deweyou-ui/components/style.css');
+  expect(typographyStory).not.toContain('@deweyou-ui/components/style.css');
 });

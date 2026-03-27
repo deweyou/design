@@ -1,11 +1,22 @@
-import { mkdirSync, readdirSync, readFileSync, renameSync, rmSync, writeFileSync } from 'node:fs';
+import {
+  cpSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  renameSync,
+  rmSync,
+  writeFileSync,
+} from 'node:fs';
 import { resolve } from 'node:path';
+
+import { writePublishedManifest } from '../../utils/scripts/write-published-manifest.mjs';
 
 const packageRoot = resolve(import.meta.dirname, '..');
 const packageJsonPath = resolve(packageRoot, 'package.json');
 const distDir = resolve(packageRoot, 'dist');
 const iconsDir = resolve(distDir, 'icons');
 const chunksDir = resolve(distDir, 'chunks');
+const distSourceDir = resolve(distDir, 'src');
 const exportsDir = resolve(packageRoot, 'src/exports');
 
 const iconNames = readdirSync(exportsDir)
@@ -14,8 +25,10 @@ const iconNames = readdirSync(exportsDir)
   .sort((left, right) => left.localeCompare(right));
 
 rmSync(iconsDir, { force: true, recursive: true });
+rmSync(distSourceDir, { force: true, recursive: true });
 mkdirSync(iconsDir, { recursive: true });
 mkdirSync(chunksDir, { recursive: true });
+cpSync(resolve(packageRoot, 'src'), distSourceDir, { recursive: true });
 
 const rootMjsFiles = readdirSync(distDir).filter((file) => file.endsWith('.mjs'));
 const existingChunkFiles = readdirSync(chunksDir).filter((file) => file.endsWith('.mjs'));
@@ -188,5 +201,6 @@ packageJson.exports = {
 };
 
 writeFileSync(packageJsonPath, `${JSON.stringify(packageJson, null, 2)}\n`);
+writePublishedManifest(packageRoot);
 
 console.log(`Organized ${iconNames.length} icon entry files into dist/icons.`);

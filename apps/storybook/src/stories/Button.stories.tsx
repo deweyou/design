@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useRef, useState } from 'react';
 
-import { Button, IconButton } from '@deweyou-ui/components';
+import { Button, IconButton } from '@deweyou-ui/components/button';
 import { AddIcon } from '@deweyou-ui/icons/add';
 import { MenuIcon } from '@deweyou-ui/icons/menu';
 import { SearchIcon } from '@deweyou-ui/icons/search';
@@ -55,6 +55,11 @@ const storyStyles = {
     flexWrap: 'wrap',
     gap: '10px',
   },
+  shell: {
+    display: 'grid',
+    gap: '12px',
+    width: 'min(920px, 100%)',
+  },
 } as const;
 
 const meta = {
@@ -65,7 +70,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Internal review matrix for the Button / IconButton public API, native prop passthrough, loading feedback, color emphasis, shape support, and the shared semantic color source from @deweyou-ui/styles.',
+          'Internal review matrix for the Button / IconButton public API, including the direct `@deweyou-ui/components/button` subpath contract, native prop passthrough, loading feedback, color emphasis, shape support, and the shared semantic color source from @deweyou-ui/styles.',
       },
     },
   },
@@ -74,6 +79,25 @@ const meta = {
 export default meta;
 
 type Story = StoryObj<typeof meta>;
+
+const EntrypointShell = () => {
+  return (
+    <div style={storyStyles.shell}>
+      <article style={storyStyles.card}>
+        <strong>Preferred subpath</strong>
+        <code>{`import { Button, IconButton } from '@deweyou-ui/components/button';`}</code>
+        <span style={storyStyles.meta}>
+          单组件消费应优先走 `button` 子路径，并且不要求额外导入组件专属样式入口。
+        </span>
+      </article>
+      <article style={storyStyles.card}>
+        <strong>Root compatibility</strong>
+        <code>{`import { Button, IconButton } from '@deweyou-ui/components';`}</code>
+        <span style={storyStyles.meta}>根入口继续保留，用于兼容现有消费方和聚合导出场景。</span>
+      </article>
+    </div>
+  );
+};
 
 const VariantGallery = () => {
   return (
@@ -494,6 +518,10 @@ const InvalidCombinationPreview = () => {
 
 export const Variants: Story = {
   render: () => <VariantGallery />,
+};
+
+export const Entrypoints: Story = {
+  render: () => <EntrypointShell />,
 };
 
 export const Colors: Story = {

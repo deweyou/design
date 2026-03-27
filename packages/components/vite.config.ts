@@ -1,15 +1,26 @@
-import { fileURLToPath } from 'node:url';
+import { resolve } from 'node:path';
 
 import { defineConfig } from 'vite-plus';
 
-const entry = fileURLToPath(new URL('./src/index.ts', import.meta.url));
+const srcDir = resolve(import.meta.dirname, 'src');
+const input = {
+  index: resolve(srcDir, 'index.ts'),
+  'button/index': resolve(srcDir, 'button/index.tsx'),
+  'popover/index': resolve(srcDir, 'popover/index.tsx'),
+  'text/index': resolve(srcDir, 'text/index.tsx'),
+};
 
 export default defineConfig({
   build: {
+    // Components stay as a documented exception because the package needs per-component entrypoints
+    // plus style delivery that works without an extra consumer-side stylesheet import.
+    cssCodeSplit: true,
     lib: {
-      entry,
+      entry: input,
       formats: ['es'],
-      fileName: 'index',
+      fileName: (_format, entryName) => {
+        return `${entryName}.js`;
+      },
     },
     rollupOptions: {
       external: [
@@ -22,7 +33,9 @@ export default defineConfig({
         'react/jsx-dev-runtime',
       ],
       output: {
-        assetFileNames: 'style.css',
+        chunkFileNames: 'chunks/[name]-[hash].js',
+        preserveModules: true,
+        preserveModulesRoot: 'src',
       },
     },
   },

@@ -80,13 +80,13 @@ importers:
     dependencies:
       '@deweyou-ui/components':
         specifier: workspace:*
-        version: link:../../packages/components
+        version: link:../../packages/components/dist
       '@deweyou-ui/icons':
         specifier: workspace:*
-        version: link:../../packages/icons
+        version: link:../../packages/icons/dist
       '@deweyou-ui/styles':
         specifier: workspace:*
-        version: link:../../packages/styles
+        version: link:../../packages/styles/dist
       react:
         specifier: 'catalog:'
         version: 19.2.4
@@ -123,16 +123,16 @@ importers:
     dependencies:
       '@deweyou-ui/components':
         specifier: workspace:*
-        version: link:../../packages/components
+        version: link:../../packages/components/dist
       '@deweyou-ui/hooks':
         specifier: workspace:*
-        version: link:../../packages/hooks
+        version: link:../../packages/hooks/dist
       '@deweyou-ui/icons':
         specifier: workspace:*
-        version: link:../../packages/icons
+        version: link:../../packages/icons/dist
       '@deweyou-ui/styles':
         specifier: workspace:*
-        version: link:../../packages/styles
+        version: link:../../packages/styles/dist
       react:
         specifier: 'catalog:'
         version: 19.2.4
@@ -160,10 +160,10 @@ importers:
     dependencies:
       '@deweyou-ui/hooks':
         specifier: workspace:*
-        version: link:../hooks
+        version: link:../hooks/dist
       '@deweyou-ui/styles':
         specifier: workspace:*
-        version: link:../styles
+        version: link:../styles/dist
       '@floating-ui/react':
         specifier: 'catalog:'
         version: 0.27.19(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -198,12 +198,13 @@ importers:
       vite-plus:
         specifier: 'catalog:'
         version: 0.1.11(@tsdown/css@0.21.3)(@types/node@25.5.0)(jiti@2.6.1)(jsdom@29.0.1)(less@4.6.4)(typescript@5.9.3)(vite@8.0.0(@types/node@25.5.0)(jiti@2.6.1)(less@4.6.4)(yaml@2.8.2))(yaml@2.8.2)
+    publishDirectory: dist
 
   packages/hooks:
     dependencies:
       '@deweyou-ui/utils':
         specifier: workspace:*
-        version: link:../utils
+        version: link:../utils/dist
       react:
         specifier: 'catalog:'
         version: 19.2.4
@@ -217,6 +218,7 @@ importers:
       vite-plus:
         specifier: 'catalog:'
         version: 0.1.11(@types/node@25.5.0)(jiti@2.6.1)(jsdom@29.0.1)(less@4.6.4)(typescript@5.9.3)(vite@8.0.0(@types/node@25.5.0)(jiti@2.6.1)(less@4.6.4)(yaml@2.8.2))(yaml@2.8.2)
+    publishDirectory: dist
 
   packages/icons:
     dependencies:
@@ -242,6 +244,7 @@ importers:
       vite-plus:
         specifier: 'catalog:'
         version: 0.1.11(@types/node@25.5.0)(jiti@2.6.1)(jsdom@29.0.1)(less@4.6.4)(typescript@5.9.3)(vite@8.0.0(@types/node@25.5.0)(jiti@2.6.1)(less@4.6.4)(yaml@2.8.2))(yaml@2.8.2)
+    publishDirectory: dist
 
   packages/styles:
     devDependencies:
@@ -254,6 +257,7 @@ importers:
       vite-plus:
         specifier: 'catalog:'
         version: 0.1.11(@types/node@25.5.0)(jiti@2.6.1)(jsdom@29.0.1)(less@4.6.4)(typescript@5.9.3)(vite@8.0.0(@types/node@25.5.0)(jiti@2.6.1)(less@4.6.4)(yaml@2.8.2))(yaml@2.8.2)
+    publishDirectory: dist
 
   packages/utils:
     devDependencies:
@@ -269,6 +273,7 @@ importers:
       vitest:
         specifier: npm:@voidzero-dev/vite-plus-test@latest
         version: '@voidzero-dev/vite-plus-test@0.1.11(@types/node@24.12.0)(jiti@2.6.1)(jsdom@29.0.1)(less@4.6.4)(typescript@5.9.3)(vite@8.0.0(@types/node@24.12.0)(jiti@2.6.1)(less@4.6.4)(yaml@2.8.2))(yaml@2.8.2)'
+    publishDirectory: dist
 
 packages:
 

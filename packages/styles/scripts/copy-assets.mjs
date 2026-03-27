@@ -1,5 +1,7 @@
-import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, rmSync } from 'node:fs';
 import { resolve } from 'node:path';
+
+import { writePublishedManifest } from '../../utils/scripts/write-published-manifest.mjs';
 
 const root = resolve(import.meta.dirname, '..');
 const distDir = resolve(root, 'dist');
@@ -25,22 +27,4 @@ if (existsSync(assetSourceDir)) {
   cpSync(assetSourceDir, assetDistDir, { recursive: true });
 }
 
-const packageJsonPath = resolve(root, 'package.json');
-const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8'));
-
-packageJson.files = ['dist'];
-packageJson.types = './dist/index.d.mts';
-packageJson.exports = {
-  '.': './dist/index.mjs',
-  './color.css': './dist/css/color.css',
-  './theme.css': './dist/css/theme.css',
-  './theme-light.css': './dist/css/theme-light.css',
-  './theme-dark.css': './dist/css/theme-dark.css',
-  './reset.css': './dist/css/reset.css',
-  './base.css': './dist/css/base.css',
-  './less/bridge.less': './dist/less/bridge.less',
-  './less/mixins.less': './dist/less/mixins.less',
-  './package.json': './package.json',
-};
-
-writeFileSync(packageJsonPath, `${JSON.stringify(packageJson, null, 2)}\n`);
+writePublishedManifest(root);

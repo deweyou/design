@@ -1,5 +1,5 @@
 // Keep the shared component primitives on the package root surface.
-export { Button, IconButton, type ButtonProps, type IconButtonProps } from './button';
+export { Button, IconButton, type ButtonProps, type IconButtonProps } from './button/index.tsx';
 export {
   Popover,
   type PopoverMode,
@@ -9,5 +9,5 @@ export {
   type PopoverTrigger,
   type PopoverVisibilityChangeDetails,
   type PopoverVisibilityChangeReason,
-} from './popover';
-export { Text, type TextProps } from './text';
+} from './popover/index.tsx';
+export { Text, type TextProps } from './text/index.tsx';
