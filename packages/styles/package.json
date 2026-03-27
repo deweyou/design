@@ -8,8 +8,20 @@
   "type": "module",
   "types": "./dist/index.d.mts",
   "exports": {
-    ".": "./dist/index.mjs",
-    "./package.json": "./package.json"
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs",
+      "default": "./dist/index.mjs"
+    },
+    "./package.json": "./package.json",
+    "./color.css": "./dist/css/color.css",
+    "./theme.css": "./dist/css/theme.css",
+    "./theme-light.css": "./dist/css/theme-light.css",
+    "./theme-dark.css": "./dist/css/theme-dark.css",
+    "./reset.css": "./dist/css/reset.css",
+    "./base.css": "./dist/css/base.css",
+    "./less/bridge.less": "./dist/less/bridge.less",
+    "./less/mixins.less": "./dist/less/mixins.less"
   },
   "publishConfig": {
     "directory": "dist"
