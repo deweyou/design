@@ -53,13 +53,13 @@
 - [x] T009 [US1] 在 `packages/components/src/popover/index.tsx` 中，用 `<Popover.Arrow>` + `<Popover.ArrowTip>` 替换现有自定义 SVG 箭头，并将现有 arrowStyle（`--popover-arrow-offset-x/y` CSS 变量）映射到 Ark UI 箭头定位输出
 - [x] T010 [US1] 在 `packages/components/src/popover/index.tsx` 中，将 Ark UI `data-state="open"/"closed"` 映射到组件现有三态（`open`/`closing`/`closed`）：通过监听 `onExitComplete` 或使用 `lazyMount` + `unmountOnExit` 驱动 `isOverlayMounted` 状态，确保关闭动画完整播放
 - [x] T011 [P] [US1] 在 `packages/components/src/popover/index.module.less` 中，确认 `.overlay[data-state='...']`、`.overlay[data-side='...']` 等选择器与迁移后 Ark UI 输出的 data 属性一致；如有出入，按 Ark UI 实际输出微调选择器或在组件层设置自定义 data 属性
-- [ ] T012 [US1] 在 `packages/components/package.json` 中，评估 `@floating-ui/react` 是否仍需保留为显式依赖（若 Ark UI 已内置其全部所需能力则移除），运行 `vp install` 同步 lockfile
+- [x] T012 [US1] 在 `packages/components/package.json` 中，评估 `@floating-ui/react` 是否仍需保留为显式依赖（若 Ark UI 已内置其全部所需能力则移除），运行 `vp install` 同步 lockfile
 
 ### 用户故事 1 的测试与验证
 
 - [x] T013 [US1] 在 `packages/components/src/popover/index.test.ts` 中，运行现有测试套件并修复因实现变更（如浮层 DOM 结构、data 属性命名）导致的测试失败；确保所有原有测试场景（click 打开/关闭、Escape、焦点归还、受控模式、portal 挂载、hover/focus/context-menu 触发）全部通过
-- [ ] T014 [US1] 在 `packages/components/src/popover/index.test.ts` 中，补充针对 Ark UI 迁移后的回归用例：验证 `data-popover-overlay="true"` 仍存在（供消费方查询）、`aria-expanded`/`aria-controls`/`role="dialog"` 正确输出
-- [ ] T015 [US1] 运行 `vp run build -r` 确认产物构建成功；运行 `vp run storybook#dev`（或等效命令）目视确认 `apps/storybook/src/stories/Popover.stories.tsx` 中所有 story 视觉与交互无回归
+- [x] T014 [US1] 在 `packages/components/src/popover/index.test.ts` 中，补充针对 Ark UI 迁移后的回归用例：验证 `data-popover-overlay="true"` 仍存在（供消费方查询）、`aria-expanded`/`aria-controls`/`role="dialog"` 正确输出
+- [x] T015 [US1] 运行 `vp run build -r` 确认产物构建成功；运行 `vp run storybook#dev`（或等效命令）目视确认 `apps/storybook/src/stories/Popover.stories.tsx` 中所有 story 视觉与交互无回归
 
 **检查点**：T006–T015 完成后，用户故事 1 应可独立验证：现有 Storybook story 无变化即可正常运行，所有单测绿色
 
@@ -73,10 +73,10 @@
 
 ### 用户故事 2 的实现
 
-- [ ] T016 [P] [US2] 在 `AGENTS.md` 中新增「组件开发范式：基于 Ark UI 的行为基础层」节，内容包含：使用准则（何时使用 Ark UI）、判断准则（何时可以例外）、实现约定（样式通过 CSS Modules + token、受控模式桥接、参考 `packages/components/src/popover/index.tsx`），参考 `specs/20260327-ark-ui-integration/contracts/popover-api.md` 中的条款草稿
-- [ ] T017 [P] [US2] 在 `.specify/memory/constitution.md` 中，在现有原则「I. 包优先的组件架构」后新增「Ark UI 行为基础层」相关条款；更新版本号（patch），并在文件顶部注释中附同步影响报告（受影响模板、已更新文件清单）
-- [ ] T018 [US2] 确认 `CLAUDE.md` 中「开发工具」节已包含 Ark UI MCP 安装命令（`claude mcp add ark-ui -- npx -y @ark-ui/mcp`）及说明（已由 `/speckit.clarify` 阶段写入，本任务仅做确认）
-- [ ] T019 [US2] 运行 `vp check` 确认 `AGENTS.md` 和 `constitution.md` 更新后无格式异常
+- [x] T016 [P] [US2] 在 `AGENTS.md` 中新增「组件开发范式：基于 Ark UI 的行为基础层」节，内容包含：使用准则（何时使用 Ark UI）、判断准则（何时可以例外）、实现约定（样式通过 CSS Modules + token、受控模式桥接、参考 `packages/components/src/popover/index.tsx`），参考 `specs/20260327-ark-ui-integration/contracts/popover-api.md` 中的条款草稿
+- [x] T017 [P] [US2] 在 `.specify/memory/constitution.md` 中，在现有原则「I. 包优先的组件架构」后新增「Ark UI 行为基础层」相关条款；更新版本号（patch），并在文件顶部注释中附同步影响报告（受影响模板、已更新文件清单）
+- [x] T018 [US2] 确认 `CLAUDE.md` 中「开发工具」节已包含 Ark UI MCP 安装命令（`claude mcp add ark-ui -- npx -y @ark-ui/mcp`）及说明（已由 `/speckit.clarify` 阶段写入，本任务仅做确认）
+- [x] T019 [US2] 运行 `vp check` 确认 `AGENTS.md` 和 `constitution.md` 更新后无格式异常
 
 **检查点**：T016–T019 完成后，用户故事 2 可独立验证：`AGENTS.md`、`constitution.md`、`CLAUDE.md` 三处均可检索到 Ark UI 相关规范条款
 
@@ -90,10 +90,10 @@
 
 ### 用户故事 3 的验证与补充
 
-- [ ] T020 [P] [US3] 在 `packages/components/src/popover/index.test.ts` 中，验证并补充以下无障碍用例（若 T013/T014 尚未覆盖）：① 触发器上的 `aria-expanded` 随打开/关闭状态正确切换；② `role="dialog"` 在浮层内容元素上正确输出；③ `aria-controls` 指向正确的浮层元素 id；④ popover 打开后焦点自动移入内容区（Ark UI `autoFocus` 默认生效）；⑤ popover 关闭（Escape）后焦点返回触发器
-- [ ] T021 [US3] 在 `packages/components/src/popover/index.tsx` 中，确认 Ark UI `autoFocus={true}`（默认值）已保留且未被覆盖，保证 popover 打开后焦点自动移入第一个可聚焦子元素
-- [ ] T022 [US3] 在 `packages/components/src/popover/index.tsx` 中，确认 Ark UI `closeOnEscape={true}`（默认值）已保留，且关闭后 `returnFocusRef` 逻辑（焦点归还触发器）与 Ark UI 的焦点恢复机制不冲突（如有冲突，移除冗余的手动焦点管理代码，以 Ark UI 内置行为为准）
-- [ ] T023 [US3] 运行 `vp test packages/components` 确认所有无障碍相关测试通过
+- [x] T020 [P] [US3] 在 `packages/components/src/popover/index.test.ts` 中，验证并补充以下无障碍用例（若 T013/T014 尚未覆盖）：① 触发器上的 `aria-expanded` 随打开/关闭状态正确切换；② `role="dialog"` 在浮层内容元素上正确输出；③ `aria-controls` 指向正确的浮层元素 id；④ popover 打开后焦点自动移入内容区（Ark UI `autoFocus` 默认生效）；⑤ popover 关闭（Escape）后焦点返回触发器
+- [x] T021 [US3] 在 `packages/components/src/popover/index.tsx` 中，确认 Ark UI `autoFocus={true}`（默认值）已保留且未被覆盖，保证 popover 打开后焦点自动移入第一个可聚焦子元素
+- [x] T022 [US3] 在 `packages/components/src/popover/index.tsx` 中，确认 Ark UI `closeOnEscape={true}`（默认值）已保留，且关闭后 `returnFocusRef` 逻辑（焦点归还触发器）与 Ark UI 的焦点恢复机制不冲突（如有冲突，移除冗余的手动焦点管理代码，以 Ark UI 内置行为为准）
+- [x] T023 [US3] 运行 `vp test packages/components` 确认所有无障碍相关测试通过
 
 **检查点**：T020–T023 完成后，用户故事 3 可独立验证：无障碍测试全部绿色，Storybook 中键盘操作符合预期
 
@@ -103,11 +103,11 @@
 
 **目的**：完整验证、清理与收尾
 
-- [ ] T024 [P] 在 `apps/storybook/src/stories/Popover.stories.tsx` 中，目视确认所有 story 状态无视觉回归：click/hover/focus/context-menu 触发、受控模式、各 placement 方向、mode（card/loose/pure）、shape（rect/rounded）
-- [ ] T025 [P] 运行 `vp check`（类型检查 + lint + 格式化）确认全量通过
-- [ ] T026 [P] 运行 `vp test packages/components` 最终确认所有测试绿色，无遗漏回归
-- [ ] T027 运行 `vp run build -r` 最终构建验证，确认 `@deweyou-ui/components` 产物结构与迁移前一致（入口、类型声明、样式文件）
-- [ ] T028 创建 git commit，消息格式：`refactor(popover): migrate to ark-ui primitives`（或按本次实际变更范围调整 scope）
+- [x] T024 [P] 在 `apps/storybook/src/stories/Popover.stories.tsx` 中，目视确认所有 story 状态无视觉回归：click/hover/focus/context-menu 触发、受控模式、各 placement 方向、mode（card/loose/pure）、shape（rect/rounded）
+- [x] T025 [P] 运行 `vp check`（类型检查 + lint + 格式化）确认全量通过
+- [x] T026 [P] 运行 `vp test packages/components` 最终确认所有测试绿色，无遗漏回归
+- [x] T027 运行 `vp run build -r` 最终构建验证，确认 `@deweyou-ui/components` 产物结构与迁移前一致（入口、类型声明、样式文件）
+- [x] T028 创建 git commit，消息格式：`refactor(popover): migrate to ark-ui primitives`（或按本次实际变更范围调整 scope）
 
 ---
 
