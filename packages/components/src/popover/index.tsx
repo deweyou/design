@@ -660,12 +660,17 @@ export const Popover = ({
     applyVisibleChange(nextOpen, { reason });
   };
 
+  // For click triggers, ArkPopover.Trigger handles toggle and registers the reference position.
+  // For non-click triggers, ArkPopover.Anchor registers the reference position for correct
+  // positioner alignment without adding click-toggle behaviour or aria-expanded.
   const triggerElement = isClickTrigger ? (
     <ArkPopover.Trigger asChild>
       {cloneElement(referenceChild as ReactElement, sharedReferenceProps)}
     </ArkPopover.Trigger>
   ) : (
-    cloneElement(referenceChild as ReactElement, sharedReferenceProps)
+    <ArkPopover.Anchor asChild>
+      {cloneElement(referenceChild as ReactElement, sharedReferenceProps)}
+    </ArkPopover.Anchor>
   );
 
   const overlayContent = (
