@@ -9,7 +9,6 @@
 - React、Less、CSS Modules、Storybook
 - `@ark-ui/react`（交互型组件行为基础层，自 20260327-ark-ui-integration 起）
 - `@deweyou-ui/styles`（共享设计 token）
-- `@floating-ui/react`（待评估是否在 popover 迁移后移除）
 
 ## 项目结构
 

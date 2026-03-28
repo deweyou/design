@@ -4,7 +4,6 @@ packages:
 
 catalog:
   '@ark-ui/react': ^5.35.0
-  '@floating-ui/react': ^0.27.19
   '@storybook/addon-docs': 10.2.19
   '@storybook/react': 10.2.19
   '@storybook/react-vite': 10.2.19

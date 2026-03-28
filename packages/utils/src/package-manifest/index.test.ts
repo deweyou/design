@@ -92,7 +92,7 @@ test('package manifest helpers create a published manifest with peer React deps 
   expect(
     createPublishedPackageManifest({
       catalogVersions: {
-        '@floating-ui/react': '^0.27.19',
+        '@ark-ui/react': '^5.35.0',
         react: '^19.1.1',
         'react-dom': '^19.1.1',
       },
@@ -100,7 +100,7 @@ test('package manifest helpers create a published manifest with peer React deps 
       manifest: {
         dependencies: {
           '@deweyou-ui/hooks': 'workspace:*',
-          '@floating-ui/react': 'catalog:',
+          '@ark-ui/react': 'catalog:',
         },
         devDependencies: {
           vite: 'catalog:',
@@ -134,7 +134,7 @@ test('package manifest helpers create a published manifest with peer React deps 
   ).toEqual({
     dependencies: {
       '@deweyou-ui/hooks': '^0.2.0',
-      '@floating-ui/react': '^0.27.19',
+      '@ark-ui/react': '^5.35.0',
     },
     exports: {
       '.': {
