@@ -75,6 +75,20 @@ Vite+ 会根据 `package.json` 中的 `packageManager` 字段或对应 lockfile 
 - [ ] 提交变更前运行 `vp check` 和 `vp test`
 <!--VITE PLUS END-->
 
+## 组件开发范式：基于 Ark UI 的行为基础层（20260327-ark-ui-integration）
+
+本组件库使用 Ark UI（`@ark-ui/react`）作为交互型组件的行为基础层。
+
+**应当使用 Ark UI 的场景**：浮层类（Popover、Tooltip、Menu、Dialog 等）、选择器类（Select、Combobox 等）、表单增强类（Checkbox、Switch 等）。
+
+**不需要使用 Ark UI 的场景**：纯展示组件（Text、Icon）、纯样式封装（Button）、Ark UI 无对应覆盖的业务逻辑。
+
+**实现约定**：使用 Ark UI 原语提供行为；样式通过 CSS Modules（Less）+ token；公开 API 与 Ark UI 解耦；非 click 触发通过受控模式桥接。
+
+**开发前置**：安装 Ark UI MCP Server：`claude mcp add ark-ui -- npx -y @ark-ui/mcp`
+
+**参考实现**：`packages/components/src/popover/index.tsx`
+
 ## 当前技术栈
 
 - TypeScript 5.x、兼容 React 19.x 的 API、Node.js 24.14.0 基线、vite-plus、React、React DOM、Storybook 10.2.19、`tdesign-icons-svg`，以及现有 `@deweyou-ui/styles` tokens（20260317-icon-package）

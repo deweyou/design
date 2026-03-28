@@ -23,6 +23,13 @@ class ResizeObserverMock {
   unobserve = () => {};
 }
 
+class IntersectionObserverMock {
+  disconnect = () => {};
+  observe = () => {};
+  unobserve = () => {};
+  takeRecords = () => [];
+}
+
 const setElementRect = (
   element: Element,
   rect: Partial<DOMRect> & { height: number; width: number; x?: number; y?: number },
@@ -198,6 +205,8 @@ beforeEach(() => {
   window.innerWidth = 320;
   window.innerHeight = 220;
   globalThis.ResizeObserver = ResizeObserverMock as unknown as typeof ResizeObserver;
+  globalThis.IntersectionObserver =
+    IntersectionObserverMock as unknown as typeof IntersectionObserver;
   (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
 });
 
@@ -326,7 +335,7 @@ test('popover opens on click by default, keeps internal clicks open, and closes 
   expect(await waitForOverlay()).not.toBeNull();
 
   await act(async () => {
-    dispatchMouseEvent(document, 'mousedown');
+    dispatchPointerEvent(document.body, 'pointerdown');
   });
   await waitForOverlayToClose();
 
@@ -768,4 +777,45 @@ test('popover keeps multiple instances independent by default', async () => {
   const overlays = await waitForOverlayCount(2);
 
   expect(overlays).toHaveLength(2);
+});
+
+test('popover overlay has correct ARIA attributes after Ark UI migration', async () => {
+  const { host, root, trigger } = await renderPopover();
+  unmounts.push(async () => {
+    await act(async () => {
+      root.unmount();
+    });
+    host.remove();
+  });
+
+  // Before opening: data-popover-reference is present on trigger wrapper
+  const referenceEl = host.querySelector('[data-popover-reference="true"]');
+  expect(referenceEl).not.toBeNull();
+
+  await act(async () => {
+    dispatchMouseEvent(trigger, 'click');
+  });
+  await flushFloatingWork();
+
+  const overlay = await waitForOverlay();
+  expect(overlay).not.toBeNull();
+
+  // data-popover-overlay must be present for consumer queries
+  expect(overlay!.getAttribute('data-popover-overlay')).toBe('true');
+
+  // role="dialog" is output by Ark UI on the content element
+  expect(overlay!.getAttribute('role')).toBe('dialog');
+
+  // aria-controls on the trigger should point to the overlay id
+  const triggerEl = host.querySelector(
+    '[data-popover-reference="true"] button, [data-popover-reference="true"]',
+  ) as HTMLElement | null;
+  const overlayId = overlay!.id;
+  expect(overlayId).toBeTruthy();
+  if (triggerEl) {
+    const ariaControls =
+      triggerEl.getAttribute('aria-controls') ??
+      triggerEl.closest('[aria-controls]')?.getAttribute('aria-controls');
+    expect(ariaControls).toBe(overlayId);
+  }
 });

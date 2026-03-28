@@ -126,7 +126,6 @@
   --popover-close-transform: translateX(calc(var(--popover-surface-transform-distance) * 0.7));
 }
 
-.overlay[data-state='opening'],
 .overlay[data-state='open'] {
   transform-origin: var(--popover-transform-origin, center);
 }
@@ -135,7 +134,7 @@
   animation: popover-enter 160ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.overlay[data-state='closing'] {
+.overlay[data-state='closed'] {
   animation: popover-exit 160ms ease forwards;
   pointer-events: none;
 }
