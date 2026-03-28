@@ -40,9 +40,9 @@
     "test": "vp test"
   },
   "dependencies": {
+    "@ark-ui/react": "catalog:",
     "@deweyou-ui/hooks": "workspace:*",
     "@deweyou-ui/styles": "workspace:*",
-    "@floating-ui/react": "catalog:",
     "classnames": "catalog:"
   },
   "devDependencies": {

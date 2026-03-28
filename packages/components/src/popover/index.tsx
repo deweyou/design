@@ -12,29 +12,12 @@ import {
   type ReactElement,
   type ReactNode,
   useEffect,
-  useId,
-  useLayoutEffect,
   useRef,
   useState,
 } from 'react';
+import { createPortal } from 'react-dom';
 import classNames from 'classnames';
-import {
-  FloatingPortal,
-  arrow,
-  autoUpdate,
-  flip,
-  offset as floatingOffset,
-  safePolygon,
-  shift,
-  useClick,
-  useDismiss,
-  useFloating,
-  useHover,
-  useInteractions,
-  useRole,
-  type Placement,
-  type UseDismissProps,
-} from '@floating-ui/react';
+import { Popover as ArkPopover, usePopoverContext } from '@ark-ui/react/popover';
 
 import styles from './index.module.less';
 
@@ -103,16 +86,9 @@ export type PopoverProps = Omit<HTMLAttributes<HTMLElement>, 'children' | 'conte
 };
 
 const defaultBoundaryPadding = 16;
-const defaultCloseAnimationDuration = 160;
 const defaultOffset = 8;
-const dismissProps: UseDismissProps = {
-  ancestorScroll: true,
-  escapeKey: true,
-  outsidePress: true,
-  outsidePressEvent: 'mousedown',
-};
 
-const floatingPlacementByPopoverPlacement = {
+const arkPlacementByPopoverPlacement = {
   top: 'top',
   bottom: 'bottom',
   left: 'left',
@@ -121,9 +97,9 @@ const floatingPlacementByPopoverPlacement = {
   'left-bottom': 'left-start',
   'right-top': 'right-end',
   'right-bottom': 'right-start',
-} as const satisfies Record<PopoverPlacement, Placement>;
+} as const satisfies Record<PopoverPlacement, string>;
 
-const popoverPlacementByFloatingPlacement = {
+const popoverPlacementByArkPlacement: Partial<Record<string, PopoverPlacement>> = {
   top: 'top',
   bottom: 'bottom',
   left: 'left',
@@ -132,7 +108,7 @@ const popoverPlacementByFloatingPlacement = {
   'left-end': 'left-top',
   'right-start': 'right-bottom',
   'right-end': 'right-top',
-} as const satisfies Partial<Record<Placement, PopoverPlacement>>;
+};
 
 const sanitizeNumber = (value: number | undefined, fallbackValue: number) => {
   if (typeof value !== 'number' || Number.isNaN(value) || !Number.isFinite(value)) {
@@ -148,89 +124,6 @@ const normalizeTriggerList = (
   const input = trigger === undefined ? ['click'] : Array.isArray(trigger) ? trigger : [trigger];
 
   return Array.from(new Set(input));
-};
-
-const normalizeVisibilityReason = (
-  reason: string | undefined,
-  nextVisible: boolean,
-): PopoverVisibilityChangeReason => {
-  if (!nextVisible && reason === 'outside-press') {
-    return 'outside-press';
-  }
-
-  if (!nextVisible && reason === 'escape-key') {
-    return 'escape';
-  }
-
-  if (!nextVisible && reason === 'focus-out') {
-    return 'outside-press';
-  }
-
-  if (
-    reason === 'click' ||
-    reason === 'hover' ||
-    reason === 'focus' ||
-    reason === 'reference-press'
-  ) {
-    return 'trigger';
-  }
-
-  return nextVisible ? 'trigger' : 'explicit-action';
-};
-
-const toFloatingPlacement = (placement: PopoverPlacement) => {
-  return floatingPlacementByPopoverPlacement[placement];
-};
-
-const toPopoverPlacement = (placement: Placement) => {
-  return (
-    popoverPlacementByFloatingPlacement[
-      placement as keyof typeof popoverPlacementByFloatingPlacement
-    ] ?? 'bottom'
-  );
-};
-
-const mergeRefs = <T,>(
-  ...refs: Array<((value: T | null) => void) | { current: T | null } | null | undefined>
-) => {
-  return (value: T | null) => {
-    for (const ref of refs) {
-      if (typeof ref === 'function') {
-        ref(value);
-        continue;
-      }
-
-      if (ref && typeof ref === 'object') {
-        ref.current = value;
-      }
-    }
-  };
-};
-
-const getFocusableElements = (container: HTMLElement | null) => {
-  if (!container) {
-    return [];
-  }
-
-  return Array.from(
-    container.querySelectorAll<HTMLElement>(
-      'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
-    ),
-  ).filter((element) => {
-    return !element.hasAttribute('disabled') && element.getAttribute('aria-hidden') !== 'true';
-  });
-};
-
-const isNodeWithinPopover = (
-  node: EventTarget | null,
-  referenceElement: HTMLElement | null,
-  floatingElement: HTMLElement | null,
-) => {
-  if (!(node instanceof HTMLElement)) {
-    return false;
-  }
-
-  return referenceElement?.contains(node) === true || floatingElement?.contains(node) === true;
 };
 
 const canCloneReferenceChild = (node: ReactNode): node is ReactElement<Record<string, unknown>> => {
@@ -271,6 +164,99 @@ const getArrowShapeData = (side: string) => {
   }
 };
 
+type PopoverOverlayProps = {
+  boundaryPadding: number;
+  children: ReactNode;
+  contentRef: React.RefObject<HTMLDivElement | null>;
+  mode: PopoverMode;
+  onSurfaceBlurCapture: (event: React.FocusEvent<HTMLDivElement>) => void;
+  onSurfaceFocusCapture: () => void;
+  overlayClassName: string | undefined;
+  overlayStyle: CSSProperties | undefined;
+  placement: PopoverPlacement;
+  requestedPlacement: PopoverPlacement;
+  shape: PopoverShape;
+};
+
+const PopoverOverlay = ({
+  boundaryPadding,
+  children,
+  contentRef,
+  mode,
+  onSurfaceBlurCapture,
+  onSurfaceFocusCapture,
+  overlayClassName,
+  overlayStyle,
+  placement,
+  requestedPlacement,
+  shape,
+}: PopoverOverlayProps) => {
+  const api = usePopoverContext();
+  const positionerProps = api.getPositionerProps() as Record<string, unknown>;
+  const currentArkPlacement =
+    (positionerProps['data-placement'] as string | undefined) ??
+    arkPlacementByPopoverPlacement[placement];
+  const resolvedPlacement = popoverPlacementByArkPlacement[currentArkPlacement] ?? placement;
+  const resolvedSide = currentArkPlacement.split('-')[0];
+  const arrowShape = getArrowShapeData(resolvedSide);
+
+  return (
+    <ArkPopover.Positioner>
+      <ArkPopover.Content
+        className={classNames(styles.overlay, overlayClassName)}
+        data-boundary-padding={String(boundaryPadding)}
+        data-mode={mode}
+        data-placement={resolvedPlacement}
+        data-popover-overlay="true"
+        data-requested-placement={requestedPlacement}
+        data-shape={shape}
+        data-side={resolvedSide}
+        ref={contentRef}
+        style={overlayStyle}
+      >
+        <div
+          className={styles.surface}
+          data-mode={mode}
+          onBlurCapture={onSurfaceBlurCapture}
+          onFocusCapture={onSurfaceFocusCapture}
+        >
+          {children}
+        </div>
+        <span className={styles.arrow} data-popover-arrow="true" data-side={resolvedSide}>
+          <svg
+            aria-hidden="true"
+            focusable="false"
+            height={arrowShape.height}
+            viewBox={arrowShape.viewBox}
+            width={arrowShape.width}
+          >
+            <path
+              d={
+                resolvedSide === 'top'
+                  ? 'M0 0 H14 L7 8 Z'
+                  : resolvedSide === 'bottom'
+                    ? 'M0 8 H14 L7 0 Z'
+                    : resolvedSide === 'left'
+                      ? 'M0 0 V14 L8 7 Z'
+                      : 'M8 0 V14 L0 7 Z'
+              }
+              fill="var(--popover-surface-background)"
+            />
+            <path
+              d={arrowShape.strokePath}
+              fill="none"
+              stroke="var(--ui-color-border)"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="1.25"
+            />
+          </svg>
+        </span>
+      </ArkPopover.Content>
+    </ArkPopover.Positioner>
+  );
+};
+
 export const Popover = ({
   boundaryPadding,
   children,
@@ -302,15 +288,15 @@ export const Popover = ({
   const [uncontrolledVisible, setUncontrolledVisible] = useState(defaultVisible);
   const requestedOpen = isControlled ? visible : uncontrolledVisible;
   const open = disabled ? false : requestedOpen;
-  const [isOverlayMounted, setIsOverlayMounted] = useState(open);
   const openRef = useRef(open);
-  const arrowRef = useRef<HTMLSpanElement | null>(null);
-  const floatingId = useId();
-  const returnFocusRef = useRef<HTMLElement | null>(null);
   const blurTimeoutRef = useRef<number | null>(null);
   const pointerFocusGuardRef = useRef(false);
   const suppressFocusOpenRef = useRef(false);
   const openedFromFocusRef = useRef(false);
+  const referenceRef = useRef<HTMLElement | null>(null);
+  const contentRef = useRef<HTMLDivElement | null>(null);
+  const dismissReasonRef = useRef<PopoverVisibilityChangeReason | null>(null);
+  const hasMountedRef = useRef(false);
 
   openRef.current = open;
 
@@ -328,79 +314,8 @@ export const Popover = ({
     }
   };
 
-  const {
-    context,
-    floatingStyles,
-    placement: resolvedFloatingPlacement,
-    refs,
-  } = useFloating({
-    middleware: [
-      floatingOffset(resolvedOffset),
-      flip({
-        crossAxis: true,
-        padding: resolvedBoundaryPadding,
-      }),
-      shift({
-        padding: resolvedBoundaryPadding,
-      }),
-      arrow({
-        element: arrowRef,
-      }),
-    ],
-    onOpenChange: (nextVisible, event, reason) => {
-      openedFromFocusRef.current = nextVisible && reason === 'focus';
-
-      applyVisibleChange(nextVisible, {
-        event,
-        reason: normalizeVisibilityReason(reason, nextVisible),
-      });
-    },
-    open,
-    placement: toFloatingPlacement(placement),
-    transform: false,
-    whileElementsMounted: autoUpdate,
-  });
-
-  const clickInteraction = useClick(context, {
-    enabled: !disabled && normalizedTriggers.includes('click'),
-    stickIfOpen: true,
-  });
-  const hoverInteraction = useHover(context, {
-    enabled: !disabled && normalizedTriggers.includes('hover'),
-    handleClose: safePolygon(),
-    move: false,
-  });
-  const dismissInteraction = useDismiss(context, {
-    ...dismissProps,
-    enabled: !disabled,
-  });
-  const roleInteraction = useRole(context, {
-    role: 'dialog',
-  });
-  const { getFloatingProps, getReferenceProps } = useInteractions([
-    clickInteraction,
-    hoverInteraction,
-    dismissInteraction,
-    roleInteraction,
-  ]);
-  useLayoutEffect(() => {
-    if (open) {
-      setIsOverlayMounted(true);
-      return;
-    }
-
-    if (!isOverlayMounted) {
-      return;
-    }
-
-    const timeoutId = window.setTimeout(() => {
-      setIsOverlayMounted(false);
-    }, defaultCloseAnimationDuration);
-
-    return () => {
-      window.clearTimeout(timeoutId);
-    };
-  }, [isOverlayMounted, open]);
+  const applyVisibleChangeRef = useRef(applyVisibleChange);
+  applyVisibleChangeRef.current = applyVisibleChange;
 
   useEffect(() => {
     return () => {
@@ -417,19 +332,24 @@ export const Popover = ({
   }, [open]);
 
   useEffect(() => {
-    if (open) {
-      const referenceElement = refs.domReference.current as HTMLElement | null;
-      const activeElement =
-        document.activeElement instanceof HTMLElement ? document.activeElement : null;
-
-      returnFocusRef.current =
-        activeElement && referenceElement?.contains(activeElement)
-          ? activeElement
-          : referenceElement;
+    if (!hasMountedRef.current) {
+      hasMountedRef.current = true;
       return;
     }
 
-    const referenceElement = returnFocusRef.current;
+    if (open) {
+      const activeElement =
+        document.activeElement instanceof HTMLElement ? document.activeElement : null;
+      const referenceElement = referenceRef.current;
+
+      if (!activeElement || !referenceElement?.contains(activeElement)) {
+        return;
+      }
+
+      return;
+    }
+
+    const referenceElement = referenceRef.current;
 
     if (referenceElement && referenceElement.isConnected) {
       suppressFocusOpenRef.current = true;
@@ -438,7 +358,22 @@ export const Popover = ({
         suppressFocusOpenRef.current = false;
       }, 0);
     }
-  }, [open, refs.domReference]);
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        // Stop propagation so nested popovers don't double-close (inner closes first).
+        // This also prevents Zag's deferred dismissable layer (RAF-based) from firing.
+        event.stopImmediatePropagation();
+        dismissReasonRef.current = 'escape';
+        applyVisibleChangeRef.current(false, { reason: 'escape' });
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown, { capture: true });
+    return () => document.removeEventListener('keydown', handleKeyDown, { capture: true });
+  }, [open]);
 
   useEffect(() => {
     if (!disabled || !requestedOpen) {
@@ -456,16 +391,15 @@ export const Popover = ({
     }
   }, [disabled, isControlled, onVisibleChange, requestedOpen]);
 
-  const resolvedPlacement = toPopoverPlacement(resolvedFloatingPlacement);
-  const resolvedSide = resolvedFloatingPlacement.split('-')[0];
   const shouldCloseOnFocusOut =
     normalizedTriggers.includes('focus') &&
     (!normalizedTriggers.includes('click') || openedFromFocusRef.current);
-  const currentState = open ? 'open' : isOverlayMounted ? 'closing' : 'closed';
+
   const referenceChild = canCloneReferenceChild(children)
     ? children
     : createElement('span', null, children);
   const referenceChildProps = referenceChild.props as Record<string, unknown>;
+
   const referenceContextMenu = referenceChildProps.onContextMenu as
     | ((event: ReactMouseEvent<Element>) => void)
     | undefined;
@@ -490,6 +424,7 @@ export const Popover = ({
   const rootKeyDown = (domProps as Record<string, unknown>).onKeyDown as
     | ((event: ReactKeyboardEvent<Element>) => void)
     | undefined;
+
   const referenceClassName = classNames(
     styles.reference,
     referenceChildProps.className as string | undefined,
@@ -499,14 +434,35 @@ export const Popover = ({
     ...(referenceChildProps.style as CSSProperties | undefined),
     ...style,
   };
-  const referenceProps = getReferenceProps({
+
+  const isClickTrigger = normalizedTriggers.includes('click');
+  const isHoverTrigger = normalizedTriggers.includes('hover');
+  const isFocusTrigger = normalizedTriggers.includes('focus');
+
+  const sharedReferenceProps: Record<string, unknown> = {
     ...referenceChildProps,
     ...domProps,
-    'aria-controls': isOverlayMounted ? floatingId : undefined,
     'aria-disabled': disabled || undefined,
-    'aria-expanded': open,
-    'aria-haspopup': 'dialog',
     className: referenceClassName,
+    style: referenceStyle,
+    'data-disabled': String(disabled),
+    'data-popover-reference': 'true',
+    'data-visible': String(open),
+    onClick: (event: ReactMouseEvent<Element>) => {
+      const childOnClick = referenceChildProps.onClick as
+        | ((e: ReactMouseEvent<Element>) => void)
+        | undefined;
+      const rootOnClick = (domProps as Record<string, unknown>).onClick as
+        | ((e: ReactMouseEvent<Element>) => void)
+        | undefined;
+
+      childOnClick?.(event);
+      rootOnClick?.(event);
+
+      if (isClickTrigger) {
+        dismissReasonRef.current = 'trigger';
+      }
+    },
     onBlur: (event: ReactFocusEvent<Element>) => {
       referenceBlur?.(event);
       rootBlur?.(event);
@@ -520,8 +476,6 @@ export const Popover = ({
       }
 
       blurTimeoutRef.current = window.setTimeout(() => {
-        const referenceElement = refs.domReference.current as HTMLElement | null;
-        const floatingElement = refs.floating.current;
         const nextFocusedElement =
           event.relatedTarget instanceof HTMLElement
             ? event.relatedTarget
@@ -529,7 +483,11 @@ export const Popover = ({
               ? document.activeElement
               : null;
 
-        if (isNodeWithinPopover(nextFocusedElement, referenceElement, floatingElement)) {
+        const isWithin =
+          referenceRef.current?.contains(nextFocusedElement) === true ||
+          contentRef.current?.contains(nextFocusedElement) === true;
+
+        if (isWithin) {
           return;
         }
 
@@ -543,7 +501,7 @@ export const Popover = ({
       referenceFocus?.(event);
       rootFocus?.(event);
 
-      if (event.defaultPrevented || disabled || !normalizedTriggers.includes('focus')) {
+      if (event.defaultPrevented || disabled || !isFocusTrigger) {
         return;
       }
 
@@ -555,7 +513,7 @@ export const Popover = ({
         return;
       }
 
-      if (pointerFocusGuardRef.current && normalizedTriggers.includes('click')) {
+      if (pointerFocusGuardRef.current && isClickTrigger) {
         pointerFocusGuardRef.current = false;
         return;
       }
@@ -572,20 +530,66 @@ export const Popover = ({
 
       pointerFocusGuardRef.current = false;
 
-      const focusableElements = getFocusableElements(refs.floating.current);
+      const focusableEls = contentRef.current
+        ? Array.from(
+            contentRef.current.querySelectorAll<HTMLElement>(
+              'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+            ),
+          ).filter(
+            (el) => !el.hasAttribute('disabled') && el.getAttribute('aria-hidden') !== 'true',
+          )
+        : [];
 
       if (
         !event.defaultPrevented &&
         open &&
         event.key === 'Tab' &&
         !event.shiftKey &&
-        focusableElements.length > 0 &&
+        focusableEls.length > 0 &&
         event.currentTarget === event.target
       ) {
         event.preventDefault();
-        focusableElements[0]?.focus();
+        focusableEls[0]?.focus();
       }
     },
+    onMouseEnter: isHoverTrigger
+      ? (event: ReactMouseEvent<Element>) => {
+          const childOnMouseEnter = referenceChildProps.onMouseEnter as
+            | ((e: ReactMouseEvent<Element>) => void)
+            | undefined;
+          const rootOnMouseEnter = (domProps as Record<string, unknown>).onMouseEnter as
+            | ((e: ReactMouseEvent<Element>) => void)
+            | undefined;
+
+          childOnMouseEnter?.(event);
+          rootOnMouseEnter?.(event);
+
+          if (event.defaultPrevented || disabled) {
+            return;
+          }
+
+          applyVisibleChange(true, { event: event.nativeEvent, reason: 'trigger' });
+        }
+      : undefined,
+    onMouseLeave: isHoverTrigger
+      ? (event: ReactMouseEvent<Element>) => {
+          const childOnMouseLeave = referenceChildProps.onMouseLeave as
+            | ((e: ReactMouseEvent<Element>) => void)
+            | undefined;
+          const rootOnMouseLeave = (domProps as Record<string, unknown>).onMouseLeave as
+            | ((e: ReactMouseEvent<Element>) => void)
+            | undefined;
+
+          childOnMouseLeave?.(event);
+          rootOnMouseLeave?.(event);
+
+          if (event.defaultPrevented || disabled) {
+            return;
+          }
+
+          applyVisibleChange(false, { event: event.nativeEvent, reason: 'trigger' });
+        }
+      : undefined,
     onContextMenu: (event: ReactMouseEvent<Element>) => {
       referenceContextMenu?.(event);
       rootContextMenu?.(event);
@@ -613,149 +617,140 @@ export const Popover = ({
 
       pointerFocusGuardRef.current = true;
     },
-    ref: mergeRefs(
-      refs.setReference,
-      (
+    ref: (node: HTMLElement | null) => {
+      referenceRef.current = node;
+
+      const childRef = (
         referenceChild as ReactElement & {
           ref?: { current: HTMLElement | null } | ((node: HTMLElement | null) => void);
         }
-      ).ref ?? null,
-    ),
-    style: referenceStyle,
+      ).ref;
+
+      if (typeof childRef === 'function') {
+        childRef(node);
+      } else if (childRef && typeof childRef === 'object') {
+        childRef.current = node;
+      }
+    },
     tabIndex:
       (referenceChildProps.tabIndex as number | undefined) ??
-      (!canCloneReferenceChild(children) && normalizedTriggers.includes('focus') ? 0 : undefined),
-  });
-  const floatingProps = getFloatingProps({
-    className: classNames(styles.overlay, overlayClassName),
-    id: floatingId,
-    ref: refs.setFloating,
-    style: {
-      ...floatingStyles,
-      ...overlayStyle,
-    },
-  });
-  const arrowData = context.middlewareData.arrow;
-  const arrowStyle: CSSProperties =
-    resolvedSide === 'top' || resolvedSide === 'bottom'
-      ? ({
-          '--popover-arrow-offset-x':
-            typeof arrowData?.x === 'number'
-              ? `${arrowData.x}px`
-              : 'calc(50% - (var(--popover-arrow-base) / 2))',
-        } as CSSProperties)
-      : ({
-          '--popover-arrow-offset-y':
-            typeof arrowData?.y === 'number'
-              ? `${arrowData.y}px`
-              : 'calc(50% - (var(--popover-arrow-base) / 2))',
-        } as CSSProperties);
-  const portalProps = popupPortalContainer === undefined ? {} : { root: popupPortalContainer };
-  const arrowShape = getArrowShapeData(resolvedSide);
+      (!canCloneReferenceChild(children) && isFocusTrigger ? 0 : undefined),
+  };
+
+  const resolvedPortalContainer =
+    popupPortalContainer !== null &&
+    popupPortalContainer !== undefined &&
+    typeof popupPortalContainer === 'object' &&
+    'current' in popupPortalContainer
+      ? popupPortalContainer.current
+      : (popupPortalContainer as HTMLElement | ShadowRoot | null | undefined);
+
+  const arkPlacement = arkPlacementByPopoverPlacement[placement];
+
+  const handleOpenChange = ({ open: nextOpen }: { open: boolean }) => {
+    if (nextOpen && !isClickTrigger) {
+      // Non-click triggers manage their own open state; only allow Ark UI to close
+      return;
+    }
+
+    const reason = dismissReasonRef.current ?? (nextOpen ? 'trigger' : 'explicit-action');
+
+    dismissReasonRef.current = null;
+
+    applyVisibleChange(nextOpen, { reason });
+  };
+
+  // For click triggers, ArkPopover.Trigger handles toggle and registers the reference position.
+  // For non-click triggers, ArkPopover.Anchor registers the reference position for correct
+  // positioner alignment without adding click-toggle behaviour or aria-expanded.
+  const triggerElement = isClickTrigger ? (
+    <ArkPopover.Trigger asChild>
+      {cloneElement(referenceChild as ReactElement, sharedReferenceProps)}
+    </ArkPopover.Trigger>
+  ) : (
+    <ArkPopover.Anchor asChild>
+      {cloneElement(referenceChild as ReactElement, sharedReferenceProps)}
+    </ArkPopover.Anchor>
+  );
+
+  const overlayContent = (
+    <PopoverOverlay
+      boundaryPadding={resolvedBoundaryPadding}
+      contentRef={contentRef}
+      mode={mode}
+      onSurfaceBlurCapture={(event) => {
+        if (disabled || !shouldCloseOnFocusOut) {
+          return;
+        }
+
+        if (blurTimeoutRef.current !== null) {
+          window.clearTimeout(blurTimeoutRef.current);
+        }
+
+        blurTimeoutRef.current = window.setTimeout(() => {
+          const nextFocusedElement =
+            event.relatedTarget instanceof HTMLElement
+              ? event.relatedTarget
+              : document.activeElement instanceof HTMLElement
+                ? document.activeElement
+                : null;
+
+          const isWithin =
+            referenceRef.current?.contains(nextFocusedElement) === true ||
+            contentRef.current?.contains(nextFocusedElement) === true;
+
+          if (isWithin) {
+            return;
+          }
+
+          applyVisibleChange(false, {
+            event: event.nativeEvent,
+            reason: 'trigger',
+          });
+        }, 0);
+      }}
+      onSurfaceFocusCapture={() => {
+        if (blurTimeoutRef.current !== null) {
+          window.clearTimeout(blurTimeoutRef.current);
+        }
+      }}
+      overlayClassName={overlayClassName}
+      overlayStyle={overlayStyle}
+      placement={placement}
+      requestedPlacement={placement}
+      shape={shape}
+    >
+      {content}
+    </PopoverOverlay>
+  );
+
+  const portalContainer =
+    typeof HTMLElement !== 'undefined' && resolvedPortalContainer instanceof HTMLElement
+      ? resolvedPortalContainer
+      : typeof document !== 'undefined'
+        ? document.body
+        : null;
 
   return (
-    <>
-      {cloneElement(
-        referenceChild as ReactElement,
-        {
-          ...referenceProps,
-          'data-disabled': String(disabled),
-          'data-popover-reference': 'true',
-          'data-visible': String(open),
-        } as Record<string, unknown>,
-      )}
-      {isOverlayMounted ? (
-        <FloatingPortal {...portalProps}>
-          <div
-            {...floatingProps}
-            data-boundary-padding={String(resolvedBoundaryPadding)}
-            data-mode={mode}
-            data-placement={resolvedPlacement}
-            data-popover-overlay="true"
-            data-requested-placement={placement}
-            data-shape={shape}
-            data-side={resolvedSide}
-            data-state={currentState}
-          >
-            <div
-              className={styles.surface}
-              data-mode={mode}
-              onBlurCapture={(event) => {
-                if (disabled || !shouldCloseOnFocusOut) {
-                  return;
-                }
-
-                if (blurTimeoutRef.current !== null) {
-                  window.clearTimeout(blurTimeoutRef.current);
-                }
-
-                blurTimeoutRef.current = window.setTimeout(() => {
-                  const referenceElement = refs.domReference.current as HTMLElement | null;
-                  const floatingElement = refs.floating.current;
-                  const nextFocusedElement =
-                    event.relatedTarget instanceof HTMLElement
-                      ? event.relatedTarget
-                      : document.activeElement instanceof HTMLElement
-                        ? document.activeElement
-                        : null;
-
-                  if (isNodeWithinPopover(nextFocusedElement, referenceElement, floatingElement)) {
-                    return;
-                  }
-
-                  applyVisibleChange(false, {
-                    event: event.nativeEvent,
-                    reason: 'trigger',
-                  });
-                }, 0);
-              }}
-              onFocusCapture={() => {
-                if (blurTimeoutRef.current !== null) {
-                  window.clearTimeout(blurTimeoutRef.current);
-                }
-              }}
-            >
-              {content}
-            </div>
-            <span
-              className={styles.arrow}
-              data-popover-arrow="true"
-              data-side={resolvedSide}
-              ref={arrowRef}
-              style={arrowStyle}
-            >
-              <svg
-                aria-hidden="true"
-                focusable="false"
-                height={arrowShape.height}
-                viewBox={arrowShape.viewBox}
-                width={arrowShape.width}
-              >
-                <path
-                  d={
-                    resolvedSide === 'top'
-                      ? 'M0 0 H14 L7 8 Z'
-                      : resolvedSide === 'bottom'
-                        ? 'M0 8 H14 L7 0 Z'
-                        : resolvedSide === 'left'
-                          ? 'M0 0 V14 L8 7 Z'
-                          : 'M8 0 V14 L0 7 Z'
-                  }
-                  fill="var(--popover-surface-background)"
-                />
-                <path
-                  d={arrowShape.strokePath}
-                  fill="none"
-                  stroke="var(--ui-color-border)"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="1.25"
-                />
-              </svg>
-            </span>
-          </div>
-        </FloatingPortal>
-      ) : null}
-    </>
+    <ArkPopover.Root
+      autoFocus={false}
+      closeOnEscape={false}
+      closeOnInteractOutside={!disabled}
+      lazyMount
+      onOpenChange={handleOpenChange}
+      onPointerDownOutside={() => {
+        dismissReasonRef.current = 'outside-press';
+      }}
+      open={open}
+      positioning={{
+        gutter: resolvedOffset,
+        overflowPadding: resolvedBoundaryPadding,
+        placement: arkPlacement,
+      }}
+      unmountOnExit
+    >
+      {triggerElement}
+      {portalContainer ? createPortal(overlayContent, portalContainer) : overlayContent}
+    </ArkPopover.Root>
   );
 };
