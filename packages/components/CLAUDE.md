@@ -1,4 +1,4 @@
-# AGENTS
+# CLAUDE
 
 ## 适用范围
 
