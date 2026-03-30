@@ -8,17 +8,17 @@ const root = resolve(import.meta.dirname, '../../..');
 const read = (relativePath: string) => readFileSync(resolve(root, relativePath), 'utf8');
 
 test('repository guidance documents the shared authoring conventions', () => {
-  const rootAgents = read('AGENTS.md');
-  const componentAgents = read('packages/components/AGENTS.md');
-  const hookAgents = read('packages/hooks/AGENTS.md');
-  const utilAgents = read('packages/utils/AGENTS.md');
-  const storybookAgents = read('apps/storybook/AGENTS.md');
-  const websiteAgents = read('apps/website/AGENTS.md');
+  const rootAgents = read('CLAUDE.md');
+  const componentAgents = read('packages/components/CLAUDE.md');
+  const hookAgents = read('packages/hooks/CLAUDE.md');
+  const utilAgents = read('packages/utils/CLAUDE.md');
+  const storybookAgents = read('apps/storybook/CLAUDE.md');
+  const websiteAgents = read('apps/website/CLAUDE.md');
 
-  expect(rootAgents).toContain('函数默认使用箭头函数风格');
-  expect(rootAgents).toContain('React 组件必须使用 TSX 文件编写');
+  expect(rootAgents).toContain('函数默认使用**箭头函数**风格');
+  expect(rootAgents).toContain('React 组件必须使用 **TSX 文件**编写');
   expect(rootAgents).toContain('小写名称并使用连字符分隔');
-  expect(rootAgents).toContain('package 顶层 `tests/` 目录只保留跨领域或 workspace 边界覆盖');
+  expect(rootAgents).toContain('colocate 单测');
   expect(rootAgents).not.toContain(
     'This project is using Vite+, the unified toolchain built on top of Vite',
   );
