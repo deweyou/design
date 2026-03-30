@@ -117,7 +117,10 @@
 - **FR-010**：系统必须为每个受影响的 package 定义公开 API 面，包括命名、props，以及受控/非受控行为；API 能力对齐 Ark UI Menu 原语（`@ark-ui/react`）。
 - **FR-011**：系统必须满足无障碍要求：正确的 ARIA 角色（`menu`、`menuitem`、`menuitemradio`、`menuitemcheckbox`）、焦点管理（打开时进入菜单、关闭时回到触发元素）、完整的键盘导航（Arrow、Enter、Space、Escape、Tab）。
 - **FR-012**：系统必须识别复用现有设计 token（`--ui-color-brand-bg`、`--ui-color-text`、`--ui-color-surface`、`--ui-color-border`、`--ui-shadow-soft`、圆角 `rounded`），不新增 token，除非有明确必要。
-- **FR-013**：系统必须在 `website` 和 Storybook 中提供以下预览：普通列表、分组+分割线、子菜单、单选、多选、禁用项、ContextMenu。
+- **FR-013**：系统必须在 `website` 和 Storybook 中提供以下预览：普通列表、纯分组（无分割线）、仅分割线、分组+分割线、子菜单、单选、多选、禁用项、ContextMenu、尺寸变体、形状变体。
+- **FR-014**：系统必须支持 `size` 属性（`sm` / `md` / `lg`），通过 React context 从 Menu / ContextMenu 传递至 MenuContent，影响菜单面板最小宽度、内边距、字号及圆角。
+- **FR-015**：系统必须支持 `shape` 属性（`rounded` / `rect`），控制菜单面板及菜单项的圆角风格；`rounded` 为默认值（`0.4rem`），`rect` 为直角（`0`）。
+- **FR-016**：系统必须保证以下视觉规范：① 菜单面板获得焦点时不显示浏览器默认聚焦轮廓；② 菜单触发按钮在菜单交互过程中不显示焦点环（仅键盘 Tab 导航时保留，但由触发元素自身决定）；③ disabled 菜单项显示 `cursor: not-allowed`，不设置 `pointer-events: none`（由 Ark UI 内部控制交互禁用）；④ 相邻 MenuGroup 之间（无 MenuSeparator 分隔时）自动添加 `0.5rem` 上间距，分组标签底部留有充足间距避免与下方菜单项贴合。
 
 ### 无障碍与 UI 契约（UI 工作必填）
 
@@ -128,7 +131,7 @@
 
 ### 关键实体
 
-- **Menu**：顶层容器，管理菜单的开关状态（受控/非受控），包含 Trigger 和 Content。
+- **Menu**：顶层容器，管理菜单的开关状态（受控/非受控），包含 Trigger 和 Content；提供 `size`（`sm`/`md`/`lg`）和 `shape`（`rounded`/`rect`）属性，经 React context 向下传递给 MenuContent。
 - **MenuItem**：基础菜单项，携带 `value`（可选，用于选中逻辑）、`label`、`icon`、`disabled` 属性。
 - **MenuGroup**：将 MenuItem 集合分组，可带 `label` 显示分组标题，组间自动插入 Separator。
 - **MenuSeparator**：纯视觉分割线，无语义值。
@@ -136,7 +139,7 @@
 - **MenuRadioGroup**：单选分组容器，持有 `value`/`defaultValue`/`onValueChange`，子项互斥。
 - **MenuRadioItem**：单选菜单项，`value` 与 RadioGroup 当前值比对，选中时展示 check 图标。
 - **MenuCheckboxItem**：多选菜单项，持有独立 `checked`/`defaultChecked`/`onCheckedChange`，选中时展示 check 图标。
-- **ContextMenu**：包裹目标区域，监听右键事件，复用 Menu 内容层。
+- **ContextMenu**：包裹目标区域，监听右键事件，复用 Menu 内容层；同样支持 `size` 和 `shape` 属性。
 
 ## 成功标准（必填）
 
