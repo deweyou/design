@@ -6,6 +6,7 @@ const srcDir = resolve(import.meta.dirname, 'src');
 const input = {
   index: resolve(srcDir, 'index.ts'),
   'button/index': resolve(srcDir, 'button/index.tsx'),
+  'menu/index': resolve(srcDir, 'menu/index.tsx'),
   'popover/index': resolve(srcDir, 'popover/index.tsx'),
   'text/index': resolve(srcDir, 'text/index.tsx'),
 };
@@ -40,6 +41,7 @@ export default defineConfig({
     },
   },
   test: {
-    include: ['tests/**/*.test.ts', 'src/**/*.test.ts'],
+    include: ['tests/**/*.test.{ts,tsx}', 'src/**/*.test.{ts,tsx}'],
+    setupFiles: ['src/test-setup.ts'],
   },
 });

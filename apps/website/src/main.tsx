@@ -1,7 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-import { Button, IconButton, Popover, Text } from '@deweyou-ui/components';
+import {
+  Button,
+  ContextMenu,
+  IconButton,
+  Menu,
+  MenuCheckboxItem,
+  MenuContent,
+  MenuGroup,
+  MenuItem,
+  MenuRadioGroup,
+  MenuRadioItem,
+  MenuSeparator,
+  MenuTrigger,
+  MenuTriggerItem,
+  Popover,
+  Text,
+} from '@deweyou-ui/components';
 import { useThemeMode } from '@deweyou-ui/hooks';
 import { AddIcon } from '@deweyou-ui/icons/add';
 import { ChevronRightIcon } from '@deweyou-ui/icons/chevron-right';
@@ -653,6 +669,258 @@ const PopoverComponentPreview = () => {
   );
 };
 
+const MenuComponentPreview = () => {
+  const [radioValue, setRadioValue] = React.useState('grid');
+  const [sidebarChecked, setSidebarChecked] = React.useState(true);
+  const [toolbarChecked, setToolbarChecked] = React.useState(false);
+
+  return (
+    <section className="button-guidance-grid">
+      <article className="button-panel">
+        <h2>Menu component</h2>
+        <p>
+          `Menu` 基于 Ark UI
+          构建，支持普通菜单项、分组、分割线、多级子菜单、单选、多选，以及右键菜单（ContextMenu）。
+        </p>
+        <div className="button-boundary-grid">
+          <div className="boundary-card">
+            <strong>基础菜单</strong>
+            <div className="button-row">
+              <Menu>
+                <MenuTrigger>
+                  <Button variant="outlined">打开菜单</Button>
+                </MenuTrigger>
+                <MenuContent>
+                  <MenuItem value="new">新建文件</MenuItem>
+                  <MenuItem value="open">打开文件</MenuItem>
+                  <MenuItem value="save">保存</MenuItem>
+                  <MenuSeparator />
+                  <MenuItem value="delete" disabled>
+                    删除（禁用）
+                  </MenuItem>
+                </MenuContent>
+              </Menu>
+            </div>
+          </div>
+          <div className="boundary-card">
+            <strong>分组与分割线</strong>
+            <div className="button-row">
+              <Menu>
+                <MenuTrigger>
+                  <Button variant="outlined">文件操作</Button>
+                </MenuTrigger>
+                <MenuContent>
+                  <MenuGroup label="创建">
+                    <MenuItem value="new-file">新建文件</MenuItem>
+                    <MenuItem value="new-folder">新建文件夹</MenuItem>
+                  </MenuGroup>
+                  <MenuSeparator />
+                  <MenuGroup label="编辑">
+                    <MenuItem value="cut">剪切</MenuItem>
+                    <MenuItem value="copy">复制</MenuItem>
+                    <MenuItem value="paste">粘贴</MenuItem>
+                  </MenuGroup>
+                </MenuContent>
+              </Menu>
+            </div>
+          </div>
+          <div className="boundary-card">
+            <strong>二级子菜单</strong>
+            <div className="button-row">
+              <Menu>
+                <MenuTrigger>
+                  <Button variant="outlined">更多选项</Button>
+                </MenuTrigger>
+                <MenuContent>
+                  <MenuItem value="undo">撤销</MenuItem>
+                  <Menu>
+                    <MenuTriggerItem>导出为</MenuTriggerItem>
+                    <MenuContent>
+                      <MenuItem value="export-pdf">PDF</MenuItem>
+                      <MenuItem value="export-png">PNG</MenuItem>
+                      <MenuItem value="export-svg">SVG</MenuItem>
+                    </MenuContent>
+                  </Menu>
+                  <MenuItem value="redo">重做</MenuItem>
+                </MenuContent>
+              </Menu>
+            </div>
+          </div>
+          <div className="boundary-card">
+            <strong>单选（RadioGroup）</strong>
+            <div className="button-row">
+              <Menu closeOnSelect={false}>
+                <MenuTrigger>
+                  <Button variant="outlined">
+                    视图：{radioValue === 'grid' ? '网格' : '列表'}
+                  </Button>
+                </MenuTrigger>
+                <MenuContent>
+                  <MenuRadioGroup
+                    value={radioValue}
+                    onValueChange={({ value }) => {
+                      setRadioValue(value);
+                    }}
+                  >
+                    <MenuRadioItem value="list">列表视图</MenuRadioItem>
+                    <MenuRadioItem value="grid">网格视图</MenuRadioItem>
+                  </MenuRadioGroup>
+                </MenuContent>
+              </Menu>
+            </div>
+          </div>
+          <div className="boundary-card">
+            <strong>多选（CheckboxItem）</strong>
+            <div className="button-row">
+              <Menu closeOnSelect={false}>
+                <MenuTrigger>
+                  <Button variant="outlined">面板显示</Button>
+                </MenuTrigger>
+                <MenuContent>
+                  <MenuCheckboxItem
+                    checked={sidebarChecked}
+                    value="sidebar"
+                    onCheckedChange={({ checked }) => {
+                      setSidebarChecked(checked);
+                    }}
+                  >
+                    侧边栏
+                  </MenuCheckboxItem>
+                  <MenuCheckboxItem
+                    checked={toolbarChecked}
+                    value="toolbar"
+                    onCheckedChange={({ checked }) => {
+                      setToolbarChecked(checked);
+                    }}
+                  >
+                    工具栏
+                  </MenuCheckboxItem>
+                </MenuContent>
+              </Menu>
+            </div>
+          </div>
+          <div className="boundary-card">
+            <strong>禁用项</strong>
+            <div className="button-row">
+              <Menu>
+                <MenuTrigger>
+                  <Button variant="outlined">操作菜单</Button>
+                </MenuTrigger>
+                <MenuContent>
+                  <MenuItem value="view">查看</MenuItem>
+                  <MenuItem value="edit">编辑</MenuItem>
+                  <MenuItem value="share" disabled>
+                    分享（无权限）
+                  </MenuItem>
+                  <MenuSeparator />
+                  <MenuItem value="delete" disabled>
+                    删除（禁用）
+                  </MenuItem>
+                </MenuContent>
+              </Menu>
+            </div>
+          </div>
+          <div className="boundary-card">
+            <strong>右键菜单（ContextMenu）</strong>
+            <ContextMenu>
+              <ContextMenu.Trigger>
+                <div
+                  style={{
+                    border: '1px dashed var(--ui-color-border)',
+                    borderRadius: '0.4rem',
+                    color: 'var(--ui-color-text)',
+                    cursor: 'context-menu',
+                    fontSize: '0.875rem',
+                    padding: '1.5rem 1rem',
+                    textAlign: 'center',
+                  }}
+                >
+                  在此区域右键点击
+                </div>
+              </ContextMenu.Trigger>
+              <ContextMenu.Content>
+                <MenuItem value="cut">剪切</MenuItem>
+                <MenuItem value="copy">复制</MenuItem>
+                <MenuItem value="paste">粘贴</MenuItem>
+                <MenuSeparator />
+                <MenuItem value="properties">属性</MenuItem>
+              </ContextMenu.Content>
+            </ContextMenu>
+          </div>
+          <div className="boundary-card">
+            <strong>尺寸（size）</strong>
+            <div className="button-row">
+              <Menu size="sm">
+                <MenuTrigger>
+                  <Button size="small" variant="outlined">
+                    sm
+                  </Button>
+                </MenuTrigger>
+                <MenuContent>
+                  <MenuItem value="a">选项 A</MenuItem>
+                  <MenuItem value="b">选项 B</MenuItem>
+                  <MenuItem value="c">选项 C</MenuItem>
+                </MenuContent>
+              </Menu>
+              <Menu size="md">
+                <MenuTrigger>
+                  <Button size="small" variant="outlined">
+                    md
+                  </Button>
+                </MenuTrigger>
+                <MenuContent>
+                  <MenuItem value="a">选项 A</MenuItem>
+                  <MenuItem value="b">选项 B</MenuItem>
+                  <MenuItem value="c">选项 C</MenuItem>
+                </MenuContent>
+              </Menu>
+              <Menu size="lg">
+                <MenuTrigger>
+                  <Button size="small" variant="outlined">
+                    lg
+                  </Button>
+                </MenuTrigger>
+                <MenuContent>
+                  <MenuItem value="a">选项 A</MenuItem>
+                  <MenuItem value="b">选项 B</MenuItem>
+                  <MenuItem value="c">选项 C</MenuItem>
+                </MenuContent>
+              </Menu>
+            </div>
+          </div>
+          <div className="boundary-card">
+            <strong>形状（shape）</strong>
+            <div className="button-row">
+              <Menu shape="rounded">
+                <MenuTrigger>
+                  <Button size="small" variant="outlined">
+                    rounded
+                  </Button>
+                </MenuTrigger>
+                <MenuContent>
+                  <MenuItem value="a">选项 A</MenuItem>
+                  <MenuItem value="b">选项 B</MenuItem>
+                </MenuContent>
+              </Menu>
+              <Menu shape="rect">
+                <MenuTrigger>
+                  <Button size="small" variant="outlined">
+                    rect
+                  </Button>
+                </MenuTrigger>
+                <MenuContent>
+                  <MenuItem value="a">选项 A</MenuItem>
+                  <MenuItem value="b">选项 B</MenuItem>
+                </MenuContent>
+              </Menu>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+  );
+};
+
 const App = () => (
   <main className="shell">
     <section className="hero">
@@ -1031,6 +1299,7 @@ const App = () => (
     </section>
 
     <PopoverComponentPreview />
+    <MenuComponentPreview />
     <IconGuidance />
     <p className="footer-note">
       Storybook owns the exhaustive review matrix. The website keeps the public guidance concise:

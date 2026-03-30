@@ -20,7 +20,9 @@
     "./theme-dark.css": "./dist/css/theme-dark.css",
     "./reset.css": "./dist/css/reset.css",
     "./base.css": "./dist/css/base.css",
+    "./less/bridge": "./dist/less/bridge.less",
     "./less/bridge.less": "./dist/less/bridge.less",
+    "./less/mixins": "./dist/less/mixins.less",
     "./less/mixins.less": "./dist/less/mixins.less"
   },
   "publishConfig": {

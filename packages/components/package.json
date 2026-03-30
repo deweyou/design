@@ -28,6 +28,11 @@
       "import": "./dist/text/index.js",
       "default": "./dist/text/index.js"
     },
+    "./menu": {
+      "types": "./dist/menu/index.d.ts",
+      "import": "./dist/menu/index.js",
+      "default": "./dist/menu/index.js"
+    },
     "./package.json": "./package.json",
     "./style.css": "./dist/style.css"
   },
@@ -46,6 +51,9 @@
     "classnames": "catalog:"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "catalog:",
+    "@testing-library/react": "catalog:",
+    "@testing-library/user-event": "catalog:",
     "@tsdown/css": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
