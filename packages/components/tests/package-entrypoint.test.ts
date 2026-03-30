@@ -59,8 +59,25 @@ void exampleIconButtonProps;
 void examplePopoverProps;
 void exampleTextProps;
 
-test('components root entry exposes Button, IconButton, Popover, and Text as the runtime public exports', () => {
-  expect(Object.keys(components).sort()).toEqual(['Button', 'IconButton', 'Popover', 'Text']);
+test('components root entry exposes Button, IconButton, Popover, Text, and Menu family as the runtime public exports', () => {
+  expect(Object.keys(components).sort()).toEqual([
+    'Button',
+    'ContextMenu',
+    'IconButton',
+    'Menu',
+    'MenuCheckboxItem',
+    'MenuContent',
+    'MenuGroup',
+    'MenuGroupLabel',
+    'MenuItem',
+    'MenuRadioGroup',
+    'MenuRadioItem',
+    'MenuSeparator',
+    'MenuTrigger',
+    'MenuTriggerItem',
+    'Popover',
+    'Text',
+  ]);
 });
 
 test('components root entry renders Button, IconButton, Popover, and Text without any legacy contract object', () => {
