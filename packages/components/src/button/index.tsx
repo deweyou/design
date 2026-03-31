@@ -356,13 +356,17 @@ const hasTextLikeContent = (analysis: ContentAnalysis): boolean => {
 const isShapeableVariant = (
   variant: ButtonVariant | IconButtonVariant,
 ): variant is ShapeableButtonVariant => {
-  return buttonShapeableVariantOptions.some((supportedVariant) => supportedVariant === variant);
+  return (buttonShapeableVariantOptions as readonly (ButtonVariant | IconButtonVariant)[]).includes(
+    variant,
+  );
 };
 
 const isIconButtonVariant = (
   variant: ButtonVariant | IconButtonVariant,
 ): variant is IconButtonVariant => {
-  return iconButtonVariantOptions.some((supportedVariant) => supportedVariant === variant);
+  return (iconButtonVariantOptions as readonly (ButtonVariant | IconButtonVariant)[]).includes(
+    variant,
+  );
 };
 
 const resolveIconButtonVariant = (
@@ -413,7 +417,7 @@ const resolveButtonShape = (
 
   const supportedShapes = buttonShapeSupport[variant];
 
-  if (!supportedShapes.some((supportedShape) => supportedShape === shape)) {
+  if (!supportedShapes.includes(shape)) {
     throw new Error(
       `Button variant "${variant}" does not support the "${String(shape)}" shape. Supported shapes: ${supportedShapes.join(', ')}.`,
     );

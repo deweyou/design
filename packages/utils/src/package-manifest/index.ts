@@ -36,7 +36,7 @@ const manifestDependencyFields = [
 ] as const;
 
 export const isCatalogSpecifier = (specifier: string) => {
-  return specifier === 'catalog:' || specifier.startsWith('catalog:');
+  return specifier.startsWith('catalog:');
 };
 
 export const isWorkspaceSpecifier = (specifier: string) => {

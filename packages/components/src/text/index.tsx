@@ -50,7 +50,7 @@ const decorationClassMap = {
 } as const;
 
 const normalizeLineClamp = (lineClamp?: number) => {
-  if (!Number.isInteger(lineClamp) || lineClamp === undefined || lineClamp <= 0) {
+  if (lineClamp === undefined || !Number.isInteger(lineClamp) || lineClamp <= 0) {
     return undefined;
   }
 

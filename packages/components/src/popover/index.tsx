@@ -338,14 +338,6 @@ export const Popover = ({
     }
 
     if (open) {
-      const activeElement =
-        document.activeElement instanceof HTMLElement ? document.activeElement : null;
-      const referenceElement = referenceRef.current;
-
-      if (!activeElement || !referenceElement?.contains(activeElement)) {
-        return;
-      }
-
       return;
     }
 

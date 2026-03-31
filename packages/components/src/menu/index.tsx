@@ -277,7 +277,6 @@ export const MenuGroup = ({ id: externalId, label, children, className }: MenuGr
 // ---------------------------------------------------------------------------
 
 export type MenuGroupLabelProps = {
-  htmlFor?: string;
   children: ReactNode;
   className?: string;
 };
