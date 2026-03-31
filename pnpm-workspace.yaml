@@ -7,9 +7,9 @@ catalog:
   '@testing-library/jest-dom': ^6.9.1
   '@testing-library/react': ^16.3.0
   '@testing-library/user-event': ^14.6.1
-  '@storybook/addon-docs': 10.2.19
-  '@storybook/react': 10.2.19
-  '@storybook/react-vite': 10.2.19
+  '@storybook/addon-docs': 10.3.3
+  '@storybook/react': 10.3.3
+  '@storybook/react-vite': 10.3.3
   '@tsdown/css': ^0.21.3
   '@types/node': ^24
   '@types/react': ^19.1.13
@@ -19,7 +19,7 @@ catalog:
   less: ^4.4.1
   react: ^19.1.1
   react-dom: ^19.1.1
-  storybook: 10.2.19
+  storybook: 10.3.3
   tdesign-icons-svg: ^0.4.1
   typescript: ^5
   vite: npm:@voidzero-dev/vite-plus-core@latest

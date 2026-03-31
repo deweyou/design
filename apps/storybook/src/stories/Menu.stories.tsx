@@ -34,8 +34,97 @@ const storyStyles = {
   },
 };
 
-const meta: Meta = {
+const meta: Meta<typeof Menu> = {
   title: 'Components/Menu',
+  component: Menu,
+  tags: ['autodocs'],
+  subcomponents: { MenuItem, MenuCheckboxItem, MenuRadioItem, MenuGroup },
+  argTypes: {
+    size: {
+      description: 'Controls the font size and item height of the menu content.',
+      control: { type: 'select' },
+      options: ['sm', 'md', 'lg'],
+      table: {
+        type: { summary: "'sm' | 'md' | 'lg'" },
+        defaultValue: { summary: 'md' },
+      },
+    },
+    shape: {
+      description: 'Corner shape of the menu panel.',
+      control: { type: 'select' },
+      options: ['rect', 'rounded'],
+      table: {
+        type: { summary: "'rect' | 'rounded'" },
+        defaultValue: { summary: 'rounded' },
+      },
+    },
+    open: {
+      description: 'Controlled open state. Use with `onOpenChange` for full control.',
+      control: { type: 'boolean' },
+      table: {
+        type: { summary: 'boolean | undefined' },
+        defaultValue: { summary: '—' },
+      },
+    },
+    defaultOpen: {
+      description: 'Initial open state for uncontrolled usage.',
+      control: { type: 'boolean' },
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
+    onOpenChange: {
+      description: 'Callback fired when the menu opens or closes.',
+      control: false,
+      table: {
+        type: { summary: '(details: MenuOpenChangeDetails) => void' },
+        defaultValue: { summary: '—' },
+      },
+    },
+    closeOnSelect: {
+      description:
+        'Whether the menu closes when a `MenuItem` is selected. Set to `false` for checkbox or radio menus.',
+      control: { type: 'boolean' },
+      table: {
+        type: { summary: 'boolean | undefined' },
+        defaultValue: { summary: 'true' },
+      },
+    },
+    placement: {
+      description: 'Preferred placement of the menu relative to its trigger.',
+      control: { type: 'select' },
+      options: ['bottom-start', 'bottom-end', 'top-start', 'top-end', 'right-start', 'left-start'],
+      table: {
+        type: { summary: 'MenuPlacement' },
+        defaultValue: { summary: 'bottom-start' },
+      },
+    },
+    disabled: {
+      description: 'When true, the menu cannot be opened.',
+      control: { type: 'boolean' },
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
+    children: {
+      description: 'Must include a `MenuTrigger` and a `MenuContent` as children.',
+      control: false,
+      table: {
+        type: { summary: 'ReactNode' },
+        defaultValue: { summary: '—' },
+      },
+    },
+  },
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'Menu displays a floating list of actions anchored to a trigger button. It supports groups, separators, submenus, radio selection, checkbox items, and context menus. Built on Ark UI for keyboard navigation, ARIA semantics, and focus management. Import from `@deweyou-ui/components/menu`.\n\n**Composition**: `Menu` → `MenuTrigger` → trigger element; `MenuContent` → `MenuItem` | `MenuGroup` | `MenuCheckboxItem` | `MenuRadioGroup` → `MenuRadioItem` | `MenuSeparator` | `MenuTriggerItem` (for submenus).',
+      },
+    },
+  },
 };
 
 export default meta;
@@ -48,18 +137,18 @@ export const Basic: StoryObj = {
   render: () => (
     <div style={storyStyles.grid}>
       <div style={storyStyles.card}>
-        <strong>基础菜单</strong>
+        <strong>Basic menu</strong>
         <Menu>
           <MenuTrigger>
-            <Button variant="outlined">打开菜单</Button>
+            <Button variant="outlined">Open menu</Button>
           </MenuTrigger>
           <MenuContent>
-            <MenuItem value="new">新建文件</MenuItem>
-            <MenuItem value="open">打开文件</MenuItem>
-            <MenuItem value="save">保存</MenuItem>
+            <MenuItem value="new">New file</MenuItem>
+            <MenuItem value="open">Open file</MenuItem>
+            <MenuItem value="save">Save</MenuItem>
             <MenuSeparator />
             <MenuItem value="delete" disabled>
-              删除（禁用）
+              Delete (disabled)
             </MenuItem>
           </MenuContent>
         </Menu>
@@ -76,20 +165,20 @@ export const Groups: StoryObj = {
   render: () => (
     <div style={storyStyles.grid}>
       <div style={storyStyles.card}>
-        <strong>分组（无分割线）</strong>
+        <strong>Groups (no separator)</strong>
         <Menu>
           <MenuTrigger>
-            <Button variant="outlined">文件操作</Button>
+            <Button variant="outlined">File actions</Button>
           </MenuTrigger>
           <MenuContent>
-            <MenuGroup label="创建">
-              <MenuItem value="new-file">新建文件</MenuItem>
-              <MenuItem value="new-folder">新建文件夹</MenuItem>
+            <MenuGroup label="Create">
+              <MenuItem value="new-file">New file</MenuItem>
+              <MenuItem value="new-folder">New folder</MenuItem>
             </MenuGroup>
-            <MenuGroup label="编辑">
-              <MenuItem value="cut">剪切</MenuItem>
-              <MenuItem value="copy">复制</MenuItem>
-              <MenuItem value="paste">粘贴</MenuItem>
+            <MenuGroup label="Edit">
+              <MenuItem value="cut">Cut</MenuItem>
+              <MenuItem value="copy">Copy</MenuItem>
+              <MenuItem value="paste">Paste</MenuItem>
             </MenuGroup>
           </MenuContent>
         </Menu>
@@ -106,37 +195,37 @@ export const Separator: StoryObj = {
   render: () => (
     <div style={storyStyles.grid}>
       <div style={storyStyles.card}>
-        <strong>仅分割线</strong>
+        <strong>Separator only</strong>
         <Menu>
           <MenuTrigger>
-            <Button variant="outlined">文件操作</Button>
+            <Button variant="outlined">File actions</Button>
           </MenuTrigger>
           <MenuContent>
-            <MenuItem value="new-file">新建文件</MenuItem>
-            <MenuItem value="new-folder">新建文件夹</MenuItem>
+            <MenuItem value="new-file">New file</MenuItem>
+            <MenuItem value="new-folder">New folder</MenuItem>
             <MenuSeparator />
-            <MenuItem value="cut">剪切</MenuItem>
-            <MenuItem value="copy">复制</MenuItem>
-            <MenuItem value="paste">粘贴</MenuItem>
+            <MenuItem value="cut">Cut</MenuItem>
+            <MenuItem value="copy">Copy</MenuItem>
+            <MenuItem value="paste">Paste</MenuItem>
           </MenuContent>
         </Menu>
       </div>
       <div style={storyStyles.card}>
-        <strong>分组 + 分割线</strong>
+        <strong>Groups + separator</strong>
         <Menu>
           <MenuTrigger>
-            <Button variant="outlined">文件操作</Button>
+            <Button variant="outlined">File actions</Button>
           </MenuTrigger>
           <MenuContent>
-            <MenuGroup label="创建">
-              <MenuItem value="new-file">新建文件</MenuItem>
-              <MenuItem value="new-folder">新建文件夹</MenuItem>
+            <MenuGroup label="Create">
+              <MenuItem value="new-file">New file</MenuItem>
+              <MenuItem value="new-folder">New folder</MenuItem>
             </MenuGroup>
             <MenuSeparator />
-            <MenuGroup label="编辑">
-              <MenuItem value="cut">剪切</MenuItem>
-              <MenuItem value="copy">复制</MenuItem>
-              <MenuItem value="paste">粘贴</MenuItem>
+            <MenuGroup label="Edit">
+              <MenuItem value="cut">Cut</MenuItem>
+              <MenuItem value="copy">Copy</MenuItem>
+              <MenuItem value="paste">Paste</MenuItem>
             </MenuGroup>
           </MenuContent>
         </Menu>
@@ -153,22 +242,22 @@ export const Submenu: StoryObj = {
   render: () => (
     <div style={storyStyles.grid}>
       <div style={storyStyles.card}>
-        <strong>二级子菜单</strong>
+        <strong>Nested submenu</strong>
         <Menu>
           <MenuTrigger>
-            <Button variant="outlined">更多选项</Button>
+            <Button variant="outlined">More options</Button>
           </MenuTrigger>
           <MenuContent>
-            <MenuItem value="undo">撤销</MenuItem>
+            <MenuItem value="undo">Undo</MenuItem>
             <Menu>
-              <MenuTriggerItem>导出为</MenuTriggerItem>
+              <MenuTriggerItem>Export as</MenuTriggerItem>
               <MenuContent>
                 <MenuItem value="export-pdf">PDF</MenuItem>
                 <MenuItem value="export-png">PNG</MenuItem>
                 <MenuItem value="export-svg">SVG</MenuItem>
               </MenuContent>
             </Menu>
-            <MenuItem value="redo">重做</MenuItem>
+            <MenuItem value="redo">Redo</MenuItem>
           </MenuContent>
         </Menu>
       </div>
@@ -186,15 +275,15 @@ const RadioSelectionDemo = () => {
   return (
     <div style={storyStyles.grid}>
       <div style={storyStyles.card}>
-        <strong>单选（RadioGroup）</strong>
+        <strong>Radio selection</strong>
         <Menu closeOnSelect={false}>
           <MenuTrigger>
-            <Button variant="outlined">视图：{value === 'grid' ? '网格' : '列表'}</Button>
+            <Button variant="outlined">View: {value === 'grid' ? 'Grid' : 'List'}</Button>
           </MenuTrigger>
           <MenuContent>
             <MenuRadioGroup value={value} onValueChange={({ value: v }) => setValue(v)}>
-              <MenuRadioItem value="list">列表视图</MenuRadioItem>
-              <MenuRadioItem value="grid">网格视图</MenuRadioItem>
+              <MenuRadioItem value="list">List view</MenuRadioItem>
+              <MenuRadioItem value="grid">Grid view</MenuRadioItem>
             </MenuRadioGroup>
           </MenuContent>
         </Menu>
@@ -218,10 +307,10 @@ const CheckboxItemsDemo = () => {
   return (
     <div style={storyStyles.grid}>
       <div style={storyStyles.card}>
-        <strong>多选（CheckboxItem）</strong>
+        <strong>Checkbox items</strong>
         <Menu closeOnSelect={false}>
           <MenuTrigger>
-            <Button variant="outlined">面板显示</Button>
+            <Button variant="outlined">Panel visibility</Button>
           </MenuTrigger>
           <MenuContent>
             <MenuCheckboxItem
@@ -229,14 +318,14 @@ const CheckboxItemsDemo = () => {
               value="sidebar"
               onCheckedChange={({ checked }) => setSidebar(checked)}
             >
-              侧边栏
+              Sidebar
             </MenuCheckboxItem>
             <MenuCheckboxItem
               checked={toolbar}
               value="toolbar"
               onCheckedChange={({ checked }) => setToolbar(checked)}
             >
-              工具栏
+              Toolbar
             </MenuCheckboxItem>
           </MenuContent>
         </Menu>
@@ -258,7 +347,7 @@ export const ContextMenuStory: StoryObj = {
   render: () => (
     <div style={storyStyles.grid}>
       <div style={storyStyles.card}>
-        <strong>右键菜单（ContextMenu）</strong>
+        <strong>Context menu (right-click)</strong>
         <ContextMenu>
           <ContextMenu.Trigger>
             <div
@@ -272,15 +361,15 @@ export const ContextMenuStory: StoryObj = {
                 textAlign: 'center',
               }}
             >
-              在此区域右键点击
+              Right-click anywhere in this area
             </div>
           </ContextMenu.Trigger>
           <ContextMenu.Content>
-            <MenuItem value="cut">剪切</MenuItem>
-            <MenuItem value="copy">复制</MenuItem>
-            <MenuItem value="paste">粘贴</MenuItem>
+            <MenuItem value="cut">Cut</MenuItem>
+            <MenuItem value="copy">Copy</MenuItem>
+            <MenuItem value="paste">Paste</MenuItem>
             <MenuSeparator />
-            <MenuItem value="properties">属性</MenuItem>
+            <MenuItem value="properties">Properties</MenuItem>
           </ContextMenu.Content>
         </ContextMenu>
       </div>
@@ -296,19 +385,19 @@ export const DisabledItems: StoryObj = {
   render: () => (
     <div style={storyStyles.grid}>
       <div style={storyStyles.card}>
-        <strong>禁用项</strong>
+        <strong>Disabled items</strong>
         <Menu>
           <MenuTrigger>
-            <Button variant="outlined">操作菜单</Button>
+            <Button variant="outlined">Actions</Button>
           </MenuTrigger>
           <MenuContent>
-            <MenuItem value="view">查看</MenuItem>
-            <MenuItem value="edit">编辑</MenuItem>
+            <MenuItem value="view">View</MenuItem>
+            <MenuItem value="edit">Edit</MenuItem>
             <MenuItem value="delete" disabled>
-              删除
+              Delete
             </MenuItem>
             <MenuItem value="archive" disabled>
-              归档
+              Archive
             </MenuItem>
           </MenuContent>
         </Menu>
@@ -333,16 +422,16 @@ export const SizeVariants: StoryObj = {
                 variant="outlined"
                 size={size === 'sm' ? 'small' : size === 'lg' ? 'large' : 'medium'}
               >
-                {size.toUpperCase()} 菜单
+                {size.toUpperCase()} menu
               </Button>
             </MenuTrigger>
             <MenuContent>
-              <MenuItem value="new">新建文件</MenuItem>
-              <MenuItem value="open">打开文件</MenuItem>
-              <MenuItem value="save">保存</MenuItem>
+              <MenuItem value="new">New file</MenuItem>
+              <MenuItem value="open">Open file</MenuItem>
+              <MenuItem value="save">Save</MenuItem>
               <MenuSeparator />
               <MenuItem value="delete" disabled>
-                删除（禁用）
+                Delete (disabled)
               </MenuItem>
             </MenuContent>
           </Menu>
@@ -365,16 +454,16 @@ export const ShapeVariants: StoryObj = {
           <Menu shape={shape}>
             <MenuTrigger>
               <Button variant="outlined" shape={shape === 'rect' ? 'rect' : 'rounded'}>
-                {shape === 'rounded' ? '圆角菜单' : '直角菜单'}
+                {shape === 'rounded' ? 'Rounded menu' : 'Rect menu'}
               </Button>
             </MenuTrigger>
             <MenuContent>
-              <MenuItem value="new">新建文件</MenuItem>
-              <MenuItem value="open">打开文件</MenuItem>
-              <MenuItem value="save">保存</MenuItem>
+              <MenuItem value="new">New file</MenuItem>
+              <MenuItem value="open">Open file</MenuItem>
+              <MenuItem value="save">Save</MenuItem>
               <MenuSeparator />
               <MenuItem value="delete" disabled>
-                删除（禁用）
+                Delete (disabled)
               </MenuItem>
             </MenuContent>
           </Menu>

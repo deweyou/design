@@ -35,7 +35,7 @@ const preview: Preview = {
           style: {
             background: storybookThemeBackgrounds[themeMode],
             colorScheme: themeMode,
-            minHeight: '100vh',
+            minHeight: 'auto',
             padding: '24px',
             width: '100%',
           },

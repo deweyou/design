@@ -25,7 +25,7 @@ const config: StorybookConfig = {
     options: {},
   },
   docs: {
-    defaultName: 'Internal review stories for component state coverage',
+    defaultName: 'Overview',
   },
   async viteFinal(config) {
     const aliases = Array.isArray(config.resolve?.alias)
@@ -37,6 +37,7 @@ const config: StorybookConfig = {
 
     return {
       ...config,
+      base: '/storybook',
       resolve: {
         ...config.resolve,
         alias: [

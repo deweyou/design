@@ -64,14 +64,163 @@ const storyStyles = {
 } as const;
 
 const meta = {
-  title: 'Internal review/Popover',
+  title: 'Components/Popover',
   component: Popover,
   tags: ['autodocs'],
+  argTypes: {
+    content: {
+      description: 'Content rendered inside the popover panel. Required.',
+      control: false,
+      table: {
+        type: { summary: 'ReactNode' },
+        defaultValue: { summary: '—' },
+      },
+    },
+    trigger: {
+      description:
+        'Interaction that opens the popover. Accepts a single value or an array to combine triggers. `context-menu` is an explicit extension that does not change the base non-modal contract.',
+      control: { type: 'select' },
+      options: ['click', 'hover', 'focus', 'context-menu'],
+      table: {
+        type: {
+          summary:
+            "'click' | 'hover' | 'focus' | 'context-menu' | readonly ('click' | 'hover' | 'focus' | 'context-menu')[]",
+        },
+        defaultValue: { summary: 'click' },
+      },
+    },
+    placement: {
+      description:
+        'Preferred placement relative to the trigger. Falls back automatically when there is insufficient space — content is never clipped.',
+      control: { type: 'select' },
+      options: [
+        'top',
+        'bottom',
+        'left',
+        'right',
+        'left-top',
+        'left-bottom',
+        'right-top',
+        'right-bottom',
+      ],
+      table: {
+        type: {
+          summary:
+            "'top' | 'bottom' | 'left' | 'right' | 'left-top' | 'left-bottom' | 'right-top' | 'right-bottom'",
+        },
+        defaultValue: { summary: 'bottom' },
+      },
+    },
+    shape: {
+      description:
+        'Corner shape of the panel. `rounded` aligns with the button small-radius scale (`0.4rem`).',
+      control: { type: 'select' },
+      options: ['rect', 'rounded'],
+      table: {
+        type: { summary: "'rect' | 'rounded'" },
+        defaultValue: { summary: 'rounded' },
+      },
+    },
+    mode: {
+      description:
+        'Panel padding and border treatment. `card` includes border, shadow, and arrow; `loose` applies more padding; `pure` strips all chrome. `shape` still applies in `pure` mode.',
+      control: { type: 'select' },
+      options: ['card', 'loose', 'pure'],
+      table: {
+        type: { summary: "'card' | 'loose' | 'pure'" },
+        defaultValue: { summary: 'card' },
+      },
+    },
+    visible: {
+      description:
+        'Controlled visibility. When provided, the popover is fully controlled by the parent. Use `onVisibleChange` to react to open/close events.',
+      control: { type: 'boolean' },
+      table: {
+        type: { summary: 'boolean | undefined' },
+        defaultValue: { summary: '—' },
+      },
+    },
+    defaultVisible: {
+      description: 'Initial visibility for uncontrolled usage.',
+      control: { type: 'boolean' },
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
+    disabled: {
+      description: 'When true, the popover cannot be opened by any trigger.',
+      control: { type: 'boolean' },
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
+    offset: {
+      description: 'Distance in pixels between the trigger element and the panel.',
+      control: { type: 'number' },
+      table: {
+        type: { summary: 'number' },
+        defaultValue: { summary: '8' },
+      },
+    },
+    boundaryPadding: {
+      description: 'Minimum distance in pixels the panel must maintain from the viewport edge.',
+      control: { type: 'number' },
+      table: {
+        type: { summary: 'number' },
+        defaultValue: { summary: '16' },
+      },
+    },
+    onVisibleChange: {
+      description:
+        'Callback fired when the popover opens or closes. Receives the next `visible` state and a `details` object with `reason` and optionally the triggering `event`.',
+      control: false,
+      table: {
+        type: { summary: '(visible: boolean, details: PopoverVisibilityChangeDetails) => void' },
+        defaultValue: { summary: '—' },
+      },
+    },
+    overlayClassName: {
+      description: 'Additional CSS class applied to the popover panel overlay element.',
+      control: { type: 'text' },
+      table: {
+        type: { summary: 'string | undefined' },
+        defaultValue: { summary: '—' },
+      },
+    },
+    overlayStyle: {
+      description: 'Inline style applied to the popover panel overlay element.',
+      control: false,
+      table: {
+        type: { summary: 'CSSProperties | undefined' },
+        defaultValue: { summary: '—' },
+      },
+    },
+    popupPortalContainer: {
+      description:
+        'DOM node to portal the panel into. Useful for local scroll containers or Shadow DOM contexts.',
+      control: false,
+      table: {
+        type: { summary: 'HTMLElement | ShadowRoot | null | { current: ... }' },
+        defaultValue: { summary: '—' },
+      },
+    },
+    children: {
+      description:
+        'Trigger element. The popover attaches to this element for positioning and event handling.',
+      control: false,
+      table: {
+        type: { summary: 'ReactNode' },
+        defaultValue: { summary: '—' },
+      },
+    },
+  },
   parameters: {
     docs: {
       description: {
         component:
-          'Internal review matrix for the Popover public API, including the direct `@deweyou-ui/components/popover` subpath contract, trigger combinations, eight-way placement vocabulary, boundary fallback, custom portal containers, non-modal keyboard behavior, and panel style modes.',
+          'Popover displays floating content anchored to a trigger element. It supports four trigger types, eight placements with automatic fallback, three panel modes, and both controlled (`visible`) and uncontrolled (`defaultVisible`) usage. Built on Ark UI for state management, ARIA semantics, and focus handling. Import from `@deweyou-ui/components/popover`.',
       },
     },
   },
@@ -101,7 +250,10 @@ const PlacementMatrix = () => {
               <Button variant="outlined">{placement}</Button>
             </Popover>
           </div>
-          <span style={storyStyles.meta}>首选位置不足时应自动回退，而不是直接裁切内容。</span>
+          <span style={storyStyles.meta}>
+            Falls back automatically when the preferred placement has insufficient space — content
+            is never clipped.
+          </span>
         </article>
       ))}
     </div>
@@ -132,7 +284,8 @@ const TriggerAndModeGallery = () => {
           </Popover>
         </div>
         <span style={storyStyles.meta}>
-          默认 trigger = click；context-menu 为显式扩展，不改变基础非模态契约。
+          Default trigger is `click`. `context-menu` is an explicit extension and does not change
+          the base non-modal contract.
         </span>
       </article>
       <article style={storyStyles.card}>
@@ -144,7 +297,7 @@ const TriggerAndModeGallery = () => {
               content={
                 <div style={{ display: 'grid', gap: '8px' }}>
                   <strong>{mode}</strong>
-                  <Text variant="caption">同一内容在不同 mode 下调整内边距。</Text>
+                  <Text variant="caption">The same content with adjusted padding per mode.</Text>
                 </div>
               }
               mode={mode}
@@ -155,7 +308,8 @@ const TriggerAndModeGallery = () => {
           ))}
         </div>
         <span style={storyStyles.meta}>
-          `pure` 仍然读取 `shape`；是否圆角只由 `shape` 决定，不由 `mode` 覆盖。
+          `pure` still respects `shape`. Corner radius is determined solely by `shape`, not
+          overridden by `mode`.
         </span>
       </article>
       <article style={storyStyles.card}>
@@ -167,7 +321,8 @@ const TriggerAndModeGallery = () => {
               <div style={{ display: 'grid', gap: '8px', maxWidth: '16rem' }}>
                 <strong>Local portal</strong>
                 <Text variant="caption">
-                  浮层挂到局部容器中，仍然保留位置回退、安全边距和外部关闭能力。
+                  Panel mounted into a local container while retaining placement fallback, boundary
+                  padding, and outside-press dismiss.
                 </Text>
               </div>
             }
@@ -180,7 +335,8 @@ const TriggerAndModeGallery = () => {
           </Popover>
         </div>
         <span style={storyStyles.meta}>
-          `popupPortalContainer` 用于评审局部滚动区和裁切边界中的挂载行为。
+          `popupPortalContainer` lets you mount the panel inside a local scroll region or clipping
+          boundary.
         </span>
       </article>
     </div>
@@ -202,7 +358,7 @@ const AccessibilityGallery = () => {
                   Controlled review
                 </Text>
                 <Text color="slate" variant="caption">
-                  面板内点击默认不会自动关闭，交给显式动作处理。
+                  Clicking inside the panel does not auto-dismiss — explicit actions handle that.
                 </Text>
                 <div style={storyStyles.row}>
                   <Button
@@ -246,7 +402,7 @@ const AccessibilityGallery = () => {
           </Button>
         </div>
         <span style={storyStyles.meta}>
-          非模态 Popover 不做焦点陷阱，但关闭后应把焦点返还给 trigger。
+          Non-modal popover does not trap focus, but returns focus to the trigger on close.
         </span>
       </article>
       <article style={storyStyles.card}>
@@ -283,7 +439,8 @@ const AccessibilityGallery = () => {
           </Popover>
         </div>
         <span style={storyStyles.meta}>
-          同页多个实例默认互不影响；只在业务层显式受控时才做互斥。
+          Multiple instances on the same page are independent by default; mutual exclusion requires
+          explicit controlled state at the application layer.
         </span>
       </article>
     </div>
@@ -319,7 +476,9 @@ export const ShapeReview: Story = {
               <Button variant="outlined">rounded</Button>
             </Popover>
           </div>
-          <span style={storyStyles.meta}>与 Button 的小圆角对齐，圆角值为 `0.4rem`。</span>
+          <span style={storyStyles.meta}>
+            Aligns with the Button small-radius scale at `0.4rem`.
+          </span>
         </article>
         <article style={storyStyles.card}>
           <strong>rect</strong>
@@ -328,7 +487,7 @@ export const ShapeReview: Story = {
               <Button variant="outlined">rect</Button>
             </Popover>
           </div>
-          <span style={storyStyles.meta}>直角模式不再保留额外圆角。</span>
+          <span style={storyStyles.meta}>Rect mode has no corner radius.</span>
         </article>
       </div>
     );
