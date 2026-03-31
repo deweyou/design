@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/storybook/:path*",
+      "destination": "https://design-storybook-a4m3p5o1k-deweyous-projects.vercel.app/:path*"
+    }
+  ]
+}
