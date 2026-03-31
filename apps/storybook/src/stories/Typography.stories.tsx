@@ -6,25 +6,25 @@ const weightSamples = [
   {
     className: 'typography-tier-body',
     label: 'Body / 400',
-    note: '默认正文、按钮文案、表单说明',
+    note: 'Default body text, button labels, form descriptions',
     sample: '观海听涛 Typography 2026 / Source Han Serif CN / Build v1.4.0 / ¥299.00',
   },
   {
     className: 'typography-tier-emphasis',
     label: 'Emphasis / 500',
-    note: '轻度强调、标签、状态提示',
+    note: 'Light emphasis, labels, status indicators',
     sample: '观海听涛 Typography 2026 / Source Han Serif CN / Build v1.4.0 / ¥299.00',
   },
   {
     className: 'typography-tier-title',
     label: 'Title / 600',
-    note: '标题、模块名称、信息分组抬升',
+    note: 'Headings, module names, section elevation',
     sample: '观海听涛 Typography 2026 / Source Han Serif CN / Build v1.4.0 / ¥299.00',
   },
   {
     className: 'typography-tier-strong',
     label: 'Strong / 700',
-    note: '强强调标题、重点提示',
+    note: 'Strong heading emphasis, key highlights',
     sample: '观海听涛 Typography 2026 / Source Han Serif CN / Build v1.4.0 / ¥299.00',
   },
 ] as const;
@@ -37,6 +37,8 @@ const previewStyles = {
     color: 'var(--ui-color-text)',
     display: 'grid',
     gap: '14px',
+    minWidth: 0,
+    overflow: 'hidden',
     padding: '20px',
   },
   grid: {
@@ -104,92 +106,177 @@ const textVariantSamples = [
   {
     variant: 'plain',
     label: 'plain / span',
-    note: '默认行内文本',
-    sample: '普通内联文本会按默认正文排版。',
+    note: 'Default inline text',
+    sample: 'Inline text rendered with default body typography.',
   },
   {
     variant: 'body',
     label: 'body / div',
-    note: '块级正文',
-    sample: '块级正文适合承载说明段落和正文内容。',
+    note: 'Block-level body text',
+    sample: 'Block body text for paragraphs and descriptive content.',
   },
   {
     variant: 'caption',
     label: 'caption / div',
-    note: '弱化说明文字',
-    sample: '说明文字保持可读，但视觉强调弱于正文。',
+    note: 'De-emphasised supporting text',
+    sample: 'Caption text remains readable but carries lower visual weight.',
   },
   {
     variant: 'h1',
     label: 'h1 / h1',
-    note: '一级标题语义与视觉层级',
-    sample: '一级标题用于页面最强抬升。',
+    note: 'Level-1 heading semantics and scale',
+    sample: 'Page-level primary heading.',
   },
   {
     variant: 'h2',
     label: 'h2 / h2',
-    note: '二级标题语义与视觉层级',
-    sample: '二级标题适合模块和卡片标题。',
+    note: 'Level-2 heading semantics and scale',
+    sample: 'Section or card heading.',
   },
   {
     variant: 'h3',
     label: 'h3 / h3',
-    note: '三级标题语义与视觉层级',
-    sample: '三级标题适合子分组抬升。',
+    note: 'Level-3 heading semantics and scale',
+    sample: 'Sub-section heading.',
   },
   {
     variant: 'h4',
     label: 'h4 / h4',
-    note: '四级标题语义与视觉层级',
-    sample: '四级标题适合辅助分组。',
+    note: 'Level-4 heading semantics and scale',
+    sample: 'Supporting sub-group heading.',
   },
   {
     variant: 'h5',
     label: 'h5 / h5',
-    note: '五级标题语义与视觉层级',
-    sample: '五级标题适合小范围提示。',
+    note: 'Level-5 heading semantics and scale',
+    sample: 'Compact label-level heading.',
   },
 ] as const;
 
 const textDecorationSamples = [
-  { label: 'italic', props: { italic: true }, sample: '斜体适合轻度语气变化。' },
-  { label: 'bold', props: { bold: true }, sample: '加粗适合更强的视觉强调。' },
-  { label: 'underline', props: { underline: true }, sample: '下划线适合标记重点信息。' },
+  { label: 'italic', props: { italic: true }, sample: 'Italic is suitable for tone variation.' },
+  { label: 'bold', props: { bold: true }, sample: 'Bold provides stronger visual emphasis.' },
+  {
+    label: 'underline',
+    props: { underline: true },
+    sample: 'Underline highlights key information.',
+  },
   {
     label: 'strikethrough',
     props: { strikethrough: true },
-    sample: '删除线适合表示修订或失效内容。',
+    sample: 'Strikethrough marks revised or deprecated content.',
   },
   {
     label: 'combined',
     props: { bold: true, italic: true, strikethrough: true, underline: true },
-    sample: '组合样式必须可以叠加工作。',
+    sample: 'Combined decorations must stack correctly.',
   },
 ] as const;
 
 const textPaletteFamilies = colorFamilyNames;
 
 const longTextSample =
-  '长文本摘要会在设置 lineClamp 后保持可读的最大行数，并在溢出时以省略形式提示仍有未显示内容。';
+  'Long-form text with lineClamp set will be truncated at the specified number of lines and show an ellipsis to indicate that more content exists beyond the visible area.';
 const editorialBodyLead =
-  '黄昏落在海峡另一侧时，Typography Review 2026 的长文页面会同时出现中文、English labels、版本号 Build v1.4.0、价格 ¥299.00 与时间 19:45。排版层级如果不稳定，这类混合内容很快就会显得松散。';
+  'When dusk falls on the other side of the strait, the long-form page of Typography Review 2026 displays Chinese, English labels, build number Build v1.4.0, price ¥299.00, and time 19:45 simultaneously. An unstable typographic hierarchy quickly makes this kind of mixed-script content feel loose.';
 const editorialBodySection =
-  '这次 Text 的目标不是制造一组孤立的字体样式，而是让 heading、body、caption 与 inline emphasis 在同一篇内容里自然衔接。阅读过程中，用户会先扫过标题，再回到段落，随后在数字、外文与强调词之间快速切换。';
+  'The goal of this Text component is not to create a set of isolated font styles, but to let heading, body, caption, and inline emphasis connect naturally within the same piece of content. During reading, users scan headings first, return to paragraphs, then switch rapidly between numbers, foreign words, and emphasis markers.';
 const editorialBodyClose =
-  '因此我们既需要 `lineClamp` 处理摘要卡片，也需要完整正文在长段落里保持节奏。一个稳定的排版入口，应该让 “Q2 revenue +18.6% / 审核完成率 97% / 截止 2026-03-31” 这类信息和中文叙述落在同一块阅读表面里，既不失重，也不刺眼。';
+  'We therefore need `lineClamp` for summary cards while keeping full body text rhythmic in long paragraphs. A stable typographic entry point should let information like "Q2 revenue +18.6% / Review completion rate 97% / Deadline 2026-03-31" sit on the same reading surface as narrative prose — neither losing weight nor becoming jarring.';
 
 const meta = {
-  title: 'Internal review/Typography',
+  title: 'Components/Typography',
+  component: Text,
   tags: ['autodocs'],
+  argTypes: {
+    variant: {
+      description:
+        'Typographic role and rendered HTML element. `plain` → `<span>`; `body` / `caption` → `<div>`; `h1`–`h5` → the corresponding heading element.',
+      control: { type: 'select' },
+      options: ['plain', 'body', 'caption', 'h1', 'h2', 'h3', 'h4', 'h5'],
+      table: {
+        type: { summary: "'plain' | 'body' | 'caption' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5'" },
+        defaultValue: { summary: 'plain' },
+      },
+    },
+    bold: {
+      description: 'Applies `font-weight: 700` (strong emphasis tier).',
+      control: { type: 'boolean' },
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
+    italic: {
+      description: 'Applies italic style for tone variation.',
+      control: { type: 'boolean' },
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
+    underline: {
+      description: 'Adds an underline decoration to mark key information.',
+      control: { type: 'boolean' },
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
+    strikethrough: {
+      description: 'Adds a strikethrough to mark revised or deprecated content.',
+      control: { type: 'boolean' },
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
+    color: {
+      description:
+        'Applies a foreground color from the shared palette. Directly reuses `@deweyou-ui/styles` color family names — no separate Text-specific color set.',
+      control: { type: 'select' },
+      options: colorFamilyNames,
+      table: {
+        type: { summary: 'ColorFamilyName' },
+        defaultValue: { summary: '—' },
+      },
+    },
+    background: {
+      description: 'Applies a background highlight from the shared palette color families.',
+      control: { type: 'select' },
+      options: colorFamilyNames,
+      table: {
+        type: { summary: 'ColorFamilyName' },
+        defaultValue: { summary: '—' },
+      },
+    },
+    lineClamp: {
+      description:
+        'Clamps the visible text to the given number of lines and appends an ellipsis when the content overflows.',
+      control: { type: 'number' },
+      table: {
+        type: { summary: 'number | undefined' },
+        defaultValue: { summary: '—' },
+      },
+    },
+    children: {
+      description: 'Text content.',
+      control: { type: 'text' },
+      table: {
+        type: { summary: 'ReactNode' },
+        defaultValue: { summary: '—' },
+      },
+    },
+  },
   parameters: {
     docs: {
       description: {
         component:
-          'Preview for the default Songti-oriented typography contract plus the direct `@deweyou-ui/components/text` contract, covering variants, shared-palette-backed highlights, lineClamp boundaries, and long-form reading flow.',
+          'Text renders semantic typographic content using the Songti-oriented font stack (Source Han Serif CN Web). It covers eight variants, four decoration props, shared-palette color and background highlights, and a `lineClamp` utility. Import from `@deweyou-ui/components/text`.',
       },
     },
   },
-} satisfies Meta;
+} satisfies Meta<typeof Text>;
 
 export default meta;
 
@@ -202,14 +289,16 @@ const EntrypointShell = () => {
         <strong>Preferred subpath</strong>
         <code>{`import { Text } from '@deweyou-ui/components/text';`}</code>
         <span style={previewStyles.meta}>
-          Typography review 优先验证 `text` 子路径入口，不要求额外补充组件专属样式导入。
+          Prefer the `text` subpath for single-component consumption. No extra style import
+          required.
         </span>
       </article>
       <article style={previewStyles.card}>
         <strong>Root compatibility</strong>
         <code>{`import { Text } from '@deweyou-ui/components';`}</code>
         <span style={previewStyles.meta}>
-          根入口仍保留聚合消费能力，便于兼容已有页面和文档示例。
+          The root entry remains available for aggregate consumption and existing documentation
+          examples.
         </span>
       </article>
     </div>
@@ -241,8 +330,8 @@ const FontWeightsPreview = () => {
         <div style={previewStyles.grid}>
           <article style={previewStyles.card}>
             <div className="typography-tier-body" style={previewStyles.sample}>
-              默认加载 `Source Han Serif CN Web`，未就绪时应退回 `Songti SC`、`STSong`、`SimSun`、
-              `NSimSun`。
+              Loads `Source Han Serif CN Web` by default; falls back to `Songti SC`, `STSong`,
+              `SimSun`, `NSimSun` when unavailable.
             </div>
             <span style={previewStyles.meta}>font-display: swap / platform fallback audit</span>
           </article>
@@ -271,7 +360,7 @@ const TextContractPreview = () => {
     <div style={previewStyles.matrix}>
       <article style={previewStyles.card}>
         <strong>Text component contract</strong>
-        <div style={previewStyles.grid}>
+        <div style={{ ...previewStyles.grid, gridTemplateColumns: '1fr' }}>
           {textVariantSamples.map((sample) => (
             <article key={sample.label} style={previewStyles.card}>
               <div style={previewStyles.stack}>
@@ -301,8 +390,8 @@ const TextContractPreview = () => {
       <article style={previewStyles.card}>
         <strong>Palette highlights</strong>
         <span style={previewStyles.meta}>
-          `color` / `background` 直接复用 `@deweyou-ui/styles` 的共享基础色卡家族命名，不新增 Text
-          私有颜色集合。
+          `color` and `background` directly reuse `@deweyou-ui/styles` shared color family names. No
+          separate Text-specific color set is introduced.
         </span>
         <div style={previewStyles.grid}>
           {textPaletteFamilies.map((family) => (
@@ -330,7 +419,9 @@ const TextContractPreview = () => {
           </article>
           <article style={{ ...previewStyles.card, ...previewStyles.textBoundaryCard }}>
             <span style={previewStyles.meta}>Native heading root</span>
-            <Text variant="h2">标题 variant 现在默认输出原生 heading 节点。</Text>
+            <Text variant="h2">
+              Heading variant now renders a native heading element by default.
+            </Text>
           </article>
         </div>
       </article>
@@ -356,53 +447,56 @@ const LongFormPreview = () => {
             {editorialBodyLead}
           </Text>
           <Text variant="body">
-            在同一段正文里，
+            Within a single paragraph,{' '}
             <Text bold style={previewStyles.readingInline}>
-              标题抬升
+              heading elevation
             </Text>
-            、
+            ,{' '}
             <Text italic style={previewStyles.readingInline}>
-              语气变化
+              tone variation
             </Text>
-            、
+            ,{' '}
             <Text underline style={previewStyles.readingInline}>
-              关键信息标记
+              key information markers
             </Text>
-            、
+            ,{' '}
             <Text background="amber" bold color="amber" style={previewStyles.readingInline}>
-              palette-backed highlight
+              palette-backed highlights
             </Text>
-            和
+            , and{' '}
             <Text strikethrough style={previewStyles.readingInline}>
-              已废弃表述
-            </Text>
-            都应该能自然拼接，不需要拆成一串临时 class。
+              deprecated expressions
+            </Text>{' '}
+            should all compose naturally without needing a chain of ad-hoc classes.
           </Text>
         </section>
 
         <section style={previewStyles.readingSection}>
-          <Text variant="h2">一、阅读入口与摘要节奏</Text>
+          <Text variant="h2">I. Reading Entry and Summary Rhythm</Text>
           <Text variant="body">{editorialBodySection}</Text>
-          <Text variant="h3">1.1 混合脚本的密度控制</Text>
+          <Text variant="h3">1.1 Density Control in Mixed Scripts</Text>
           <Text variant="body">
-            例如 “Latency 128ms / 平均停留 6.4 min / UV 12,480 / 转化率 3.2%” 这样的句子，
-            需要在中文叙述、英文术语与阿拉伯数字之间维持稳定字面重心，而不是让某一类字符突然跳出来。
+            For example, "Latency 128ms / Average dwell 6.4 min / UV 12,480 / Conversion rate 3.2%":
+            such sentences need to maintain a stable visual centre of gravity across Chinese prose,
+            English terms, and Arabic numerals without any one script type jumping out.
           </Text>
-          <Text variant="h4">1.1.1 说明文字与脚注</Text>
+          <Text variant="h4">1.1.1 Supporting Text and Footnotes</Text>
           <Text variant="caption">
-            Caption 适合放置来源、时间、注记与较低优先级信息，例如 Last sync 2026-03-24 19:45 CST。
+            Caption suits sources, timestamps, annotations and lower-priority information, e.g. Last
+            sync 2026-03-24 19:45 CST.
           </Text>
         </section>
 
         <section style={previewStyles.readingSection}>
-          <Text variant="h2">二、长文中的层级切换</Text>
+          <Text variant="h2">II. Hierarchy Transitions in Long-Form Content</Text>
           <Text variant="body">{editorialBodyClose}</Text>
-          <Text variant="h3">2.1 小标题不该打断正文呼吸</Text>
+          <Text variant="h3">2.1 Subheadings Should Not Interrupt Reading Flow</Text>
           <Text variant="body">
-            当一个模块从 overview 过渡到 detail，再进入 metrics appendix 时，`h3`、`h4`、`h5`
-            应该逐级收束，而不是全部挤在同一个视觉重量上。
+            When a module transitions from overview to detail and into a metrics appendix, `h3`,
+            `h4`, and `h5` should progressively converge rather than all competing at the same
+            visual weight.
           </Text>
-          <Text variant="h5">附注：用于列表、边注与轻量提醒</Text>
+          <Text variant="h5">Note: for lists, marginalia, and lightweight callouts</Text>
           <Text variant="caption">
             Example note: Keep code identifiers such as `releaseTag`, `BUILD_ID`, and `Q2_GROWTH` on
             the mono exception only when they truly act like code.

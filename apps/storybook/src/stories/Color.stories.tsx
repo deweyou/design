@@ -94,7 +94,8 @@ const SharedColorFoundation = () => {
     <article style={storyStyles.card}>
       <strong>Shared color foundation</strong>
       <span style={storyStyles.meta}>
-        26 个颜色家族、11 个色阶，再加上纯黑白。组件先复用这层基础色卡；非必要不得新增特化 token。
+        26 color families, 11 steps each, plus pure black and white. Components reuse this
+        foundation first — new specialized tokens require justification.
       </span>
       <div style={storyStyles.paletteGrid}>
         <article style={storyStyles.familyCard}>
@@ -148,9 +149,9 @@ const ReviewGuidance = () => {
     <article style={storyStyles.card}>
       <strong>Governance notes</strong>
       <span style={storyStyles.meta}>
-        Storybook 负责完整色卡评审矩阵，website
-        只保留公开指导。若新增颜色诉求出现，必须先证明共享基础色卡 +
-        现有语义主题色不足，才允许申请新的特化 token。
+        Storybook hosts the full palette review matrix; the website contains only public guidance.
+        Any new color requirement must first demonstrate that the shared foundation palette plus
+        existing semantic theme tokens are insufficient before a new specialized token is approved.
       </span>
       <span style={storyStyles.meta}>
         Use Storybook theme switching to inspect the same palette in light and dark mode.

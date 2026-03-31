@@ -63,14 +63,119 @@ const storyStyles = {
 } as const;
 
 const meta = {
-  title: 'Internal review/Button',
+  title: 'Components/Button',
   component: Button,
+  subcomponents: { IconButton },
   tags: ['autodocs'],
+  argTypes: {
+    variant: {
+      description:
+        'Visual style of the button. `filled` is the default for primary actions; `outlined` for secondary; `ghost` for tertiary; `link` for inline text actions. `link` does not support the `shape` prop.',
+      control: { type: 'select' },
+      options: ['filled', 'outlined', 'ghost', 'link'],
+      table: {
+        type: { summary: "'filled' | 'outlined' | 'ghost' | 'link'" },
+        defaultValue: { summary: 'filled' },
+      },
+    },
+    color: {
+      description:
+        'Semantic color emphasis. `neutral` keeps all variants monochrome; `primary` applies the brand green; `danger` signals destructive actions.',
+      control: { type: 'select' },
+      options: ['neutral', 'primary', 'danger'],
+      table: {
+        type: { summary: "'neutral' | 'primary' | 'danger'" },
+        defaultValue: { summary: 'neutral' },
+      },
+    },
+    size: {
+      description: 'Controls the button height and font size.',
+      control: { type: 'select' },
+      options: ['extra-small', 'small', 'medium', 'large', 'extra-large'],
+      table: {
+        type: { summary: "'extra-small' | 'small' | 'medium' | 'large' | 'extra-large'" },
+        defaultValue: { summary: 'medium' },
+      },
+    },
+    shape: {
+      description:
+        'Corner shape. Only supported by `filled` and `outlined` variants. Has no effect on `ghost` or `link`.',
+      control: { type: 'select' },
+      options: ['rect', 'rounded', 'pill'],
+      table: {
+        type: { summary: "'rect' | 'rounded' | 'pill'" },
+        defaultValue: { summary: '—' },
+      },
+    },
+    disabled: {
+      description:
+        'Prevents all interaction and reduces opacity to 0.56. Does not remove the element from the accessibility tree.',
+      control: { type: 'boolean' },
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
+    loading: {
+      description:
+        'Replaces or prepends the content with a spinner and blocks repeated activation. The button remains in the DOM with its accessible name.',
+      control: { type: 'boolean' },
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
+    href: {
+      description:
+        'When provided, renders the button as an `<a>` anchor element. Use with `target` to control navigation behaviour.',
+      control: { type: 'text' },
+      table: {
+        type: { summary: 'string | undefined' },
+        defaultValue: { summary: '—' },
+      },
+    },
+    target: {
+      description:
+        'Anchor `target` attribute. Only valid when `href` is also set. Common values: `_blank`, `_self`.',
+      control: { type: 'text' },
+      table: {
+        type: { summary: 'string | undefined' },
+        defaultValue: { summary: '—' },
+      },
+    },
+    htmlType: {
+      description:
+        'Overrides the native `type` attribute on the `<button>` element. Takes precedence over a native `type` prop when both are present.',
+      control: { type: 'select' },
+      options: ['button', 'submit', 'reset'],
+      table: {
+        type: { summary: "'button' | 'submit' | 'reset'" },
+        defaultValue: { summary: 'button' },
+      },
+    },
+    icon: {
+      description:
+        'Icon element displayed before the label. When `icon` is provided alongside visible `children`, the button stays in the content-density model.',
+      control: false,
+      table: {
+        type: { summary: 'ReactNode' },
+        defaultValue: { summary: '—' },
+      },
+    },
+    children: {
+      description: 'Button label content.',
+      control: { type: 'text' },
+      table: {
+        type: { summary: 'ReactNode' },
+        defaultValue: { summary: '—' },
+      },
+    },
+  },
   parameters: {
     docs: {
       description: {
         component:
-          'Internal review matrix for the Button / IconButton public API, including the direct `@deweyou-ui/components/button` subpath contract, native prop passthrough, loading feedback, color emphasis, shape support, and the shared semantic color source from @deweyou-ui/styles.',
+          'Button triggers an action or navigates to a destination. It ships as `Button` (with text) and `Button.Icon` / `IconButton` (icon-only). Import from the `@deweyou-ui/components/button` subpath. Supports four variants, three semantic colors, five sizes, and three corner shapes (filled/outlined only).',
       },
     },
   },
@@ -87,13 +192,16 @@ const EntrypointShell = () => {
         <strong>Preferred subpath</strong>
         <code>{`import { Button, IconButton } from '@deweyou-ui/components/button';`}</code>
         <span style={storyStyles.meta}>
-          单组件消费应优先走 `button` 子路径，并且不要求额外导入组件专属样式入口。
+          Prefer the `button` subpath for single-component consumption. No extra style import
+          required.
         </span>
       </article>
       <article style={storyStyles.card}>
         <strong>Root compatibility</strong>
         <code>{`import { Button, IconButton } from '@deweyou-ui/components';`}</code>
-        <span style={storyStyles.meta}>根入口继续保留，用于兼容现有消费方和聚合导出场景。</span>
+        <span style={storyStyles.meta}>
+          The root entry remains available for existing consumers and aggregate export scenarios.
+        </span>
       </article>
     </div>
   );
@@ -458,7 +566,8 @@ const HoverFeedbackGallery = () => {
           </Button>
         </div>
         <span style={storyStyles.meta}>
-          `link` 默认使用从左到右的下划线显现反馈，不再回退到第二套 hover 模式。
+          `link` shows a left-to-right underline reveal on hover. No separate background-hover
+          fallback.
         </span>
       </article>
       <article style={storyStyles.card}>
@@ -475,7 +584,8 @@ const HoverFeedbackGallery = () => {
           ))}
         </div>
         <span style={storyStyles.meta}>
-          `outlined` 仅保留真实 border 的颜色过渡：默认低色度，hover 时平滑过渡到与文字一致的颜色。
+          `outlined` applies a real border color transition only: low-chroma by default, smoothly
+          shifting to match the text color on hover.
         </span>
       </article>
       <article style={storyStyles.card}>

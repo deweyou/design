@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { Icon } from '@deweyou-ui/icons';
 import { AddIcon } from '@deweyou-ui/icons/add';
 import { CheckIcon } from '@deweyou-ui/icons/check';
 import { ChevronLeftIcon } from '@deweyou-ui/icons/chevron-left';
@@ -48,16 +49,70 @@ const storyStyles = {
 } as const;
 
 const meta = {
-  title: 'Internal review/Icon',
+  title: 'Components/Icon',
+  component: Icon,
+  tags: ['autodocs'],
+  args: {
+    name: 'search' as const,
+  },
+  argTypes: {
+    name: {
+      description:
+        'Name of the icon to render. Must be a valid `IconName` from the registry. An unsupported name renders a visible error message instead of throwing.',
+      control: { type: 'select' },
+      options: galleryItems.map((item) => item.name),
+      table: {
+        type: { summary: 'IconName' },
+        defaultValue: { summary: '—' },
+      },
+    },
+    size: {
+      description:
+        'Controls the icon dimensions. Accepts a named size token or a numeric pixel value.',
+      control: { type: 'select' },
+      options: ['extra-small', 'small', 'medium', 'large', 'extra-large'],
+      table: {
+        type: {
+          summary: "'extra-small' | 'small' | 'medium' | 'large' | 'extra-large' | number",
+        },
+        defaultValue: { summary: 'medium' },
+      },
+    },
+    label: {
+      description:
+        'Accessible label for the icon. When provided, the icon renders with `role="img"` and `aria-label`. When omitted, the icon is decorative (`aria-hidden="true"`).',
+      control: { type: 'text' },
+      table: {
+        type: { summary: 'string | undefined' },
+        defaultValue: { summary: '—' },
+      },
+    },
+    className: {
+      description: 'Additional CSS class applied to the icon root element.',
+      control: { type: 'text' },
+      table: {
+        type: { summary: 'string | undefined' },
+        defaultValue: { summary: '—' },
+      },
+    },
+    style: {
+      description: 'Inline style applied to the icon root element.',
+      control: false,
+      table: {
+        type: { summary: 'CSSProperties | undefined' },
+        defaultValue: { summary: '—' },
+      },
+    },
+  },
   parameters: {
     docs: {
       description: {
         component:
-          'Internal review story for the generated Deweyou UI icon subpath exports, sizing contract, accessibility semantics, and unsupported-name guidance.',
+          'Icon renders a named SVG icon from the Deweyou UI registry. Icons inherit `currentColor` by default and are loaded on demand. Use named subpath exports (`@deweyou-ui/icons/search`) for individual icons, or the generic `Icon` component with a `name` prop for dynamic usage. The `label` prop is the sole public accessibility hook.',
       },
     },
   },
-} satisfies Meta;
+} satisfies Meta<typeof Icon>;
 
 export default meta;
 
