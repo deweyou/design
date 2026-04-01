@@ -11,3 +11,4 @@
 - 必须显式从 `@deweyou-ui/styles/theme.css` 导入全局样式。
 - stories 应聚焦组件状态、边界情况和评审工作流。
 - Storybook 相关依赖应保持在同一发布线，避免重新引入已废弃的 legacy add-on 包。
+- **所有 story 内容必须使用英文**：标签文字、内容区域占位文、story 描述、story 标题、label 文本均须为英文，不得出现中文字符。

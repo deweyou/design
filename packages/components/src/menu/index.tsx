@@ -221,6 +221,8 @@ export type MenuItemProps = {
   disabled?: boolean;
   onSelect?: () => void;
   icon?: ReactNode;
+  /** When true, renders a trailing checkmark to indicate the item is the current active selection. */
+  selected?: boolean;
   children: ReactNode;
   className?: string;
   style?: CSSProperties;
@@ -231,6 +233,7 @@ export const MenuItem = ({
   disabled,
   onSelect,
   icon,
+  selected,
   children,
   className,
   style,
@@ -239,11 +242,16 @@ export const MenuItem = ({
     value={value ?? ''}
     disabled={disabled}
     onSelect={onSelect}
-    className={classNames(styles.item, className)}
+    className={classNames(styles.item, { [styles.itemSelected]: selected }, className)}
     style={style}
   >
     {icon !== undefined && <span className={styles.itemIcon}>{icon}</span>}
     <span className={styles.itemLabel}>{children}</span>
+    {selected && (
+      <span aria-hidden className={styles.itemCheckmark}>
+        <CheckSvg />
+      </span>
+    )}
   </ArkMenuItem>
 );
 
@@ -307,6 +315,8 @@ export const MenuSeparator = ({ className, style }: MenuSeparatorProps) => (
 export type MenuTriggerItemProps = {
   disabled?: boolean;
   icon?: ReactNode;
+  /** When true, styles the item as active (e.g. a sub-item is currently selected). */
+  selected?: boolean;
   children: ReactNode;
   className?: string;
   style?: CSSProperties;
@@ -315,6 +325,7 @@ export type MenuTriggerItemProps = {
 export const MenuTriggerItem = ({
   disabled,
   icon,
+  selected,
   children,
   className,
   style,
@@ -322,7 +333,12 @@ export const MenuTriggerItem = ({
   <ArkMenuTriggerItem
     aria-disabled={disabled || undefined}
     data-disabled={disabled ? '' : undefined}
-    className={classNames(styles.item, styles.triggerItem, className)}
+    className={classNames(
+      styles.item,
+      styles.triggerItem,
+      { [styles.itemSelected]: selected },
+      className,
+    )}
     style={style}
   >
     {icon !== undefined && <span className={styles.itemIcon}>{icon}</span>}
