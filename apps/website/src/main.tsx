@@ -16,6 +16,10 @@ import {
   MenuTrigger,
   MenuTriggerItem,
   Popover,
+  TabContent,
+  TabList,
+  Tabs,
+  TabTrigger,
   Text,
 } from '@deweyou-ui/components';
 import { useThemeMode } from '@deweyou-ui/hooks';
@@ -921,6 +925,184 @@ const MenuComponentPreview = () => {
   );
 };
 
+const TabsComponentPreview = () => {
+  const [controlledTab, setControlledTab] = React.useState('overview');
+
+  return (
+    <section style={{ display: 'flex', flexDirection: 'column', gap: '2rem', padding: '2rem 0' }}>
+      <h2>Tabs component</h2>
+
+      <article>
+        <h3>基础 Tabs（line 变体，默认）</h3>
+        <Tabs defaultValue="overview">
+          <TabList>
+            <TabTrigger value="overview">概览</TabTrigger>
+            <TabTrigger value="settings">设置</TabTrigger>
+            <TabTrigger value="history">历史</TabTrigger>
+            <TabTrigger disabled value="disabled">
+              禁用标签
+            </TabTrigger>
+          </TabList>
+          <TabContent value="overview">概览内容区域</TabContent>
+          <TabContent value="settings">设置内容区域</TabContent>
+          <TabContent value="history">历史内容区域</TabContent>
+          <TabContent value="disabled">禁用标签内容</TabContent>
+        </Tabs>
+      </article>
+
+      <article>
+        <h3>bg 变体</h3>
+        <Tabs defaultValue="all" variant="bg">
+          <TabList>
+            <TabTrigger value="all">全部</TabTrigger>
+            <TabTrigger value="active">活跃</TabTrigger>
+            <TabTrigger value="closed">已关闭</TabTrigger>
+          </TabList>
+          <TabContent value="all">全部内容</TabContent>
+          <TabContent value="active">活跃内容</TabContent>
+          <TabContent value="closed">已关闭内容</TabContent>
+        </Tabs>
+      </article>
+
+      <article>
+        <h3>primary 颜色</h3>
+        <Tabs color="primary" defaultValue="tab1">
+          <TabList>
+            <TabTrigger value="tab1">标签一</TabTrigger>
+            <TabTrigger value="tab2">标签二</TabTrigger>
+            <TabTrigger value="tab3">标签三</TabTrigger>
+          </TabList>
+          <TabContent value="tab1">标签一内容</TabContent>
+          <TabContent value="tab2">标签二内容</TabContent>
+          <TabContent value="tab3">标签三内容</TabContent>
+        </Tabs>
+      </article>
+
+      <article>
+        <h3>尺寸对比（small / medium / large）</h3>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          {(['small', 'medium', 'large'] as const).map((size) => (
+            <Tabs key={size} defaultValue="a" size={size}>
+              <TabList>
+                <TabTrigger value="a">标签 A</TabTrigger>
+                <TabTrigger value="b">标签 B</TabTrigger>
+                <TabTrigger value="c">标签 C</TabTrigger>
+              </TabList>
+              <TabContent value="a">{size} — 内容 A</TabContent>
+              <TabContent value="b">{size} — 内容 B</TabContent>
+              <TabContent value="c">{size} — 内容 C</TabContent>
+            </Tabs>
+          ))}
+        </div>
+      </article>
+
+      <article>
+        <h3>竖排（vertical）</h3>
+        <Tabs defaultValue="profile" orientation="vertical">
+          <TabList>
+            <TabTrigger value="profile">个人资料</TabTrigger>
+            <TabTrigger value="security">安全</TabTrigger>
+            <TabTrigger value="billing">账单</TabTrigger>
+          </TabList>
+          <TabContent value="profile">个人资料内容</TabContent>
+          <TabContent value="security">安全内容</TabContent>
+          <TabContent value="billing">账单内容</TabContent>
+        </Tabs>
+      </article>
+
+      <article>
+        <h3>受控模式</h3>
+        <div style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: '#666' }}>
+          当前激活：{controlledTab}
+        </div>
+        <Tabs value={controlledTab} onValueChange={({ value }) => setControlledTab(value)}>
+          <TabList>
+            <TabTrigger value="overview">概览</TabTrigger>
+            <TabTrigger value="settings">设置</TabTrigger>
+            <TabTrigger value="history">历史</TabTrigger>
+          </TabList>
+          <TabContent value="overview">概览内容区域</TabContent>
+          <TabContent value="settings">设置内容区域</TabContent>
+          <TabContent value="history">历史内容区域</TabContent>
+        </Tabs>
+      </article>
+
+      <article>
+        <h3>hideContent 模式（仅标签栏）</h3>
+        <Tabs hideContent defaultValue="home">
+          <TabList>
+            <TabTrigger value="home">首页</TabTrigger>
+            <TabTrigger value="docs">文档</TabTrigger>
+            <TabTrigger value="about">关于</TabTrigger>
+          </TabList>
+        </Tabs>
+        <div style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: '#888' }}>
+          （无 TabContent，切换时可驱动路由跳转）
+        </div>
+      </article>
+
+      <article>
+        <h3>Tab 下拉菜单（menuItems）</h3>
+        <Tabs defaultValue="typescript">
+          <TabList>
+            <TabTrigger value="javascript">JavaScript</TabTrigger>
+            <TabTrigger
+              menuItems={[
+                { value: 'typescript', label: 'TypeScript' },
+                { value: 'tsx', label: 'TSX / React' },
+                { value: 'dts', label: '类型声明文件' },
+              ]}
+              value="typescript"
+            >
+              TypeScript
+            </TabTrigger>
+          </TabList>
+          <TabContent value="javascript">JS 内容</TabContent>
+          <TabContent value="typescript">TS 内容</TabContent>
+          <TabContent value="tsx">TSX 内容</TabContent>
+          <TabContent value="dts">DTS 内容</TabContent>
+        </Tabs>
+      </article>
+
+      <article>
+        <h3>超长滚动（overflowMode="scroll"，默认）</h3>
+        <Tabs defaultValue="t1">
+          <TabList>
+            {Array.from({ length: 20 }, (_, i) => (
+              <TabTrigger key={i} value={`t${i + 1}`}>
+                标签 {i + 1}
+              </TabTrigger>
+            ))}
+          </TabList>
+          {Array.from({ length: 20 }, (_, i) => (
+            <TabContent key={i} value={`t${i + 1}`}>
+              内容 {i + 1}
+            </TabContent>
+          ))}
+        </Tabs>
+      </article>
+
+      <article>
+        <h3>超长收齐（overflowMode="collapse"）</h3>
+        <Tabs defaultValue="t1" overflowMode="collapse">
+          <TabList>
+            {Array.from({ length: 20 }, (_, i) => (
+              <TabTrigger key={i} value={`t${i + 1}`}>
+                标签 {i + 1}
+              </TabTrigger>
+            ))}
+          </TabList>
+          {Array.from({ length: 20 }, (_, i) => (
+            <TabContent key={i} value={`t${i + 1}`}>
+              内容 {i + 1}
+            </TabContent>
+          ))}
+        </Tabs>
+      </article>
+    </section>
+  );
+};
+
 const App = () => (
   <main className="shell">
     <section className="hero">
@@ -1300,6 +1482,7 @@ const App = () => (
 
     <PopoverComponentPreview />
     <MenuComponentPreview />
+    <TabsComponentPreview />
     <IconGuidance />
     <p className="footer-note">
       Storybook owns the exhaustive review matrix. The website keeps the public guidance concise:

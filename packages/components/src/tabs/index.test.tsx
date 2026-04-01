@@ -1,0 +1,358 @@
+// @vitest-environment jsdom
+
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vite-plus/test';
+
+import { Tabs, TabContent, TabList, TabTrigger } from './index.tsx';
+
+// ─── Setup ────────────────────────────────────────────────────────────────────
+
+beforeEach(() => {
+  if (!window.ResizeObserver) {
+    window.ResizeObserver = class ResizeObserver {
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    };
+  }
+  // Ark UI's indicator sync uses CSS.escape which jsdom doesn't provide.
+  if (!window.CSS) {
+    // @ts-expect-error — jsdom polyfill
+    window.CSS = {};
+  }
+  if (!window.CSS.escape) {
+    window.CSS.escape = (value: string) => value.replace(/([^\w-])/g, '\\$1');
+  }
+});
+
+afterEach(() => {
+  cleanup();
+});
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+const BasicTabs = ({
+  defaultValue,
+  value,
+  onValueChange,
+  hideContent,
+}: {
+  defaultValue?: string;
+  value?: string;
+  onValueChange?: (d: { value: string }) => void;
+  hideContent?: boolean;
+}) => (
+  <Tabs
+    defaultValue={defaultValue}
+    hideContent={hideContent}
+    onValueChange={onValueChange}
+    value={value}
+  >
+    <TabList>
+      <TabTrigger value="tab1">标签一</TabTrigger>
+      <TabTrigger value="tab2">标签二</TabTrigger>
+      <TabTrigger value="tab3" disabled>
+        标签三
+      </TabTrigger>
+    </TabList>
+    <TabContent value="tab1">内容一</TabContent>
+    <TabContent value="tab2">内容二</TabContent>
+    <TabContent value="tab3">内容三</TabContent>
+  </Tabs>
+);
+
+// ─── T006: 基础切换逻辑 ────────────────────────────────────────────────────────
+
+describe('Tabs — 基础切换', () => {
+  it('渲染 tablist 和 tab 角色', () => {
+    render(<BasicTabs defaultValue="tab1" />);
+    expect(screen.getByRole('tablist')).toBeTruthy();
+    expect(screen.getAllByRole('tab')).toHaveLength(3);
+  });
+
+  it('defaultValue 正确设置初始激活标签', async () => {
+    render(<BasicTabs defaultValue="tab1" />);
+    const tab1 = screen.getByRole('tab', { name: '标签一' });
+    await waitFor(() => {
+      // Ark UI uses empty string for data-selected (boolean attribute pattern)
+      expect(tab1.hasAttribute('data-selected')).toBe(true);
+      expect(tab1.getAttribute('aria-selected')).toBe('true');
+    });
+  });
+
+  it('点击标签触发 onValueChange 携带正确 value', async () => {
+    const onValueChange = vi.fn();
+    render(<BasicTabs defaultValue="tab1" onValueChange={onValueChange} />);
+    fireEvent.click(screen.getByRole('tab', { name: '标签二' }));
+    await waitFor(() => {
+      expect(onValueChange).toHaveBeenCalledWith({ value: 'tab2' });
+    });
+  });
+
+  it('点击后激活状态正确更新', async () => {
+    render(<BasicTabs defaultValue="tab1" />);
+    fireEvent.click(screen.getByRole('tab', { name: '标签二' }));
+    await waitFor(() => {
+      expect(screen.getByRole('tab', { name: '标签二' }).getAttribute('aria-selected')).toBe(
+        'true',
+      );
+      expect(screen.getByRole('tab', { name: '标签一' }).getAttribute('aria-selected')).toBe(
+        'false',
+      );
+    });
+  });
+
+  it('disabled 标签点击后 onValueChange 不触发', async () => {
+    const onValueChange = vi.fn();
+    render(<BasicTabs defaultValue="tab1" onValueChange={onValueChange} />);
+    const disabledTab = screen.getByRole('tab', { name: '标签三' });
+    expect(disabledTab.getAttribute('aria-disabled')).toBe('true');
+    fireEvent.click(disabledTab);
+    await waitFor(() => {
+      expect(onValueChange).not.toHaveBeenCalled();
+    });
+  });
+
+  it('受控模式：外部 value prop 控制激活标签', async () => {
+    const { rerender } = render(<BasicTabs value="tab1" />);
+    expect(screen.getByRole('tab', { name: '标签一' }).getAttribute('aria-selected')).toBe('true');
+
+    rerender(<BasicTabs value="tab2" />);
+    await waitFor(() => {
+      expect(screen.getByRole('tab', { name: '标签二' }).getAttribute('aria-selected')).toBe(
+        'true',
+      );
+    });
+  });
+});
+
+// ─── T007: variant 渲染 ───────────────────────────────────────────────────────
+
+describe('Tabs — variant 渲染', () => {
+  it('line 变体下 Tabs.Indicator 节点存在（data-part="indicator"）', async () => {
+    const { container } = render(<BasicTabs defaultValue="tab1" />);
+    // line is the default variant
+    await waitFor(() => {
+      expect(container.querySelector('[data-part="indicator"]')).toBeTruthy();
+    });
+  });
+
+  it('bg 变体下不渲染 Tabs.Indicator', () => {
+    const { container } = render(
+      <Tabs defaultValue="tab1" variant="bg">
+        <TabList>
+          <TabTrigger value="tab1">标签一</TabTrigger>
+        </TabList>
+        <TabContent value="tab1">内容</TabContent>
+      </Tabs>,
+    );
+    expect(container.querySelector('[data-part="indicator"]')).toBeNull();
+  });
+
+  it('data-variant 属性正确传递到根节点', () => {
+    const { container } = render(
+      <Tabs defaultValue="tab1" variant="bg">
+        <TabList>
+          <TabTrigger value="tab1">标签一</TabTrigger>
+        </TabList>
+        <TabContent value="tab1">内容</TabContent>
+      </Tabs>,
+    );
+    const root = container.querySelector('[data-variant="bg"]');
+    expect(root).toBeTruthy();
+  });
+
+  it('data-selected 属性随切换正确更新', async () => {
+    render(<BasicTabs defaultValue="tab1" />);
+    fireEvent.click(screen.getByRole('tab', { name: '标签二' }));
+    await waitFor(() => {
+      // Ark UI: selected = attribute present, not selected = attribute absent
+      expect(screen.getByRole('tab', { name: '标签二' }).hasAttribute('data-selected')).toBe(true);
+      expect(screen.getByRole('tab', { name: '标签一' }).hasAttribute('data-selected')).toBe(false);
+    });
+  });
+});
+
+// ─── T016: hideContent 模式 ───────────────────────────────────────────────────
+
+describe('Tabs — hideContent 模式', () => {
+  it('hideContent=true 时 DOM 中不存在 role="tabpanel"', () => {
+    render(<BasicTabs defaultValue="tab1" hideContent />);
+    expect(screen.queryAllByRole('tabpanel')).toHaveLength(0);
+  });
+
+  it('hideContent=false（默认）时 role="tabpanel" 存在', async () => {
+    render(<BasicTabs defaultValue="tab1" />);
+    await waitFor(() => {
+      expect(screen.queryAllByRole('tabpanel').length).toBeGreaterThan(0);
+    });
+  });
+
+  it('hideContent 模式下 onValueChange 仍在切换时触发', async () => {
+    const onValueChange = vi.fn();
+    render(<BasicTabs defaultValue="tab1" hideContent onValueChange={onValueChange} />);
+    fireEvent.click(screen.getByRole('tab', { name: '标签二' }));
+    await waitFor(() => {
+      expect(onValueChange).toHaveBeenCalledWith({ value: 'tab2' });
+    });
+  });
+});
+
+// ─── T019: menuItems ARIA 属性 ────────────────────────────────────────────────
+
+describe('TabTrigger — menuItems（Menu Tab）', () => {
+  const MenuTabs = ({ onValueChange }: { onValueChange?: (d: { value: string }) => void }) => (
+    <Tabs defaultValue="sub1" onValueChange={onValueChange}>
+      <TabList>
+        <TabTrigger value="tab1">基础</TabTrigger>
+        <TabTrigger
+          menuItems={[
+            { label: '子项一', value: 'sub1' },
+            { label: '子项二', value: 'sub2' },
+          ]}
+          value="group"
+        >
+          更多
+        </TabTrigger>
+      </TabList>
+      <TabContent value="tab1">基础内容</TabContent>
+      <TabContent value="sub1">子项一内容</TabContent>
+      <TabContent value="sub2">子项二内容</TabContent>
+    </Tabs>
+  );
+
+  it('Menu Tab 触发器带有 aria-haspopup="menu"', () => {
+    render(<MenuTabs />);
+    const menuTab = screen.getByRole('tab', { name: /更多/ });
+    expect(menuTab.getAttribute('aria-haspopup')).toBe('menu');
+  });
+
+  it('当前激活值为子项时，Menu Tab 带有 data-selected 属性', async () => {
+    render(<MenuTabs />);
+    await waitFor(() => {
+      const menuTab = screen.getByRole('tab', { name: /更多/ });
+      expect(menuTab.hasAttribute('data-selected')).toBe(true);
+    });
+  });
+
+  it('点击子菜单项后 onValueChange 以对应 value 触发', async () => {
+    const onValueChange = vi.fn();
+    render(<MenuTabs onValueChange={onValueChange} />);
+    const user = userEvent.setup();
+    const menuTab = screen.getByRole('tab', { name: /更多/ });
+    await user.click(menuTab);
+    await waitFor(() => screen.getByRole('menu'));
+    await user.click(screen.getByRole('menuitem', { name: '子项二' }));
+    await waitFor(() => {
+      expect(onValueChange).toHaveBeenCalledWith({ value: 'sub2' });
+    });
+  });
+
+  it('disabled 的 Menu Tab 按钮有 disabled 属性', () => {
+    render(
+      <Tabs defaultValue="tab1">
+        <TabList>
+          <TabTrigger disabled menuItems={[{ label: '子项', value: 'sub' }]} value="group">
+            更多
+          </TabTrigger>
+        </TabList>
+        <TabContent value="tab1">内容</TabContent>
+      </Tabs>,
+    );
+    const menuTab = screen.getByRole('tab', { name: '更多' });
+    expect((menuTab as HTMLButtonElement).disabled).toBe(true);
+  });
+});
+
+// ─── T023: scroll 模式边缘状态 ───────────────────────────────────────────────
+
+describe('TabList — scroll 模式边缘状态', () => {
+  it('初始渲染时 data-scroll-at-start="true"', () => {
+    const { container } = render(
+      <Tabs defaultValue="t1">
+        <TabList>
+          <TabTrigger value="t1">T1</TabTrigger>
+          <TabTrigger value="t2">T2</TabTrigger>
+        </TabList>
+      </Tabs>,
+    );
+    // The listScroller div holds the scroll state attributes
+    const scroller = container.querySelector('[data-overflow-mode="scroll"]');
+    expect(scroller?.getAttribute('data-scroll-at-start')).toBe('true');
+  });
+
+  it('data-overflow-mode 属性正确传递', () => {
+    const { container } = render(
+      <Tabs defaultValue="t1" overflowMode="collapse">
+        <TabList>
+          <TabTrigger value="t1">T1</TabTrigger>
+        </TabList>
+      </Tabs>,
+    );
+    const scroller = container.querySelector('[data-overflow-mode="collapse"]');
+    expect(scroller).toBeTruthy();
+  });
+});
+
+// ─── T028: collapse 模式更多按钮 ─────────────────────────────────────────────
+
+describe('TabList — collapse 模式', () => {
+  it('collapse 模式在 jsdom 零宽布局下检测到溢出并显示 More 按钮', () => {
+    render(
+      <Tabs defaultValue="t1" overflowMode="collapse">
+        <TabList>
+          <TabTrigger value="t1">T1</TabTrigger>
+          <TabTrigger value="t2">T2</TabTrigger>
+        </TabList>
+        <TabContent value="t1">Content 1</TabContent>
+        <TabContent value="t2">Content 2</TabContent>
+      </Tabs>,
+    );
+    // In jsdom all element dimensions are 0, so containerSize=0 and any tabs
+    // with a subsequent sibling are considered overflow. The More button renders.
+    expect(screen.queryByText('More')).not.toBeNull();
+  });
+});
+
+// ─── T033: 边界状态 ───────────────────────────────────────────────────────────
+
+describe('Tabs — 边界状态', () => {
+  it('单个标签也能正常渲染', () => {
+    render(
+      <Tabs defaultValue="only">
+        <TabList>
+          <TabTrigger value="only">唯一标签</TabTrigger>
+        </TabList>
+        <TabContent value="only">内容</TabContent>
+      </Tabs>,
+    );
+    expect(screen.getByRole('tab', { name: '唯一标签' })).toBeTruthy();
+  });
+
+  it('orientation="vertical" 时 data-orientation 正确传递', () => {
+    const { container } = render(
+      <Tabs defaultValue="t1" orientation="vertical">
+        <TabList>
+          <TabTrigger value="t1">T1</TabTrigger>
+        </TabList>
+        <TabContent value="t1">内容</TabContent>
+      </Tabs>,
+    );
+    expect(container.querySelector('[data-orientation="vertical"]')).toBeTruthy();
+  });
+
+  it('size 和 color 属性正确传递到根节点', () => {
+    const { container } = render(
+      <Tabs color="primary" defaultValue="t1" size="large">
+        <TabList>
+          <TabTrigger value="t1">T1</TabTrigger>
+        </TabList>
+        <TabContent value="t1">内容</TabContent>
+      </Tabs>,
+    );
+    const root = container.firstElementChild;
+    expect(root?.getAttribute('data-color')).toBe('primary');
+    expect(root?.getAttribute('data-size')).toBe('large');
+  });
+});

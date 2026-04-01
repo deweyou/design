@@ -33,6 +33,11 @@
       "import": "./dist/menu/index.js",
       "default": "./dist/menu/index.js"
     },
+    "./tabs": {
+      "types": "./dist/tabs/index.d.ts",
+      "import": "./dist/tabs/index.js",
+      "default": "./dist/tabs/index.js"
+    },
     "./package.json": "./package.json",
     "./style.css": "./dist/style.css"
   },

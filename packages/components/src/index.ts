@@ -12,6 +12,27 @@ export {
 } from './popover/index.tsx';
 export { Text, type TextProps } from './text/index.tsx';
 export {
+  Tabs,
+  TabList,
+  TabTrigger,
+  TabContent,
+  TabIndicator,
+  type TabsVariant,
+  type TabsColor,
+  type TabsSize,
+  type TabsOrientation,
+  type TabsActivationMode,
+  type TabsOverflowMode,
+  type TabMenuItemDef,
+  type TabsValueChangeDetails,
+  type TabsFocusChangeDetails,
+  type TabsProps,
+  type TabListProps,
+  type TabTriggerProps,
+  type TabContentProps,
+  type TabIndicatorProps,
+} from './tabs/index.tsx';
+export {
   Menu,
   MenuTrigger,
   MenuContent,
