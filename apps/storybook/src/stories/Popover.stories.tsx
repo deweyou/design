@@ -493,3 +493,56 @@ export const ShapeReview: Story = {
     );
   },
 };
+
+// ---------------------------------------------------------------------------
+// Story: Interaction — play function tests
+// ---------------------------------------------------------------------------
+
+import { expect, screen, userEvent, waitFor, within } from 'storybook/test';
+
+export const Interaction: StoryObj = {
+  name: 'Interaction',
+  render: () => (
+    <Popover
+      content={
+        <div>
+          <p>Popover content visible</p>
+        </div>
+      }
+    >
+      <Button variant="outlined" data-testid="popover-trigger">
+        Open popover
+      </Button>
+    </Popover>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // US1: click trigger → popover content appears
+    const trigger = canvas.getByTestId('popover-trigger');
+    await userEvent.click(trigger);
+
+    // Wait for the popover content text to appear in the document (animation starts at opacity:0,
+    // so just check presence — the overlay element being in the DOM confirms the popover opened)
+    await screen.findByText('Popover content visible', {}, { timeout: 3000 });
+
+    // US1: press Escape → popover closes, content text disappears
+    await userEvent.keyboard('{Escape}');
+
+    await waitFor(
+      () => {
+        const el = document.querySelector('[data-popover-overlay="true"]');
+        // unmountOnExit: element removed from DOM, or data-state is closed
+        const isGone = el == null || el.getAttribute('data-state') === 'closed';
+        expect(isGone).toBe(true);
+      },
+      { timeout: 3000 },
+    );
+
+    // US2: Tab focuses trigger, Enter opens popover
+    await userEvent.tab();
+    await userEvent.keyboard('{Enter}');
+
+    await screen.findByText('Popover content visible', {}, { timeout: 3000 });
+  },
+};

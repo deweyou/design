@@ -33,3 +33,13 @@ jobs:
 
       - name: Run ready
         run: ./node_modules/.bin/vp run ready
+
+      - name: Install Playwright browsers
+        run: ./node_modules/.pnpm/node_modules/.bin/playwright install chromium --with-deps
+
+      - name: Run Storybook interaction tests
+        run: |
+          ./node_modules/.bin/vp run storybook#build
+          npx --yes serve apps/storybook/storybook-static -p 6106 --no-clipboard &
+          sleep 5
+          ./node_modules/.bin/vp run storybook#test

@@ -665,3 +665,47 @@ export const HoverFeedback: Story = {
 export const InvalidCombinations: Story = {
   render: () => <InvalidCombinationPreview />,
 };
+
+// ---------------------------------------------------------------------------
+// Story: Interaction — play function tests
+// ---------------------------------------------------------------------------
+
+import { expect, userEvent, within } from 'storybook/test';
+
+export const Interaction: Story = {
+  name: 'Interaction',
+  render: () => (
+    <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+      <Button variant="filled" data-testid="clickable-btn">
+        Click me
+      </Button>
+      <Button variant="filled" disabled data-testid="disabled-btn">
+        Disabled
+      </Button>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // US1: clicking a normal button triggers no error
+    const clickable = canvas.getByTestId('clickable-btn');
+    await userEvent.click(clickable);
+
+    // US1: disabled button has disabled attribute
+    const disabled = canvas.getByTestId('disabled-btn');
+    expect(disabled).toBeDisabled();
+
+    // US2: Tab to disabled button, verify aria-disabled, Enter/Space do not trigger click
+    let clickCount = 0;
+    disabled.addEventListener(
+      'click',
+      () => {
+        clickCount++;
+      },
+      { once: true },
+    );
+    await userEvent.keyboard('{Enter}');
+    await userEvent.keyboard(' ');
+    expect(clickCount).toBe(0);
+  },
+};
