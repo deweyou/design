@@ -14,7 +14,7 @@
  */
 
 import { execSync, spawnSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const REPO_ROOT = resolve(import.meta.dirname, '..');
@@ -139,7 +139,22 @@ const semverGt = (a, b) => {
   return false;
 };
 
+// changelogen 找不到可 bump 的 commit 时，手动做 patch bump 作为兜底。
+const fallbackBump = (version, channel) => {
+  const [main, pre] = version.split(/-(.+)/);
+  const [major, minor, patch] = main.split('.').map(Number);
+  if (channel === 'beta') {
+    if (pre?.startsWith('beta.')) {
+      return `${main}-beta.${Number(pre.slice(5)) + 1}`;
+    }
+    return `${major}.${minor}.${patch + 1}-beta.0`;
+  }
+  // stable: 如果当前是 prerelease 则去掉后缀，否则 patch+1
+  return pre ? main : `${major}.${minor}.${patch + 1}`;
+};
+
 const bumpPackage = (pkgDir, channel, lastTag) => {
+  const prevVersion = getCurrentVersion(pkgDir);
   const changelogPath = resolve(pkgDir, 'CHANGELOG.md');
   const changelogen = resolve(REPO_ROOT, 'node_modules/.bin/changelogen');
   const fromFlag = lastTag ? `--from ${lastTag}` : '';
@@ -159,7 +174,17 @@ const bumpPackage = (pkgDir, channel, lastTag) => {
     .filter(Boolean)
     .join(' ');
   run(cmd);
-  return getCurrentVersion(pkgDir);
+
+  let newVersion = getCurrentVersion(pkgDir);
+  if (newVersion === prevVersion) {
+    // changelogen 未找到可 bump 的 commit，回退到 patch bump
+    newVersion = fallbackBump(prevVersion, channel);
+    const pkgPath = resolve(pkgDir, 'package.json');
+    const pkg = JSON.parse(readFileSync(pkgPath, 'utf8'));
+    pkg.version = newVersion;
+    writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n');
+  }
+  return newVersion;
 };
 
 console.log(`\n🔍 扫描变更包...\n`);
@@ -208,13 +233,6 @@ if (dryRun) {
 
 console.log('\n📝 提交版本变更...');
 run('git add -A');
-const staged = run('git status --porcelain');
-if (!staged) {
-  exit(
-    1,
-    'changelogen 未检测到可触发 bump 的 commit，版本未变更。\n   请确认包目录下有 feat/fix/refactor 类型的 commit。',
-  );
-}
 run('git commit --no-verify -m "chore: release packages"');
 
 console.log('🏷️  打包级 tag...');
