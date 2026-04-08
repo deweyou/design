@@ -5,12 +5,12 @@
     "moduleResolution": "bundler",
     "jsx": "react-jsx",
     "paths": {
-      "@deweyou-ui/icons": ["../../packages/icons/src/index.ts"],
-      "@deweyou-ui/icons/*": ["../../packages/icons/src/exports/*.ts"],
-      "@deweyou-ui/components": ["../../packages/components/src/index.ts"],
-      "@deweyou-ui/components/*": ["../../packages/components/src/*/index.tsx"],
-      "@deweyou-ui/styles": ["../../packages/styles/src/index.ts"],
-      "@deweyou-ui/styles/*": ["../../packages/styles/src/*"]
+      "@deweyou-design/react-icons": ["../../packages/react-icons/src/index.ts"],
+      "@deweyou-design/react-icons/*": ["../../packages/react-icons/src/exports/*.ts"],
+      "@deweyou-design/react": ["../../packages/react/src/index.ts"],
+      "@deweyou-design/react/*": ["../../packages/react/src/*/index.tsx"],
+      "@deweyou-design/styles": ["../../packages/styles/src/index.ts"],
+      "@deweyou-design/styles/*": ["../../packages/styles/src/*"]
     }
   },
   "include": [".storybook", "src"]

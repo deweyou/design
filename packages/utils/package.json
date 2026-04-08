@@ -1,10 +1,7 @@
 {
-  "name": "@deweyou-ui/utils",
+  "name": "@deweyou-design/utils",
   "version": "0.0.0",
-  "description": "Framework-agnostic utilities for the Deweyou UI monorepo.",
-  "files": [
-    "dist"
-  ],
+  "description": "Framework-agnostic runtime utilities for Deweyou Design consumers.",
   "type": "module",
   "types": "./dist/index.d.mts",
   "exports": {
@@ -15,15 +12,12 @@
     "directory": "dist"
   },
   "scripts": {
-    "build": "vp pack && node ./scripts/write-published-manifest.mjs .",
+    "build": "vp pack && node ../infra/scripts/write-published-manifest.mjs .",
     "dev": "vp pack --watch",
-    "test": "vp test",
-    "typecheck": "tsc --noEmit"
+    "test": "vp test"
   },
   "devDependencies": {
-    "@types/node": "catalog:",
     "typescript": "catalog:",
-    "vite-plus": "catalog:",
-    "vitest": "catalog:"
+    "vite-plus": "catalog:"
   }
 }

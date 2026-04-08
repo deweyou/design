@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 
-import { Button } from '@deweyou-ui/components/button';
+import { Button } from '@deweyou-design/react/button';
 import {
   ContextMenu,
   Menu,
@@ -14,7 +14,7 @@ import {
   MenuSeparator,
   MenuTrigger,
   MenuTriggerItem,
-} from '@deweyou-ui/components/menu';
+} from '@deweyou-design/react/menu';
 
 const storyStyles = {
   grid: {
@@ -121,7 +121,7 @@ const meta: Meta<typeof Menu> = {
     docs: {
       description: {
         component:
-          'Menu displays a floating list of actions anchored to a trigger button. It supports groups, separators, submenus, radio selection, checkbox items, and context menus. Built on Ark UI for keyboard navigation, ARIA semantics, and focus management. Import from `@deweyou-ui/components/menu`.\n\n**Composition**: `Menu` → `MenuTrigger` → trigger element; `MenuContent` → `MenuItem` | `MenuGroup` | `MenuCheckboxItem` | `MenuRadioGroup` → `MenuRadioItem` | `MenuSeparator` | `MenuTriggerItem` (for submenus).',
+          'Menu displays a floating list of actions anchored to a trigger button. It supports groups, separators, submenus, radio selection, checkbox items, and context menus. Built on Ark UI for keyboard navigation, ARIA semantics, and focus management. Import from `@deweyou-design/react/menu`.\n\n**Composition**: `Menu` → `MenuTrigger` → trigger element; `MenuContent` → `MenuItem` | `MenuGroup` | `MenuCheckboxItem` | `MenuRadioGroup` → `MenuRadioItem` | `MenuSeparator` | `MenuTriggerItem` (for submenus).',
       },
     },
   },

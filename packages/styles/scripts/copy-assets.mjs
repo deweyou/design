@@ -1,7 +1,7 @@
 import { cpSync, existsSync, mkdirSync, rmSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-import { writePublishedManifest } from '../../utils/scripts/write-published-manifest.mjs';
+import { writePublishedManifest } from '../../infra/scripts/write-published-manifest.mjs';
 
 const root = resolve(import.meta.dirname, '..');
 const distDir = resolve(root, 'dist');

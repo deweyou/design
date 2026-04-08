@@ -1,7 +1,7 @@
 import type { Preview } from '@storybook/react';
 import { createElement } from 'react';
 
-import '@deweyou-ui/styles/theme.css';
+import '@deweyou-design/styles/theme.css';
 
 const storybookThemeBackgrounds = {
   light: '#ffffff',

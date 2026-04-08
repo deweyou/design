@@ -3,7 +3,7 @@ import { resolve } from 'node:path';
 
 import { expect, test } from 'vite-plus/test';
 
-import { createPublishedPackageManifest } from '../../utils/src/package-manifest';
+import { createPublishedPackageManifest } from '../../infra/src/package-manifest';
 import {
   baseMonochrome,
   colorFamilyNames,
@@ -149,7 +149,7 @@ test('fonts asset directory contains the vendored Source Han Serif CN files', ()
 test('styles publish manifest drops workspace-only metadata and rewrites dist-root entrypaths', () => {
   const sourceManifest = JSON.parse(
     readFileSync(resolve(import.meta.dirname, '../package.json'), 'utf8'),
-  ) as import('../../utils/src/package-manifest').PackageManifest;
+  ) as import('../../infra/src/package-manifest').PackageManifest;
   const publishedManifest = createPublishedPackageManifest({
     catalogVersions: {
       less: '^4.4.1',

@@ -1,12 +1,12 @@
-import { AddIcon } from '@deweyou-ui/icons/add';
-import { CheckIcon } from '@deweyou-ui/icons/check';
-import { ChevronLeftIcon } from '@deweyou-ui/icons/chevron-left';
-import { ChevronRightIcon } from '@deweyou-ui/icons/chevron-right';
-import { CloseIcon } from '@deweyou-ui/icons/close';
-import { ErrorCircleIcon } from '@deweyou-ui/icons/error-circle';
-import { InfoCircleIcon } from '@deweyou-ui/icons/info-circle';
-import { MenuIcon } from '@deweyou-ui/icons/menu';
-import { SearchIcon } from '@deweyou-ui/icons/search';
+import { AddIcon } from '@deweyou-design/react-icons/add';
+import { CheckIcon } from '@deweyou-design/react-icons/check';
+import { ChevronLeftIcon } from '@deweyou-design/react-icons/chevron-left';
+import { ChevronRightIcon } from '@deweyou-design/react-icons/chevron-right';
+import { CloseIcon } from '@deweyou-design/react-icons/close';
+import { ErrorCircleIcon } from '@deweyou-design/react-icons/error-circle';
+import { InfoCircleIcon } from '@deweyou-design/react-icons/info-circle';
+import { MenuIcon } from '@deweyou-design/react-icons/menu';
+import { SearchIcon } from '@deweyou-design/react-icons/search';
 
 const iconExamples = [
   { name: 'add', Component: AddIcon },
@@ -27,10 +27,10 @@ export const IconGuidance = () => {
         <p className="eyebrow">Official icon package</p>
         <h2>Curated TDesign-backed icons, Deweyou-owned API</h2>
         <p className="hero-copy">
-          The `@deweyou-ui/icons` package keeps the root entry focused on the generic `Icon`
-          component and related types, while direct icon components ship from subpaths like
-          `@deweyou-ui/icons/search`. SVG assets come from `tdesign-icons-svg` under MIT, but
-          naming, accessibility, and error behavior stay under Deweyou UI control.
+          The `@deweyou-design/react-icons` package keeps the root entry focused on the generic
+          `Icon` component and related types, while direct icon components ship from subpaths like
+          `@deweyou-design/react-icons/search`. SVG assets come from `tdesign-icons-svg` under MIT,
+          but naming, accessibility, and error behavior stay under Deweyou UI control.
         </p>
         <div className="icon-contract">
           <div>

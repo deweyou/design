@@ -26,10 +26,10 @@ test('consumer setup keeps the global style import explicit', () => {
   );
   const lessBridge = readFileSync(resolve(root, 'packages/styles/src/less/bridge.less'), 'utf8');
 
-  expect(websiteMain).toContain("import '@deweyou-ui/styles/theme.css';");
+  expect(websiteMain).toContain("import '@deweyou-design/styles/theme.css';");
   expect(websiteMain).toContain('Color foundation');
   expect(websiteMain).toContain('非必要不得新增特化 token');
-  expect(storybookPreview).toContain("import '@deweyou-ui/styles/theme.css';");
+  expect(storybookPreview).toContain("import '@deweyou-design/styles/theme.css';");
   expect(storybookStory).not.toContain('TypographyContract');
   expect(storybookTypography).toContain('ReadingSurface');
   expect(storybookTypography).toContain('FontWeights');
@@ -42,8 +42,8 @@ test('consumer setup keeps the global style import explicit', () => {
   expect(lessBridge).toContain('@brand-bg');
   expect(lessBridge).toContain('@danger-bg');
   expect(lessBridge).toContain('@link');
-  expect(websiteMain).not.toContain('@deweyou-ui/components/style.css');
-  expect(storybookPreview).not.toContain('@deweyou-ui/components/style.css');
+  expect(websiteMain).not.toContain('@deweyou-design/react/style.css');
+  expect(storybookPreview).not.toContain('@deweyou-design/react/style.css');
 });
 
 test('subpath component stories do not require an extra component stylesheet import', () => {
@@ -60,11 +60,11 @@ test('subpath component stories do not require an extra component stylesheet imp
     'utf8',
   );
 
-  expect(buttonStory).toContain('@deweyou-ui/components/button');
-  expect(popoverStory).toContain('@deweyou-ui/components/popover');
-  expect(popoverStory).toContain('@deweyou-ui/components/text');
-  expect(typographyStory).toContain('@deweyou-ui/components/text');
-  expect(buttonStory).not.toContain('@deweyou-ui/components/style.css');
-  expect(popoverStory).not.toContain('@deweyou-ui/components/style.css');
-  expect(typographyStory).not.toContain('@deweyou-ui/components/style.css');
+  expect(buttonStory).toContain('@deweyou-design/react/button');
+  expect(popoverStory).toContain('@deweyou-design/react/popover');
+  expect(popoverStory).toContain('@deweyou-design/react/text');
+  expect(typographyStory).toContain('@deweyou-design/react/text');
+  expect(buttonStory).not.toContain('@deweyou-design/react/style.css');
+  expect(popoverStory).not.toContain('@deweyou-design/react/style.css');
+  expect(typographyStory).not.toContain('@deweyou-design/react/style.css');
 });

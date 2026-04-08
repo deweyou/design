@@ -1,0 +1,23 @@
+{
+  "name": "@deweyou-ui/infra",
+  "version": "0.0.0",
+  "description": "Monorepo build-time infrastructure utilities. Not published for external consumption.",
+  "type": "module",
+  "types": "./dist/index.d.mts",
+  "exports": {
+    ".": "./dist/index.mjs",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "vp pack && node ./scripts/write-published-manifest.mjs .",
+    "dev": "vp pack --watch",
+    "test": "vp test",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:",
+    "vitest": "catalog:"
+  }
+}

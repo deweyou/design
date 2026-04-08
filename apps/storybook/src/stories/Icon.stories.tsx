@@ -1,15 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Icon } from '@deweyou-ui/icons';
-import { AddIcon } from '@deweyou-ui/icons/add';
-import { CheckIcon } from '@deweyou-ui/icons/check';
-import { ChevronLeftIcon } from '@deweyou-ui/icons/chevron-left';
-import { ChevronRightIcon } from '@deweyou-ui/icons/chevron-right';
-import { CloseIcon } from '@deweyou-ui/icons/close';
-import { ErrorCircleIcon } from '@deweyou-ui/icons/error-circle';
-import { InfoCircleIcon } from '@deweyou-ui/icons/info-circle';
-import { MenuIcon } from '@deweyou-ui/icons/menu';
-import { SearchIcon } from '@deweyou-ui/icons/search';
+import { Icon } from '@deweyou-design/react-icons';
+import { AddIcon } from '@deweyou-design/react-icons/add';
+import { CheckIcon } from '@deweyou-design/react-icons/check';
+import { ChevronLeftIcon } from '@deweyou-design/react-icons/chevron-left';
+import { ChevronRightIcon } from '@deweyou-design/react-icons/chevron-right';
+import { CloseIcon } from '@deweyou-design/react-icons/close';
+import { ErrorCircleIcon } from '@deweyou-design/react-icons/error-circle';
+import { InfoCircleIcon } from '@deweyou-design/react-icons/info-circle';
+import { MenuIcon } from '@deweyou-design/react-icons/menu';
+import { SearchIcon } from '@deweyou-design/react-icons/search';
 
 const galleryItems = [
   { name: 'add', Component: AddIcon },
@@ -108,7 +108,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Icon renders a named SVG icon from the Deweyou UI registry. Icons inherit `currentColor` by default and are loaded on demand. Use named subpath exports (`@deweyou-ui/icons/search`) for individual icons, or the generic `Icon` component with a `name` prop for dynamic usage. The `label` prop is the sole public accessibility hook.',
+          'Icon renders a named SVG icon from the Deweyou UI registry. Icons inherit `currentColor` by default and are loaded on demand. Use named subpath exports (`@deweyou-design/react-icons/search`) for individual icons, or the generic `Icon` component with a `name` prop for dynamic usage. The `label` prop is the sole public accessibility hook.',
       },
     },
   },

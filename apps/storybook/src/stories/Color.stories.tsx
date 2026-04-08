@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { baseMonochrome, colorFamilyNames, colorPaletteStepNames } from '@deweyou-ui/styles';
+import { baseMonochrome, colorFamilyNames, colorPaletteStepNames } from '@deweyou-design/styles';
 
 const storyStyles = {
   card: {
@@ -172,7 +172,7 @@ const ReviewGuidance = () => {
   colorFamilyNames,
   colorPalette,
   colorPaletteStepNames,
-} from '@deweyou-ui/styles';`}
+} from '@deweyou-design/styles';`}
       </pre>
     </article>
   );

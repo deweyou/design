@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useRef, useState } from 'react';
 
-import { Button } from '@deweyou-ui/components/button';
-import { Popover } from '@deweyou-ui/components/popover';
-import { Text } from '@deweyou-ui/components/text';
-import { SearchIcon } from '@deweyou-ui/icons/search';
+import { Button } from '@deweyou-design/react/button';
+import { Popover } from '@deweyou-design/react/popover';
+import { Text } from '@deweyou-design/react/text';
+import { SearchIcon } from '@deweyou-design/react-icons/search';
 
 const placementOptions = [
   'top',
@@ -220,7 +220,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Popover displays floating content anchored to a trigger element. It supports four trigger types, eight placements with automatic fallback, three panel modes, and both controlled (`visible`) and uncontrolled (`defaultVisible`) usage. Built on Ark UI for state management, ARIA semantics, and focus handling. Import from `@deweyou-ui/components/popover`.',
+          'Popover displays floating content anchored to a trigger element. It supports four trigger types, eight placements with automatic fallback, three panel modes, and both controlled (`visible`) and uncontrolled (`defaultVisible`) usage. Built on Ark UI for state management, ARIA semantics, and focus handling. Import from `@deweyou-design/react/popover`.',
       },
     },
   },

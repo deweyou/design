@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useRef, useState } from 'react';
 
-import { Button, IconButton } from '@deweyou-ui/components/button';
-import { AddIcon } from '@deweyou-ui/icons/add';
-import { MenuIcon } from '@deweyou-ui/icons/menu';
-import { SearchIcon } from '@deweyou-ui/icons/search';
+import { Button, IconButton } from '@deweyou-design/react/button';
+import { AddIcon } from '@deweyou-design/react-icons/add';
+import { MenuIcon } from '@deweyou-design/react-icons/menu';
+import { SearchIcon } from '@deweyou-design/react-icons/search';
 
 const colorOptions = ['neutral', 'primary', 'danger'] as const;
 const sizeOptions = ['extra-small', 'small', 'medium', 'large', 'extra-large'] as const;
@@ -175,7 +175,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Button triggers an action or navigates to a destination. It ships as `Button` (with text) and `Button.Icon` / `IconButton` (icon-only). Import from the `@deweyou-ui/components/button` subpath. Supports four variants, three semantic colors, five sizes, and three corner shapes (filled/outlined only).',
+          'Button triggers an action or navigates to a destination. It ships as `Button` (with text) and `Button.Icon` / `IconButton` (icon-only). Import from the `@deweyou-design/react/button` subpath. Supports four variants, three semantic colors, five sizes, and three corner shapes (filled/outlined only).',
       },
     },
   },
@@ -190,7 +190,7 @@ const EntrypointShell = () => {
     <div style={storyStyles.shell}>
       <article style={storyStyles.card}>
         <strong>Preferred subpath</strong>
-        <code>{`import { Button, IconButton } from '@deweyou-ui/components/button';`}</code>
+        <code>{`import { Button, IconButton } from '@deweyou-design/react/button';`}</code>
         <span style={storyStyles.meta}>
           Prefer the `button` subpath for single-component consumption. No extra style import
           required.
@@ -198,7 +198,7 @@ const EntrypointShell = () => {
       </article>
       <article style={storyStyles.card}>
         <strong>Root compatibility</strong>
-        <code>{`import { Button, IconButton } from '@deweyou-ui/components';`}</code>
+        <code>{`import { Button, IconButton } from '@deweyou-design/react';`}</code>
         <span style={storyStyles.meta}>
           The root entry remains available for existing consumers and aggregate export scenarios.
         </span>

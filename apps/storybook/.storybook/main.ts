@@ -3,14 +3,12 @@ import { fileURLToPath } from 'node:url';
 import type { StorybookConfig } from '@storybook/react-vite';
 
 const componentsEntry = fileURLToPath(
-  new URL('../../../packages/components/src/index.ts', import.meta.url),
+  new URL('../../../packages/react/src/index.ts', import.meta.url),
 );
-const componentsSourceDir = fileURLToPath(
-  new URL('../../../packages/components/src', import.meta.url),
-);
-const iconsSourceDir = fileURLToPath(new URL('../../../packages/icons/src', import.meta.url));
+const componentsSourceDir = fileURLToPath(new URL('../../../packages/react/src', import.meta.url));
+const iconsSourceDir = fileURLToPath(new URL('../../../packages/react-icons/src', import.meta.url));
 const iconExportsDir = fileURLToPath(
-  new URL('../../../packages/icons/src/exports', import.meta.url),
+  new URL('../../../packages/react-icons/src/exports', import.meta.url),
 );
 const stylesEntry = fileURLToPath(
   new URL('../../../packages/styles/src/index.ts', import.meta.url),
@@ -43,43 +41,43 @@ const config: StorybookConfig = {
         alias: [
           ...aliases,
           {
-            find: /^@deweyou-ui\/components\/(.+)$/,
+            find: /^@deweyou-design\/react\/(.+)$/,
             replacement: `${componentsSourceDir}/$1/index.tsx`,
           },
           {
-            find: /^@deweyou-ui\/components$/,
+            find: /^@deweyou-design\/react$/,
             replacement: componentsEntry,
           },
           {
-            find: /^@deweyou-ui\/icons\/(.+)$/,
+            find: /^@deweyou-design\/react-icons\/(.+)$/,
             replacement: `${iconExportsDir}/$1.ts`,
           },
           {
-            find: '@deweyou-ui/icons',
+            find: '@deweyou-design/react-icons',
             replacement: iconsSourceDir,
           },
           {
-            find: /^@deweyou-ui\/styles\/theme\.css$/,
+            find: /^@deweyou-design\/styles\/theme\.css$/,
             replacement: `${stylesCssDir}/theme.css`,
           },
           {
-            find: /^@deweyou-ui\/styles\/theme-light\.css$/,
+            find: /^@deweyou-design\/styles\/theme-light\.css$/,
             replacement: `${stylesCssDir}/theme-light.css`,
           },
           {
-            find: /^@deweyou-ui\/styles\/theme-dark\.css$/,
+            find: /^@deweyou-design\/styles\/theme-dark\.css$/,
             replacement: `${stylesCssDir}/theme-dark.css`,
           },
           {
-            find: /^@deweyou-ui\/styles\/reset\.css$/,
+            find: /^@deweyou-design\/styles\/reset\.css$/,
             replacement: `${stylesCssDir}/reset.css`,
           },
           {
-            find: /^@deweyou-ui\/styles\/base\.css$/,
+            find: /^@deweyou-design\/styles\/base\.css$/,
             replacement: `${stylesCssDir}/base.css`,
           },
           {
-            find: /^@deweyou-ui\/styles$/,
+            find: /^@deweyou-design\/styles$/,
             replacement: stylesEntry,
           },
         ],
