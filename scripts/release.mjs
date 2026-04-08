@@ -147,6 +147,7 @@ const bumpPackage = (pkgDir, channel, lastTag) => {
   const dryFlag = dryRun ? '--dry' : '';
   const cmd = [
     changelogen,
+    `--dir ${pkgDir}`,
     `--output ${changelogPath}`,
     fromFlag,
     prereleaseFlag,
@@ -157,7 +158,7 @@ const bumpPackage = (pkgDir, channel, lastTag) => {
   ]
     .filter(Boolean)
     .join(' ');
-  run(cmd, { cwd: pkgDir });
+  run(cmd);
   return getCurrentVersion(pkgDir);
 };
 
@@ -207,6 +208,13 @@ if (dryRun) {
 
 console.log('\n📝 提交版本变更...');
 run('git add -A');
+const staged = run('git status --porcelain');
+if (!staged) {
+  exit(
+    1,
+    'changelogen 未检测到可触发 bump 的 commit，版本未变更。\n   请确认包目录下有 feat/fix/refactor 类型的 commit。',
+  );
+}
 run('git commit --no-verify -m "chore: release packages"');
 
 console.log('🏷️  打包级 tag...');
