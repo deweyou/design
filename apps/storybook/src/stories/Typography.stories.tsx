@@ -510,3 +510,19 @@ const LongFormPreview = () => {
 export const ReadingSurface: Story = {
   render: () => <LongFormPreview />,
 };
+
+// ---------------------------------------------------------------------------
+// Story: Interaction — smoke test (purely presentational, no interactive behavior)
+// ---------------------------------------------------------------------------
+
+import { expect } from 'storybook/test';
+
+export const Interaction: Story = {
+  name: 'Interaction',
+  render: () => <FontWeightsPreview />,
+  play: async ({ canvasElement }) => {
+    // Verify the typography preview renders text content
+    const textNodes = canvasElement.querySelectorAll('p, span, strong, article');
+    expect(textNodes.length).toBeGreaterThan(0);
+  },
+};

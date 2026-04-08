@@ -191,3 +191,20 @@ export const OverviewStory: Story = {
   name: 'Overview',
   render: () => <Overview />,
 };
+
+// ---------------------------------------------------------------------------
+// Story: Interaction — smoke test (purely presentational, no interactive behavior)
+// ---------------------------------------------------------------------------
+
+import { expect, within } from 'storybook/test';
+
+export const Interaction: Story = {
+  name: 'Interaction',
+  render: () => <Overview />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    // Verify the color palette renders at least one swatch element
+    const swatches = canvasElement.querySelectorAll('[style*="background"]');
+    expect(swatches.length).toBeGreaterThan(0);
+  },
+};

@@ -197,3 +197,19 @@ export const Accessibility: Story = {
 export const UnsupportedName: Story = {
   render: () => <UnsupportedNamePreview />,
 };
+
+// ---------------------------------------------------------------------------
+// Story: Interaction — smoke test (purely presentational, no interactive behavior)
+// ---------------------------------------------------------------------------
+
+import { expect, within } from 'storybook/test';
+
+export const Interaction: Story = {
+  name: 'Interaction',
+  render: () => <CatalogGallery />,
+  play: async ({ canvasElement }) => {
+    // Verify the icon catalog renders SVG elements
+    const svgs = canvasElement.querySelectorAll('svg');
+    expect(svgs.length).toBeGreaterThan(0);
+  },
+};

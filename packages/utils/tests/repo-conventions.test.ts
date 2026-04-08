@@ -32,6 +32,8 @@ test('repository guidance documents the shared authoring conventions', () => {
   expect(utilAgents).toContain('小写加连字符命名');
   expect(utilAgents).toContain('`packages/utils/tests` 下的顶层测试');
   expect(storybookAgents).toContain('仅用于内部评审和状态验证');
+  expect(storybookAgents).toContain('Interaction');
+  expect(storybookAgents).toContain('play');
   expect(websiteAgents).toContain('公开文档和精选 demo 的承载面');
 });
 
