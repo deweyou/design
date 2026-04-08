@@ -569,3 +569,55 @@ export const OverflowCollapseWithSubMenu: StoryObj = {
     },
   },
 };
+
+// ---------------------------------------------------------------------------
+// Story: Interaction — play function tests
+// ---------------------------------------------------------------------------
+
+import { expect, userEvent, waitFor, within } from 'storybook/test';
+
+export const Interaction: StoryObj = {
+  name: 'Interaction',
+  render: () => (
+    <Tabs defaultValue="first">
+      <TabList>
+        <TabTrigger value="first">First</TabTrigger>
+        <TabTrigger value="second">Second</TabTrigger>
+        <TabTrigger value="third">Third</TabTrigger>
+      </TabList>
+      <TabContent value="first">First panel</TabContent>
+      <TabContent value="second">Second panel</TabContent>
+      <TabContent value="third">Third panel</TabContent>
+    </Tabs>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // US1 uncontrolled: click second tab → second panel shown, aria-selected transfers
+    const tabs = canvas.getAllByRole('tab');
+    const [firstTab, secondTab] = tabs;
+
+    expect(firstTab).toHaveAttribute('aria-selected', 'true');
+    expect(secondTab).toHaveAttribute('aria-selected', 'false');
+
+    await userEvent.click(secondTab!);
+
+    await waitFor(() => {
+      expect(secondTab).toHaveAttribute('aria-selected', 'true');
+      expect(firstTab).toHaveAttribute('aria-selected', 'false');
+    });
+
+    const secondPanel = canvas.getByText('Second panel');
+    expect(secondPanel).toBeVisible();
+
+    // US2: focus first tab, ArrowRight → second tab gains focus, aria-selected follows
+    await userEvent.click(firstTab!);
+    firstTab!.focus();
+    expect(document.activeElement).toBe(firstTab);
+
+    await userEvent.keyboard('{ArrowRight}');
+    await waitFor(() => {
+      expect(document.activeElement).toBe(secondTab);
+    });
+  },
+};

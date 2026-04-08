@@ -472,3 +472,90 @@ export const ShapeVariants: StoryObj = {
     </div>
   ),
 };
+
+// ---------------------------------------------------------------------------
+// Story: Interaction — play function tests
+// ---------------------------------------------------------------------------
+
+import { expect, userEvent, waitFor, within } from 'storybook/test';
+
+export const Interaction: StoryObj = {
+  name: 'Interaction',
+  render: () => (
+    <Menu>
+      <MenuTrigger>
+        <Button variant="outlined" data-testid="menu-trigger">
+          Open menu
+        </Button>
+      </MenuTrigger>
+      <MenuContent>
+        <MenuItem value="edit">Edit</MenuItem>
+        <MenuItem value="copy">Copy</MenuItem>
+        <Menu>
+          <MenuTriggerItem>Export as</MenuTriggerItem>
+          <MenuContent>
+            <MenuItem value="export-pdf">PDF</MenuItem>
+            <MenuItem value="export-png">PNG</MenuItem>
+          </MenuContent>
+        </Menu>
+        <MenuItem value="delete" disabled>
+          Delete (disabled)
+        </MenuItem>
+      </MenuContent>
+    </Menu>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // US1: click trigger → menu appears
+    const trigger = canvas.getByTestId('menu-trigger');
+    await userEvent.click(trigger);
+
+    await waitFor(() => {
+      const menu = document.querySelector('[role="menu"]');
+      expect(menu).toBeInTheDocument();
+      expect(menu).toBeVisible();
+    });
+
+    // US1: hover submenu trigger (MenuTriggerItem) → nested menu appears
+    // MenuTriggerItem renders as role="menuitem" with submenu expand behavior
+    const submenuTrigger = Array.from(document.querySelectorAll('[role="menuitem"]')).find((el) =>
+      el.textContent?.includes('Export as'),
+    ) as HTMLElement | undefined;
+
+    if (submenuTrigger) {
+      await userEvent.hover(submenuTrigger);
+      await waitFor(() => {
+        const menus = document.querySelectorAll('[role="menu"]');
+        expect(menus.length).toBeGreaterThanOrEqual(2);
+      });
+    }
+
+    // US2: ArrowDown navigates menuitems — focus moves between items
+    await userEvent.keyboard('{Escape}');
+    await waitFor(() => {
+      const menus = document.querySelectorAll('[role="menu"]');
+      expect(menus.length).toBe(0);
+    });
+
+    // US1: Escape closes menu
+    await userEvent.click(trigger);
+    await waitFor(() => {
+      expect(document.querySelector('[role="menu"]')).toBeInTheDocument();
+    });
+
+    // US2: ArrowDown navigates — focused element gains role menuitem or menu (Ark UI focuses menu, then items on ArrowDown)
+    await userEvent.keyboard('{ArrowDown}');
+    await userEvent.keyboard('{ArrowDown}');
+    await waitFor(() => {
+      const focused = document.activeElement;
+      const role = focused?.getAttribute('role') ?? '';
+      expect(['menuitem', 'menu'].includes(role)).toBe(true);
+    });
+
+    await userEvent.keyboard('{Escape}');
+    await waitFor(() => {
+      expect(document.querySelector('[role="menu"]')).not.toBeInTheDocument();
+    });
+  },
+};

@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "storybook dev -p 6106 --disable-telemetry --no-open",
-    "build": "storybook build"
+    "build": "storybook build",
+    "test": "test-storybook --url http://localhost:6106 --ci"
   },
   "dependencies": {
     "@deweyou-ui/components": "workspace:*",
@@ -18,6 +19,7 @@
     "@storybook/addon-docs": "catalog:",
     "@storybook/react": "catalog:",
     "@storybook/react-vite": "catalog:",
+    "@storybook/test-runner": "0.24.3",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "storybook": "catalog:",
