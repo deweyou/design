@@ -1,6 +1,6 @@
 {
   "name": "@deweyou-design/react",
-  "version": "0.0.2-beta.0",
+  "version": "0.0.1",
   "description": "Reusable UI components for Deweyou UI.",
   "files": [
     "dist"
