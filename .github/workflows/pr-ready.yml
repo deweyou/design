@@ -35,7 +35,7 @@ jobs:
         run: ./node_modules/.bin/vp run ready
 
       - name: Install Playwright browsers
-        run: pnpm exec playwright install chromium --with-deps
+        run: ./node_modules/.pnpm/node_modules/.bin/playwright install chromium --with-deps
 
       - name: Run Storybook interaction tests
         run: |
