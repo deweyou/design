@@ -141,12 +141,12 @@ const semverGt = (a, b) => {
 
 const bumpPackage = (pkgDir, channel, lastTag) => {
   const changelogPath = resolve(pkgDir, 'CHANGELOG.md');
+  const changelogen = resolve(REPO_ROOT, 'node_modules/.bin/changelogen');
   const fromFlag = lastTag ? `--from ${lastTag}` : '';
   const prereleaseFlag = channel === 'beta' ? '--prerelease beta' : '';
   const dryFlag = dryRun ? '--dry' : '';
   const cmd = [
-    './node_modules/.bin/changelogen',
-    `--dir ${pkgDir}`,
+    changelogen,
     `--output ${changelogPath}`,
     fromFlag,
     prereleaseFlag,
@@ -157,7 +157,7 @@ const bumpPackage = (pkgDir, channel, lastTag) => {
   ]
     .filter(Boolean)
     .join(' ');
-  run(cmd);
+  run(cmd, { cwd: pkgDir });
   return getCurrentVersion(pkgDir);
 };
 
