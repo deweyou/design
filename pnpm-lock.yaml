@@ -188,9 +188,6 @@ importers:
 
   packages/react:
     dependencies:
-      '@ark-ui/react':
-        specifier: 'catalog:'
-        version: 5.35.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@deweyou-design/react-hooks':
         specifier: workspace:*
         version: link:../react-hooks/dist
@@ -207,6 +204,9 @@ importers:
         specifier: 'catalog:'
         version: 19.2.4(react@19.2.4)
     devDependencies:
+      '@ark-ui/react':
+        specifier: 'catalog:'
+        version: 5.35.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@testing-library/jest-dom':
         specifier: 'catalog:'
         version: 6.9.1
