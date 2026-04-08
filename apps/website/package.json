@@ -9,10 +9,10 @@
     "preview": "vp preview"
   },
   "dependencies": {
-    "@deweyou-ui/components": "workspace:*",
-    "@deweyou-ui/hooks": "workspace:*",
-    "@deweyou-ui/icons": "workspace:*",
-    "@deweyou-ui/styles": "workspace:*",
+    "@deweyou-design/react": "workspace:*",
+    "@deweyou-design/react-hooks": "workspace:*",
+    "@deweyou-design/react-icons": "workspace:*",
+    "@deweyou-design/styles": "workspace:*",
     "react": "catalog:",
     "react-dom": "catalog:"
   },

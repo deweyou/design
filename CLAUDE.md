@@ -4,23 +4,25 @@
 
 - [设计风格](docs/design/index.md) — 字体、色彩、圆角、动效、组件变体模型
 - [Ark UI 组件范式](docs/architecture/ark-ui.md) — 交互型组件的行为基础层选型与实现约定
+- [包层级规则](docs/architecture/package-layers.md) — 已发布包 vs 构建基础设施的划分与依赖规则
 
 ## 技术栈
 
 - TypeScript 5.x、React 19.x、Node.js 24.14.0
 - vite-plus（构建、测试、lint、格式化）
 - React、Less、CSS Modules、Storybook
-- `@ark-ui/react`（交互型组件行为层）、`@deweyou-ui/styles`（设计 token）
+- `@ark-ui/react`（交互型组件行为层）、`@deweyou-design/styles`（设计 token）
 
 ## 项目结构
 
 ```text
 packages/
-├── components/   # @deweyou-ui/components
-├── hooks/        # 共享 React hooks
-├── icons/        # 图标包
-├── styles/       # 设计 token
-└── utils/        # 工具函数
+├── react/        # @deweyou-design/react — React 组件库
+├── react-hooks/  # @deweyou-design/react-hooks — 共享 React hooks
+├── react-icons/  # @deweyou-design/react-icons — React 图标组件
+├── styles/       # @deweyou-design/styles — 设计 token
+├── utils/        # @deweyou-design/utils — 运行时工具
+└── infra/        # @deweyou-ui/infra — 构建基础设施（不发布）
 apps/
 ├── website/      # 组件预览站
 └── storybook/    # 组件故事
@@ -43,7 +45,7 @@ vp install          # 安装依赖
 - 函数默认使用**箭头函数**风格。仅当框架边界、提升需求或外部 API 约束使函数声明更安全时，才允许例外，并需在变更中说明原因。
 - React 组件必须使用 **TSX 文件**编写。除非有明确的工具限制并已文档化，否则不要引入 `React.createElement` 风格的组件写法。
 - 受治理区域中新建或重命名的文件和目录必须使用**小写名称并使用连字符分隔**（kebab-case）。
-- 在 `packages/components`、`packages/hooks` 和 `packages/utils` 中，每个受治理源码单元都应位于自己的 `src/<unit-name>/` 目录下。
+- 在 `packages/react`、`packages/react-hooks` 和 `packages/infra` 中，每个受治理源码单元都应位于自己的 `src/<unit-name>/` 目录下。
 - 每个受治理源码单元都应将本地入口文件和单测保留为同目录下的 `index` 与 `index.test`（**colocate 单测**）。
 - `packages/` 下的新包默认不得保留包级专用构建配置；应优先复用 Vite+ 统一约定。
 - commit message 格式：`<type>(<scope>): <summary>`（scope 有意义时），或 `<type>: <summary>`。
@@ -52,6 +54,7 @@ vp install          # 安装依赖
 
 ## 最近变更
 
+- **20260408-restructure-packages**：packages 重命名为 `@deweyou-design/*` scope；infra 分离构建层；写入 dist/package.json 版本解析
 - **20260329-distill-design-style**：引入「设计风格」章节；完成 AGENTS.md → CLAUDE.md 全面迁移；清理 Codex 遗留文件
 - **20260327-ark-ui-integration**：引入 `@ark-ui/react` 作为组件行为基础层；迁移 popover 组件；建立后续交互型组件开发范式
 - **20260317-repo-conventions**：仓库治理规则（箭头函数、TSX-first、kebab-case、单测 colocate）

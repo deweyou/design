@@ -1,0 +1,452 @@
+@import '@deweyou-design/styles/less/bridge';
+
+// ─── Component-level design variables ─────────────────────────────────────────
+
+@tabs-tab-gap: 8px;
+@tabs-indicator-thickness: 2px;
+@tabs-overflow-fade-width: 40px;
+@tabs-indicator-easing: cubic-bezier(0.22, 1, 0.36, 1);
+@tabs-indicator-duration: 160ms;
+
+// ─── Root ─────────────────────────────────────────────────────────────────────
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  // Ensures the root respects its parent's width in grid/flex containers
+  min-width: 0;
+}
+
+.root[data-orientation='vertical'] {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 0;
+}
+
+// ─── List outer wrapper ───────────────────────────────────────────────────────
+// Flex container that holds the scroller + "更多" button.
+
+.listOuter {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  flex-shrink: 0;
+}
+
+.listOuter[data-orientation='vertical'] {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+// ─── List scroller ────────────────────────────────────────────────────────────
+// Handles scroll-mode mask-image gradient and clip.
+
+.listScroller {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+// Scroll mode: gradient edge fades via mask-image.
+// Default state (neither at start nor end): fade both sides.
+.listScroller[data-overflow-mode='scroll'] {
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    black @tabs-overflow-fade-width,
+    black calc(100% - @tabs-overflow-fade-width),
+    transparent 100%
+  );
+}
+
+.listScroller[data-overflow-mode='scroll'][data-orientation='vertical'] {
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    black @tabs-overflow-fade-width,
+    black calc(100% - @tabs-overflow-fade-width),
+    transparent 100%
+  );
+}
+
+// At start — no left/top gradient.
+.listScroller[data-overflow-mode='scroll'][data-scroll-at-start='true'] {
+  mask-image: linear-gradient(
+    to right,
+    black 0,
+    black calc(100% - @tabs-overflow-fade-width),
+    transparent 100%
+  );
+}
+
+.listScroller[data-overflow-mode='scroll'][data-scroll-at-start='true'][data-orientation='vertical'] {
+  mask-image: linear-gradient(
+    to bottom,
+    black 0,
+    black calc(100% - @tabs-overflow-fade-width),
+    transparent 100%
+  );
+}
+
+// At end — no right/bottom gradient.
+.listScroller[data-overflow-mode='scroll'][data-scroll-at-end='true'] {
+  mask-image: linear-gradient(to right, transparent 0, black @tabs-overflow-fade-width, black 100%);
+}
+
+.listScroller[data-overflow-mode='scroll'][data-scroll-at-end='true'][data-orientation='vertical'] {
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    black @tabs-overflow-fade-width,
+    black 100%
+  );
+}
+
+// At both edges — no gradient.
+.listScroller[data-overflow-mode='scroll'][data-scroll-at-start='true'][data-scroll-at-end='true'] {
+  mask-image: none;
+}
+
+// ─── List (ArkTabs.List) ──────────────────────────────────────────────────────
+
+.list {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: @tabs-tab-gap;
+  position: relative; // needed for absolute-positioned indicator
+  border-bottom: 1px solid var(--ui-color-border);
+}
+
+.list[data-orientation='vertical'] {
+  flex-direction: column;
+  align-items: flex-start;
+  border-bottom: none;
+  border-right: 1px solid var(--ui-color-border);
+}
+
+// Collapse mode: the scroller takes only the space of the visible tabs so the
+// More button appears immediately after the last visible tab (not right-aligned).
+.listScroller[data-overflow-mode='collapse'] {
+  flex: none;
+}
+
+// Scroll mode: the list itself scrolls.
+.list[data-overflow-mode='scroll'] {
+  overflow-x: auto;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.list[data-overflow-mode='scroll'][data-orientation='vertical'] {
+  overflow-x: visible;
+  overflow-y: auto;
+}
+
+// ─── Tab trigger ─────────────────────────────────────────────────────────────
+
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  border: none;
+  background: transparent;
+  color: var(--ui-color-text);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: var(--ui-font-weight-body);
+  line-height: 1.4;
+  outline: none;
+  padding: 0.5rem 0.875rem;
+  position: relative;
+  text-align: left;
+  // Opacity-based interaction: non-active tabs are slightly faded;
+  // hover restores full opacity without a background color change.
+  opacity: 0.72;
+  transition:
+    opacity 140ms ease,
+    color 140ms ease;
+  white-space: nowrap;
+  user-select: none;
+  flex-shrink: 0;
+  border-radius: 0.4rem 0.4rem 0 0;
+}
+
+.root[data-orientation='vertical'] .trigger {
+  border-radius: 0 0.4rem 0.4rem 0;
+}
+
+// Hover — restore opacity, no bg change
+.trigger:hover:not([disabled]):not([data-disabled='true']) {
+  opacity: 1;
+}
+
+// Active (click) state
+.trigger:active:not([disabled]):not([data-disabled='true']) {
+  opacity: 1;
+  transform: translateY(1px);
+}
+
+// Focus-visible
+.trigger:focus-visible {
+  outline: 2px solid var(--ui-color-focus-ring);
+  outline-offset: 2px;
+}
+
+// Selected state — Ark UI sets data-selected="" (empty string) for selected triggers
+.trigger[data-selected] {
+  color: var(--ui-color-text);
+  font-weight: var(--ui-font-weight-emphasis);
+  opacity: 1;
+}
+
+// Disabled — keep pointer-events on so cursor: not-allowed is visible
+.trigger[data-disabled='true'],
+.trigger[disabled] {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+// Overflow hidden (collapse mode)
+.trigger[data-overflow-hidden='true'] {
+  display: none;
+}
+
+.triggerLabel {
+  display: inline;
+}
+
+// ─── Trigger: menu tab ────────────────────────────────────────────────────────
+
+.triggerMenu {
+  // Inherits .trigger styles
+}
+
+.triggerMenuActive {
+  font-weight: var(--ui-font-weight-emphasis);
+}
+
+.triggerMenuArrow {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.875em;
+  margin-left: 0.125rem;
+  opacity: 0.7;
+  transition: transform 140ms ease;
+}
+
+// Arrow rotates when menu is open (Ark Menu adds data-state="open" to the trigger)
+.triggerMenu[data-state='open'] .triggerMenuArrow {
+  transform: rotate(180deg);
+}
+
+// ─── Indicator (line variant) ─────────────────────────────────────────────────
+// Custom indicator — positioned via JS in TabList.updateIndicator().
+// We manage left/width (horizontal) or top/height (vertical) directly via
+// element.style, so we don't need Ark's CSS variable mechanism.
+
+.indicator {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 999px;
+
+  // Horizontal: bottom line — JS sets left and width
+  bottom: 0;
+  left: 0;
+  height: @tabs-indicator-thickness;
+  width: 0;
+  background: var(--ui-color-text);
+  transition:
+    left @tabs-indicator-duration @tabs-indicator-easing,
+    width @tabs-indicator-duration @tabs-indicator-easing;
+}
+
+// Vertical: left line — JS sets top and height
+.list[data-orientation='vertical'] .indicator {
+  bottom: auto;
+  left: 0;
+  top: 0;
+  width: @tabs-indicator-thickness;
+  height: 0;
+  transition:
+    top @tabs-indicator-duration @tabs-indicator-easing,
+    height @tabs-indicator-duration @tabs-indicator-easing;
+}
+
+// prefers-reduced-motion: disable animation
+@media (prefers-reduced-motion: reduce) {
+  .indicator {
+    transition: none;
+  }
+}
+
+// ─── Variant: bg ─────────────────────────────────────────────────────────────
+
+.root[data-variant='bg'] .list {
+  border-bottom: none;
+  background: var(--ui-color-surface);
+  border-radius: 0.4rem;
+  padding: 0.25rem;
+  gap: 2px;
+}
+
+.root[data-variant='bg'][data-orientation='vertical'] .list {
+  border-right: none;
+}
+
+.root[data-variant='bg'] .trigger {
+  border-radius: 0.3rem;
+}
+
+.root[data-variant='bg'] .trigger[data-selected] {
+  // Active tab: ghost-button hover style using current text color
+  background: color-mix(in srgb, var(--ui-color-text) 8%, transparent);
+}
+
+// ─── Color: primary ───────────────────────────────────────────────────────────
+
+.root[data-color='primary'] .indicator {
+  background: var(--ui-color-brand-bg);
+}
+
+.root[data-color='primary'] .trigger[data-selected],
+.root[data-color='primary'] .triggerMenuActive {
+  color: var(--ui-color-brand-bg);
+}
+
+// Primary + bg: active tab uses brand-tinted background
+.root[data-color='primary'][data-variant='bg'] .trigger[data-selected] {
+  background: color-mix(in srgb, var(--ui-color-brand-bg) 10%, transparent);
+}
+
+// ─── Size variants ────────────────────────────────────────────────────────────
+
+.root[data-size='small'] .trigger {
+  font-size: var(--ui-text-size-caption);
+  padding: 0.375rem 0.625rem;
+}
+
+.root[data-size='medium'] .trigger {
+  font-size: var(--ui-text-size-body);
+  padding: 0.5rem 0.875rem;
+}
+
+.root[data-size='large'] .trigger {
+  font-size: 1.05rem;
+  padding: 0.625rem 1.125rem;
+}
+
+// ─── Content panel ────────────────────────────────────────────────────────────
+
+.content {
+  flex: 1;
+  padding: 1rem 0;
+  color: var(--ui-color-text);
+  font-size: var(--ui-text-size-body);
+  line-height: var(--ui-text-line-height-body);
+}
+
+.root[data-orientation='vertical'] .content {
+  padding: 0 1rem;
+}
+
+.content:focus-visible {
+  outline: 2px solid var(--ui-color-focus-ring);
+  outline-offset: 2px;
+}
+
+// ─── "更多" overflow button ───────────────────────────────────────────────────
+
+.moreButtonWrapper {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--ui-color-border);
+  padding: 0 0.125rem;
+}
+
+.listOuter[data-orientation='vertical'] .moreButtonWrapper {
+  border-bottom: none;
+  border-right: 1px solid var(--ui-color-border);
+  padding: 0.125rem 0;
+  align-items: flex-start;
+}
+
+.root[data-variant='bg'] .moreButtonWrapper {
+  border-bottom: none;
+  border-right: none;
+}
+
+.moreButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border: none;
+  background: transparent;
+  color: var(--ui-color-text);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: var(--ui-text-size-caption);
+  font-weight: var(--ui-font-weight-body);
+  padding: 0.4rem 0.625rem;
+  border-radius: 0.4rem;
+  white-space: nowrap;
+  transition:
+    background 140ms ease,
+    color 140ms ease;
+  outline: none;
+  flex-shrink: 0;
+}
+
+.moreButton:hover {
+  background: color-mix(in srgb, currentColor 8%, transparent);
+}
+
+.moreButton:focus-visible {
+  outline: 2px solid var(--ui-color-focus-ring);
+  outline-offset: 2px;
+}
+
+// When the active tab is in the overflow list
+.moreButton[data-has-active-overflow='true'] {
+  color: var(--ui-color-brand-bg);
+  font-weight: var(--ui-font-weight-emphasis);
+}
+
+.root[data-color='neutral'] .moreButton[data-has-active-overflow='true'] {
+  color: var(--ui-color-text);
+}
+
+// Line variant: underline indicator on the More button wrapper when active
+.root[data-variant='line'] .moreButtonWrapper[data-has-active-overflow='true'] {
+  box-shadow: inset 0 -2px 0 var(--ui-color-brand-bg);
+}
+
+.root[data-variant='line'][data-color='neutral']
+  .moreButtonWrapper[data-has-active-overflow='true'] {
+  box-shadow: inset 0 -2px 0 var(--ui-color-text);
+}
+
+// Vertical line variant: left-side indicator
+.root[data-orientation='vertical'][data-variant='line']
+  .moreButtonWrapper[data-has-active-overflow='true'] {
+  box-shadow: inset 2px 0 0 var(--ui-color-brand-bg);
+}
+
+.root[data-orientation='vertical'][data-variant='line'][data-color='neutral']
+  .moreButtonWrapper[data-has-active-overflow='true'] {
+  box-shadow: inset 2px 0 0 var(--ui-color-text);
+}
+
+.moreButtonArrow {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.875em;
+  opacity: 0.7;
+}

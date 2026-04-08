@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Text } from '@deweyou-ui/components/text';
-import { colorFamilyNames } from '@deweyou-ui/styles';
+import { Text } from '@deweyou-design/react/text';
+import { colorFamilyNames } from '@deweyou-design/styles';
 
 const weightSamples = [
   {
@@ -233,7 +233,7 @@ const meta = {
     },
     color: {
       description:
-        'Applies a foreground color from the shared palette. Directly reuses `@deweyou-ui/styles` color family names — no separate Text-specific color set.',
+        'Applies a foreground color from the shared palette. Directly reuses `@deweyou-design/styles` color family names — no separate Text-specific color set.',
       control: { type: 'select' },
       options: colorFamilyNames,
       table: {
@@ -272,7 +272,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Text renders semantic typographic content using the Songti-oriented font stack (Source Han Serif CN Web). It covers eight variants, four decoration props, shared-palette color and background highlights, and a `lineClamp` utility. Import from `@deweyou-ui/components/text`.',
+          'Text renders semantic typographic content using the Songti-oriented font stack (Source Han Serif CN Web). It covers eight variants, four decoration props, shared-palette color and background highlights, and a `lineClamp` utility. Import from `@deweyou-design/react/text`.',
       },
     },
   },
@@ -287,7 +287,7 @@ const EntrypointShell = () => {
     <div style={previewStyles.shell}>
       <article style={previewStyles.card}>
         <strong>Preferred subpath</strong>
-        <code>{`import { Text } from '@deweyou-ui/components/text';`}</code>
+        <code>{`import { Text } from '@deweyou-design/react/text';`}</code>
         <span style={previewStyles.meta}>
           Prefer the `text` subpath for single-component consumption. No extra style import
           required.
@@ -295,7 +295,7 @@ const EntrypointShell = () => {
       </article>
       <article style={previewStyles.card}>
         <strong>Root compatibility</strong>
-        <code>{`import { Text } from '@deweyou-ui/components';`}</code>
+        <code>{`import { Text } from '@deweyou-design/react';`}</code>
         <span style={previewStyles.meta}>
           The root entry remains available for aggregate consumption and existing documentation
           examples.
@@ -390,8 +390,8 @@ const TextContractPreview = () => {
       <article style={previewStyles.card}>
         <strong>Palette highlights</strong>
         <span style={previewStyles.meta}>
-          `color` and `background` directly reuse `@deweyou-ui/styles` shared color family names. No
-          separate Text-specific color set is introduced.
+          `color` and `background` directly reuse `@deweyou-design/styles` shared color family
+          names. No separate Text-specific color set is introduced.
         </span>
         <div style={previewStyles.grid}>
           {textPaletteFamilies.map((family) => (

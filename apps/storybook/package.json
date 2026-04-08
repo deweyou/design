@@ -9,9 +9,9 @@
     "test": "test-storybook --url http://localhost:6106 --ci"
   },
   "dependencies": {
-    "@deweyou-ui/components": "workspace:*",
-    "@deweyou-ui/icons": "workspace:*",
-    "@deweyou-ui/styles": "workspace:*",
+    "@deweyou-design/react": "workspace:*",
+    "@deweyou-design/react-icons": "workspace:*",
+    "@deweyou-design/styles": "workspace:*",
     "react": "catalog:",
     "react-dom": "catalog:"
   },

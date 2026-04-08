@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 
-import { TabContent, TabList, Tabs, TabTrigger } from '@deweyou-ui/components/tabs';
+import { TabContent, TabList, Tabs, TabTrigger } from '@deweyou-design/react/tabs';
 
 const storyStyles = {
   grid: {
@@ -123,7 +123,7 @@ const meta: Meta<typeof Tabs> = {
     docs: {
       description: {
         component:
-          'Tabs organises related content into separate panels with a list of triggers at the top (or side). Built on Ark UI for keyboard navigation, ARIA semantics, and focus management. Import from `@deweyou-ui/components/tabs`.\n\n**Composition**: `Tabs` → `TabList` → `TabTrigger`+; `TabContent`+ (one per trigger value).',
+          'Tabs organises related content into separate panels with a list of triggers at the top (or side). Built on Ark UI for keyboard navigation, ARIA semantics, and focus management. Import from `@deweyou-design/react/tabs`.\n\n**Composition**: `Tabs` → `TabList` → `TabTrigger`+; `TabContent`+ (one per trigger value).',
       },
     },
   },

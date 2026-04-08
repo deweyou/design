@@ -20,9 +20,9 @@ export default defineConfig({
       {
         files: [
           'apps/website/src/**/*.{ts,tsx}',
-          'packages/components/src/**/*.{ts,tsx}',
-          'packages/hooks/src/**/*.{ts,tsx}',
-          'packages/utils/src/**/*.{ts,tsx}',
+          'packages/react/src/**/*.{ts,tsx}',
+          'packages/react-hooks/src/**/*.{ts,tsx}',
+          'packages/infra/src/**/*.{ts,tsx}',
         ],
         rules: {
           'func-style': 'error',

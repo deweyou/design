@@ -21,14 +21,14 @@ import {
   Tabs,
   TabTrigger,
   Text,
-} from '@deweyou-ui/components';
-import { useThemeMode } from '@deweyou-ui/hooks';
-import { AddIcon } from '@deweyou-ui/icons/add';
-import { ChevronRightIcon } from '@deweyou-ui/icons/chevron-right';
-import { MenuIcon } from '@deweyou-ui/icons/menu';
-import { SearchIcon } from '@deweyou-ui/icons/search';
-import '@deweyou-ui/styles/theme.css';
-import { colorFamilyNames } from '@deweyou-ui/styles';
+} from '@deweyou-design/react';
+import { useThemeMode } from '@deweyou-design/react-hooks';
+import { AddIcon } from '@deweyou-design/react-icons/add';
+import { ChevronRightIcon } from '@deweyou-design/react-icons/chevron-right';
+import { MenuIcon } from '@deweyou-design/react-icons/menu';
+import { SearchIcon } from '@deweyou-design/react-icons/search';
+import '@deweyou-design/styles/theme.css';
+import { colorFamilyNames } from '@deweyou-design/styles';
 
 import { applyThemeMode, themePreviews } from './counter';
 import { IconGuidance } from './pages/icons';
@@ -356,7 +356,7 @@ const ColorFoundationPreview = () => {
       <article className="color-panel">
         <h2>Color foundation</h2>
         <p>
-          所有颜色依赖先回到 `@deweyou-ui/styles` 的共享基础色卡：26 个颜色家族、11
+          所有颜色依赖先回到 `@deweyou-design/styles` 的共享基础色卡：26 个颜色家族、11
           个色阶，再加上纯黑白。 `Button`、`Text`
           和后续组件都优先复用这套颜色事实来源，非必要不得新增特化 token。
         </p>
@@ -1128,7 +1128,7 @@ const App = () => (
         </Button>
       </div>
       <div className="meta">
-        <span>@deweyou-ui/components: Button, ButtonProps, IconButton, IconButtonProps</span>
+        <span>@deweyou-design/react: Button, ButtonProps, IconButton, IconButtonProps</span>
         <span>Storybook: internal review matrix</span>
         <span>Website: public usage guidance</span>
       </div>

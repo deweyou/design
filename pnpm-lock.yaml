@@ -87,13 +87,13 @@ importers:
 
   apps/storybook:
     dependencies:
-      '@deweyou-ui/components':
+      '@deweyou-design/react':
         specifier: workspace:*
-        version: link:../../packages/components/dist
-      '@deweyou-ui/icons':
+        version: link:../../packages/react/dist
+      '@deweyou-design/react-icons':
         specifier: workspace:*
-        version: link:../../packages/icons/dist
-      '@deweyou-ui/styles':
+        version: link:../../packages/react-icons/dist
+      '@deweyou-design/styles':
         specifier: workspace:*
         version: link:../../packages/styles/dist
       react:
@@ -133,16 +133,16 @@ importers:
 
   apps/website:
     dependencies:
-      '@deweyou-ui/components':
+      '@deweyou-design/react':
         specifier: workspace:*
-        version: link:../../packages/components/dist
-      '@deweyou-ui/hooks':
+        version: link:../../packages/react/dist
+      '@deweyou-design/react-hooks':
         specifier: workspace:*
-        version: link:../../packages/hooks/dist
-      '@deweyou-ui/icons':
+        version: link:../../packages/react-hooks/dist
+      '@deweyou-design/react-icons':
         specifier: workspace:*
-        version: link:../../packages/icons/dist
-      '@deweyou-ui/styles':
+        version: link:../../packages/react-icons/dist
+      '@deweyou-design/styles':
         specifier: workspace:*
         version: link:../../packages/styles/dist
       react:
@@ -168,15 +168,30 @@ importers:
         specifier: 'catalog:'
         version: 0.1.11(@types/node@25.5.0)(@voidzero-dev/vite-plus-core@0.1.12(@types/node@25.5.0)(jiti@2.6.1)(less@4.6.4)(typescript@5.9.3)(yaml@2.8.2))(jiti@2.6.1)(jsdom@29.0.1)(less@4.6.4)(typescript@5.9.3)(yaml@2.8.2)
 
-  packages/components:
+  packages/infra:
+    devDependencies:
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.12.0
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+      vite-plus:
+        specifier: 'catalog:'
+        version: 0.1.11(@types/node@24.12.0)(jiti@2.6.1)(jsdom@29.0.1)(less@4.6.4)(typescript@5.9.3)(vite@8.0.0(@types/node@24.12.0)(jiti@2.6.1)(less@4.6.4)(yaml@2.8.2))(yaml@2.8.2)
+      vitest:
+        specifier: npm:@voidzero-dev/vite-plus-test@latest
+        version: '@voidzero-dev/vite-plus-test@0.1.16(@types/node@24.12.0)(jiti@2.6.1)(jsdom@29.0.1)(less@4.6.4)(typescript@5.9.3)(vite@8.0.0(@types/node@24.12.0)(jiti@2.6.1)(less@4.6.4)(yaml@2.8.2))(yaml@2.8.2)'
+
+  packages/react:
     dependencies:
       '@ark-ui/react':
         specifier: 'catalog:'
         version: 5.35.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      '@deweyou-ui/hooks':
+      '@deweyou-design/react-hooks':
         specifier: workspace:*
-        version: link:../hooks/dist
-      '@deweyou-ui/styles':
+        version: link:../react-hooks/dist
+      '@deweyou-design/styles':
         specifier: workspace:*
         version: link:../styles/dist
       classnames:
@@ -221,11 +236,8 @@ importers:
         version: 0.1.11(@tsdown/css@0.21.3)(@types/node@25.5.0)(jiti@2.6.1)(jsdom@29.0.1)(less@4.6.4)(typescript@5.9.3)(vite@8.0.0(@types/node@25.5.0)(jiti@2.6.1)(less@4.6.4)(yaml@2.8.2))(yaml@2.8.2)
     publishDirectory: dist
 
-  packages/hooks:
+  packages/react-hooks:
     dependencies:
-      '@deweyou-ui/utils':
-        specifier: workspace:*
-        version: link:../utils/dist
       react:
         specifier: 'catalog:'
         version: 19.2.4
@@ -241,7 +253,7 @@ importers:
         version: 0.1.11(@types/node@25.5.0)(jiti@2.6.1)(jsdom@29.0.1)(less@4.6.4)(typescript@5.9.3)(vite@8.0.0(@types/node@25.5.0)(jiti@2.6.1)(less@4.6.4)(yaml@2.8.2))(yaml@2.8.2)
     publishDirectory: dist
 
-  packages/icons:
+  packages/react-icons:
     dependencies:
       react:
         specifier: 'catalog:'
@@ -282,18 +294,12 @@ importers:
 
   packages/utils:
     devDependencies:
-      '@types/node':
-        specifier: 'catalog:'
-        version: 24.12.0
       typescript:
         specifier: 'catalog:'
         version: 5.9.3
       vite-plus:
         specifier: 'catalog:'
-        version: 0.1.11(@types/node@24.12.0)(jiti@2.6.1)(jsdom@29.0.1)(less@4.6.4)(typescript@5.9.3)(vite@8.0.0(@types/node@24.12.0)(jiti@2.6.1)(less@4.6.4)(yaml@2.8.2))(yaml@2.8.2)
-      vitest:
-        specifier: npm:@voidzero-dev/vite-plus-test@latest
-        version: '@voidzero-dev/vite-plus-test@0.1.11(@types/node@24.12.0)(jiti@2.6.1)(jsdom@29.0.1)(less@4.6.4)(typescript@5.9.3)(vite@8.0.0(@types/node@24.12.0)(jiti@2.6.1)(less@4.6.4)(yaml@2.8.2))(yaml@2.8.2)'
+        version: 0.1.11(@types/node@25.5.0)(jiti@2.6.1)(jsdom@29.0.1)(less@4.6.4)(typescript@5.9.3)(vite@8.0.0(@types/node@25.5.0)(jiti@2.6.1)(less@4.6.4)(yaml@2.8.2))(yaml@2.8.2)
     publishDirectory: dist
 
 packages:
@@ -882,8 +888,15 @@ packages:
     resolution: {integrity: sha512-Rg8Wlt5dCbXhQnsXPrkOjL1DTSvXLgb2R/KYfnf1/K+R0k6UMLEmbQXPM+kwrWqSmWA2t0B1EtHy2/3zikQpvQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
 
+  '@oxc-project/runtime@0.123.0':
+    resolution: {integrity: sha512-wRf0z8saz9tHLcK3YeTeBmwISrpy4bBimvKxUmryiIhbt+ZJb0nwwJNL3D8xpeWbNfZlGSlzRBZbfcbApIGZJw==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+
   '@oxc-project/types@0.115.0':
     resolution: {integrity: sha512-4n91DKnebUS4yjUHl2g3/b2T+IUdCfmoZGhmwsovZCDaJSs+QkVAM+0AqqTxHSsHfeiMuueT75cZaZcT/m0pSw==}
+
+  '@oxc-project/types@0.123.0':
+    resolution: {integrity: sha512-YtECP/y8Mj1lSHiUWGSRzy/C6teUKlS87dEfuVKT09LgQbUsBW1rNg+MiJ4buGu3yuADV60gbIvo9/HplA56Ew==}
 
   '@oxfmt/binding-android-arm-eabi@0.40.0':
     resolution: {integrity: sha512-S6zd5r1w/HmqR8t0CTnGjFTBLDq2QKORPwriCHxo4xFNuhmOTABGjPaNvCJJVnrKBLsohOeiDX3YqQfJPF+FXw==}
@@ -1834,6 +1847,66 @@ packages:
       yaml:
         optional: true
 
+  '@voidzero-dev/vite-plus-core@0.1.16':
+    resolution: {integrity: sha512-fOyf14CXjcXqANFs2fCXEX+0Tn9ZjmqfFV+qTnARwIF1Kzl8WquO4XtvlDgs/fTQ91H4AyoNUgkvWdKS+C4xYA==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    peerDependencies:
+      '@arethetypeswrong/core': ^0.18.1
+      '@tsdown/css': 0.21.7
+      '@tsdown/exe': 0.21.7
+      '@types/node': ^20.19.0 || >=22.12.0
+      '@vitejs/devtools': ^0.1.0
+      esbuild: ^0.28.0
+      jiti: '>=1.21.0'
+      less: ^4.0.0
+      publint: ^0.3.0
+      sass: ^1.70.0
+      sass-embedded: ^1.70.0
+      stylus: '>=0.54.8'
+      sugarss: ^5.0.0
+      terser: ^5.16.0
+      tsx: ^4.8.1
+      typescript: ^5.0.0 || ^6.0.0
+      unplugin-unused: ^0.5.0
+      yaml: ^2.4.2
+    peerDependenciesMeta:
+      '@arethetypeswrong/core':
+        optional: true
+      '@tsdown/css':
+        optional: true
+      '@tsdown/exe':
+        optional: true
+      '@types/node':
+        optional: true
+      '@vitejs/devtools':
+        optional: true
+      esbuild:
+        optional: true
+      jiti:
+        optional: true
+      less:
+        optional: true
+      publint:
+        optional: true
+      sass:
+        optional: true
+      sass-embedded:
+        optional: true
+      stylus:
+        optional: true
+      sugarss:
+        optional: true
+      terser:
+        optional: true
+      tsx:
+        optional: true
+      typescript:
+        optional: true
+      unplugin-unused:
+        optional: true
+      yaml:
+        optional: true
+
   '@voidzero-dev/vite-plus-darwin-arm64@0.1.11':
     resolution: {integrity: sha512-ENokEkMhDMJ9nM/tUDAXvtah/P3cAnEbkeKCCxJgFvTTGnGM8eBvP2qpJeTrfhy9ndIWihcsfMufszinLsfhUg==}
     engines: {node: ^20.19.0 || >=22.12.0}
@@ -1871,6 +1944,31 @@ packages:
       happy-dom: '*'
       jsdom: '*'
       vite: ^6.0.0 || ^7.0.0 || ^8.0.0-0
+    peerDependenciesMeta:
+      '@edge-runtime/vm':
+        optional: true
+      '@opentelemetry/api':
+        optional: true
+      '@types/node':
+        optional: true
+      '@vitest/ui':
+        optional: true
+      happy-dom:
+        optional: true
+      jsdom:
+        optional: true
+
+  '@voidzero-dev/vite-plus-test@0.1.16':
+    resolution: {integrity: sha512-d/rJPX/heMzoAFdnpZsp04MAa6nw1yH1tA4mVCV4m8goVcE9nAvt69mjLMzE8N/rYIQOSgenf3hDXuQRuD6OKQ==}
+    engines: {node: ^20.0.0 || ^22.0.0 || >=24.0.0}
+    peerDependencies:
+      '@edge-runtime/vm': '*'
+      '@opentelemetry/api': ^1.9.0
+      '@types/node': ^20.0.0 || ^22.0.0 || >=24.0.0
+      '@vitest/ui': 4.1.2
+      happy-dom: '*'
+      jsdom: '*'
+      vite: ^6.0.0 || ^7.0.0 || ^8.0.0
     peerDependenciesMeta:
       '@edge-runtime/vm':
         optional: true
@@ -4934,7 +5032,11 @@ snapshots:
 
   '@oxc-project/runtime@0.115.0': {}
 
+  '@oxc-project/runtime@0.123.0': {}
+
   '@oxc-project/types@0.115.0': {}
+
+  '@oxc-project/types@0.123.0': {}
 
   '@oxfmt/binding-android-arm-eabi@0.40.0':
     optional: true
@@ -5614,6 +5716,20 @@ snapshots:
       typescript: 5.9.3
       yaml: 2.8.2
 
+  '@voidzero-dev/vite-plus-core@0.1.16(@types/node@24.12.0)(jiti@2.6.1)(less@4.6.4)(typescript@5.9.3)(yaml@2.8.2)':
+    dependencies:
+      '@oxc-project/runtime': 0.123.0
+      '@oxc-project/types': 0.123.0
+      lightningcss: 1.32.0
+      postcss: 8.5.8
+    optionalDependencies:
+      '@types/node': 24.12.0
+      fsevents: 2.3.3
+      jiti: 2.6.1
+      less: 4.6.4
+      typescript: 5.9.3
+      yaml: 2.8.2
+
   '@voidzero-dev/vite-plus-darwin-arm64@0.1.11':
     optional: true
 
@@ -5764,6 +5880,46 @@ snapshots:
       ws: 8.19.0
     optionalDependencies:
       '@types/node': 25.5.0
+      jsdom: 29.0.1
+    transitivePeerDependencies:
+      - '@arethetypeswrong/core'
+      - '@tsdown/css'
+      - '@tsdown/exe'
+      - '@vitejs/devtools'
+      - bufferutil
+      - esbuild
+      - jiti
+      - less
+      - publint
+      - sass
+      - sass-embedded
+      - stylus
+      - sugarss
+      - terser
+      - tsx
+      - typescript
+      - unplugin-unused
+      - utf-8-validate
+      - yaml
+
+  '@voidzero-dev/vite-plus-test@0.1.16(@types/node@24.12.0)(jiti@2.6.1)(jsdom@29.0.1)(less@4.6.4)(typescript@5.9.3)(vite@8.0.0(@types/node@24.12.0)(jiti@2.6.1)(less@4.6.4)(yaml@2.8.2))(yaml@2.8.2)':
+    dependencies:
+      '@standard-schema/spec': 1.1.0
+      '@types/chai': 5.2.3
+      '@voidzero-dev/vite-plus-core': 0.1.16(@types/node@24.12.0)(jiti@2.6.1)(less@4.6.4)(typescript@5.9.3)(yaml@2.8.2)
+      es-module-lexer: 1.7.0
+      obug: 2.1.1
+      pixelmatch: 7.1.0
+      pngjs: 7.0.0
+      sirv: 3.0.2
+      std-env: 4.0.0
+      tinybench: 2.9.0
+      tinyexec: 1.0.4
+      tinyglobby: 0.2.15
+      vite: 8.0.0(@types/node@24.12.0)(jiti@2.6.1)(less@4.6.4)(yaml@2.8.2)
+      ws: 8.19.0
+    optionalDependencies:
+      '@types/node': 24.12.0
       jsdom: 29.0.1
     transitivePeerDependencies:
       - '@arethetypeswrong/core'
