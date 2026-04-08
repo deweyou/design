@@ -18,14 +18,14 @@ declare module './text/index.module.less' {
   export default classes;
 }
 
-declare module '@deweyou-ui/components/button' {
+declare module '@deweyou-design/react/button' {
   export * from './button/index.tsx';
 }
 
-declare module '@deweyou-ui/components/popover' {
+declare module '@deweyou-design/react/popover' {
   export * from './popover/index.tsx';
 }
 
-declare module '@deweyou-ui/components/text' {
+declare module '@deweyou-design/react/text' {
   export * from './text/index.tsx';
 }

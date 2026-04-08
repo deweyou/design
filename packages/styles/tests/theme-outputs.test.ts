@@ -158,7 +158,7 @@ test('styles publish manifest drops workspace-only metadata and rewrites dist-ro
     },
     manifest: sourceManifest,
     workspaceVersions: {
-      '@deweyou-ui/styles': sourceManifest.version,
+      '@deweyou-design/styles': sourceManifest.version,
     },
   });
 
