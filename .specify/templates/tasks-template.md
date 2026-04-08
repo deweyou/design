@@ -157,6 +157,8 @@ description: '功能实现任务清单模板'
 - [ ] TXXX [P] 增补边界状态、无障碍和回归覆盖
 - [ ] TXXX 安全加固
 - [ ] TXXX 运行 `vp check` 以及相关 `vp test` 或 `vp run ...` 验证
+- [ ] TXXX [P] 对照宪章原则 VII 核查设计系统数值（disabled 0.56、过渡 140ms、浮层 160ms、焦点环 2px）
+- [ ] TXXX [P] 确认文件命名 kebab-case、组件使用 `.tsx`、函数为箭头函数风格（原则 VI）
 
 ---
 
