@@ -43,6 +43,37 @@ vp run dev
 vp run storybook#dev
 ```
 
+## Publishing
+
+Packages are versioned independently. Only packages with changes since their last release are published.
+
+**Publish a beta package (from any non-`main` branch):**
+
+```bash
+scripts/release.sh beta
+```
+
+This bumps the version to `X.Y.Z-beta.N`, publishes to the `beta` dist-tag, and does not affect `latest`.
+
+**Publish a stable release (from `main` only):**
+
+```bash
+scripts/release.sh stable
+```
+
+This infers the version bump from commit types (`fix` → patch, `feat` → minor, breaking → major), publishes to `latest`, and updates each package's `CHANGELOG.md`.
+
+**Dry-run (no files written, no publish, no push):**
+
+```bash
+scripts/release.sh beta --dry-run
+scripts/release.sh stable --dry-run
+```
+
+**Via GitHub Actions:** Go to Actions → Release → Run workflow, select `channel` and optionally enable `dry_run`.
+
+Requires npm login locally (`npm login`) or `NODE_AUTH_TOKEN` in the environment for CI.
+
 ## Monorepo Rules
 
 - Reusable UI logic belongs in packages, not in apps.

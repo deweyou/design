@@ -11,10 +11,12 @@
     "build": "vp run build -r",
     "test": "vp test",
     "check": "vp check",
-    "prepare": "vp config"
+    "prepare": "vp config",
+    "release": "scripts/release.sh"
   },
   "devDependencies": {
     "@types/node": "catalog:",
+    "changelogen": "^0.5.5",
     "typescript": "catalog:",
     "vite-plus": "catalog:"
   },
