@@ -35,11 +35,11 @@ jobs:
         run: ./node_modules/.bin/vp run ready
 
       - name: Install Playwright browsers
-        run: npx playwright install chromium --with-deps
+        run: pnpm exec playwright install chromium --with-deps
 
       - name: Run Storybook interaction tests
         run: |
           ./node_modules/.bin/vp run storybook#build
-          npx serve apps/storybook/storybook-static -p 6106 --no-clipboard &
+          pnpm exec serve apps/storybook/storybook-static -p 6106 --no-clipboard &
           sleep 3
           ./node_modules/.bin/vp run storybook#test
