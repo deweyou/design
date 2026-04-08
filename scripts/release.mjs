@@ -269,7 +269,7 @@ for (const pkg of toRelease) {
   const distDir = resolve(pkg.dir, 'dist');
   const result = spawnSync('npm', ['publish', distDir, '--tag', distTag, '--access', 'public'], {
     stdio: 'inherit',
-    cwd: distDir,
+    cwd: REPO_ROOT,
     encoding: 'utf8',
   });
 
