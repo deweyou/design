@@ -40,6 +40,6 @@ jobs:
       - name: Run Storybook interaction tests
         run: |
           ./node_modules/.bin/vp run storybook#build
-          pnpm exec serve apps/storybook/storybook-static -p 6106 --no-clipboard &
-          sleep 3
+          npx --yes serve apps/storybook/storybook-static -p 6106 --no-clipboard &
+          sleep 5
           ./node_modules/.bin/vp run storybook#test
