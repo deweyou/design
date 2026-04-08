@@ -59,6 +59,6 @@ jobs:
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             DRY_RUN_FLAG="--dry-run"
           fi
-          scripts/release.sh ${{ inputs.channel }} $DRY_RUN_FLAG
+          node scripts/release.mjs ${{ inputs.channel }} $DRY_RUN_FLAG
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
