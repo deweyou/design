@@ -1,6 +1,6 @@
 {
   "name": "@deweyou-design/react",
-  "version": "0.0.0",
+  "version": "0.0.2-beta.1",
   "description": "Reusable UI components for Deweyou UI.",
   "files": [
     "dist"
@@ -50,12 +50,12 @@
     "test": "vp test"
   },
   "dependencies": {
-    "@ark-ui/react": "catalog:",
     "@deweyou-design/react-hooks": "workspace:*",
     "@deweyou-design/styles": "workspace:*",
     "classnames": "catalog:"
   },
   "devDependencies": {
+    "@ark-ui/react": "catalog:",
     "@testing-library/jest-dom": "catalog:",
     "@testing-library/react": "catalog:",
     "@testing-library/user-event": "catalog:",

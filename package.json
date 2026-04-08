@@ -11,10 +11,16 @@
     "build": "vp run build -r",
     "test": "vp test",
     "check": "vp check",
-    "prepare": "vp config"
+    "prepare": "vp config",
+    "release": "node scripts/release.mjs",
+    "release:beta": "node scripts/release.mjs beta",
+    "release:stable": "node scripts/release.mjs stable",
+    "release:beta:dry": "node scripts/release.mjs beta --dry-run",
+    "release:stable:dry": "node scripts/release.mjs stable --dry-run"
   },
   "devDependencies": {
     "@types/node": "catalog:",
+    "changelogen": "^0.5.5",
     "typescript": "catalog:",
     "vite-plus": "catalog:"
   },
