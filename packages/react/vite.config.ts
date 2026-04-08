@@ -35,8 +35,6 @@ export default defineConfig({
       ],
       output: {
         chunkFileNames: 'chunks/[name]-[hash].js',
-        preserveModules: true,
-        preserveModulesRoot: 'src',
       },
     },
   },
