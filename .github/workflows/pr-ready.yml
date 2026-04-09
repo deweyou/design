@@ -36,7 +36,7 @@ jobs:
 
       - name: Unit tests with coverage
         working-directory: packages/react
-        run: ../node_modules/.bin/vp test --coverage
+        run: ../../node_modules/.bin/vp test --coverage
 
       - name: Install Playwright browsers
         run: ./node_modules/.pnpm/node_modules/.bin/playwright install chromium --with-deps
