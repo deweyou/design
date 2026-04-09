@@ -1,6 +1,7 @@
 import { cpSync, existsSync, mkdirSync, rmSync } from 'node:fs';
 import { resolve } from 'node:path';
 
+import { copyDistAssets } from '../../infra/scripts/copy-dist-assets.mjs';
 import { writePublishedManifest } from '../../infra/scripts/write-published-manifest.mjs';
 
 const root = resolve(import.meta.dirname, '..');
@@ -28,3 +29,4 @@ if (existsSync(assetSourceDir)) {
 }
 
 writePublishedManifest(root);
+copyDistAssets(root);

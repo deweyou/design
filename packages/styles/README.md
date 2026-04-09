@@ -1,63 +1,82 @@
-# styles
+# @deweyou-design/styles
 
-共享基础色卡、语义主题色、theme 输出和全局样式契约都由 `@deweyou-ui/styles` 维护。
+Shared color palette, semantic theme tokens, CSS theme outputs, and Less authoring utilities for Deweyou Design.
 
-## 共享基础色卡
+## Installation
 
-- `colorFamilyNames` 提供 26 个颜色家族：`red` 到 `olive`
-- `colorPaletteStepNames` 固定提供 11 个色阶：`50` 到 `950`
-- `baseMonochrome` 提供 `black` / `white`
-- `colorPalette` 提供完整的 `colorPalette.<family>.<step>` 访问路径
-- `textColorFamilyNames` 与 `textPaletteStepNames` 作为兼容 alias 继续保留，旧消费面无需立刻迁移
+```bash
+npm install @deweyou-design/styles
+```
 
-这套共享基础色卡是所有颜色相关能力的事实来源。`Button`、`Text` 和后续新增组件都应先复用这层事实来源，而不是直接新增组件私有颜色集合。
+## CSS Entry Points
 
-## 治理规则
+| Import                                   | Description                                            |
+| ---------------------------------------- | ------------------------------------------------------ |
+| `@deweyou-design/styles/theme.css`       | Default consumer entry — reset, base, and theme layers |
+| `@deweyou-design/styles/theme-light.css` | Light theme only                                       |
+| `@deweyou-design/styles/theme-dark.css`  | Dark theme only                                        |
+| `@deweyou-design/styles/color.css`       | Raw color palette — theme-invariant tokens             |
+| `@deweyou-design/styles/reset.css`       | Reset layer only                                       |
+| `@deweyou-design/styles/base.css`        | Base typography and element defaults                   |
 
-- 语义主题色必须追溯到共享基础色卡或纯黑白
-- 非必要不得新增特化 token
-- 若出现新的颜色诉求，必须先证明共享基础色卡与现有语义主题色不足
-- 完整评审矩阵统一放在 Storybook 的 `Color` story，website 只保留公开指导
-- `packages/` 下默认应复用 Vite+ 统一构建约定；`@deweyou-ui/styles` 仅因静态样式资产复制和发布清单整理保留例外构建步骤
-- 仓库自有的 `AGENTS.md` 正文统一使用简体中文，便于与 `specs/` 文档和治理规则保持一致语言
+Import `theme.css` once at your app root:
 
-## Public Entrypoints
+```ts
+import '@deweyou-design/styles/theme.css';
+```
 
-- `@deweyou-ui/styles/color.css`: shared raw color foundation for palette, monochrome, and cross-theme-invariant color tokens
-- `@deweyou-ui/styles/theme.css`: default consumer entrypoint with reset, base, and theme layers
-- `@deweyou-ui/styles/theme-light.css`: dedicated light theme output
-- `@deweyou-ui/styles/theme-dark.css`: dedicated dark theme output
-- `@deweyou-ui/styles/less/bridge.less`: Less variables mapped onto CSS custom properties
-- `@deweyou-ui/styles/less/mixins.less`: mixins for component authors
+## Less Authoring Utilities
 
-## 受治理的语义主题色
+```less
+@import '@deweyou-design/styles/less/bridge'; // CSS custom property aliases as Less variables
+@import '@deweyou-design/styles/less/mixins'; // Authoring mixins for component authors
+```
 
-- `--ui-color-black`
-- `--ui-color-white`
-- `--ui-color-brand-bg`
-- `--ui-color-brand-bg-hover`
-- `--ui-color-brand-bg-active`
+## JavaScript / TypeScript API
+
+```ts
+import {
+  colorFamilyNames, // 26 color family names
+  colorPalette, // colorPalette.<family>.<step> lookup
+  colorPaletteStepNames, // '50' | '100' | … | '950'
+  baseMonochrome, // { black, white }
+  publicThemeTokens, // governed semantic token names
+  createThemeStyleSheets,
+} from '@deweyou-design/styles';
+```
+
+## Semantic Theme Tokens
+
+Governed tokens that components may consume. These map to theme-specific values in light and dark mode:
+
+- `--ui-color-black` / `--ui-color-white`
+- `--ui-color-brand-bg` / `--ui-color-brand-bg-hover` / `--ui-color-brand-bg-active`
 - `--ui-color-text-on-brand`
-- `--ui-color-danger-bg`
-- `--ui-color-danger-bg-hover`
-- `--ui-color-danger-bg-active`
-- `--ui-color-danger-text`
-- `--ui-color-text-on-danger`
+- `--ui-color-danger-bg` / `--ui-color-danger-bg-hover` / `--ui-color-danger-bg-active`
+- `--ui-color-danger-text` / `--ui-color-text-on-danger`
 - `--ui-color-focus-ring`
 - `--ui-color-link`
 
-这些语义主题色应优先服务共享消费场景。除非治理规则允许，不要为单个组件新增新的颜色 token。
+## Color Palette
 
-其中，共享基础色卡、纯黑白，以及深浅主题下不变的颜色 token 会沉到 `color.css`；`theme-light.css` 与 `theme-dark.css` 只保留会随主题切换的语义映射。
+26 color families, each with 11 steps (`50` to `950`):
 
-## Default Typography Contract
+`red`, `orange`, `amber`, `yellow`, `lime`, `green`, `emerald`, `teal`, `cyan`, `sky`, `blue`, `indigo`, `violet`, `purple`, `fuchsia`, `pink`, `rose`, `slate`, `gray`, `zinc`, `neutral`, `stone`, `taupe`, `mauve`, `mist`, `olive`
 
-- `--ui-font-body` and `--ui-font-display` now default to a vendored Source Han Serif CN stack
-- The default stack prefers the bundled Source Han Serif CN files and falls back to `Songti SC` /
-  `STSong` on `macOS`, then `SimSun` / `NSimSun` on `Windows`
-- English letters and numerals intentionally stay in the same serif family instead of switching to
-  a second Latin font
-- `--ui-font-mono` remains the explicit exception for code, fixed-width identifiers, and similar
-  content
-- The bundled webfont files are extracted from the official Adobe Source Han Serif release and
-  remain covered by the included `SIL Open Font License 1.1`
+Plus `baseMonochrome`: `black` and `white`.
+
+## Typography Contract
+
+- `--ui-font-body` and `--ui-font-display` default to a vendored Source Han Serif CN stack, falling back to `Songti SC` / `STSong` on macOS and `SimSun` on Windows.
+- `--ui-font-mono` is the explicit exception for code and fixed-width content.
+- Bundled webfont files are covered by the SIL Open Font License 1.1.
+
+## Governance Rules
+
+- Semantic tokens must trace back to the shared color palette or `black` / `white`.
+- Do not add component-specific tokens without first proving the shared palette cannot serve the need.
+- The canonical color review matrix lives in the Storybook `Color` story.
+
+## License
+
+MIT

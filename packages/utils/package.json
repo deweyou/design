@@ -12,7 +12,7 @@
     "directory": "dist"
   },
   "scripts": {
-    "build": "vp pack && node ../infra/scripts/write-published-manifest.mjs .",
+    "build": "vp pack && node ../infra/scripts/write-published-manifest.mjs . && node ../infra/scripts/copy-dist-assets.mjs .",
     "dev": "vp pack --watch",
     "test": "vp test"
   },

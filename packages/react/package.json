@@ -45,7 +45,7 @@
     "directory": "dist"
   },
   "scripts": {
-    "build": "vp build && tsc -p tsconfig.build.json && node ../infra/scripts/write-published-manifest.mjs .",
+    "build": "vp build && tsc -p tsconfig.build.json && node ../infra/scripts/write-published-manifest.mjs . && node ../infra/scripts/copy-dist-assets.mjs .",
     "dev": "vp build --watch",
     "test": "vp test"
   },
