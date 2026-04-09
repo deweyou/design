@@ -1,4 +1,12 @@
-import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
+import {
+  copyFileSync,
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  statSync,
+  writeFileSync,
+} from 'node:fs';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
@@ -272,6 +280,13 @@ export const writePublishedManifest = (packageDir = '.') => {
     resolve(distDir, 'package.json'),
     `${JSON.stringify(publishedManifest, null, 2)}\n`,
   );
+
+  for (const file of ['README.md', 'LICENSE']) {
+    const src = file === 'LICENSE' ? resolve(workspaceRoot, file) : resolve(packageRoot, file);
+    if (existsSync(src)) {
+      copyFileSync(src, resolve(distDir, file));
+    }
+  }
 
   return publishedManifest;
 };
