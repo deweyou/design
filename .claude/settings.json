@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cd /Users/bytedance/Documents/code/ui && vp check 2>/dev/null || true",
+            "command": "vp check 2>/dev/null || true",
             "statusMessage": "Running vp check..."
           }
         ]
