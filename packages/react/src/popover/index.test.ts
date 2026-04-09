@@ -819,3 +819,93 @@ test('popover overlay has correct ARIA attributes after Ark UI migration', async
     expect(ariaControls).toBe(overlayId);
   }
 });
+
+test('popover accepts a RefObject as popupPortalContainer and renders overlay inside it', async () => {
+  const host = document.createElement('div');
+  const portalEl = document.createElement('div');
+  const portalRef = { current: portalEl };
+  const root = createRoot(host);
+
+  document.body.append(host, portalEl);
+
+  await act(async () => {
+    root.render(
+      createElement(
+        Popover,
+        {
+          content: createElement('span', null, 'ref portal content'),
+          popupPortalContainer: portalRef,
+          visible: true,
+        },
+        createElement('button', { type: 'button' }, '触发器'),
+      ),
+    );
+  });
+  await flushFloatingWork();
+
+  unmounts.push(async () => {
+    await act(async () => {
+      root.unmount();
+    });
+    host.remove();
+    portalEl.remove();
+  });
+
+  const overlay = await waitForOverlay();
+  expect(overlay).not.toBeNull();
+  expect(portalEl.contains(overlay)).toBe(true);
+});
+
+test('popover merges function ref from reference child', async () => {
+  const host = document.createElement('div');
+  const root = createRoot(host);
+  document.body.append(host);
+
+  const callbackRef = vi.fn();
+
+  await act(async () => {
+    root.render(
+      createElement(
+        Popover,
+        { content: createElement('span', null, '内容') },
+        createElement('button', { type: 'button', ref: callbackRef }, '触发器'),
+      ),
+    );
+  });
+
+  unmounts.push(async () => {
+    await act(async () => {
+      root.unmount();
+    });
+    host.remove();
+  });
+
+  expect(callbackRef).toHaveBeenCalledWith(expect.any(HTMLButtonElement));
+});
+
+test('popover merges object ref from reference child', async () => {
+  const host = document.createElement('div');
+  const root = createRoot(host);
+  document.body.append(host);
+
+  const objectRef = { current: null as HTMLButtonElement | null };
+
+  await act(async () => {
+    root.render(
+      createElement(
+        Popover,
+        { content: createElement('span', null, '内容') },
+        createElement('button', { type: 'button', ref: objectRef }, '触发器'),
+      ),
+    );
+  });
+
+  unmounts.push(async () => {
+    await act(async () => {
+      root.unmount();
+    });
+    host.remove();
+  });
+
+  expect(objectRef.current).toBeInstanceOf(HTMLButtonElement);
+});

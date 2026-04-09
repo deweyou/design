@@ -31,13 +31,17 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Run ready
-        run: ./node_modules/.bin/vp run ready
+      - name: Build and check
+        run: ./node_modules/.bin/vp run build -r && ./node_modules/.bin/vp check
+
+      - name: Unit tests with coverage
+        working-directory: packages/react
+        run: ../../node_modules/.bin/vp test --coverage
 
       - name: Install Playwright browsers
         run: ./node_modules/.pnpm/node_modules/.bin/playwright install chromium --with-deps
 
-      - name: Run Storybook interaction tests
+      - name: Storybook e2e (interaction tests)
         run: |
           ./node_modules/.bin/vp run storybook#build
           npx --yes serve apps/storybook/storybook-static -p 6106 --no-clipboard &

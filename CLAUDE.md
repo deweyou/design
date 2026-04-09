@@ -51,24 +51,14 @@ vp install          # 安装依赖
 - 推荐 commit type：`feat`、`fix`、`refactor`、`docs`、`test`、`build`、`chore`。
 - commit subject 使用祈使语气、小写，聚焦单一逻辑变更。格式通过 `.vite-hooks/commit-msg` 强制校验。
 
-## 最近变更
-
-- **20260408-restructure-packages**：packages 重命名为 `@deweyou-design/*` scope；infra 分离构建层；写入 dist/package.json 版本解析
-- **20260329-distill-design-style**：引入「设计风格」章节；完成 AGENTS.md → CLAUDE.md 全面迁移；清理 Codex 遗留文件
-- **20260327-ark-ui-integration**：引入 `@ark-ui/react` 作为组件行为基础层；迁移 popover 组件；建立后续交互型组件开发范式
-- **20260317-repo-conventions**：仓库治理规则（箭头函数、TSX-first、kebab-case、单测 colocate）
-- **20260316-ui-monorepo-foundation**：monorepo 边界、显式样式导入、受控主题 token、Storybook/website 职责分离
-
-<!-- MANUAL ADDITIONS START -->
-<!-- MANUAL ADDITIONS END -->
-
 ## Harness Development
 
 AI 辅助开发的上下文与知识库：
 
 - **宪章**（项目原则）: [knowledge/constitution.md](knowledge/constitution.md)
 - **设计风格**: [knowledge/design-style.md](knowledge/design-style.md)
-- **Feature specs**: [knowledge/specs/](knowledge/specs/)
+- **测试标准**: [knowledge/testing-standards.md](knowledge/testing-standards.md)
+- **Feature specs 索引**: [knowledge/specs/index.md](knowledge/specs/index.md)
 
 > Scripts 和 templates 由 harness-dev 管理于 `knowledge/.scripts/` — 请勿手动编辑。
 > 主题知识文件（如 `knowledge/design-style.md`）由 archive 步骤在发现可泛化模式时添加。

@@ -41,5 +41,17 @@ export default defineConfig({
   test: {
     include: ['tests/**/*.test.{ts,tsx}', 'src/**/*.test.{ts,tsx}'],
     setupFiles: ['src/test-setup.ts'],
+    coverage: {
+      provider: 'v8',
+      // Only measure coverage on component implementation files, not barrel exports or type stubs
+      include: ['src/*/index.tsx', 'src/*/index.ts'],
+      exclude: ['src/index.ts', 'src/test-setup.ts', 'src/modules.d.ts'],
+      thresholds: {
+        statements: 80,
+        branches: 80,
+        functions: 80,
+        lines: 80,
+      },
+    },
   },
 });

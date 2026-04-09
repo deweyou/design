@@ -1,10 +1,15 @@
 // @vitest-environment jsdom
 
-import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+
+import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vite-plus/test';
 
-import { Tabs, TabContent, TabList, TabTrigger } from './index.tsx';
+import { Tabs, TabContent, TabIndicator, TabList, TabTrigger } from './index.tsx';
+
+const stylesheet = readFileSync(resolve(import.meta.dirname, 'index.module.less'), 'utf8');
 
 // ─── Setup ────────────────────────────────────────────────────────────────────
 
@@ -354,5 +359,120 @@ describe('Tabs — 边界状态', () => {
     const root = container.firstElementChild;
     expect(root?.getAttribute('data-color')).toBe('primary');
     expect(root?.getAttribute('data-size')).toBe('large');
+  });
+
+  it('vertical 方向切换后 indicator 更新且 data-orientation 正确', async () => {
+    const onValueChange = vi.fn();
+    render(
+      <Tabs defaultValue="t1" orientation="vertical" onValueChange={onValueChange}>
+        <TabList>
+          <TabTrigger value="t1">T1</TabTrigger>
+          <TabTrigger value="t2">T2</TabTrigger>
+        </TabList>
+        <TabContent value="t1">内容一</TabContent>
+        <TabContent value="t2">内容二</TabContent>
+      </Tabs>,
+    );
+
+    fireEvent.click(screen.getByRole('tab', { name: 'T2' }));
+
+    await waitFor(() => {
+      expect(onValueChange).toHaveBeenCalledWith({ value: 't2' });
+      expect(screen.getByRole('tab', { name: 'T2' }).getAttribute('aria-selected')).toBe('true');
+    });
+  });
+
+  it('TabIndicator 接受可选 className', () => {
+    const { container } = render(
+      // variant='bg' 不渲染内置 indicator，确保只有显式传入的那一个
+      <Tabs defaultValue="t1" variant="bg">
+        <TabList>
+          <TabTrigger value="t1">T1</TabTrigger>
+        </TabList>
+        <TabIndicator className="custom-indicator" />
+        <TabContent value="t1">内容</TabContent>
+      </Tabs>,
+    );
+
+    const indicator = container.querySelector('[data-part="indicator"]');
+    expect(indicator?.className).toContain('custom-indicator');
+  });
+
+  it('两个 Tabs 实例互不干扰', async () => {
+    render(
+      <>
+        <Tabs defaultValue="a1" data-testid="tabs-first">
+          <TabList>
+            <TabTrigger value="a1">A1</TabTrigger>
+            <TabTrigger value="a2">A2</TabTrigger>
+          </TabList>
+          <TabContent value="a1">A1 内容</TabContent>
+          <TabContent value="a2">A2 内容</TabContent>
+        </Tabs>
+        <Tabs defaultValue="b1" data-testid="tabs-second">
+          <TabList>
+            <TabTrigger value="b1">B1</TabTrigger>
+            <TabTrigger value="b2">B2</TabTrigger>
+          </TabList>
+          <TabContent value="b1">B1 内容</TabContent>
+          <TabContent value="b2">B2 内容</TabContent>
+        </Tabs>
+      </>,
+    );
+
+    const [a1Tab, , b1Tab] = screen.getAllByRole('tab');
+    await waitFor(() => {
+      expect(a1Tab!.getAttribute('aria-selected')).toBe('true');
+      expect(b1Tab!.getAttribute('aria-selected')).toBe('true');
+    });
+
+    fireEvent.click(screen.getByRole('tab', { name: 'A2' }));
+
+    await waitFor(() => {
+      expect(screen.getByRole('tab', { name: 'A2' }).getAttribute('aria-selected')).toBe('true');
+      // 第二个实例的激活状态不受影响
+      expect(screen.getByRole('tab', { name: 'B1' }).getAttribute('aria-selected')).toBe('true');
+      expect(screen.getByRole('tab', { name: 'B2' }).getAttribute('aria-selected')).toBe('false');
+    });
+  });
+});
+
+// ─── T036: onFocusChange 回调 ────────────────────────────────────────────────
+
+describe('Tabs — onFocusChange', () => {
+  it('传入 onFocusChange 后键盘切换焦点时调用回调', async () => {
+    const onFocusChange = vi.fn();
+    render(
+      <Tabs defaultValue="t1" onFocusChange={onFocusChange}>
+        <TabList>
+          <TabTrigger value="t1">T1</TabTrigger>
+          <TabTrigger value="t2">T2</TabTrigger>
+        </TabList>
+        <TabContent value="t1">内容1</TabContent>
+        <TabContent value="t2">内容2</TabContent>
+      </Tabs>,
+    );
+
+    const tab1 = screen.getByRole('tab', { name: 'T1' });
+    act(() => {
+      tab1.focus();
+    });
+    fireEvent.keyDown(tab1, { key: 'ArrowRight', bubbles: true });
+
+    await waitFor(() => {
+      expect(onFocusChange).toHaveBeenCalledWith({ value: 't2' });
+    });
+  });
+});
+
+// ─── Stylesheet token 断言 ────────────────────────────────────────────────────
+
+describe('Tabs — stylesheet token 约束', () => {
+  it('tabs stylesheet 消费语义 token，不引用 raw palette', () => {
+    expect(stylesheet).toContain('--ui-color-focus-ring');
+    expect(stylesheet).toContain('--ui-color-border');
+    expect(stylesheet).toContain('--ui-color-brand-bg');
+    expect(stylesheet).toContain('--ui-color-text');
+    expect(stylesheet).not.toContain('--ui-color-palette-');
   });
 });

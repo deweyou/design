@@ -10,7 +10,7 @@ import styles from './index.module.less';
 
 const stylesheet = readFileSync(resolve(import.meta.dirname, 'index.module.less'), 'utf8');
 
-void stylesheet;
+// stylesheet is used for CSS token assertions below
 
 const renderSurface = (props: TextProps) => {
   return Text(props) as {
@@ -149,4 +149,16 @@ test('text forwards standard node props to the rendered root node', () => {
   (surface.props.onClick as () => void)();
 
   expect(clickCount).toBe(1);
+});
+
+test('text stylesheet consumes semantic tokens and does not reference raw palette steps', () => {
+  // color/typography tokens sourced from @deweyou-design/styles
+  expect(stylesheet).toContain('--ui-color-text');
+  expect(stylesheet).toContain('--ui-font-body');
+  expect(stylesheet).toContain('--ui-text-size-body');
+  // color/background families are applied via inline style in index.tsx using
+  // --text-color-current / --text-background-current bridge tokens
+  expect(stylesheet).toContain('--text-color-current');
+  expect(stylesheet).toContain('--text-background-current');
+  expect(stylesheet).not.toContain('--ui-color-palette-');
 });

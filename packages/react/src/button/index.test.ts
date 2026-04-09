@@ -451,3 +451,38 @@ test('button stylesheet includes the danger color branch for semantic destructiv
   expect(stylesheet).toContain('--ui-color-danger-text');
   expect(stylesheet).toContain('--ui-color-text-on-danger');
 });
+
+test('disabled anchor button prevents navigation and stops propagation on both click phases', () => {
+  const surface = renderSurface(Button, {
+    disabled: true,
+    href: '/docs',
+    children: 'Disabled link',
+  });
+
+  expect(surface.type).toBe('a');
+  expect(surface.props.href).toBeUndefined();
+  expect(surface.props.tabIndex).toBe(-1);
+
+  let preventCount = 0;
+  let stopCount = 0;
+  const mockEvent = {
+    preventDefault: () => {
+      preventCount++;
+    },
+    stopPropagation: () => {
+      stopCount++;
+    },
+  };
+
+  (surface.props.onClickCapture as (e: unknown) => void)(mockEvent);
+  (surface.props.onClick as (e: unknown) => void)(mockEvent);
+
+  expect(preventCount).toBe(2);
+  expect(stopCount).toBe(2);
+});
+
+test('button rejects empty content when neither children, label, nor icon are provided', () => {
+  expect(() => renderToStaticMarkup(createElement(Button, null))).toThrow(
+    'requires visible content or the icon prop',
+  );
+});
