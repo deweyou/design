@@ -10,6 +10,7 @@ import {
   MenuCheckboxItem,
   MenuContent,
   MenuGroup,
+  MenuGroupLabel,
   MenuItem,
   MenuRadioGroup,
   MenuRadioItem,
@@ -135,6 +136,39 @@ describe('Menu — 基础开关与菜单项', () => {
       expect(screen.getByRole('menu')).toBeTruthy();
     });
   });
+
+  it('两个 Menu 实例互不干扰', async () => {
+    render(
+      <>
+        <Menu>
+          <MenuTrigger>
+            <button>打开一</button>
+          </MenuTrigger>
+          <MenuContent>
+            <MenuItem value="a">选项 A</MenuItem>
+          </MenuContent>
+        </Menu>
+        <Menu>
+          <MenuTrigger>
+            <button>打开二</button>
+          </MenuTrigger>
+          <MenuContent>
+            <MenuItem value="b">选项 B</MenuItem>
+          </MenuContent>
+        </Menu>
+      </>,
+    );
+
+    expect(screen.queryByRole('menu')).toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: '打开一' }));
+
+    await waitFor(() => {
+      expect(screen.getByRole('menu')).toBeTruthy();
+    });
+
+    // 第二个菜单不应自动打开
+    expect(screen.queryAllByRole('menu')).toHaveLength(1);
+  });
 });
 
 // ---------------------------------------------------------------------------
@@ -228,6 +262,27 @@ describe('MenuGroup — 分组标签', () => {
     await waitFor(() => screen.getByRole('menu'));
     expect(screen.getByRole('group')).toBeTruthy();
   });
+
+  it('MenuGroupLabel 接受可选 className', async () => {
+    render(
+      <Menu>
+        <MenuTrigger>
+          <button>打开</button>
+        </MenuTrigger>
+        <MenuContent>
+          <MenuGroup>
+            <MenuGroupLabel className="custom-label">操作</MenuGroupLabel>
+            <MenuItem value="new">新建</MenuItem>
+          </MenuGroup>
+        </MenuContent>
+      </Menu>,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: '打开' }));
+    await waitFor(() => screen.getByRole('menu'));
+    const label = screen.getByText('操作');
+    expect(label.className).toContain('custom-label');
+  });
 });
 
 // ---------------------------------------------------------------------------
@@ -252,6 +307,25 @@ describe('MenuSeparator', () => {
     fireEvent.click(screen.getByRole('button', { name: '打开' }));
     await waitFor(() => screen.getByRole('menu'));
     expect(screen.getByRole('separator')).toBeTruthy();
+  });
+
+  it('MenuSeparator 接受可选 className', async () => {
+    render(
+      <Menu>
+        <MenuTrigger>
+          <button>打开</button>
+        </MenuTrigger>
+        <MenuContent>
+          <MenuItem value="a">选项 A</MenuItem>
+          <MenuSeparator className="custom-sep" />
+          <MenuItem value="b">选项 B</MenuItem>
+        </MenuContent>
+      </Menu>,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: '打开' }));
+    await waitFor(() => screen.getByRole('menu'));
+    expect(screen.getByRole('separator').className).toContain('custom-sep');
   });
 });
 
@@ -280,6 +354,32 @@ describe('MenuTriggerItem — 子菜单', () => {
     fireEvent.click(screen.getByRole('button', { name: '打开' }));
     await waitFor(() => screen.getByRole('menu'));
     expect(screen.getByText('打开子菜单')).toBeTruthy();
+  });
+
+  it('MenuTriggerItem 渲染带 icon 和 selected 状态的触发项', async () => {
+    const StarIcon = () => <svg aria-hidden data-testid="star-icon" />;
+    render(
+      <Menu>
+        <MenuTrigger>
+          <button>打开</button>
+        </MenuTrigger>
+        <MenuContent>
+          <Menu>
+            <MenuTriggerItem icon={<StarIcon />} selected>
+              收藏夹
+            </MenuTriggerItem>
+            <MenuContent>
+              <MenuItem value="sub1">子项</MenuItem>
+            </MenuContent>
+          </Menu>
+        </MenuContent>
+      </Menu>,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: '打开' }));
+    await waitFor(() => screen.getByRole('menu'));
+    expect(screen.getByTestId('star-icon')).toBeTruthy();
+    expect(screen.getByText('收藏夹')).toBeTruthy();
   });
 });
 
@@ -337,6 +437,57 @@ describe('MenuRadioGroup — 单选', () => {
     expect(screen.getByRole('menuitemradio', { name: '列表' }).getAttribute('aria-checked')).toBe(
       'false',
     );
+  });
+
+  it('非受控模式：点击后 aria-checked 自动更新无需外部 value prop', async () => {
+    render(
+      <Menu closeOnSelect={false}>
+        <MenuTrigger>
+          <button>打开</button>
+        </MenuTrigger>
+        <MenuContent>
+          <MenuRadioGroup defaultValue="list">
+            <MenuRadioItem value="list">列表</MenuRadioItem>
+            <MenuRadioItem value="grid">网格</MenuRadioItem>
+          </MenuRadioGroup>
+        </MenuContent>
+      </Menu>,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: '打开' }));
+    await waitFor(() => screen.getByRole('menu'));
+    fireEvent.click(screen.getByRole('menuitemradio', { name: '网格' }));
+
+    await waitFor(() => {
+      expect(screen.getByRole('menuitemradio', { name: '网格' }).getAttribute('aria-checked')).toBe(
+        'true',
+      );
+      expect(screen.getByRole('menuitemradio', { name: '列表' }).getAttribute('aria-checked')).toBe(
+        'false',
+      );
+    });
+  });
+
+  it('MenuRadioItem 渲染带 icon 的单选项', async () => {
+    const DotIcon = () => <svg aria-hidden data-testid="dot-icon" />;
+    render(
+      <Menu>
+        <MenuTrigger>
+          <button>打开</button>
+        </MenuTrigger>
+        <MenuContent>
+          <MenuRadioGroup value="list">
+            <MenuRadioItem value="list" icon={<DotIcon />}>
+              列表
+            </MenuRadioItem>
+          </MenuRadioGroup>
+        </MenuContent>
+      </Menu>,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: '打开' }));
+    await waitFor(() => screen.getByRole('menu'));
+    expect(screen.getByTestId('dot-icon')).toBeTruthy();
   });
 });
 
@@ -397,6 +548,92 @@ describe('MenuCheckboxItem — 多选', () => {
     await waitFor(() => {
       expect(toolbarItem.getAttribute('aria-checked')).toBe('true');
     });
+  });
+
+  it('MenuCheckboxItem 渲染带 icon 且无 value 时使用空字符串', async () => {
+    const CheckIcon = () => <svg aria-hidden data-testid="check-icon" />;
+    render(
+      <Menu closeOnSelect={false}>
+        <MenuTrigger>
+          <button>打开</button>
+        </MenuTrigger>
+        <MenuContent>
+          {/* no value prop → uses value ?? '' fallback */}
+          <MenuCheckboxItem defaultChecked={false} icon={<CheckIcon />}>
+            选项
+          </MenuCheckboxItem>
+        </MenuContent>
+      </Menu>,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: '打开' }));
+    await waitFor(() => screen.getByRole('menu'));
+    expect(screen.getByTestId('check-icon')).toBeTruthy();
+    expect(screen.getByRole('menuitemcheckbox', { name: '选项' })).toBeTruthy();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// T033: 补充分支覆盖 — disabled Menu、MenuItem icon、disabled MenuTriggerItem
+// ---------------------------------------------------------------------------
+
+describe('Menu — 补充分支覆盖', () => {
+  it('disabled=true 时菜单无法打开', async () => {
+    render(
+      <Menu disabled open={false} onOpenChange={vi.fn()}>
+        <MenuTrigger>
+          <button>打开</button>
+        </MenuTrigger>
+        <MenuContent>
+          <MenuItem value="a">选项</MenuItem>
+        </MenuContent>
+      </Menu>,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: '打开' }));
+    expect(screen.queryByRole('menu')).toBeNull();
+  });
+
+  it('MenuItem 渲染带 icon 且无 value 的菜单项', async () => {
+    const StarIcon = () => <svg aria-hidden data-testid="star-icon" />;
+    render(
+      <Menu>
+        <MenuTrigger>
+          <button>打开</button>
+        </MenuTrigger>
+        <MenuContent>
+          <MenuItem icon={<StarIcon />}>无值选项</MenuItem>
+        </MenuContent>
+      </Menu>,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: '打开' }));
+    await waitFor(() => screen.getByRole('menu'));
+    expect(screen.getByTestId('star-icon')).toBeTruthy();
+    expect(screen.getByRole('menuitem', { name: '无值选项' })).toBeTruthy();
+  });
+
+  it('disabled MenuTriggerItem 渲染 data-disabled 属性', async () => {
+    render(
+      <Menu>
+        <MenuTrigger>
+          <button>打开</button>
+        </MenuTrigger>
+        <MenuContent>
+          <Menu>
+            <MenuTriggerItem disabled>禁用子菜单</MenuTriggerItem>
+            <MenuContent>
+              <MenuItem value="sub1">子项</MenuItem>
+            </MenuContent>
+          </Menu>
+        </MenuContent>
+      </Menu>,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: '打开' }));
+    await waitFor(() => screen.getByRole('menu'));
+    const triggerItem = screen.getByText('禁用子菜单').closest('[data-part="trigger-item"]');
+    expect(triggerItem?.hasAttribute('data-disabled')).toBe(true);
   });
 });
 
