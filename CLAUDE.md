@@ -2,7 +2,6 @@
 
 ## 知识库
 
-- [设计风格](docs/design/index.md) — 字体、色彩、圆角、动效、组件变体模型
 - [Ark UI 组件范式](docs/architecture/ark-ui.md) — 交互型组件的行为基础层选型与实现约定
 - [包层级规则](docs/architecture/package-layers.md) — 已发布包 vs 构建基础设施的划分与依赖规则
 
@@ -62,3 +61,14 @@ vp install          # 安装依赖
 
 <!-- MANUAL ADDITIONS START -->
 <!-- MANUAL ADDITIONS END -->
+
+## Harness Development
+
+AI 辅助开发的上下文与知识库：
+
+- **宪章**（项目原则）: [knowledge/constitution.md](knowledge/constitution.md)
+- **设计风格**: [knowledge/design-style.md](knowledge/design-style.md)
+- **Feature specs**: [knowledge/specs/](knowledge/specs/)
+
+> Scripts 和 templates 由 harness-dev 管理于 `knowledge/.scripts/` — 请勿手动编辑。
+> 主题知识文件（如 `knowledge/design-style.md`）由 archive 步骤在发现可泛化模式时添加。

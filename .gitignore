@@ -18,6 +18,10 @@ dist-ssr
 .env*
 *.tsbuildinfo
 
+# Claude Code skills (installed via skills-lock.json)
+.agents/
+.claude/skills/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -32,6 +36,3 @@ Thumbs.db
 *.sln
 *.sw?
 
-# Codex runtime state
-.codex/**
-!.codex/prompts

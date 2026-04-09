@@ -115,20 +115,20 @@ fi
 # Validate required directories and files
 if [[ ! -d "$FEATURE_DIR" ]]; then
     echo "ERROR: Feature directory not found: $FEATURE_DIR" >&2
-    echo "Run /speckit.specify first to create the feature structure." >&2
+    echo "Run /harness-dev first to create the feature structure." >&2
     exit 1
 fi
 
 if [[ ! -f "$IMPL_PLAN" ]]; then
     echo "ERROR: plan.md not found in $FEATURE_DIR" >&2
-    echo "Run /speckit.plan first to create the implementation plan." >&2
+    echo "Complete the plan step in /harness-dev first." >&2
     exit 1
 fi
 
 # Check for tasks.md if required
 if $REQUIRE_TASKS && [[ ! -f "$TASKS" ]]; then
     echo "ERROR: tasks.md not found in $FEATURE_DIR" >&2
-    echo "Run /speckit.tasks first to create the task list." >&2
+    echo "Complete the tasks step in /harness-dev first." >&2
     exit 1
 fi
 
@@ -168,7 +168,7 @@ if $JSON_MODE; then
         if [[ ${#docs[@]} -eq 0 ]]; then
             json_docs="[]"
         else
-            json_docs=$(printf '"%s",' "${docs[@]}")
+            json_docs=$(for d in "${docs[@]}"; do printf '"%s",' "$(json_escape "$d")"; done)
             json_docs="[${json_docs%,}]"
         fi
         printf '{"FEATURE_DIR":"%s","AVAILABLE_DOCS":%s}\n' "$(json_escape "$FEATURE_DIR")" "$json_docs"
