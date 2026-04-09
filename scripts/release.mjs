@@ -248,7 +248,7 @@ run('git push --follow-tags');
 // ── 全量构建 ──────────────────────────────────────────────────────────────────
 
 console.log('\n🔨 构建所有包...');
-const build = spawnSync('vp', ['run', 'build', '-r'], {
+const build = spawnSync('pnpm', ['exec', 'vp', 'run', 'build', '-r'], {
   stdio: 'inherit',
   cwd: REPO_ROOT,
   shell: true,
