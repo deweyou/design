@@ -173,17 +173,35 @@ const bumpPackage = (pkgDir, channel, lastTag) => {
   ]
     .filter(Boolean)
     .join(' ');
-  run(cmd);
+
+  let changelogenOk = false;
+  try {
+    run(cmd);
+    changelogenOk = true;
+  } catch {
+    // changelogen 失败（常见于首次发布时 git log 输出过大导致 ENOBUFS），
+    // 降级到手动 bump + 写最小 changelog
+  }
 
   let newVersion = getCurrentVersion(pkgDir);
   if (newVersion === prevVersion) {
-    // changelogen 未找到可 bump 的 commit，回退到 patch bump
+    // changelogen 未找到可 bump 的 commit 或执行失败，回退到 patch bump
     newVersion = fallbackBump(prevVersion, channel);
     const pkgPath = resolve(pkgDir, 'package.json');
     const pkg = JSON.parse(readFileSync(pkgPath, 'utf8'));
     pkg.version = newVersion;
     writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n');
   }
+
+  // changelogen 失败时写一条最小 changelog，确保文件存在且被 git add
+  if (!changelogenOk && !dryRun) {
+    const date = new Date().toISOString().slice(0, 10);
+    writeFileSync(
+      changelogPath,
+      `# Changelog\n\n## v${newVersion} (${date})\n\n- Initial release\n`,
+    );
+  }
+
   return newVersion;
 };
 
