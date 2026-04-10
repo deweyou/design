@@ -59,7 +59,7 @@ void exampleIconButtonProps;
 void examplePopoverProps;
 void exampleTextProps;
 
-test('components root entry exposes Button, IconButton, Popover, Text, Menu family, and Tabs family as the runtime public exports', () => {
+test('components root entry exposes Button, IconButton, Popover, Text, Menu family, Tabs family, and ScrollArea as the runtime public exports', () => {
   expect(Object.keys(components).sort()).toEqual([
     'Button',
     'ContextMenu',
@@ -76,12 +76,14 @@ test('components root entry exposes Button, IconButton, Popover, Text, Menu fami
     'MenuTrigger',
     'MenuTriggerItem',
     'Popover',
+    'ScrollArea',
     'TabContent',
     'TabIndicator',
     'TabList',
     'TabTrigger',
     'Tabs',
     'Text',
+    'scrollAreaColorOptions',
   ]);
 });
 

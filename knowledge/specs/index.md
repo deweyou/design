@@ -6,12 +6,13 @@
 
 ## 2026-04
 
-| 分支                                                                          | 类型     | 说明                                                                                                        |
-| ----------------------------------------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------- |
-| [20260409-component-testing-standards](20260409-component-testing-standards/) | feature  | 制定组件测试规范（Vitest UT + Storybook e2e），补齐 5 个存量组件覆盖缺口，CI 接入 80% 覆盖率门禁与 e2e 步骤 |
-| [20260408-storybook-e2e](20260408-storybook-e2e/)                             | feature  | 基于 `@storybook/test-runner` 为现有组件补充 Storybook Interaction e2e 测试覆盖                             |
-| [20260408-restructure-packages](20260408-restructure-packages/)               | refactor | packages 重命名为 `@deweyou-design/*` scope；infra 分离构建层；dist/package.json 版本解析                   |
-| [20260408-npm-publish-workflow](20260408-npm-publish-workflow/)               | feature  | 探索并建立 npm 发包工作流：开发分支发 beta/prerelease 包，合入主分支后发正式包                              |
+| 分支                                                                          | 类型     | 说明                                                                                                                |
+| ----------------------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------- |
+| [20260410-arkui-scrollarea-https](20260410-arkui-scrollarea-https/)           | feature  | 基于 Ark UI 实现 ScrollArea 叠层滚动区域组件：color、horizontal、autoHide props，ref.scrollToEdge，纯 CSS auto-hide |
+| [20260409-component-testing-standards](20260409-component-testing-standards/) | feature  | 制定组件测试规范（Vitest UT + Storybook e2e），补齐 5 个存量组件覆盖缺口，CI 接入 80% 覆盖率门禁与 e2e 步骤         |
+| [20260408-storybook-e2e](20260408-storybook-e2e/)                             | feature  | 基于 `@storybook/test-runner` 为现有组件补充 Storybook Interaction e2e 测试覆盖                                     |
+| [20260408-restructure-packages](20260408-restructure-packages/)               | refactor | packages 重命名为 `@deweyou-design/*` scope；infra 分离构建层；dist/package.json 版本解析                           |
+| [20260408-npm-publish-workflow](20260408-npm-publish-workflow/)               | feature  | 探索并建立 npm 发包工作流：开发分支发 beta/prerelease 包，合入主分支后发正式包                                      |
 
 ## 2026-03（下半月）
 

@@ -32,6 +32,7 @@ import { colorFamilyNames } from '@deweyou-design/styles';
 
 import { applyThemeMode, themePreviews } from './counter';
 import { IconGuidance } from './pages/icons';
+import { ScrollAreaGuidance } from './pages/scroll-area';
 import './style.css';
 
 const colorOptions = ['neutral', 'primary', 'danger'] as const;
@@ -1483,6 +1484,7 @@ const App = () => (
     <PopoverComponentPreview />
     <MenuComponentPreview />
     <TabsComponentPreview />
+    <ScrollAreaGuidance />
     <IconGuidance />
     <p className="footer-note">
       Storybook owns the exhaustive review matrix. The website keeps the public guidance concise:

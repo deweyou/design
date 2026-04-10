@@ -1,4 +1,12 @@
 // Keep the shared component primitives on the package root surface.
+export {
+  ScrollArea,
+  scrollAreaColorOptions,
+  type ScrollAreaColor,
+  type ScrollAreaEdge,
+  type ScrollAreaProps,
+  type ScrollAreaRef,
+} from './scroll-area/index.tsx';
 export { Button, IconButton, type ButtonProps, type IconButtonProps } from './button/index.tsx';
 export {
   Popover,
