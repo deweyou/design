@@ -160,6 +160,19 @@ description: '功能实现任务清单模板'
 - [ ] TXXX [P] 对照宪章原则 VII 核查设计系统数值（disabled 0.56、过渡 140ms、浮层 160ms、焦点环 2px）
 - [ ] TXXX [P] 确认文件命名 kebab-case、组件使用 `.tsx`、函数为箭头函数风格（原则 VI）
 
+### Storybook（新增组件必填）
+
+> 宪章原则 IV 要求：新增组件必须同步创建 Storybook story 文件。
+
+- [ ] TXXX 在 `apps/storybook/src/stories/<ComponentName>.stories.tsx` 中创建 story 文件：
+  - `meta` 中声明所有文档化 props 的 `argTypes`
+  - 为每个主要状态/变体创建独立 story（Basic、Color、Size 等）
+  - 新增 prop 时同步在 `Basic` story 的 `args` 中声明默认值
+- [ ] TXXX 在 `Interaction` story 中补充 `play` 函数，按 `testing-standards.md` E2E 规范覆盖：
+  - 组件渲染正确（关键 DOM 结构、data attribute）
+  - 新增 prop 的行为断言（如 `autoHide` → `data-auto-hide` 属性存在）
+  - 无状态变化的展示组件至少覆盖 E2E-P-01
+
 ---
 
 ## 依赖与执行顺序

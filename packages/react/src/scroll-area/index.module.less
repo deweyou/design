@@ -1,0 +1,153 @@
+// ScrollArea 组件样式
+// 滚动条采用叠层（overlay）模式——绝对定位浮于内容上方，不占用布局空间
+
+.root {
+  --scroll-area-scrollbar-size: 6px;
+  --scroll-area-thumb-radius: 999px;
+  --scroll-area-transition: 140ms ease;
+  // 鼠标离开整个 root 后淡出到 0 的延迟：默认不启用自动隐藏（delay 无限大等效，
+  // 实际以 opacity 0.4 固定可见），autoHide 模式下设为实际延迟值
+  --scroll-area-hide-delay: 0ms;
+
+  position: relative;
+  overflow: hidden;
+  // display:grid 让 viewport 无需 height:100% 就能填满 root：
+  // - root 有显式高度时：1fr = 固定高度，viewport 受限并可滚动
+  // - root 无显式高度时：1fr 退化为 auto，viewport 随内容自然撑开（水平滚动场景）
+  display: grid;
+  grid-template-rows: 1fr;
+}
+
+// color 档位：通过 CSS 变量驱动滑块颜色
+.root[data-color='primary'] {
+  --scroll-area-thumb-color: var(--ui-color-brand-bg);
+}
+
+.root[data-color='neutral'] {
+  // currentColor 随父容器 color 自动反转：深色背景设 color:white，浅色背景设 color:black
+  --scroll-area-thumb-color: currentColor;
+}
+
+// 视口：填满根容器，启用原生滚动，隐藏原生滚动条
+// min-height:0 防止 grid item 超出 root 高度
+.viewport {
+  width: 100%;
+  min-height: 0;
+  overflow: scroll;
+  scrollbar-width: none; // Firefox
+
+  &::-webkit-scrollbar {
+    display: none; // Chrome / Safari / Edge
+  }
+}
+
+.content {
+  min-width: 100%;
+}
+
+// 滚动条轨道：叠层定位，Ark UI 通过 inline style 设置 position/top/bottom/insetInlineEnd
+// 我们只补充 width/height 和透明度逻辑
+//
+// 透明度三档（两种模式均适用）：
+//   0   → 无溢出（始终） 或 autoHide 模式下鼠标离开 root 超过 --scroll-area-hide-delay
+//   0.4 → 有溢出，鼠标在 root 内（或 autoHide=false 时固定保持此值）
+//   1   → 鼠标悬浮在滚动条轨道本身 / 拖拽中
+//
+// 实现策略：
+//   基础规则（两种模式共用）：overflow → 0.4；轨道 hover / drag → 1
+//   autoHide 附加覆盖（更高优先级）：
+//     [data-hover] 在鼠标进出整个 root 时由 Ark UI 挂/摘
+//     鼠标离开 root（:not([data-hover])）→ opacity 0，延迟 --scroll-area-hide-delay
+//     鼠标进入 root → :not([data-hover]) 不再匹配 → 基础规则恢复 → 立即 0.4
+//     鼠标在轨道上时 [data-hover] 必然为 true（轨道在 root 内），:not([data-hover]) 不匹配 → 基础 :hover 规则正常生效
+.scrollbar {
+  opacity: 0;
+
+  &[data-orientation='vertical'] {
+    // Ark UI inline: position:absolute; top:0; bottom:var(--corner-height); insetInlineEnd:0
+    width: var(--scroll-area-scrollbar-size);
+
+    // 基础：有溢出时固定 0.4
+    &[data-overflow-y] {
+      opacity: 0.4;
+      transition: opacity var(--scroll-area-transition);
+    }
+
+    // 轨道 hover / 拖拽：全色
+    &[data-overflow-y]:hover,
+    &[data-overflow-y][data-dragging] {
+      opacity: 1;
+    }
+  }
+
+  &[data-orientation='horizontal'] {
+    // Ark UI inline: position:absolute; insetInlineStart:0; insetInlineEnd:var(--corner-width); bottom:0
+    height: var(--scroll-area-scrollbar-size);
+
+    &[data-overflow-x] {
+      opacity: 0.4;
+      transition: opacity var(--scroll-area-transition);
+    }
+
+    &[data-overflow-x]:hover,
+    &[data-overflow-x][data-dragging] {
+      opacity: 1;
+    }
+  }
+}
+
+// autoHide 覆盖：鼠标离开整个 root 后延迟隐藏
+// 选择器优先级高于基础规则，确保在 autoHide 模式下正确覆盖
+// 鼠标在轨道上时 [data-hover] 必为 true → :not([data-hover]) 不匹配 → 此规则不生效 → 基础 :hover 正常工作
+.root[data-auto-hide] .scrollbar {
+  &[data-orientation='vertical'][data-overflow-y]:not([data-hover]) {
+    opacity: 0;
+    transition: opacity var(--scroll-area-transition) var(--scroll-area-hide-delay);
+  }
+
+  &[data-orientation='horizontal'][data-overflow-x]:not([data-hover]) {
+    opacity: 0;
+    transition: opacity var(--scroll-area-transition) var(--scroll-area-hide-delay);
+  }
+}
+
+// 滑块
+// Ark UI inline 设置 height:var(--thumb-height)（垂直）或 width:var(--thumb-width)（水平）控制长度
+// Ark UI JS 在 scroll 事件中通过 transform:translate3d 控制位置
+// 透明度由父级 .scrollbar 统一控制，thumb 自身保持不透明；背景色在悬浮/拖拽时加深
+.thumb {
+  border-radius: var(--scroll-area-thumb-radius);
+  background: var(--scroll-area-thumb-color);
+  transition: background var(--scroll-area-transition);
+
+  &[data-orientation='vertical'] {
+    width: 100%; // 填满轨道宽度；高度由 Ark UI inline height:var(--thumb-height) 控制
+  }
+
+  &[data-orientation='horizontal'] {
+    height: 100%; // 填满轨道高度；宽度由 Ark UI inline width:var(--thumb-width) 控制
+  }
+
+  // 拖拽时背景加深
+  &[data-dragging] {
+    background: color-mix(in srgb, var(--scroll-area-thumb-color) 80%, currentColor 20%);
+  }
+}
+
+// 双向滚动时的右下角填充块
+.corner {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: var(--scroll-area-scrollbar-size);
+  height: var(--scroll-area-scrollbar-size);
+  background: var(--ui-color-canvas);
+}
+
+// prefers-reduced-motion：禁用过渡，保留显隐但不做渐变
+@media (prefers-reduced-motion: reduce) {
+  .scrollbar,
+  .thumb {
+    transition: none;
+  }
+}

@@ -27,6 +27,8 @@
 
 每一次组件 package 的变更都必须同时附带自动化验证和人工评审面。最低要求是：功能变更必须包含组件逻辑单测、用户可见行为的交互或集成测试，以及 `website` 中覆盖主要状态的预览或 demo 更新。如果某个缺陷首次是在人工 QA 中发现，而它本来可以通过自动化测试提前发现，那么在关闭该问题前必须补充相应测试。理由：对 UI 回归来说，可重复执行的测试加上可视化评审是成本最低的发现方式。
 
+**新增组件的 Storybook 要求**：新增组件时，必须在 `apps/storybook/src/stories/` 下同步创建对应的 `<ComponentName>.stories.tsx` 文件。该文件必须包含：(1) 覆盖所有文档化 props 变体的展示 stories；(2) 带 `play` 函数的 `Interaction` story，按 `knowledge/testing-standards.md` 的 E2E 规范覆盖核心行为断言。Storybook story 文件与 `website` 预览同属"人工评审面"的必要组成部分，不可省略。新增 prop 时，必须同步在对应 story 的 `argTypes` 中声明并在 `Interaction.play` 中补充断言。
+
 ### V. Vite+ Monorepo 与规格文档纪律
 
 所有依赖管理、lint、格式化、测试、打包和构建操作，都必须使用 `vp` 命令或
