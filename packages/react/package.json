@@ -38,6 +38,11 @@
       "import": "./dist/tabs/index.js",
       "default": "./dist/tabs/index.js"
     },
+    "./checkbox": {
+      "default": "./dist/checkbox/index.js",
+      "import": "./dist/checkbox/index.js",
+      "types": "./dist/checkbox/index.d.ts"
+    },
     "./package.json": "./package.json",
     "./style.css": "./dist/style.css"
   },
