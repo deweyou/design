@@ -43,6 +43,11 @@
       "import": "./dist/checkbox/index.js",
       "types": "./dist/checkbox/index.d.ts"
     },
+    "./radio-group": {
+      "default": "./dist/radio-group/index.js",
+      "import": "./dist/radio-group/index.js",
+      "types": "./dist/radio-group/index.d.ts"
+    },
     "./package.json": "./package.json",
     "./style.css": "./dist/style.css"
   },
