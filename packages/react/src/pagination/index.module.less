@@ -69,3 +69,34 @@
     cursor: not-allowed;
   }
 }
+
+// link variant overrides
+.linkVariant {
+  .item {
+    background: transparent;
+    border-color: transparent;
+    color: var(--ui-color-text-muted);
+
+    &[data-selected] {
+      background: transparent;
+      border-color: transparent;
+      color: var(--ui-color-brand-bg);
+      font-weight: 600;
+    }
+
+    &:hover:not([data-disabled]) {
+      background: transparent;
+      color: var(--ui-color-text);
+    }
+  }
+
+  .prevNext {
+    background: transparent;
+    border-color: transparent;
+
+    &:hover:not([data-disabled]) {
+      background: transparent;
+      color: var(--ui-color-text);
+    }
+  }
+}

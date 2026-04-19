@@ -11,6 +11,7 @@ export type PaginationProps = {
   defaultPage?: number;
   siblingCount?: number;
   onPageChange?: (details: { page: number }) => void;
+  variant?: 'button' | 'link';
   className?: string;
   style?: CSSProperties;
 };
@@ -22,6 +23,7 @@ export const Pagination = ({
   defaultPage = 1,
   siblingCount = 1,
   onPageChange,
+  variant = 'button',
   className,
   style,
 }: PaginationProps) => {
@@ -33,7 +35,7 @@ export const Pagination = ({
       defaultPage={defaultPage}
       siblingCount={siblingCount}
       onPageChange={onPageChange}
-      className={classNames(styles.root, className)}
+      className={classNames(styles.root, variant === 'link' && styles.linkVariant, className)}
       style={style}
     >
       <ArkPagination.PrevTrigger className={styles.prevNext}>Prev</ArkPagination.PrevTrigger>

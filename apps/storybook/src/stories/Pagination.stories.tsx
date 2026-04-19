@@ -67,6 +67,15 @@ export const ManyPages: StoryObj = {
   render: () => <Pagination count={500} pageSize={10} siblingCount={2} />,
 };
 
+export const LinkVariant: StoryObj = {
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <Pagination count={100} pageSize={10} variant="link" />
+      <Pagination count={500} pageSize={10} siblingCount={2} variant="link" defaultPage={5} />
+    </div>
+  ),
+};
+
 export const Interaction: StoryObj = {
   name: 'Interaction',
   render: () => <Pagination count={50} pageSize={10} defaultPage={1} />,
