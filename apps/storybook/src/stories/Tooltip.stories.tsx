@@ -109,6 +109,42 @@ export const States: StoryObj = {
   ),
 };
 
+export const Sizes: StoryObj = {
+  render: () => (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '24px',
+        justifyContent: 'center',
+        padding: '80px',
+        flexWrap: 'wrap',
+      }}
+    >
+      <Tooltip.Root size="sm">
+        <Tooltip.Trigger>
+          <Button>Small (sm)</Button>
+        </Tooltip.Trigger>
+        <Tooltip.Content>Compact tooltip</Tooltip.Content>
+      </Tooltip.Root>
+      <Tooltip.Root size="md">
+        <Tooltip.Trigger>
+          <Button variant="outlined">Medium (md)</Button>
+        </Tooltip.Trigger>
+        <Tooltip.Content>Standard tooltip</Tooltip.Content>
+      </Tooltip.Root>
+      <Tooltip.Root size="lg">
+        <Tooltip.Trigger>
+          <Button variant="ghost">Large (lg)</Button>
+        </Tooltip.Trigger>
+        <Tooltip.Content>
+          A larger tooltip suitable for multi-line descriptive text that requires more space.
+        </Tooltip.Content>
+      </Tooltip.Root>
+    </div>
+  ),
+};
+
 export const Interaction: StoryObj = {
   name: 'Interaction',
   render: () => (
