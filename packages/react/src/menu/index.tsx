@@ -32,7 +32,10 @@ import styles from './index.module.less';
 // Size / shape context
 // ---------------------------------------------------------------------------
 
+/** Size scale for the menu panel and its items. */
 export type MenuSize = 'sm' | 'md' | 'lg';
+
+/** Corner shape of the menu panel. */
 export type MenuShape = 'rect' | 'rounded';
 
 type MenuContextValue = { size: MenuSize; shape: MenuShape };
@@ -110,16 +113,27 @@ export type MenuCheckedChangeDetails = { checked: boolean };
 // ---------------------------------------------------------------------------
 
 export type MenuProps = {
+  /** Controlled open state. Use with onOpenChange for full control. */
   open?: boolean;
+  /** Initial open state for uncontrolled usage. Defaults to false. */
   defaultOpen?: boolean;
+  /** Callback fired when the menu opens or closes. */
   onOpenChange?: (details: MenuOpenChangeDetails) => void;
+  /** Whether the menu closes when a MenuItem is selected. Defaults to true. */
   closeOnSelect?: boolean;
+  /** Callback fired when a menu item is selected. */
   onSelect?: (details: MenuSelectionDetails) => void;
+  /** Preferred placement of the menu relative to its trigger. Defaults to 'bottom-start'. */
   placement?: MenuPlacement;
+  /** Gap in pixels between the trigger and the panel. Defaults to 4. */
   gutter?: number;
+  /** When true, the menu cannot be opened. */
   disabled?: boolean;
+  /** Size scale for the panel content. 'sm' | 'md' | 'lg'. Defaults to 'md'. */
   size?: MenuSize;
+  /** Corner shape of the panel. 'rounded' (default) | 'rect'. */
   shape?: MenuShape;
+  /** Must include a MenuTrigger and a MenuContent as children. */
   children: ReactNode;
 };
 
@@ -155,6 +169,7 @@ export const Menu = ({
 // ---------------------------------------------------------------------------
 
 export type MenuTriggerProps = {
+  /** The trigger element. Must be a single focusable element (e.g. a Button). */
   children: ReactNode;
 };
 
@@ -185,9 +200,13 @@ const MenuContentInner = ({ children, className, style }: MenuContentInnerProps)
 // ---------------------------------------------------------------------------
 
 export type MenuContentProps = {
+  /** Menu items and groups to display in the panel. */
   children: ReactNode;
+  /** Additional CSS class applied to the panel element. */
   className?: string;
+  /** Inline style applied to the panel element. */
   style?: CSSProperties;
+  /** Override the portal target. Defaults to document.body. Pass null to disable portaling. */
   portalContainer?: HTMLElement | null;
 };
 
@@ -217,14 +236,21 @@ export const MenuContent = ({ children, className, style, portalContainer }: Men
 // ---------------------------------------------------------------------------
 
 export type MenuItemProps = {
+  /** Unique identifier used by onSelect. Defaults to '' when omitted. */
   value?: string;
+  /** When true, the item is not interactive. */
   disabled?: boolean;
+  /** Callback fired when this specific item is selected. */
   onSelect?: () => void;
+  /** Leading icon element displayed before the label. */
   icon?: ReactNode;
-  /** When true, renders a trailing checkmark to indicate the item is the current active selection. */
+  /** When true, renders a trailing checkmark to indicate this item is the active selection. */
   selected?: boolean;
+  /** Item label content. */
   children: ReactNode;
+  /** Additional CSS class applied to the item element. */
   className?: string;
+  /** Inline style applied to the item element. */
   style?: CSSProperties;
 };
 
@@ -260,9 +286,13 @@ export const MenuItem = ({
 // ---------------------------------------------------------------------------
 
 export type MenuGroupProps = {
+  /** Optional id for the group element. Auto-generated when omitted. */
   id?: string;
+  /** Optional group label rendered above the items. */
   label?: string;
+  /** MenuItem elements belonging to this group. */
   children: ReactNode;
+  /** Additional CSS class applied to the group element. */
   className?: string;
 };
 
@@ -300,7 +330,9 @@ export const MenuGroupLabel = ({ children, className }: MenuGroupLabelProps) => 
 // ---------------------------------------------------------------------------
 
 export type MenuSeparatorProps = {
+  /** Additional CSS class applied to the separator element. */
   className?: string;
+  /** Inline style applied to the separator element. */
   style?: CSSProperties;
 };
 
@@ -313,12 +345,17 @@ export const MenuSeparator = ({ className, style }: MenuSeparatorProps) => (
 // ---------------------------------------------------------------------------
 
 export type MenuTriggerItemProps = {
+  /** When true, the trigger item is not interactive. */
   disabled?: boolean;
+  /** Leading icon element displayed before the label. */
   icon?: ReactNode;
   /** When true, styles the item as active (e.g. a sub-item is currently selected). */
   selected?: boolean;
+  /** Item label content. */
   children: ReactNode;
+  /** Additional CSS class applied to the trigger item element. */
   className?: string;
+  /** Inline style applied to the trigger item element. */
   style?: CSSProperties;
 };
 
@@ -354,10 +391,15 @@ export const MenuTriggerItem = ({
 // ---------------------------------------------------------------------------
 
 export type MenuRadioGroupProps = {
+  /** Controlled selected value. Use with onValueChange for full control. */
   value?: string;
+  /** Initial selected value for uncontrolled usage. */
   defaultValue?: string;
+  /** Callback fired when the selected value changes. */
   onValueChange?: (details: MenuValueChangeDetails) => void;
+  /** MenuRadioItem elements belonging to this group. */
   children: ReactNode;
+  /** Additional CSS class applied to the group element. */
   className?: string;
 };
 
@@ -395,12 +437,19 @@ export const MenuRadioGroup = ({
 // ---------------------------------------------------------------------------
 
 export type MenuRadioItemProps = {
+  /** The value this item represents within its MenuRadioGroup. */
   value: string;
+  /** When true, the item is not interactive. */
   disabled?: boolean;
+  /** Callback fired when this specific item is selected. */
   onSelect?: () => void;
+  /** Leading icon element displayed before the label. */
   icon?: ReactNode;
+  /** Item label content. */
   children: ReactNode;
+  /** Additional CSS class applied to the item element. */
   className?: string;
+  /** Inline style applied to the item element. */
   style?: CSSProperties;
 };
 
@@ -433,14 +482,23 @@ export const MenuRadioItem = ({
 // ---------------------------------------------------------------------------
 
 export type MenuCheckboxItemProps = {
+  /** Controlled checked state. Use with onCheckedChange for full control. */
   checked?: boolean;
+  /** Initial checked state for uncontrolled usage. Defaults to false. */
   defaultChecked?: boolean;
+  /** Callback fired when the checked state changes. */
   onCheckedChange?: (details: MenuCheckedChangeDetails) => void;
+  /** When true, the item is not interactive. */
   disabled?: boolean;
+  /** Optional value identifier for this item. */
   value?: string;
+  /** Leading icon element displayed before the label. */
   icon?: ReactNode;
+  /** Item label content. */
   children: ReactNode;
+  /** Additional CSS class applied to the item element. */
   className?: string;
+  /** Inline style applied to the item element. */
   style?: CSSProperties;
 };
 
@@ -489,13 +547,21 @@ export const MenuCheckboxItem = ({
 // ---------------------------------------------------------------------------
 
 export type ContextMenuProps = {
+  /** Controlled open state. Use with onOpenChange for full control. */
   open?: boolean;
+  /** Initial open state for uncontrolled usage. Defaults to false. */
   defaultOpen?: boolean;
+  /** Callback fired when the context menu opens or closes. */
   onOpenChange?: (details: MenuOpenChangeDetails) => void;
+  /** Whether the menu closes when a MenuItem is selected. Defaults to true. */
   closeOnSelect?: boolean;
+  /** Callback fired when a menu item is selected. */
   onSelect?: (details: MenuSelectionDetails) => void;
+  /** Size scale for the panel content. 'sm' | 'md' | 'lg'. Defaults to 'md'. */
   size?: MenuSize;
+  /** Corner shape of the panel. 'rounded' (default) | 'rect'. */
   shape?: MenuShape;
+  /** Must include a ContextMenu.Trigger and a ContextMenu.Content as children. */
   children: ReactNode;
 };
 

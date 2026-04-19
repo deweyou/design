@@ -7,7 +7,6 @@
 @menu-z-index: 1080;
 @menu-min-width: 10rem;
 @menu-max-width: min(20rem, calc(100vw - 32px));
-@menu-radius: 0.4rem;
 @menu-padding-block: 0.25rem;
 @menu-item-padding-block: 0.45rem;
 @menu-item-padding-inline: 0.75rem;
@@ -351,7 +350,7 @@
   padding-block: 0.2rem;
 
   .item {
-    border-radius: 0.2rem;
+    border-radius: var(--ui-radius-float);
     font-size: 0.8125rem;
     padding-block: 0.28rem;
     padding-inline: 0.5rem;
@@ -369,7 +368,7 @@
   padding-block: 0.25rem;
 
   .item {
-    border-radius: 0.25rem;
+    border-radius: var(--ui-radius-float);
     font-size: 0.875rem;
     padding-block: 0.35rem;
     padding-inline: 0.625rem;
@@ -387,7 +386,7 @@
   padding-block: 0.25rem;
 
   .item {
-    border-radius: 0.25rem;
+    border-radius: var(--ui-radius-float);
     font-size: 1rem;
     padding-block: 0.45rem;
     padding-inline: 0.75rem;
@@ -405,13 +404,13 @@
 // ---------------------------------------------------------------------------
 
 .shapeRounded {
-  border-radius: 0.4rem;
+  border-radius: var(--ui-radius-float);
 }
 
 .shapeRect {
-  border-radius: 0;
+  border-radius: var(--ui-radius-rect);
 
   .item {
-    border-radius: 0;
+    border-radius: var(--ui-radius-rect);
   }
 }
