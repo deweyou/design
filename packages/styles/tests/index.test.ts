@@ -19,7 +19,7 @@ test('styles package exposes the documented semantic and foundational color toke
   expect(publicCssVars).toContain('--ui-color-white');
   expect(publicCssVars).toContain('--ui-color-brand-bg');
   expect(publicCssVars).toContain('--ui-color-danger-bg');
-  expect(publicCssVars).toContain('--ui-color-link');
+  expect(publicCssVars).toContain('--ui-color-surface-raised');
   expect(publicCssVars).toContain('--ui-color-palette-red-50');
   expect(publicCssVars).toContain('--ui-color-palette-olive-950');
   expect(publicCssVars).toContain('--ui-text-color-emerald');
