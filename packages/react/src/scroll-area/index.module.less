@@ -1,0 +1,74 @@
+@import '@deweyou-design/styles/less/bridge';
+
+.root {
+  overflow: hidden;
+  position: relative;
+}
+
+.viewport {
+  height: 100%;
+  outline: none;
+  overflow: scroll;
+  width: 100%;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.scrollbar {
+  background: color-mix(in srgb, var(--ui-color-text) 8%, transparent);
+  border-radius: var(--ui-radius-pill);
+  display: flex;
+  transition: background 120ms ease;
+  user-select: none;
+
+  &[data-orientation='vertical'] {
+    bottom: 0;
+    flex-direction: column;
+    padding: 2px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 6px;
+  }
+
+  &[data-orientation='horizontal'] {
+    bottom: 0;
+    flex-direction: row;
+    height: 6px;
+    left: 0;
+    padding: 2px;
+    position: absolute;
+    right: 0;
+  }
+
+  &:hover {
+    background: color-mix(in srgb, var(--ui-color-text) 14%, transparent);
+  }
+}
+
+.thumb {
+  background: color-mix(in srgb, var(--ui-color-text) 24%, transparent);
+  border-radius: var(--ui-radius-pill);
+  flex: 1;
+  position: relative;
+  transition: background 120ms ease;
+
+  &::before {
+    bottom: 50%;
+    content: '';
+    left: 50%;
+    min-height: 44px;
+    min-width: 44px;
+    position: absolute;
+    right: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  &:hover {
+    background: color-mix(in srgb, var(--ui-color-text) 36%, transparent);
+  }
+}
