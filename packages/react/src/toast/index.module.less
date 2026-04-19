@@ -1,8 +1,10 @@
 @import '@deweyou-design/styles/less/bridge';
 
-// Individual toast — uses Ark UI CSS variables (--y, --opacity) for stacking and animation.
-// Toasts are position:absolute within a full-width fixed group container.
-// left:50% + translateX(-50%) centers each toast horizontally inside that container.
+// Individual toast — uses Ark UI CSS variables (--y, --opacity) for stacking.
+// Group container is position:fixed spanning full viewport width; toasts are position:absolute.
+// Centering is done via layout (left:0 right:0 margin:auto), NOT via translateX,
+// so the CSS transition on transform only involves vertical movement and avoids
+// the GPU compositing split-layer artifact (ghost duplicate card during reposition).
 .toast {
   align-items: flex-start;
   background: var(--ui-color-surface);
@@ -13,14 +15,14 @@
   color: var(--ui-color-text);
   display: flex;
   gap: 12px;
-  left: 50%;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
   min-width: 240px;
   opacity: var(--opacity, 1);
   padding: 12px 16px;
-  /* No opacity transition — toast dismisses instantly (no fade ghost artifact).
-     Transform transition is kept for remaining toasts sliding up on reposition. */
+  transform: translateY(var(--y, 0));
   transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
-  transform: translateX(-50%) translateY(var(--y, 0));
   width: 38vw;
   max-width: 480px;
 }
