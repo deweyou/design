@@ -1,4 +1,4 @@
-import { type CSSProperties, type ReactNode } from 'react';
+import { type CSSProperties, type ReactNode, type RefObject, useRef } from 'react';
 import {
   SwitchRoot as ArkSwitchRoot,
   SwitchThumb as ArkSwitchThumb,
@@ -22,7 +22,13 @@ export type SwitchProps = {
   style?: CSSProperties;
 };
 
-const SwitchTrack = ({ className }: { className?: string }) => {
+const SwitchTrack = ({
+  className,
+  inputRef,
+}: {
+  className?: string;
+  inputRef: RefObject<HTMLInputElement | null>;
+}) => {
   const ctx = useSwitchContext();
   return (
     <span
@@ -33,7 +39,7 @@ const SwitchTrack = ({ className }: { className?: string }) => {
       className={className}
       onClick={() => {
         if (!ctx.disabled) {
-          ctx.toggleChecked();
+          inputRef.current?.click();
         }
       }}
     >
@@ -53,6 +59,8 @@ export const Switch = ({
   className,
   style,
 }: SwitchProps) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const handleCheckedChange = (details: { checked: boolean }) => {
     onCheckedChange?.(details.checked);
   };
@@ -68,8 +76,8 @@ export const Switch = ({
       className={classNames(styles.root, className)}
       style={style}
     >
-      <ArkSwitchHiddenInput />
-      <SwitchTrack className={styles.control} />
+      <ArkSwitchHiddenInput ref={inputRef} />
+      <SwitchTrack className={styles.control} inputRef={inputRef} />
       {children !== undefined && (
         <ArkSwitchLabel className={styles.label}>{children}</ArkSwitchLabel>
       )}
