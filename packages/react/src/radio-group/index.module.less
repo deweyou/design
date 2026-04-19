@@ -57,7 +57,7 @@
   width: 0.4375rem;
 }
 
-.item:focus-within .control {
+.item:has(:focus-visible) .control {
   outline: 2px solid var(--ui-color-focus-ring);
   outline-offset: 2px;
 }

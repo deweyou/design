@@ -35,7 +35,7 @@
   border-color: var(--ui-color-brand-bg);
 }
 
-.root:focus-within .control {
+.root:has(:focus-visible) .control {
   outline: 2px solid var(--ui-color-focus-ring);
   outline-offset: 2px;
 }
