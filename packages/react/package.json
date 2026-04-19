@@ -48,6 +48,46 @@
       "import": "./dist/radio-group/index.js",
       "types": "./dist/radio-group/index.d.ts"
     },
+    "./switch": {
+      "default": "./dist/switch/index.js",
+      "import": "./dist/switch/index.js",
+      "types": "./dist/switch/index.d.ts"
+    },
+    "./select": {
+      "default": "./dist/select/index.js",
+      "import": "./dist/select/index.js",
+      "types": "./dist/select/index.d.ts"
+    },
+    "./dialog": {
+      "default": "./dist/dialog/index.js",
+      "import": "./dist/dialog/index.js",
+      "types": "./dist/dialog/index.d.ts"
+    },
+    "./tooltip": {
+      "default": "./dist/tooltip/index.js",
+      "import": "./dist/tooltip/index.js",
+      "types": "./dist/tooltip/index.d.ts"
+    },
+    "./toast": {
+      "default": "./dist/toast/index.js",
+      "import": "./dist/toast/index.js",
+      "types": "./dist/toast/index.d.ts"
+    },
+    "./scroll-area": {
+      "default": "./dist/scroll-area/index.js",
+      "import": "./dist/scroll-area/index.js",
+      "types": "./dist/scroll-area/index.d.ts"
+    },
+    "./carousel": {
+      "default": "./dist/carousel/index.js",
+      "import": "./dist/carousel/index.js",
+      "types": "./dist/carousel/index.d.ts"
+    },
+    "./pagination": {
+      "default": "./dist/pagination/index.js",
+      "import": "./dist/pagination/index.js",
+      "types": "./dist/pagination/index.d.ts"
+    },
     "./package.json": "./package.json",
     "./style.css": "./dist/style.css"
   },

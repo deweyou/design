@@ -90,3 +90,57 @@ export {
   type BreadcrumbSeparatorProps,
 } from './breadcrumb/index.tsx';
 export { Skeleton, type SkeletonProps } from './skeleton/index.tsx';
+export { Checkbox, type CheckboxProps } from './checkbox/index.tsx';
+export {
+  RadioGroup,
+  type RadioGroupRootProps,
+  type RadioGroupItemProps,
+} from './radio-group/index.tsx';
+export { Switch, type SwitchProps } from './switch/index.tsx';
+export {
+  Select,
+  type SelectRootProps,
+  type SelectTriggerProps,
+  type SelectContentProps,
+  type SelectItemProps,
+} from './select/index.tsx';
+export {
+  Dialog,
+  type DialogRootProps,
+  type DialogTriggerProps,
+  type DialogContentProps,
+  type DialogTitleProps,
+  type DialogDescriptionProps,
+  type DialogCloseTriggerProps,
+} from './dialog/index.tsx';
+export {
+  Tooltip,
+  type TooltipRootProps,
+  type TooltipTriggerProps,
+  type TooltipContentProps,
+} from './tooltip/index.tsx';
+export {
+  toast,
+  Toaster,
+  type ToastVariant,
+  type ToastOptions,
+  type ToasterProps,
+} from './toast/index.tsx';
+export {
+  ScrollArea,
+  type ScrollAreaRootProps,
+  type ScrollAreaViewportProps,
+  type ScrollAreaScrollbarProps,
+  type ScrollAreaThumbProps,
+} from './scroll-area/index.tsx';
+export {
+  Carousel,
+  type CarouselRootProps,
+  type CarouselItemGroupProps,
+  type CarouselItemProps,
+  type CarouselPrevTriggerProps,
+  type CarouselNextTriggerProps,
+  type CarouselIndicatorGroupProps,
+  type CarouselIndicatorProps,
+} from './carousel/index.tsx';
+export { Pagination, type PaginationProps } from './pagination/index.tsx';

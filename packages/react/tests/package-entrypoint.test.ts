@@ -59,14 +59,17 @@ void exampleIconButtonProps;
 void examplePopoverProps;
 void exampleTextProps;
 
-test('components root entry exposes Button, IconButton, Popover, Text, Menu family, Tabs family, and all Phase 2 components as the runtime public exports', () => {
+test('components root entry exposes Button, IconButton, Popover, Text, Menu family, Tabs family, Phase 2 and Phase 3 components as the runtime public exports', () => {
   expect(Object.keys(components).sort()).toEqual([
     'Alert',
     'Badge',
     'Breadcrumb',
     'Button',
     'Card',
+    'Carousel',
+    'Checkbox',
     'ContextMenu',
+    'Dialog',
     'IconButton',
     'Input',
     'Menu',
@@ -80,10 +83,15 @@ test('components root entry exposes Button, IconButton, Popover, Text, Menu fami
     'MenuSeparator',
     'MenuTrigger',
     'MenuTriggerItem',
+    'Pagination',
     'Popover',
+    'RadioGroup',
+    'ScrollArea',
+    'Select',
     'Separator',
     'Skeleton',
     'Spinner',
+    'Switch',
     'TabContent',
     'TabIndicator',
     'TabList',
@@ -91,6 +99,9 @@ test('components root entry exposes Button, IconButton, Popover, Text, Menu fami
     'Tabs',
     'Text',
     'Textarea',
+    'Toaster',
+    'Tooltip',
+    'toast',
   ]);
 });
 

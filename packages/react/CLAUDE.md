@@ -237,3 +237,221 @@
 
 - 不要给 `Skeleton` 添加 `aria-label`，加载占位符对无障碍设备应当透明
 - 不要在加载完成后忘记替换 `Skeleton`，它不应作为永久布局元素存在
+
+---
+
+### Checkbox
+
+**意图**：单个布尔选项的表单控件。支持受控和非受控模式，以及不确定态（`indeterminate`）。
+
+**正确用法**
+
+```tsx
+<Checkbox>记住我</Checkbox>
+<Checkbox defaultChecked>默认勾选</Checkbox>
+<Checkbox checked={checked} onCheckedChange={({ checked }) => setChecked(checked)} />
+<Checkbox indeterminate>全选（部分选中）</Checkbox>
+```
+
+**反模式**
+
+- 不要用原生 `<input type="checkbox">` 代替，`Checkbox` 已处理 ARIA 和焦点管理
+- 不要同时使用 `checked` 和 `defaultChecked`，选择受控或非受控模式之一
+
+---
+
+### RadioGroup
+
+**意图**：复合组件，用于从互斥选项中选择一个。使用 `RadioGroup.Root` + `RadioGroup.Item` 组合。
+
+**正确用法**
+
+```tsx
+<RadioGroup.Root orientation="vertical" onValueChange={({ value }) => setValue(value)}>
+  <RadioGroup.Item value="a">Option A</RadioGroup.Item>
+  <RadioGroup.Item value="b">Option B</RadioGroup.Item>
+</RadioGroup.Root>
+```
+
+**反模式**
+
+- 不要在 `RadioGroup` 之外单独使用 `RadioGroup.Item`，它依赖 Root 的上下文
+- 不要将 `orientation="horizontal"` 用于超过 3 个选项的情况，宽度难以控制
+
+---
+
+### Switch
+
+**意图**：开关控件，语义上用于即时生效的布尔设置（如开启/关闭通知）。
+
+**正确用法**
+
+```tsx
+<Switch>开启通知</Switch>
+<Switch checked={enabled} onCheckedChange={({ checked }) => setEnabled(checked)} />
+```
+
+**反模式**
+
+- 不要用 `Switch` 代替 `Checkbox` 处理需要提交才生效的表单选项
+- 不要省略 `children` label，无文字时无障碍设备无法理解其用途
+
+---
+
+### Select
+
+**意图**：下拉选择组件，用于从列表中选择一个选项。复合组件模式：`Select.Root + Trigger + Content + Item`。
+
+**正确用法**
+
+```tsx
+<Select.Root onValueChange={({ value }) => setValue(value[0])}>
+  <Select.Trigger placeholder="选择一个选项" />
+  <Select.Content>
+    <Select.Item value="a" label="Option A" />
+    <Select.Item value="b" label="Option B" />
+  </Select.Content>
+</Select.Root>
+```
+
+**反模式**
+
+- 不要用 `Select` 处理超过 50 个选项的列表，考虑 Combobox（带搜索）
+- 不要在 `Select.Content` 外使用 `Select.Item`，它依赖 Select 的集合上下文
+
+---
+
+### Dialog
+
+**意图**：模态对话框，用于需要用户确认或输入的流程中断操作。复合组件模式。
+
+**正确用法**
+
+```tsx
+<Dialog.Root>
+  <Dialog.Trigger>打开对话框</Dialog.Trigger>
+  <Dialog.Content>
+    <Dialog.Title>确认删除</Dialog.Title>
+    <Dialog.Description>此操作不可撤销。</Dialog.Description>
+    <Dialog.CloseTrigger>取消</Dialog.CloseTrigger>
+  </Dialog.Content>
+</Dialog.Root>
+```
+
+**反模式**
+
+- 不要把 Dialog 用于简单的信息展示，考虑 Popover 或 Tooltip
+- 不要省略 `Dialog.Title`，它是模态对话框的无障碍必要元素
+
+---
+
+### Tooltip
+
+**意图**：鼠标悬停时显示的简短提示信息。复合组件：`Tooltip.Root + Trigger + Content`。
+
+**正确用法**
+
+```tsx
+<Tooltip.Root>
+  <Tooltip.Trigger>悬停查看提示</Tooltip.Trigger>
+  <Tooltip.Content>这是一条提示信息</Tooltip.Content>
+</Tooltip.Root>
+```
+
+**反模式**
+
+- 不要在 Tooltip 内放置交互元素（链接、按钮），它不可聚焦
+- 不要用 Tooltip 展示关键信息，触控设备无法触发悬停
+
+---
+
+### Toast
+
+**意图**：非阻断式通知，用于操作结果反馈。使用命令式 API（`toast.create()`）触发，`Toaster` 组件负责渲染。
+
+**正确用法**
+
+```tsx
+// 在根组件挂载一次
+<Toaster />;
+
+// 在任意地方触发
+toast.create({ title: '保存成功', variant: 'success' });
+toast.create({ title: '操作失败', description: '请重试', variant: 'danger' });
+```
+
+**反模式**
+
+- 不要挂载多个 `Toaster`，整个应用只需一个
+- 不要用 Toast 展示需要用户响应的信息，使用 Dialog
+
+---
+
+### ScrollArea
+
+**意图**：自定义滚动条样式的容器，隐藏原生滚动条。复合组件：`ScrollArea.Root + Viewport + Scrollbar + Thumb`。
+
+**正确用法**
+
+```tsx
+<ScrollArea.Root style={{ height: '300px' }}>
+  <ScrollArea.Viewport>{/* 超出容器高度的内容 */}</ScrollArea.Viewport>
+  <ScrollArea.Scrollbar orientation="vertical">
+    <ScrollArea.Thumb />
+  </ScrollArea.Scrollbar>
+</ScrollArea.Root>
+```
+
+**反模式**
+
+- 不要省略 `ScrollArea.Viewport`，它是实际的滚动容器
+- 不要在 `ScrollArea.Root` 上设置 `overflow`，样式由组件内部控制
+
+---
+
+### Carousel
+
+**意图**：横向滑动轮播组件。复合组件：`Carousel.Root + ItemGroup + Item + PrevTrigger + NextTrigger + IndicatorGroup + Indicator`。
+
+**正确用法**
+
+```tsx
+<Carousel.Root slideCount={3}>
+  <Carousel.ItemGroup>
+    <Carousel.Item index={0}>Slide 1</Carousel.Item>
+    <Carousel.Item index={1}>Slide 2</Carousel.Item>
+    <Carousel.Item index={2}>Slide 3</Carousel.Item>
+  </Carousel.ItemGroup>
+  <Carousel.PrevTrigger>‹</Carousel.PrevTrigger>
+  <Carousel.NextTrigger>›</Carousel.NextTrigger>
+</Carousel.Root>
+```
+
+**反模式**
+
+- `slideCount` 必须与实际 `Item` 数量匹配，否则导航行为不正确
+- 不要在 `Item` 内放置超大图片而不限制尺寸，会撑破布局
+
+---
+
+### Pagination
+
+**意图**：分页控制器，用于分批展示大量数据列表。Flat props API，不是 compound 模式。
+
+**正确用法**
+
+```tsx
+<Pagination count={100} pageSize={10} />
+<Pagination count={500} pageSize={10} siblingCount={2} defaultPage={3} />
+<Pagination
+  count={100}
+  pageSize={10}
+  page={page}
+  onPageChange={({ page }) => setPage(page)}
+/>
+```
+
+**反模式**
+
+- 不要把 `count` 设为总页数，它是总**条目**数（`count / pageSize = 页数`）
+- 不要同时使用 `page` 和 `defaultPage`，选择受控或非受控模式之一
