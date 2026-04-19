@@ -54,7 +54,8 @@ test('card forwards className and style', () => {
 test('card stylesheet uses semantic surface and border tokens', () => {
   expect(stylesheet).toContain('--ui-color-surface');
   expect(stylesheet).toContain('--ui-color-border');
-  expect(stylesheet).toContain('--ui-radius-rect');
+  expect(stylesheet).toContain('--ui-radius-auto');
+  expect(stylesheet).toContain('--ui-shadow-soft');
   expect(stylesheet).not.toContain('--ui-color-palette-');
 });
 
