@@ -1,22 +1,24 @@
-import { AddIcon } from '@deweyou-design/react-icons/add';
-import { CheckIcon } from '@deweyou-design/react-icons/check';
-import { ChevronLeftIcon } from '@deweyou-design/react-icons/chevron-left';
-import { ChevronRightIcon } from '@deweyou-design/react-icons/chevron-right';
-import { CloseIcon } from '@deweyou-design/react-icons/close';
-import { ErrorCircleIcon } from '@deweyou-design/react-icons/error-circle';
-import { InfoCircleIcon } from '@deweyou-design/react-icons/info-circle';
-import { MenuIcon } from '@deweyou-design/react-icons/menu';
-import { SearchIcon } from '@deweyou-design/react-icons/search';
+import {
+  AlertCircleIcon,
+  CheckIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  InfoIcon,
+  Menu2Icon,
+  PlusIcon,
+  SearchIcon,
+  XIcon,
+} from '@deweyou-design/react-icons';
 
 const iconExamples = [
-  { name: 'add', Component: AddIcon },
+  { name: 'plus', Component: PlusIcon },
   { name: 'check', Component: CheckIcon },
   { name: 'chevron-left', Component: ChevronLeftIcon },
   { name: 'chevron-right', Component: ChevronRightIcon },
-  { name: 'close', Component: CloseIcon },
-  { name: 'error-circle', Component: ErrorCircleIcon },
-  { name: 'info-circle', Component: InfoCircleIcon },
-  { name: 'menu', Component: MenuIcon },
+  { name: 'x', Component: XIcon },
+  { name: 'alert-circle', Component: AlertCircleIcon },
+  { name: 'info', Component: InfoIcon },
+  { name: 'menu-2', Component: Menu2Icon },
   { name: 'search', Component: SearchIcon },
 ] as const;
 
@@ -25,25 +27,25 @@ export const IconGuidance = () => {
     <section className="icon-layout">
       <div className="icon-panel">
         <p className="eyebrow">Official icon package</p>
-        <h2>Curated TDesign-backed icons, Deweyou-owned API</h2>
+        <h2>Tabler Icons wrapped with square caps and miter joins</h2>
         <p className="hero-copy">
-          The `@deweyou-design/react-icons` package keeps the root entry focused on the generic
-          `Icon` component and related types, while direct icon components ship from subpaths like
-          `@deweyou-design/react-icons/search`. SVG assets come from `tdesign-icons-svg` under MIT,
-          but naming, accessibility, and error behavior stay under Deweyou UI control.
+          The `@deweyou-design/react-icons` package exports named icon components built on top of
+          Tabler Icons (MIT). All icons use `currentColor`, `strokeLinecap="square"`, and
+          `strokeLinejoin="miter"` to match the rect-first design language. Import named exports
+          directly — no registry lookup, no lazy loading.
         </p>
         <div className="icon-contract">
           <div>
             <strong>Props</strong>
-            <code>name | className | style | label | size</code>
+            <code>aria-label | className | size | stroke | style</code>
           </div>
           <div>
-            <strong>Sizes</strong>
-            <code>extra-small | small | medium | large | extra-large | number</code>
+            <strong>Size</strong>
+            <code>number (px) | CSS string — defaults to 1em</code>
           </div>
           <div>
             <strong>Delivery</strong>
-            <code>subpath exports + lazy Icon</code>
+            <code>synchronous named exports</code>
           </div>
         </div>
       </div>
@@ -52,9 +54,9 @@ export const IconGuidance = () => {
         <div className="icon-grid">
           {iconExamples.map(({ Component, name }) => (
             <article key={name} className="icon-card">
-              <Component size="large" />
+              <Component size={24} />
               <strong>{name}</strong>
-              <code>{Component.displayName ?? 'Icon'}</code>
+              <code>{name}</code>
             </article>
           ))}
         </div>
@@ -64,26 +66,26 @@ export const IconGuidance = () => {
         <div className="icon-usage-grid">
           <article className="icon-usage-card">
             <h3>Unlabeled usage</h3>
-            <MenuIcon size="large" />
+            <Menu2Icon size={24} />
             <p>
-              Without `label`, icons are treated as decorative and hidden from assistive technology.
+              Without `aria-label`, icons are treated as decorative and hidden from assistive
+              technology via `aria-hidden="true"`.
             </p>
           </article>
           <article className="icon-usage-card">
             <h3>Labeled usage</h3>
-            <InfoCircleIcon label="Information" size="large" />
+            <InfoIcon aria-label="Information" size={24} />
             <p>
-              Provide `label` whenever the icon carries meaning that surrounding text does not
-              already provide.
+              Provide `aria-label` whenever the icon carries meaning that surrounding text does not
+              already provide. The icon renders with `role="img"`.
             </p>
           </article>
           <article className="icon-usage-card">
-            <h3>Dynamic lookup</h3>
-            <code>{'<Icon name="search" size={18} />'}</code>
+            <h3>Named import usage</h3>
+            <code>{'<SearchIcon size={18} />'}</code>
             <p>
-              Use the generic `Icon` component only when the icon name comes from configuration or
-              registry-driven UI. For normal component code, prefer subpath imports so consumer
-              bundles can tree-shake unused icons and render immediately.
+              Import named icons directly from `@deweyou-design/react-icons`. Tree-shaking works
+              automatically and icons render synchronously without a loading state.
             </p>
           </article>
         </div>

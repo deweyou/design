@@ -1,25 +1,24 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Icon } from '@deweyou-design/react-icons';
-import { AddIcon } from '@deweyou-design/react-icons/add';
-import { CheckIcon } from '@deweyou-design/react-icons/check';
-import { ChevronLeftIcon } from '@deweyou-design/react-icons/chevron-left';
-import { ChevronRightIcon } from '@deweyou-design/react-icons/chevron-right';
-import { CloseIcon } from '@deweyou-design/react-icons/close';
-import { ErrorCircleIcon } from '@deweyou-design/react-icons/error-circle';
-import { InfoCircleIcon } from '@deweyou-design/react-icons/info-circle';
-import { MenuIcon } from '@deweyou-design/react-icons/menu';
-import { SearchIcon } from '@deweyou-design/react-icons/search';
+import {
+  AlertCircleIcon,
+  CheckIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  InfoIcon,
+  Menu2Icon,
+  SearchIcon,
+  XIcon,
+} from '@deweyou-design/react-icons';
 
 const galleryItems = [
-  { name: 'add', Component: AddIcon },
+  { name: 'alert-circle', Component: AlertCircleIcon },
   { name: 'check', Component: CheckIcon },
   { name: 'chevron-left', Component: ChevronLeftIcon },
   { name: 'chevron-right', Component: ChevronRightIcon },
-  { name: 'close', Component: CloseIcon },
-  { name: 'error-circle', Component: ErrorCircleIcon },
-  { name: 'info-circle', Component: InfoCircleIcon },
-  { name: 'menu', Component: MenuIcon },
+  { name: 'x', Component: XIcon },
+  { name: 'info', Component: InfoIcon },
+  { name: 'menu-2', Component: Menu2Icon },
   { name: 'search', Component: SearchIcon },
 ] as const;
 
@@ -50,37 +49,31 @@ const storyStyles = {
 
 const meta = {
   title: 'Components/Icon',
-  component: Icon,
+  component: SearchIcon,
   tags: ['autodocs'],
   args: {
-    name: 'search' as const,
+    size: 24,
   },
   argTypes: {
-    name: {
-      description:
-        'Name of the icon to render. Must be a valid `IconName` from the registry. An unsupported name renders a visible error message instead of throwing.',
-      control: { type: 'select' },
-      options: galleryItems.map((item) => item.name),
-      table: {
-        type: { summary: 'IconName' },
-        defaultValue: { summary: '—' },
-      },
-    },
     size: {
-      description:
-        'Controls the icon dimensions. Accepts a named size token or a numeric pixel value.',
-      control: { type: 'select' },
-      options: ['extra-small', 'small', 'medium', 'large', 'extra-large'],
+      description: 'Icon size. Accepts a number (px) or any CSS length string.',
+      control: { type: 'number' },
       table: {
-        type: {
-          summary: "'extra-small' | 'small' | 'medium' | 'large' | 'extra-large' | number",
-        },
-        defaultValue: { summary: 'medium' },
+        type: { summary: 'number | string' },
+        defaultValue: { summary: "'1em'" },
       },
     },
-    label: {
+    stroke: {
+      description: 'Stroke width. Defaults to 1.5.',
+      control: { type: 'number', min: 0.5, max: 3, step: 0.25 },
+      table: {
+        type: { summary: 'number' },
+        defaultValue: { summary: '1.5' },
+      },
+    },
+    'aria-label': {
       description:
-        'Accessible label for the icon. When provided, the icon renders with `role="img"` and `aria-label`. When omitted, the icon is decorative (`aria-hidden="true"`).',
+        'Accessible label. When provided the icon renders with `role="img"` and `aria-label`. When omitted the icon is decorative (`aria-hidden="true"`).',
       control: { type: 'text' },
       table: {
         type: { summary: 'string | undefined' },
@@ -88,7 +81,7 @@ const meta = {
       },
     },
     className: {
-      description: 'Additional CSS class applied to the icon root element.',
+      description: 'Additional CSS class applied to the SVG root.',
       control: { type: 'text' },
       table: {
         type: { summary: 'string | undefined' },
@@ -96,7 +89,6 @@ const meta = {
       },
     },
     style: {
-      description: 'Inline style applied to the icon root element.',
       control: false,
       table: {
         type: { summary: 'CSSProperties | undefined' },
@@ -108,11 +100,11 @@ const meta = {
     docs: {
       description: {
         component:
-          'Icon renders a named SVG icon from the Deweyou UI registry. Icons inherit `currentColor` by default and are loaded on demand. Use named subpath exports (`@deweyou-design/react-icons/search`) for individual icons, or the generic `Icon` component with a `name` prop for dynamic usage. The `label` prop is the sole public accessibility hook.',
+          'Named icon components wrapping Tabler Icons with square stroke caps and miter joins to match the rect-first design language. Import named exports directly from `@deweyou-design/react-icons`. All icons use `currentColor` and are rendered synchronously — no loading state or registry lookup.',
       },
     },
   },
-} satisfies Meta<typeof Icon>;
+} satisfies Meta<typeof SearchIcon>;
 
 export default meta;
 
@@ -123,9 +115,9 @@ const CatalogGallery = () => {
     <div style={storyStyles.grid}>
       {galleryItems.map(({ Component, name }) => (
         <article key={name} style={storyStyles.card}>
-          <Component size="large" />
+          <Component size={24} />
           <strong>{name}</strong>
-          <code style={storyStyles.meta}>{`${Component.displayName ?? 'Icon'}`}</code>
+          <code style={storyStyles.meta}>{name}</code>
         </article>
       ))}
     </div>
@@ -133,18 +125,15 @@ const CatalogGallery = () => {
 };
 
 const SizingGallery = () => {
+  const sizes = [12, 16, 20, 24, 32] as const;
   return (
     <div style={{ ...storyStyles.grid, gridTemplateColumns: 'repeat(5, minmax(110px, 1fr))' }}>
-      {(['extra-small', 'small', 'medium', 'large', 'extra-large'] as const).map((size) => (
+      {sizes.map((size) => (
         <article key={size} style={storyStyles.card}>
           <SearchIcon size={size} />
-          <strong>{size}</strong>
+          <strong>{size}px</strong>
         </article>
       ))}
-      <article style={storyStyles.card}>
-        <SearchIcon size={18} />
-        <strong>18</strong>
-      </article>
     </div>
   );
 };
@@ -153,34 +142,18 @@ const AccessibilityGallery = () => {
   return (
     <div style={storyStyles.grid}>
       <article style={storyStyles.card}>
-        <MenuIcon />
+        <Menu2Icon size={24} />
         <strong>Unlabeled</strong>
         <span style={storyStyles.meta}>aria-hidden=true</span>
       </article>
       <article style={storyStyles.card}>
-        <InfoCircleIcon label="Information" />
+        <InfoIcon aria-label="Information" size={24} />
         <strong>Labeled</strong>
         <span style={storyStyles.meta}>aria-label=Information</span>
       </article>
     </div>
   );
 };
-
-const UnsupportedNamePreview = () => (
-  <pre
-    style={{
-      background: 'color-mix(in srgb, var(--ui-color-surface) 92%, white)',
-      border: '1px solid var(--ui-color-border)',
-      borderRadius: '16px',
-      color: 'var(--ui-color-text)',
-      padding: '16px',
-      width: 'min(720px, 100%)',
-      whiteSpace: 'pre-wrap',
-    }}
-  >
-    Unsupported icon name "missing-icon".
-  </pre>
-);
 
 export const Catalog: Story = {
   render: () => <CatalogGallery />,
@@ -194,21 +167,16 @@ export const Accessibility: Story = {
   render: () => <AccessibilityGallery />,
 };
 
-export const UnsupportedName: Story = {
-  render: () => <UnsupportedNamePreview />,
-};
-
 // ---------------------------------------------------------------------------
 // Story: Interaction — smoke test (purely presentational, no interactive behavior)
 // ---------------------------------------------------------------------------
 
-import { expect, within } from 'storybook/test';
+import { expect } from 'storybook/test';
 
 export const Interaction: Story = {
   name: 'Interaction',
   render: () => <CatalogGallery />,
   play: async ({ canvasElement }) => {
-    // Verify the icon catalog renders SVG elements
     const svgs = canvasElement.querySelectorAll('svg');
     expect(svgs.length).toBeGreaterThan(0);
   },

@@ -4,7 +4,7 @@ import { useRef, useState } from 'react';
 import { Button } from '@deweyou-design/react/button';
 import { Popover } from '@deweyou-design/react/popover';
 import { Text } from '@deweyou-design/react/text';
-import { SearchIcon } from '@deweyou-design/react-icons/search';
+import { SearchIcon } from '@deweyou-design/react-icons';
 
 const placementOptions = [
   'top',

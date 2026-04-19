@@ -2,9 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { useRef, useState } from 'react';
 
 import { Button, IconButton } from '@deweyou-design/react/button';
-import { AddIcon } from '@deweyou-design/react-icons/add';
-import { MenuIcon } from '@deweyou-design/react-icons/menu';
-import { SearchIcon } from '@deweyou-design/react-icons/search';
+import { Menu2Icon, PlusIcon, SearchIcon } from '@deweyou-design/react-icons';
 
 const colorOptions = ['neutral', 'primary', 'danger'] as const;
 const sizeOptions = ['extra-small', 'small', 'medium', 'large', 'extra-large'] as const;
@@ -389,7 +387,7 @@ const LoadingGallery = () => {
             loading
             variant="outlined"
           />
-          <Button.Icon aria-label="Syncing menu state" icon={<MenuIcon />} loading />
+          <Button.Icon aria-label="Syncing menu state" icon={<Menu2Icon />} loading />
         </div>
         <span style={storyStyles.meta}>
           Icon-only entries replace the original icon with the spinner and still require an
@@ -405,7 +403,7 @@ const LoadingGallery = () => {
           <IconButton
             aria-label="Refreshing disabled action"
             disabled
-            icon={<AddIcon />}
+            icon={<PlusIcon />}
             loading
             variant="ghost"
           />
@@ -491,7 +489,7 @@ const BoundaryGallery = () => {
           <Button disabled variant="outlined">
             Review
           </Button>
-          <IconButton aria-label="Open menu" disabled icon={<MenuIcon />} variant="ghost" />
+          <IconButton aria-label="Open menu" disabled icon={<Menu2Icon />} variant="ghost" />
         </div>
       </article>
       <article style={storyStyles.card}>
@@ -524,7 +522,7 @@ const BoundaryGallery = () => {
         <strong>Explicit icon buttons</strong>
         <div style={storyStyles.row}>
           <IconButton aria-label="Open search" icon={<SearchIcon />} />
-          <Button.Icon aria-label="Add item" icon={<AddIcon />} shape="pill" variant="outlined" />
+          <Button.Icon aria-label="Add item" icon={<PlusIcon />} shape="pill" variant="outlined" />
         </div>
         <span style={storyStyles.meta}>
           Use `IconButton` or `Button.Icon` for square icon actions. Graphic-only `children` no
@@ -535,12 +533,12 @@ const BoundaryGallery = () => {
         <strong>Icon + text</strong>
         <div style={storyStyles.row}>
           <Button icon={<SearchIcon />}>Search results</Button>
-          <Button icon={<AddIcon />} variant="outlined">
+          <Button icon={<PlusIcon />} variant="outlined">
             Add item
           </Button>
           <Button variant="link">
             Read migration
-            <MenuIcon />
+            <Menu2Icon />
           </Button>
         </div>
         <span style={storyStyles.meta}>
