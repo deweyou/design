@@ -11761,9 +11761,11 @@
     "test": "vp test"
   },
   "dependencies": {
+    "@tabler/icons-react": "^3",
     "tdesign-icons-svg": "catalog:"
   },
   "devDependencies": {
+    "@testing-library/react": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "react-dom": "catalog:",
