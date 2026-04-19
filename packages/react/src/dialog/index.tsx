@@ -1,4 +1,5 @@
 import { type CSSProperties, type ReactNode } from 'react';
+import { createPortal } from 'react-dom';
 import {
   DialogRoot as ArkDialogRoot,
   DialogTrigger as ArkDialogTrigger,
@@ -51,16 +52,18 @@ const DialogTrigger = ({ children }: DialogTriggerProps) => (
   <ArkDialogTrigger asChild>{children}</ArkDialogTrigger>
 );
 
-const DialogContent = ({ children, className, style }: DialogContentProps) => (
-  <>
-    <ArkDialogBackdrop className={styles.backdrop} />
-    <ArkDialogPositioner className={styles.positioner}>
-      <ArkDialogContent className={classNames(styles.panel, className)} style={style}>
-        {children}
-      </ArkDialogContent>
-    </ArkDialogPositioner>
-  </>
-);
+const DialogContent = ({ children, className, style }: DialogContentProps) =>
+  createPortal(
+    <>
+      <ArkDialogBackdrop className={styles.backdrop} />
+      <ArkDialogPositioner className={styles.positioner}>
+        <ArkDialogContent className={classNames(styles.panel, className)} style={style}>
+          {children}
+        </ArkDialogContent>
+      </ArkDialogPositioner>
+    </>,
+    document.body,
+  );
 
 const DialogTitle = ({ children, className, style }: DialogTitleProps) => (
   <ArkDialogTitle className={classNames(styles.title, className)} style={style}>
