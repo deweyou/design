@@ -1,0 +1,69 @@
+@import '@deweyou-design/styles/less/bridge';
+
+.root {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.itemGroup {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  will-change: transform;
+}
+
+.item {
+  flex-shrink: 0;
+  width: 100%;
+}
+
+.trigger {
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.prevTrigger {
+  left: 8px;
+}
+.nextTrigger {
+  right: 8px;
+}
+
+.indicatorGroup {
+  align-items: center;
+  bottom: 12px;
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  left: 50%;
+  position: absolute;
+  transform: translateX(-50%);
+}
+
+.indicator {
+  background: var(--ui-color-border);
+  border: none;
+  border-radius: var(--ui-radius-pill);
+  cursor: pointer;
+  height: 6px;
+  padding: 0;
+  transition:
+    background 150ms ease,
+    width 150ms ease;
+  width: 6px;
+
+  &[data-current] {
+    background: var(--ui-color-brand-bg);
+    width: 16px;
+  }
+  &:focus-visible {
+    outline: 2px solid var(--ui-color-brand-bg);
+    outline-offset: 2px;
+  }
+}
