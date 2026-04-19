@@ -1,4 +1,5 @@
 import { type CSSProperties } from 'react';
+import { createPortal } from 'react-dom';
 import {
   createToaster,
   Toaster as ArkToaster,
@@ -43,35 +44,37 @@ export type ToasterProps = {
   style?: CSSProperties;
 };
 
-export const Toaster = ({ className, style }: ToasterProps) => (
-  <ArkToaster toaster={toasterInstance}>
-    {(t) => {
-      const variant = (t.meta as Record<string, unknown>)?.variant as ToastVariant | undefined;
+export const Toaster = ({ className, style }: ToasterProps) =>
+  createPortal(
+    <ArkToaster toaster={toasterInstance}>
+      {(t) => {
+        const variant = (t.meta as Record<string, unknown>)?.variant as ToastVariant | undefined;
 
-      return (
-        <ToastRoot
-          key={t.id}
-          className={classNames(styles.toast, variant && styles[variant], className)}
-          style={style}
-        >
-          <div className={styles.body}>
-            {t.title && <ToastTitle className={styles.title}>{t.title}</ToastTitle>}
-            {t.description && (
-              <ToastDescription className={styles.description}>{t.description}</ToastDescription>
-            )}
-          </div>
-          <ToastCloseTrigger className={styles.close} aria-label="Dismiss notification">
-            <svg aria-hidden focusable="false" height="14" viewBox="0 0 14 14" width="14">
-              <path
-                d="M1 1l12 12M13 1L1 13"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeWidth="1.5"
-              />
-            </svg>
-          </ToastCloseTrigger>
-        </ToastRoot>
-      );
-    }}
-  </ArkToaster>
-);
+        return (
+          <ToastRoot
+            key={t.id}
+            className={classNames(styles.toast, variant && styles[variant], className)}
+            style={style}
+          >
+            <div className={styles.body}>
+              {t.title && <ToastTitle className={styles.title}>{t.title}</ToastTitle>}
+              {t.description && (
+                <ToastDescription className={styles.description}>{t.description}</ToastDescription>
+              )}
+            </div>
+            <ToastCloseTrigger className={styles.close} aria-label="Dismiss notification">
+              <svg aria-hidden focusable="false" height="14" viewBox="0 0 14 14" width="14">
+                <path
+                  d="M1 1l12 12M13 1L1 13"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeWidth="1.5"
+                />
+              </svg>
+            </ToastCloseTrigger>
+          </ToastRoot>
+        );
+      }}
+    </ArkToaster>,
+    document.body,
+  );

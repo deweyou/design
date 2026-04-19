@@ -3,42 +3,44 @@
 .toast {
   align-items: flex-start;
   background: var(--ui-color-surface);
-  border: 1px solid var(--ui-color-border);
-  border-radius: var(--ui-radius-float);
+  border: 1px solid color-mix(in srgb, var(--ui-color-border) 50%, transparent);
+  border-radius: var(--ui-radius-auto, 0.8rem);
   box-shadow: var(--ui-shadow-soft);
   color: var(--ui-color-text);
   display: flex;
   gap: 12px;
   max-width: min(400px, calc(100vw - 32px));
-  padding: 12px 16px;
+  overflow: hidden;
+  padding: 14px 16px;
   position: relative;
 }
 
 .toast[data-state='open'] {
-  animation: toastIn 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  animation: toastIn 300ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 .toast[data-state='closed'] {
   animation: toastOut 160ms ease forwards;
 }
 
+/* variant accent bars */
 .info {
-  border-left: 3px solid var(--ui-color-info-border, #3b82f6);
+  border-left: 4px solid #3b82f6;
 }
 .success {
-  border-left: 3px solid var(--ui-color-success-border, #22c55e);
+  border-left: 4px solid var(--ui-color-brand-bg, #22c55e);
 }
 .warning {
-  border-left: 3px solid var(--ui-color-warning-border, #f59e0b);
+  border-left: 4px solid #d97706;
 }
 .danger {
-  border-left: 3px solid var(--ui-color-danger-border, #ef4444);
+  border-left: 4px solid var(--ui-color-danger-text, #ef4444);
 }
 
 .body {
   display: flex;
   flex: 1;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
   min-width: 0;
 }
 
@@ -49,26 +51,31 @@
 }
 
 .description {
-  font-size: 0.8125rem;
+  color: var(--ui-color-text-muted);
+  font-size: 0.8rem;
   line-height: 1.5;
-  opacity: 0.72;
 }
 
 .close {
   align-items: center;
   background: none;
   border: none;
-  border-radius: var(--ui-radius-float);
+  border-radius: 50%;
   color: var(--ui-color-text);
   cursor: pointer;
   display: flex;
   flex-shrink: 0;
+  height: 24px;
   justify-content: center;
   opacity: 0.5;
-  padding: 2px;
-  transition: opacity 120ms ease;
+  padding: 0;
+  transition:
+    background 120ms ease,
+    opacity 120ms ease;
+  width: 24px;
 
   &:hover {
+    background: color-mix(in srgb, currentColor 6%, transparent);
     opacity: 1;
   }
   &:focus-visible {
@@ -81,11 +88,11 @@
 @keyframes toastIn {
   from {
     opacity: 0;
-    transform: translateY(-8px) scale(0.96);
+    transform: translateX(16px);
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateX(0);
   }
 }
 
@@ -97,5 +104,12 @@
   to {
     opacity: 0;
     transform: scale(0.96);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast[data-state='open'],
+  .toast[data-state='closed'] {
+    animation: none;
   }
 }
