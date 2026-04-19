@@ -512,17 +512,51 @@ export const ReadingSurface: Story = {
 };
 
 // ---------------------------------------------------------------------------
-// Story: Interaction — smoke test (purely presentational, no interactive behavior)
+// Story: Interaction — variant and decoration smoke tests
 // ---------------------------------------------------------------------------
 
-import { expect } from 'storybook/test';
+import { expect, within } from 'storybook/test';
 
 export const Interaction: Story = {
   name: 'Interaction',
-  render: () => <FontWeightsPreview />,
+  render: () => (
+    <div>
+      <Text variant="h2" data-testid="heading-text">
+        Section heading
+      </Text>
+      <Text variant="body" data-testid="body-text">
+        Body content paragraph.
+      </Text>
+      <Text variant="caption" data-testid="caption-text">
+        Caption note
+      </Text>
+      <Text variant="plain" bold italic data-testid="decorated-text">
+        Bold italic
+      </Text>
+      <Text variant="body" lineClamp={2} data-testid="clamped-text">
+        This is a long text that should be clamped to two lines with an ellipsis shown at the end
+        when the content overflows the available space.
+      </Text>
+    </div>
+  ),
   play: async ({ canvasElement }) => {
-    // Verify the typography preview renders text content
-    const textNodes = canvasElement.querySelectorAll('p, span, strong, article');
-    expect(textNodes.length).toBeGreaterThan(0);
+    const canvas = within(canvasElement);
+
+    const heading = canvas.getByTestId('heading-text');
+    await expect(heading.tagName.toLowerCase()).toBe('h2');
+
+    const body = canvas.getByTestId('body-text');
+    await expect(body.tagName.toLowerCase()).toBe('div');
+
+    const caption = canvas.getByTestId('caption-text');
+    await expect(caption.tagName.toLowerCase()).toBe('div');
+
+    const plain = canvas.getByTestId('decorated-text');
+    await expect(plain.tagName.toLowerCase()).toBe('span');
+    await expect(plain.className).toMatch(/bold/);
+    await expect(plain.className).toMatch(/italic/);
+
+    const clamped = canvas.getByTestId('clamped-text');
+    await expect(clamped.style.getPropertyValue('-webkit-line-clamp')).toBe('2');
   },
 };

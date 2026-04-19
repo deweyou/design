@@ -151,6 +151,10 @@ test('text forwards standard node props to the rendered root node', () => {
   expect(clickCount).toBe(1);
 });
 
+test('text stylesheet has no hardcoded border-radius values', () => {
+  expect(stylesheet).not.toContain('border-radius');
+});
+
 test('text stylesheet consumes semantic tokens and does not reference raw palette steps', () => {
   // color/typography tokens sourced from @deweyou-design/styles
   expect(stylesheet).toContain('--ui-color-text');
