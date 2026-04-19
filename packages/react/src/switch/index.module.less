@@ -1,0 +1,70 @@
+@import '@deweyou-design/styles/less/bridge';
+
+@switch-track-width: 2.25rem;
+@switch-track-height: 1.25rem;
+@switch-thumb-size: 1rem;
+@switch-thumb-offset: 0.125rem;
+@switch-thumb-travel: calc(@switch-track-width - @switch-thumb-size - @switch-thumb-offset * 2);
+
+.root {
+  align-items: center;
+  cursor: pointer;
+  display: inline-flex;
+  gap: 0.5rem;
+  user-select: none;
+}
+
+.root[data-disabled] {
+  cursor: not-allowed;
+  opacity: 0.56;
+}
+
+.control {
+  background: var(--ui-color-border);
+  border-radius: var(--ui-radius-pill);
+  display: inline-flex;
+  flex-shrink: 0;
+  height: @switch-track-height;
+  padding: @switch-thumb-offset;
+  position: relative;
+  transition: background 160ms ease;
+  width: @switch-track-width;
+}
+
+.root[data-state='checked'] .control {
+  background: var(--ui-color-brand-bg);
+}
+
+.root:focus-within .control {
+  outline: 2px solid var(--ui-color-focus-ring);
+  outline-offset: 2px;
+}
+
+.thumb {
+  background: var(--ui-color-canvas);
+  border-radius: 50%;
+  flex-shrink: 0;
+  height: @switch-thumb-size;
+  transform: translateX(0);
+  transition: transform 160ms cubic-bezier(0.22, 1, 0.36, 1);
+  width: @switch-thumb-size;
+}
+
+.root[data-state='checked'] .thumb {
+  transform: translateX(@switch-thumb-travel);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .thumb {
+    transition: none;
+  }
+  .control {
+    transition: none;
+  }
+}
+
+.label {
+  color: var(--ui-color-text);
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
