@@ -1,0 +1,43 @@
+.root {
+  border-radius: var(--ui-radius-float);
+  padding: 12px 16px;
+  border: 1px solid;
+  display: grid;
+  gap: 4px;
+}
+
+.title {
+  font: var(--ui-font-weight-emphasis) 0.875rem / 1.25 var(--ui-font-body);
+  margin: 0;
+  color: inherit;
+}
+
+.body {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: inherit;
+}
+
+.info {
+  background: color-mix(in srgb, var(--ui-color-brand-bg) 8%, transparent);
+  border-color: color-mix(in srgb, var(--ui-color-brand-bg) 20%, transparent);
+  color: var(--ui-color-text);
+}
+
+.success {
+  background: color-mix(in srgb, #16a34a 8%, transparent);
+  border-color: color-mix(in srgb, #16a34a 20%, transparent);
+  color: var(--ui-color-text);
+}
+
+.warning {
+  background: color-mix(in srgb, #d97706 8%, transparent);
+  border-color: color-mix(in srgb, #d97706 20%, transparent);
+  color: var(--ui-color-text);
+}
+
+.danger {
+  background: color-mix(in srgb, var(--ui-color-danger-bg) 8%, transparent);
+  border-color: color-mix(in srgb, var(--ui-color-danger-bg) 20%, transparent);
+  color: var(--ui-color-text);
+}
