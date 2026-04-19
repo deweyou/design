@@ -44,6 +44,25 @@
   }
 }
 
+/* Size variants */
+.sizeSm {
+  &[data-orientation='vertical'] {
+    width: 4px;
+  }
+  &[data-orientation='horizontal'] {
+    height: 4px;
+  }
+}
+
+.sizeLg {
+  &[data-orientation='vertical'] {
+    width: 12px;
+  }
+  &[data-orientation='horizontal'] {
+    height: 12px;
+  }
+}
+
 .root:hover .scrollbar,
 .scrollbar[data-scrolling],
 .scrollbar[data-hover],
@@ -52,7 +71,7 @@
 }
 
 .thumb {
-  background: color-mix(in srgb, var(--ui-color-text) 28%, transparent);
+  background: color-mix(in srgb, var(--ui-color-brand-bg) 40%, transparent);
   border-radius: var(--ui-radius-pill);
   position: relative;
   transition: background 120ms ease;
@@ -70,6 +89,6 @@
   }
 
   &:hover {
-    background: color-mix(in srgb, var(--ui-color-text) 40%, transparent);
+    background: color-mix(in srgb, var(--ui-color-brand-bg) 60%, transparent);
   }
 }

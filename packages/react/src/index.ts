@@ -78,7 +78,6 @@ export {
 } from './badge/index.tsx';
 export { Spinner, type SpinnerProps } from './spinner/index.tsx';
 export { Separator, type SeparatorProps } from './separator/index.tsx';
-export { Alert, type AlertProps, type AlertVariant } from './alert/index.tsx';
 export { Card, type CardProps, type CardPadding, type CardShape } from './card/index.tsx';
 export {
   Breadcrumb,
@@ -132,6 +131,7 @@ export {
   type ScrollAreaRootProps,
   type ScrollAreaViewportProps,
   type ScrollAreaScrollbarProps,
+  type ScrollAreaScrollbarSize,
   type ScrollAreaThumbProps,
 } from './scroll-area/index.tsx';
 export { Pagination, type PaginationProps } from './pagination/index.tsx';

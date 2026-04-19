@@ -61,7 +61,6 @@ void exampleTextProps;
 
 test('components root entry exposes Button, IconButton, Popover, Text, Menu family, Tabs family, Phase 2 and Phase 3 components as the runtime public exports', () => {
   expect(Object.keys(components).sort()).toEqual([
-    'Alert',
     'Badge',
     'Breadcrumb',
     'Button',

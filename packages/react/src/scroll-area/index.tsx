@@ -18,8 +18,12 @@ export type ScrollAreaViewportProps = {
   style?: CSSProperties;
 };
 
+export type ScrollAreaScrollbarSize = 'sm' | 'md' | 'lg';
+
 export type ScrollAreaScrollbarProps = {
   orientation: 'vertical' | 'horizontal';
+  /** Scrollbar thickness. Defaults to 'md' (8px). */
+  size?: ScrollAreaScrollbarSize;
   children: ReactNode;
   className?: string;
   style?: CSSProperties;
@@ -28,6 +32,12 @@ export type ScrollAreaScrollbarProps = {
 export type ScrollAreaThumbProps = {
   className?: string;
   style?: CSSProperties;
+};
+
+const sizeClassMap: Record<ScrollAreaScrollbarSize, string | false> = {
+  sm: styles.sizeSm,
+  md: false,
+  lg: styles.sizeLg,
 };
 
 const ScrollAreaRoot = ({ children, className, style, ...rest }: ScrollAreaRootProps) => (
@@ -44,12 +54,13 @@ const ScrollAreaViewport = ({ children, className, style }: ScrollAreaViewportPr
 
 const ScrollAreaScrollbar = ({
   orientation,
+  size = 'md',
   children,
   className,
   style,
 }: ScrollAreaScrollbarProps) => (
   <ArkScrollArea.Scrollbar
-    className={classNames(styles.scrollbar, className)}
+    className={classNames(styles.scrollbar, sizeClassMap[size], className)}
     orientation={orientation}
     style={style}
   >

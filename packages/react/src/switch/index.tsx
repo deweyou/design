@@ -1,4 +1,4 @@
-import { type CSSProperties, type ReactNode, type RefObject, useRef } from 'react';
+import { type CSSProperties, type ReactNode } from 'react';
 import {
   SwitchRoot as ArkSwitchRoot,
   SwitchThumb as ArkSwitchThumb,
@@ -22,13 +22,7 @@ export type SwitchProps = {
   style?: CSSProperties;
 };
 
-const SwitchTrack = ({
-  className,
-  inputRef,
-}: {
-  className?: string;
-  inputRef: RefObject<HTMLInputElement | null>;
-}) => {
+const SwitchTrack = ({ className }: { className?: string }) => {
   const ctx = useSwitchContext();
   return (
     <span
@@ -38,9 +32,12 @@ const SwitchTrack = ({
       data-state={ctx.checked ? 'checked' : 'unchecked'}
       className={className}
       onClick={(e) => {
+        // Prevent the label's default htmlFor activation (would double-toggle the hidden input).
+        // stopPropagation keeps the event from reaching ArkSwitchRoot's onClick as well.
+        e.preventDefault();
         e.stopPropagation();
         if (!ctx.disabled) {
-          inputRef.current?.click();
+          ctx.toggleChecked();
         }
       }}
     >
@@ -60,8 +57,6 @@ export const Switch = ({
   className,
   style,
 }: SwitchProps) => {
-  const inputRef = useRef<HTMLInputElement>(null);
-
   const handleCheckedChange = (details: { checked: boolean }) => {
     onCheckedChange?.(details.checked);
   };
@@ -77,8 +72,8 @@ export const Switch = ({
       className={classNames(styles.root, className)}
       style={style}
     >
-      <ArkSwitchHiddenInput ref={inputRef} />
-      <SwitchTrack className={styles.control} inputRef={inputRef} />
+      <ArkSwitchHiddenInput />
+      <SwitchTrack className={styles.control} />
       {children !== undefined && (
         <ArkSwitchLabel className={styles.label}>{children}</ArkSwitchLabel>
       )}

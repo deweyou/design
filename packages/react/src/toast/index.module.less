@@ -1,46 +1,46 @@
 @import '@deweyou-design/styles/less/bridge';
 
+// Individual toast — uses Ark UI CSS variables (--y, --opacity) for stacking and animation.
+// Toasts are position:absolute within a full-width fixed group container.
+// left:50% + translateX(-50%) centers each toast horizontally inside that container.
 .toast {
   align-items: flex-start;
   background: var(--ui-color-surface);
   border: 1px solid var(--ui-color-border);
+  border-left-width: 4px;
   border-radius: var(--ui-radius-float);
+  box-shadow: 0 4px 16px rgba(24, 33, 29, 0.08);
+  box-sizing: border-box;
   color: var(--ui-color-text);
   display: flex;
   gap: 12px;
-  max-width: 100%;
+  left: 50%;
+  max-width: min(400px, calc(100vw - 32px));
+  opacity: var(--opacity, 1);
   padding: 12px 16px;
-  position: relative;
-  width: 100%;
+  transform: translateX(-50%) translateY(var(--y, 0));
+  transition:
+    opacity 160ms ease,
+    transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+  width: max-content;
+  will-change: transform, opacity;
 }
 
-.toast[data-state='open'] {
-  animation: toastIn 160ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.toast[data-state='closed'] {
-  animation: toastOut 160ms ease forwards;
-}
-
-/* variant — Alert-style tinted backgrounds */
+/* variant — solid left accent bar */
 .info {
-  background: color-mix(in srgb, var(--ui-color-brand-bg) 8%, transparent);
-  border-color: color-mix(in srgb, var(--ui-color-brand-bg) 24%, transparent);
+  border-left-color: var(--ui-color-brand-bg);
 }
 
 .success {
-  background: color-mix(in srgb, #16a34a 8%, transparent);
-  border-color: color-mix(in srgb, #16a34a 24%, transparent);
+  border-left-color: #16a34a;
 }
 
 .warning {
-  background: color-mix(in srgb, #d97706 8%, transparent);
-  border-color: color-mix(in srgb, #d97706 24%, transparent);
+  border-left-color: #d97706;
 }
 
 .danger {
-  background: color-mix(in srgb, var(--ui-color-danger-bg) 8%, transparent);
-  border-color: color-mix(in srgb, var(--ui-color-danger-bg) 24%, transparent);
+  border-left-color: var(--ui-color-danger-bg);
 }
 
 .body {
@@ -93,31 +93,8 @@
   }
 }
 
-@keyframes toastIn {
-  from {
-    opacity: 0;
-    transform: translateY(-6px) scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-@keyframes toastOut {
-  from {
-    opacity: 1;
-    transform: scale(1);
-  }
-  to {
-    opacity: 0;
-    transform: scale(0.97) translateY(-4px);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .toast[data-state='open'],
-  .toast[data-state='closed'] {
-    animation: none;
+  .toast {
+    transition: none;
   }
 }

@@ -107,7 +107,7 @@
 
 **反模式**
 
-- 不要用 Badge 展示超过 3-4 个词的长文本，考虑用 Alert
+- 不要用 Badge 展示超过 3-4 个词的长文本，考虑用 Toast
 - 不要通过 `style` 手动修改颜色，使用 `color` prop 的语义选项
 
 ---
@@ -147,26 +147,6 @@
 
 - 不要在垂直分隔线上使用 `label` prop，该 prop 仅对水平方向有效
 - 不要用纯 CSS `border` 代替 `<Separator>`，语义 HTML 更利于无障碍
-
----
-
-### Alert
-
-**意图**：展示上下文反馈信息，四种语义变体（info / success / warning / danger）。`danger` 变体自动添加 `role="alert"`。
-
-**正确用法**
-
-```tsx
-<Alert variant="info" title="Did you know?">
-  You can dismiss this message.
-</Alert>
-<Alert variant="danger">Session expired. Please log in again.</Alert>
-```
-
-**反模式**
-
-- 不要把 `Alert` 用于持久的页面内容说明，考虑用 `Card`
-- 不要手动添加 `role="alert"`，`danger` 变体已内置
 
 ---
 
