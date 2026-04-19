@@ -18,39 +18,41 @@
 }
 
 .scrollbar {
-  background: color-mix(in srgb, var(--ui-color-text) 8%, transparent);
-  border-radius: var(--ui-radius-pill);
   display: flex;
-  transition: background 120ms ease;
+  opacity: 0;
+  padding: 2px;
+  touch-action: none;
+  transition: opacity 200ms ease;
   user-select: none;
 
   &[data-orientation='vertical'] {
     bottom: 0;
     flex-direction: column;
-    padding: 2px;
     position: absolute;
     right: 0;
     top: 0;
-    width: 6px;
+    width: 8px;
   }
 
   &[data-orientation='horizontal'] {
     bottom: 0;
     flex-direction: row;
-    height: 6px;
+    height: 8px;
     left: 0;
-    padding: 2px;
     position: absolute;
     right: 0;
   }
+}
 
-  &:hover {
-    background: color-mix(in srgb, var(--ui-color-text) 14%, transparent);
-  }
+.root:hover .scrollbar,
+.scrollbar[data-scrolling],
+.scrollbar[data-hover],
+.scrollbar[data-dragging] {
+  opacity: 1;
 }
 
 .thumb {
-  background: color-mix(in srgb, var(--ui-color-text) 24%, transparent);
+  background: color-mix(in srgb, var(--ui-color-text) 28%, transparent);
   border-radius: var(--ui-radius-pill);
   flex: 1;
   position: relative;
@@ -69,6 +71,6 @@
   }
 
   &:hover {
-    background: color-mix(in srgb, var(--ui-color-text) 36%, transparent);
+    background: color-mix(in srgb, var(--ui-color-text) 40%, transparent);
   }
 }
