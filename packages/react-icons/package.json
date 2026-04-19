@@ -20,7 +20,7 @@
     "directory": "dist"
   },
   "scripts": {
-    "build": "vp pack && node ./scripts/organize-dist.mjs",
+    "build": "vp pack",
     "dev": "vp pack --watch",
     "generate": "node ./scripts/generate-icons.mjs",
     "test": "vp test"

@@ -1,3 +1,5 @@
+// explicit exception: react-icons uses a single consolidated entry rather than
+// the default Vite+ pack path, since all named icon exports live in one index.
 import { resolve } from 'node:path';
 
 import { defineConfig } from 'vite-plus';
