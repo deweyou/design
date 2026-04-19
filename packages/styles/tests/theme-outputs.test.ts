@@ -35,20 +35,16 @@ test('theme outputs define light, dark, and default entrypoints', () => {
   expect(color).toContain('--ui-color-palette-olive-950');
   expect(light).toContain("@import './color.css';");
   expect(light).toContain('--ui-color-brand-bg');
-  expect(light).toContain('var(--ui-color-palette-emerald-700)');
+  expect(light).toContain('var(--ui-color-palette-emerald-900)');
   expect(light).toContain('--ui-font-body');
   expect(light).toContain('--ui-font-weight-title');
   expect(light).toContain('--ui-text-size-h1');
   expect(light).toContain('--ui-text-line-height-caption');
-  expect(light).toContain('--ui-text-color-red');
-  expect(light).toContain('--ui-text-background-olive');
   expect(light).toContain('Songti SC');
   expect(light).toContain('SimSun');
   expect(dark).toContain("@import './color.css';");
   expect(dark).toContain('[data-theme');
   expect(dark).toContain('--ui-text-size-h5');
-  expect(dark).toContain('--ui-text-color-violet');
-  expect(dark).toContain('--ui-text-background-neutral');
   expect(base).toContain('font-family: var(--ui-font-body);');
   expect(base).toContain('font-family: var(--ui-font-mono);');
   expect(base).toContain('.typography-tier-title');
@@ -89,21 +85,18 @@ test('text palette primitives expose 26 color families and 11 steps per family',
 });
 
 test('theme outputs expose palette-backed text color and background tokens for every family', () => {
-  const light = readFileSync(resolve(cssDir, 'theme-light.css'), 'utf8');
-  const dark = readFileSync(resolve(cssDir, 'theme-dark.css'), 'utf8');
-
   for (const familyName of colorFamilyNames) {
-    expect(light).toContain(
-      `--ui-text-color-${familyName}: var(--ui-color-palette-${familyName}-800)`,
+    expect(lightTheme[`--ui-text-color-${familyName}` as keyof typeof lightTheme]).toBe(
+      `var(--ui-color-palette-${familyName}-800)`,
     );
-    expect(light).toContain(
-      `--ui-text-background-${familyName}: var(--ui-color-palette-${familyName}-100)`,
+    expect(lightTheme[`--ui-text-background-${familyName}` as keyof typeof lightTheme]).toBe(
+      `var(--ui-color-palette-${familyName}-100)`,
     );
-    expect(dark).toContain(
-      `--ui-text-color-${familyName}: var(--ui-color-palette-${familyName}-200)`,
+    expect(darkTheme[`--ui-text-color-${familyName}` as keyof typeof darkTheme]).toBe(
+      `var(--ui-color-palette-${familyName}-200)`,
     );
-    expect(dark).toContain(
-      `--ui-text-background-${familyName}: var(--ui-color-palette-${familyName}-900)`,
+    expect(darkTheme[`--ui-text-background-${familyName}` as keyof typeof darkTheme]).toBe(
+      `var(--ui-color-palette-${familyName}-900)`,
     );
   }
 });
@@ -126,14 +119,12 @@ test('semantic theme colors trace back to the shared palette foundation or monoc
   expect(sharedColorTheme['--ui-color-white']).toBe(baseMonochrome.white);
   expect(sharedColorTheme['--ui-color-text-on-brand']).toBe('var(--ui-color-white)');
   expect(sharedColorTheme['--ui-color-text-on-danger']).toBe('var(--ui-color-white)');
-  expect(lightTheme['--ui-color-canvas']).toBe('var(--ui-color-white)');
-  expect(darkTheme['--ui-color-canvas']).toBe('var(--ui-color-black)');
-  expect(lightTheme['--ui-color-brand-bg']).toBe('var(--ui-color-palette-emerald-700)');
+  expect(lightTheme['--ui-color-canvas']).toBe('#fefcf8');
+  expect(darkTheme['--ui-color-canvas']).toBe('var(--ui-color-palette-stone-950)');
+  expect(lightTheme['--ui-color-brand-bg']).toBe('var(--ui-color-palette-emerald-900)');
   expect(lightTheme['--ui-color-danger-bg']).toBe('var(--ui-color-palette-red-700)');
-  expect(lightTheme['--ui-color-link']).toBe('var(--ui-color-palette-emerald-700)');
-  expect(darkTheme['--ui-color-brand-bg']).toBe('var(--ui-color-palette-emerald-700)');
-  expect(darkTheme['--ui-color-danger-bg']).toBe('var(--ui-color-palette-red-700)');
-  expect(darkTheme['--ui-color-link']).toBe('var(--ui-color-palette-emerald-300)');
+  expect(darkTheme['--ui-color-brand-bg']).toBe('var(--ui-color-palette-emerald-600)');
+  expect(darkTheme['--ui-color-danger-bg']).toBe('var(--ui-color-palette-red-500)');
 });
 
 test('fonts asset directory contains the vendored Source Han Serif CN files', () => {

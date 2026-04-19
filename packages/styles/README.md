@@ -55,9 +55,9 @@ Governed tokens that components may consume. These map to theme-specific values 
 - `--ui-color-danger-bg` / `--ui-color-danger-bg-hover` / `--ui-color-danger-bg-active`
 - `--ui-color-danger-text` / `--ui-color-text-on-danger`
 - `--ui-color-focus-ring`
-- `--ui-color-link`
+- `--ui-color-surface-raised` / `--ui-color-brand-text`
 
-## Color Palette
+## 共享基础色卡（Color Palette）
 
 26 color families, each with 11 steps (`50` to `950`):
 
@@ -74,7 +74,7 @@ Plus `baseMonochrome`: `black` and `white`.
 ## Governance Rules
 
 - Semantic tokens must trace back to the shared color palette or `black` / `white`.
-- Do not add component-specific tokens without first proving the shared palette cannot serve the need.
+- 非必要不得新增特化 token — do not add component-specific tokens without first proving the shared palette cannot serve the need.
 - The canonical color review matrix lives in the Storybook `Color` story.
 
 ## License

@@ -41,7 +41,7 @@ test('consumer setup keeps the global style import explicit', () => {
   expect(stylesReadme).toContain('Source Han Serif');
   expect(lessBridge).toContain('@brand-bg');
   expect(lessBridge).toContain('@danger-bg');
-  expect(lessBridge).toContain('@link');
+  expect(lessBridge).toContain('@brand-text');
   expect(websiteMain).not.toContain('@deweyou-design/react/style.css');
   expect(storybookPreview).not.toContain('@deweyou-design/react/style.css');
 });

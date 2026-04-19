@@ -135,29 +135,38 @@ export const internalPrimitives = {
   color: {
     black: baseMonochrome.black,
     white: baseMonochrome.white,
-    neutralCanvas: baseMonochrome.white,
-    neutralSurface: colorPalette.neutral['50'],
-    neutralInk: colorPalette.neutral['950'],
-    neutralInkMuted: colorPalette.slate['700'],
-    borderSoft: colorPalette.slate['300'],
-    borderStrong: colorPalette.slate['400'],
-    brandBackground: colorPalette.emerald['700'],
-    brandBackgroundHover: colorPalette.emerald['800'],
-    brandBackgroundActive: colorPalette.emerald['900'],
+    // 暖白三档（自定义值，不走色板算法）
+    warmCanvas: '#fefcf8',
+    warmSurface: '#fffefb',
+    warmSurfaceRaised: '#ffffff',
+    // 文字
+    text: colorPalette.stone['950'],
+    textMuted: colorPalette.stone['500'],
+    textDisabled: colorPalette.stone['400'],
     textOnBrand: baseMonochrome.white,
+    textOnDanger: baseMonochrome.white,
+    // 边框
+    border: colorPalette.stone['200'],
+    borderStrong: colorPalette.stone['300'],
+    // 品牌（emerald 下沉）
+    brandBackground: colorPalette.emerald['900'],
+    brandBackgroundHover: colorPalette.emerald['950'],
+    brandBackgroundActive: colorPalette.emerald['950'],
+    brandText: colorPalette.emerald['800'],
+    // 危险
     dangerBackground: colorPalette.red['700'],
     dangerBackgroundHover: colorPalette.red['800'],
     dangerBackgroundActive: colorPalette.red['900'],
-    dangerText: colorPalette.red['800'],
-    textOnDanger: baseMonochrome.white,
-    focusRing: colorPalette.emerald['500'],
-    link: colorPalette.emerald['700'],
+    dangerText: colorPalette.red['700'],
+    // 焦点
+    focusRing: colorPalette.emerald['600'],
+    // 调色板引用
     palette: colorPalette,
     textPalette: colorPalette,
   },
   radius: {
-    sm: '0.5rem',
-    md: '0.9rem',
+    rect: '0',
+    float: '4px',
     pill: '999px',
   },
   spacing: {
@@ -169,6 +178,7 @@ export const internalPrimitives = {
   },
   shadow: {
     soft: '0 18px 40px rgba(24, 33, 29, 0.12)',
+    softDark: '0 18px 40px rgba(0, 0, 0, 0.34)',
   },
   font: {
     body: '"Source Han Serif CN Web", "Songti SC", "STSong", "SimSun", "NSimSun", serif',

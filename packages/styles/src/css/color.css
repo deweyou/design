@@ -1,4 +1,7 @@
 :root {
+  --ui-color-warm-white-1: #fefcf8;
+  --ui-color-warm-white-2: #fffefb;
+  --ui-color-warm-white-3: #ffffff;
   --ui-color-black: #000000;
   --ui-color-white: #ffffff;
   --ui-color-text-on-brand: var(--ui-color-white);

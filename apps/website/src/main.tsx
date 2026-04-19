@@ -23,10 +23,7 @@ import {
   Text,
 } from '@deweyou-design/react';
 import { useThemeMode } from '@deweyou-design/react-hooks';
-import { AddIcon } from '@deweyou-design/react-icons/add';
-import { ChevronRightIcon } from '@deweyou-design/react-icons/chevron-right';
-import { MenuIcon } from '@deweyou-design/react-icons/menu';
-import { SearchIcon } from '@deweyou-design/react-icons/search';
+import { ChevronRightIcon, Menu2Icon, PlusIcon, SearchIcon } from '@deweyou-design/react-icons';
 import '@deweyou-design/styles/theme.css';
 import { colorFamilyNames } from '@deweyou-design/styles';
 
@@ -297,7 +294,7 @@ const LoadingGuidancePreview = () => {
             loading
             variant="outlined"
           />
-          <Button.Icon aria-label="Syncing menu state" icon={<MenuIcon />} loading />
+          <Button.Icon aria-label="Syncing menu state" icon={<Menu2Icon />} loading />
         </div>
         <p>Icon-only actions replace the original icon with the spinner and still need a name.</p>
       </div>
@@ -310,7 +307,7 @@ const LoadingGuidancePreview = () => {
           <IconButton
             aria-label="Refreshing disabled action"
             disabled
-            icon={<AddIcon />}
+            icon={<PlusIcon />}
             loading
             variant="ghost"
           />
@@ -1224,8 +1221,13 @@ const App = () => (
           provide `aria-label` or `aria-labelledby`.
         </p>
         <div className="button-row">
-          <IconButton aria-label="Add item" icon={<AddIcon />} />
-          <Button.Icon aria-label="Open menu" icon={<MenuIcon />} shape="pill" variant="outlined" />
+          <IconButton aria-label="Add item" icon={<PlusIcon />} />
+          <Button.Icon
+            aria-label="Open menu"
+            icon={<Menu2Icon />}
+            shape="pill"
+            variant="outlined"
+          />
         </div>
       </article>
     </section>
