@@ -197,6 +197,9 @@ importers:
       '@deweyou-design/react-hooks':
         specifier: workspace:*
         version: link:../react-hooks/dist
+      '@deweyou-design/react-icons':
+        specifier: workspace:*
+        version: link:../react-icons/dist
       '@deweyou-design/styles':
         specifier: workspace:*
         version: link:../styles/dist
