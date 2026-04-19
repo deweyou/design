@@ -1,4 +1,4 @@
-import { type CSSProperties } from 'react';
+import { type CSSProperties, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import {
   createToaster,
@@ -31,6 +31,11 @@ const toasters: Record<ToastPosition, ReturnType<typeof createToaster>> = {
 // Tracks which position the mounted Toaster component uses.
 let _mountedPosition: ToastPosition = 'top';
 
+// Deduplication registry — only one Toaster per position renders at a time.
+// Prevents Storybook autodocs (which renders all stories simultaneously) from
+// mounting multiple Toasters that all subscribe to the same store.
+const _activeToasters = new Set<ToastPosition>();
+
 export const toast = {
   create: (options: ToastOptions) => {
     toasters[_mountedPosition].create({
@@ -59,6 +64,27 @@ const CloseIcon = () => (
 export const Toaster = ({ position = 'top', className, style }: ToasterProps) => {
   _mountedPosition = position;
   const toaster = toasters[position];
+
+  // Only the first mounted Toaster for a given position actually renders.
+  // Subsequent mounts (e.g. multiple stories on a Storybook docs page) are no-ops.
+  const ownerRef = useRef(false);
+  const [isOwner, setIsOwner] = useState(false);
+
+  useEffect(() => {
+    if (!_activeToasters.has(position)) {
+      _activeToasters.add(position);
+      ownerRef.current = true;
+      setIsOwner(true);
+    }
+    return () => {
+      if (ownerRef.current) {
+        _activeToasters.delete(position);
+        ownerRef.current = false;
+      }
+    };
+  }, [position]);
+
+  if (!isOwner) return null;
 
   return createPortal(
     <ArkToaster toaster={toaster}>
