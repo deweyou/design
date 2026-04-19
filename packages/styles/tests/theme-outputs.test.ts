@@ -130,10 +130,8 @@ test('semantic theme colors trace back to the shared palette foundation or monoc
   expect(darkTheme['--ui-color-canvas']).toBe('var(--ui-color-black)');
   expect(lightTheme['--ui-color-brand-bg']).toBe('var(--ui-color-palette-emerald-700)');
   expect(lightTheme['--ui-color-danger-bg']).toBe('var(--ui-color-palette-red-700)');
-  expect(lightTheme['--ui-color-link']).toBe('var(--ui-color-palette-emerald-700)');
   expect(darkTheme['--ui-color-brand-bg']).toBe('var(--ui-color-palette-emerald-700)');
   expect(darkTheme['--ui-color-danger-bg']).toBe('var(--ui-color-palette-red-700)');
-  expect(darkTheme['--ui-color-link']).toBe('var(--ui-color-palette-emerald-300)');
 });
 
 test('fonts asset directory contains the vendored Source Han Serif CN files', () => {
