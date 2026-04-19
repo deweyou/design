@@ -17,9 +17,9 @@
   min-width: 240px;
   opacity: var(--opacity, 1);
   padding: 12px 16px;
-  /* Animate opacity only — animating transform simultaneously with opacity
-     causes will-change GPU layer artifacts (duplicate ghost card on dismiss). */
-  transition: opacity 200ms ease;
+  /* No opacity transition — toast dismisses instantly (no fade ghost artifact).
+     Transform transition is kept for remaining toasts sliding up on reposition. */
+  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
   transform: translateX(-50%) translateY(var(--y, 0));
   width: 38vw;
   max-width: 480px;
