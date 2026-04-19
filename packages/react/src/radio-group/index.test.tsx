@@ -98,15 +98,15 @@ describe('RadioGroup — disabled state', () => {
 });
 
 describe('RadioGroup — value state', () => {
-  it('controlled value: selected item has aria-checked true', () => {
+  it('controlled value: selected item has data-state checked', () => {
     render(
       <RadioGroup.Root value="b">
         <RadioGroup.Item value="a">Option A</RadioGroup.Item>
         <RadioGroup.Item value="b">Option B</RadioGroup.Item>
       </RadioGroup.Root>,
     );
-    const radios = screen.getAllByRole('radio');
-    expect(radios[0].getAttribute('aria-checked')).toBe('false');
-    expect(radios[1].getAttribute('aria-checked')).toBe('true');
+    const items = document.querySelectorAll('[data-scope="radio-group"][data-part="item"]');
+    expect(items[0].getAttribute('data-state')).toBe('unchecked');
+    expect(items[1].getAttribute('data-state')).toBe('checked');
   });
 });

@@ -86,10 +86,7 @@ const RadioGroupItem = ({ value, disabled, children, className, style }: RadioGr
       className={classNames(styles.item, className)}
       style={style}
     >
-      <ArkRadioGroupItemHiddenInput
-        aria-disabled={isDisabled ? true : undefined}
-        aria-checked={isChecked}
-      />
+      <ArkRadioGroupItemHiddenInput aria-disabled={isDisabled ? true : undefined} />
       <ArkRadioGroupItemControl className={styles.control} />
       {children !== undefined && (
         <ArkRadioGroupItemText className={styles.itemText}>{children}</ArkRadioGroupItemText>

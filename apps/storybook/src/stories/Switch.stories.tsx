@@ -74,16 +74,21 @@ export const Interaction: StoryObj = {
   render: () => <Switch>Toggle me</Switch>,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
+    // SwitchTrack has role="switch" — use for aria-checked assertions only.
+    // Click the label text to trigger a single label→input activation; clicking
+    // SwitchTrack directly can cause a double-toggle in browser via the label's
+    // native input-forwarding mechanism.
     const sw = canvas.getByRole('switch');
+    const label = canvas.getByText('Toggle me');
     expect(sw).toBeInTheDocument();
     expect(sw.getAttribute('aria-checked')).toBe('false');
 
-    await userEvent.click(sw);
+    await userEvent.click(label);
     await waitFor(() => {
       expect(sw.getAttribute('aria-checked')).toBe('true');
     });
 
-    await userEvent.click(sw);
+    await userEvent.click(label);
     await waitFor(() => {
       expect(sw.getAttribute('aria-checked')).toBe('false');
     });

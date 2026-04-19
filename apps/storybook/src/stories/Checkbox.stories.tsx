@@ -116,18 +116,25 @@ export const Interaction: StoryObj = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    const checkbox = canvas.getByRole('checkbox');
-    expect(checkbox).toBeInTheDocument();
-    expect(checkbox.getAttribute('aria-checked')).toBe('false');
+    // ArkCheckboxControl carries data-state; use it for state assertions.
+    // Click the label text to trigger a single label→input activation instead
+    // of clicking the hidden input directly (which is not pointer-interactable
+    // in a real browser).
+    const control = canvasElement.querySelector(
+      '[data-scope="checkbox"][data-part="control"]',
+    ) as HTMLElement;
+    const label = canvas.getByText('Click to toggle');
+    expect(control).toBeInTheDocument();
+    expect(control.getAttribute('data-state')).toBe('unchecked');
 
-    await userEvent.click(checkbox);
+    await userEvent.click(label);
     await waitFor(() => {
-      expect(checkbox.getAttribute('aria-checked')).toBe('true');
+      expect(control.getAttribute('data-state')).toBe('checked');
     });
 
-    await userEvent.click(checkbox);
+    await userEvent.click(label);
     await waitFor(() => {
-      expect(checkbox.getAttribute('aria-checked')).toBe('false');
+      expect(control.getAttribute('data-state')).toBe('unchecked');
     });
   },
 };
