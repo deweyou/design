@@ -5,6 +5,7 @@ import { Badge } from '@deweyou-design/react/badge';
 
 const variants = ['soft', 'solid', 'outline'] as const;
 const colors = ['neutral', 'primary', 'danger', 'success', 'warning'] as const;
+const shapes = ['pill', 'rounded', 'rect'] as const;
 
 const meta = {
   title: 'Components/Badge',
@@ -72,6 +73,29 @@ export const States: Story = {
       <Badge color="warning">Pending</Badge>
       <Badge color="primary">New</Badge>
       <Badge color="neutral">Draft</Badge>
+    </div>
+  ),
+};
+
+export const Shapes: Story = {
+  render: () => (
+    <div style={{ display: 'grid', gap: '16px' }}>
+      {shapes.map((shape) => (
+        <div key={shape} style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          <span style={{ width: '64px', fontSize: '0.8rem', color: 'var(--ui-color-text-muted)' }}>
+            {shape}
+          </span>
+          <Badge shape={shape} variant="soft" color="primary">
+            Soft
+          </Badge>
+          <Badge shape={shape} variant="solid" color="danger">
+            Solid
+          </Badge>
+          <Badge shape={shape} variant="outline" color="success">
+            Outline
+          </Badge>
+        </div>
+      ))}
     </div>
   ),
 };
