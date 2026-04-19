@@ -3,9 +3,19 @@ import { expect, waitFor, within } from 'storybook/test';
 
 import { ScrollArea } from '@deweyou-design/react/scroll-area';
 
+const sizeOptions = ['sm', 'md', 'lg'] as const;
+
 const meta: Meta = {
   title: 'Components/ScrollArea',
   tags: ['autodocs'],
+  argTypes: {
+    size: {
+      description: 'Scrollbar thickness. sm = 4px, md = 8px (default), lg = 12px.',
+      control: { type: 'select' },
+      options: sizeOptions,
+      table: { defaultValue: { summary: 'md' } },
+    },
+  },
   parameters: {
     docs: {
       description: {
@@ -128,6 +138,50 @@ export const Variants: StoryObj = {
           </ScrollArea.Scrollbar>
         </ScrollArea.Root>
       </div>
+    </div>
+  ),
+};
+
+export const Sizes: StoryObj = {
+  render: () => (
+    <div style={{ display: 'flex', gap: '32px', flexWrap: 'wrap' }}>
+      {sizeOptions.map((size) => (
+        <div key={size}>
+          <p
+            style={{
+              color: 'var(--ui-color-text-muted)',
+              fontSize: '0.75rem',
+              marginBottom: '8px',
+            }}
+          >
+            size=&quot;{size}&quot;
+          </p>
+          <ScrollArea.Root
+            style={{
+              height: '160px',
+              width: '220px',
+              border: '1px solid var(--ui-color-border)',
+              borderRadius: 'var(--ui-radius-float)',
+            }}
+          >
+            <ScrollArea.Viewport>
+              <div
+                style={{
+                  color: 'var(--ui-color-text)',
+                  fontSize: '0.875rem',
+                  padding: '12px',
+                  whiteSpace: 'pre-line',
+                }}
+              >
+                {longText}
+              </div>
+            </ScrollArea.Viewport>
+            <ScrollArea.Scrollbar orientation="vertical" size={size}>
+              <ScrollArea.Thumb />
+            </ScrollArea.Scrollbar>
+          </ScrollArea.Root>
+        </div>
+      ))}
     </div>
   ),
 };

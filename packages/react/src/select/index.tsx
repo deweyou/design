@@ -40,6 +40,18 @@ const ChevronDownSvg = () => (
   </svg>
 );
 
+const CheckSvg = () => (
+  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" aria-hidden="true">
+    <path
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="square"
+      strokeLinejoin="miter"
+      d="M5 12L10 17L19 8"
+    />
+  </svg>
+);
+
 /** Recursively extract SelectItem data from children tree at render time. */
 const extractItems = (children: ReactNode): ItemData[] => {
   const items: ItemData[] = [];
@@ -196,6 +208,9 @@ const SelectItem = ({ value, label, disabled, className, style }: SelectItemProp
     style={style}
   >
     <ArkSelectItemText>{label}</ArkSelectItemText>
+    <span className={styles.itemCheck}>
+      <CheckSvg />
+    </span>
   </ArkSelectItem>
 );
 

@@ -136,14 +136,17 @@
   font-weight: var(--ui-font-weight-emphasis);
 }
 
-.item[data-state='checked']::after {
-  content: '✓';
+.itemCheck {
+  align-items: center;
   color: var(--ui-color-brand-bg);
-  font-size: 0.875rem;
-  font-weight: 600;
+  display: none;
+  flex-shrink: 0;
   margin-inline-start: auto;
   padding-inline-start: 0.5rem;
-  flex-shrink: 0;
+}
+
+.item[data-state='checked'] .itemCheck {
+  display: flex;
 }
 
 .item[data-disabled] {

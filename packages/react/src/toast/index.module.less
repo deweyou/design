@@ -14,36 +14,43 @@
   display: flex;
   gap: 12px;
   left: 50%;
-  max-width: min(400px, calc(100vw - 32px));
+  min-width: 240px;
   opacity: var(--opacity, 1);
   padding: 12px 16px;
+  pointer-events: var(--pointer-events, auto);
   transform: translateX(-50%) translateY(var(--y, 0));
   transition:
-    opacity 160ms ease,
-    transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
-  width: max-content;
+    opacity 200ms ease,
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  width: 38vw;
+  max-width: 480px;
   will-change: transform, opacity;
 }
 
-/* variant — tinted background + matching border (Alert-style) */
+/* Prevent interaction and reflow flash during exit */
+.toast[data-state='closed'] {
+  pointer-events: none;
+}
+
+/* variant — tinted solid background + matching border (Alert-style) */
 .info {
-  background: color-mix(in srgb, var(--ui-color-brand-bg) 8%, transparent);
-  border-color: color-mix(in srgb, var(--ui-color-brand-bg) 20%, transparent);
+  background: color-mix(in srgb, var(--ui-color-brand-bg) 10%, var(--ui-color-surface));
+  border-color: color-mix(in srgb, var(--ui-color-brand-bg) 25%, transparent);
 }
 
 .success {
-  background: color-mix(in srgb, #16a34a 8%, transparent);
-  border-color: color-mix(in srgb, #16a34a 20%, transparent);
+  background: color-mix(in srgb, #16a34a 10%, var(--ui-color-surface));
+  border-color: color-mix(in srgb, #16a34a 25%, transparent);
 }
 
 .warning {
-  background: color-mix(in srgb, #d97706 8%, transparent);
-  border-color: color-mix(in srgb, #d97706 20%, transparent);
+  background: color-mix(in srgb, #d97706 10%, var(--ui-color-surface));
+  border-color: color-mix(in srgb, #d97706 25%, transparent);
 }
 
 .danger {
-  background: color-mix(in srgb, var(--ui-color-danger-bg) 8%, transparent);
-  border-color: color-mix(in srgb, var(--ui-color-danger-bg) 20%, transparent);
+  background: color-mix(in srgb, var(--ui-color-danger-bg) 10%, var(--ui-color-surface));
+  border-color: color-mix(in srgb, var(--ui-color-danger-bg) 25%, transparent);
 }
 
 .body {
