@@ -154,6 +154,11 @@
 
 **意图**：通用表面容器，用于对相关内容进行视觉分组。提供统一的边框、背景色和圆角。
 
+**Props**
+
+- `padding?: 'none' | 'sm' | 'md' | 'lg'`（默认 `md`）
+- `shape?: 'auto' | 'rect'`（默认 `auto`）：`auto` = 0.8rem 圆角，`rect` = 直角
+
 **正确用法**
 
 ```tsx
@@ -164,6 +169,7 @@
 <Card padding="none">
   <img src="cover.jpg" alt="" />
 </Card>
+<Card shape="rect">直角卡片</Card>
 ```
 
 **反模式**
@@ -371,6 +377,11 @@ toast.create({ title: '操作失败', description: '请重试', variant: 'danger
 
 **意图**：自定义滚动条样式的容器，隐藏原生滚动条。复合组件：`ScrollArea.Root + Viewport + Scrollbar + Thumb`。
 
+**Props**
+
+- `ScrollArea.Scrollbar` 接受 `size?: 'sm' | 'md' | 'lg'`，控制滚动条粗细（默认 `md` = 8px，`sm` = 4px，`lg` = 12px）
+- 滚动条 thumb 使用主题品牌色（`--ui-color-brand-bg`），悬停时加深
+
 **正确用法**
 
 ```tsx
@@ -379,7 +390,17 @@ toast.create({ title: '操作失败', description: '请重试', variant: 'danger
   <ScrollArea.Scrollbar orientation="vertical">
     <ScrollArea.Thumb />
   </ScrollArea.Scrollbar>
-</ScrollArea.Root>
+</ScrollArea.Root>;
+
+{
+  /* 细滚动条 */
+}
+<ScrollArea.Root style={{ height: '200px' }}>
+  <ScrollArea.Viewport>{/* content */}</ScrollArea.Viewport>
+  <ScrollArea.Scrollbar orientation="vertical" size="sm">
+    <ScrollArea.Thumb />
+  </ScrollArea.Scrollbar>
+</ScrollArea.Root>;
 ```
 
 **反模式**

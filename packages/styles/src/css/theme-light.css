@@ -22,6 +22,7 @@
   --ui-color-text-on-danger: var(--ui-color-white);
   --ui-color-focus-ring: var(--ui-color-palette-emerald-600);
   --ui-radius-rect: 0;
+  --ui-radius-auto: 0.8rem;
   --ui-radius-float: 4px;
   --ui-radius-pill: 999px;
   --ui-shadow-soft: 0 18px 40px rgba(24, 33, 29, 0.12);

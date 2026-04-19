@@ -7,7 +7,6 @@
   align-items: flex-start;
   background: var(--ui-color-surface);
   border: 1px solid var(--ui-color-border);
-  border-left-width: 4px;
   border-radius: var(--ui-radius-float);
   box-shadow: 0 4px 16px rgba(24, 33, 29, 0.08);
   box-sizing: border-box;
@@ -26,21 +25,25 @@
   will-change: transform, opacity;
 }
 
-/* variant — solid left accent bar */
+/* variant — tinted background + matching border (Alert-style) */
 .info {
-  border-left-color: var(--ui-color-brand-bg);
+  background: color-mix(in srgb, var(--ui-color-brand-bg) 8%, transparent);
+  border-color: color-mix(in srgb, var(--ui-color-brand-bg) 20%, transparent);
 }
 
 .success {
-  border-left-color: #16a34a;
+  background: color-mix(in srgb, #16a34a 8%, transparent);
+  border-color: color-mix(in srgb, #16a34a 20%, transparent);
 }
 
 .warning {
-  border-left-color: #d97706;
+  background: color-mix(in srgb, #d97706 8%, transparent);
+  border-color: color-mix(in srgb, #d97706 20%, transparent);
 }
 
 .danger {
-  border-left-color: var(--ui-color-danger-bg);
+  background: color-mix(in srgb, var(--ui-color-danger-bg) 8%, transparent);
+  border-color: color-mix(in srgb, var(--ui-color-danger-bg) 20%, transparent);
 }
 
 .body {
