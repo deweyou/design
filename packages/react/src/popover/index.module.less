@@ -16,7 +16,7 @@
   --popover-surface-background: var(--ui-color-surface);
   --popover-surface-padding-block: 0.8rem;
   --popover-surface-padding-inline: 0.9rem;
-  --popover-surface-radius: 0.4rem;
+  --popover-surface-radius: var(--ui-radius-float);
   --popover-surface-transform-distance: 6px;
   --popover-surface-width: max-content;
   --popover-z-index: 1080;
@@ -30,11 +30,11 @@
 }
 
 .overlay[data-shape='rect'] {
-  --popover-surface-radius: 0;
+  --popover-surface-radius: var(--ui-radius-rect);
 }
 
 .overlay[data-shape='rounded'] {
-  --popover-surface-radius: 0.4rem;
+  --popover-surface-radius: var(--ui-radius-float);
 }
 
 .surface {

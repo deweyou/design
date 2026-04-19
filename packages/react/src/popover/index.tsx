@@ -21,10 +21,13 @@ import { Popover as ArkPopover, usePopoverContext } from '@ark-ui/react/popover'
 
 import styles from './index.module.less';
 
+/** Interaction types that can open the Popover. */
 export const popoverTriggerOptions = ['click', 'hover', 'focus', 'context-menu'] as const;
 
+/** Interaction that opens the Popover. Combine multiple values in an array. */
 export type PopoverTrigger = (typeof popoverTriggerOptions)[number];
 
+/** Placement values relative to the trigger element. */
 export const popoverPlacementOptions = [
   'top',
   'bottom',
@@ -36,14 +39,26 @@ export const popoverPlacementOptions = [
   'right-bottom',
 ] as const;
 
+/** Preferred side and alignment of the floating panel. Fallback applies automatically. */
 export type PopoverPlacement = (typeof popoverPlacementOptions)[number];
 
 export const popoverModeOptions = ['card', 'loose', 'pure'] as const;
 
+/**
+ * Panel content mode.
+ * - 'card' — bordered, shadowed, padded, with arrow.
+ * - 'loose' — more padding, same chrome.
+ * - 'pure' — no padding, no border chrome; shape still applies.
+ */
 export type PopoverMode = (typeof popoverModeOptions)[number];
 
 export const popoverShapeOptions = ['rect', 'rounded'] as const;
 
+/**
+ * Corner shape of the panel surface.
+ * - 'rounded' — var(--ui-radius-float) (4px).
+ * - 'rect' — var(--ui-radius-rect) (0).
+ */
 export type PopoverShape = (typeof popoverShapeOptions)[number];
 
 export const popoverVisibilityChangeReasonOptions = [
@@ -64,24 +79,39 @@ export type PopoverVisibilityChangeDetails = {
 };
 
 export type PopoverProps = Omit<HTMLAttributes<HTMLElement>, 'children' | 'content'> & {
+  /** Minimum distance in pixels the panel must maintain from the viewport edge. Defaults to 16. */
   boundaryPadding?: number;
+  /** Trigger element. The popover attaches to this for positioning and event handling. */
   children?: ReactNode;
+  /** Content rendered inside the floating panel. Required. */
   content: ReactNode;
+  /** Initial visibility for uncontrolled usage. Defaults to false. */
   defaultVisible?: boolean;
+  /** When true, the popover cannot be opened by any trigger. */
   disabled?: boolean;
+  /** Panel content mode. 'card' (default) | 'loose' | 'pure'. */
   mode?: PopoverMode;
+  /** Distance in pixels between the trigger and the panel edge. Defaults to 8. */
   offset?: number;
+  /** Callback fired when the popover opens or closes. */
   onVisibleChange?: (visible: boolean, details: PopoverVisibilityChangeDetails) => void;
+  /** Additional CSS class applied to the floating overlay element. */
   overlayClassName?: string;
+  /** Inline style applied to the floating overlay element. */
   overlayStyle?: CSSProperties;
+  /** Preferred placement relative to the trigger. Defaults to 'bottom'. */
   placement?: PopoverPlacement;
+  /** DOM node or ref to mount the panel into. Defaults to document.body. */
   popupPortalContainer?:
     | HTMLElement
     | ShadowRoot
     | null
     | { current: HTMLElement | ShadowRoot | null };
+  /** Corner shape of the panel. 'rounded' (default) | 'rect'. */
   shape?: PopoverShape;
+  /** Interaction that opens the popover. Defaults to 'click'. */
   trigger?: PopoverTrigger | readonly PopoverTrigger[];
+  /** Controlled visibility. Use with onVisibleChange for full control. */
   visible?: boolean;
 };
 
