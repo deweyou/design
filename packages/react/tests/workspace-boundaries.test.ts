@@ -189,7 +189,8 @@ test('button and text keep consuming shared color sources instead of package-pri
   expect(textSource).toContain('colorFamilyNames');
   expect(buttonStyles).toContain('--ui-color-brand-bg');
   expect(buttonStyles).toContain('--ui-color-danger-bg');
-  expect(buttonStyles).toContain('--ui-color-link');
+  // --ui-color-link was removed from the design token library; link variant now uses --ui-color-text
+  expect(buttonStyles).not.toContain('--ui-color-link');
   expect(buttonStyles).not.toContain('--ui-color-palette-');
   expect(storybookColor).toContain('Shared color foundation');
   expect(storybookColor).toContain('Use Storybook theme switching');
