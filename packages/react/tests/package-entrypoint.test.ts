@@ -16,7 +16,7 @@ const exampleButtonProps: import('../src').ButtonProps = {
   color: 'primary',
   icon: createElement(SearchIcon),
   shape: 'pill',
-  size: 'medium',
+  size: 'md',
   type: 'button',
   variant: 'outlined',
 };
@@ -29,7 +29,7 @@ const exampleIconButtonProps: import('../src').IconButtonProps = {
   icon: createElement(SearchIcon),
   loading: true,
   shape: 'pill',
-  size: 'medium',
+  size: 'md',
   target: '_blank',
   variant: 'outlined',
 };

@@ -25,7 +25,7 @@ const exampleButtonProps: ButtonProps = {
   color: 'primary',
   icon: createElement(SearchIcon),
   shape: 'pill',
-  size: 'medium',
+  size: 'md',
   type: 'button',
   variant: 'outlined',
 };
@@ -35,7 +35,7 @@ const exampleIconButtonProps: IconButtonProps = {
   color: 'danger',
   icon: createElement(SearchIcon),
   shape: 'pill',
-  size: 'medium',
+  size: 'md',
   variant: 'outlined',
 };
 
@@ -69,8 +69,8 @@ test('button defaults to filled medium with rounded shape and text-only mode', (
   expect(markup).toContain('data-content-mode="text-only"');
   expect(markup).toContain('data-icon-only="false"');
   expect(markup).toContain('data-loading="false"');
-  expect(markup).toContain('data-shape="rounded"');
-  expect(markup).toContain('data-size="medium"');
+  expect(markup).toContain('data-shape="float"');
+  expect(markup).toContain('data-size="md"');
   expect(markup).toContain('data-variant="filled"');
   expect(markup).toContain('>Save<');
 });
@@ -176,7 +176,7 @@ test('outlined buttons rely on the native border instead of an extra overlay lay
 test('button styles consume shared semantic theme tokens instead of raw palette steps', () => {
   expect(stylesheet).toContain('--ui-color-brand-bg');
   expect(stylesheet).toContain('--ui-color-danger-bg');
-  expect(stylesheet).toContain('--ui-color-link');
+  expect(stylesheet).not.toContain('--ui-color-link');
   expect(stylesheet).toContain('--ui-color-focus-ring');
   expect(stylesheet).not.toContain('--ui-color-palette-');
 });
@@ -202,7 +202,7 @@ test('button keeps every documented text variant on the shared API surface', () 
 
   for (const variant of variants) {
     const markup = renderToStaticMarkup(
-      createElement(Button, { variant, size: 'large' }, `${variant} action`),
+      createElement(Button, { variant, size: 'lg' }, `${variant} action`),
     );
 
     expect(markup).toContain(`data-variant="${variant}"`);
@@ -422,12 +422,12 @@ test('button stylesheet protects descenders and keeps the custom underline ancho
   expect(stylesheet).toContain('margin-block-end: -0.08em;');
   expect(stylesheet).toContain('.linkContent');
   expect(stylesheet).toContain('.linkUnderlineDecoration');
-  expect(stylesheet).toContain('clip-path: inset(0 100% 0 0 round 999px);');
+  expect(stylesheet).toContain('clip-path: inset(0 100% 0 0 round var(--ui-radius-pill));');
 });
 
 test('button stylesheet reveals the link underline on hover without falling back to native underline styling', () => {
   expect(stylesheet).toContain(".link:hover:not([data-disabled='true']) .linkUnderlineDecoration");
-  expect(stylesheet).toContain('clip-path: inset(0 0 0 0 round 999px);');
+  expect(stylesheet).toContain('clip-path: inset(0 0 0 0 round var(--ui-radius-pill));');
   expect(stylesheet).toContain('text-decoration-line: none;');
   expect(stylesheet).not.toContain('text-decoration: underline;');
 });

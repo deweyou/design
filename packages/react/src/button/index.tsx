@@ -55,13 +55,7 @@ export type ShapeableButtonVariant = (typeof buttonShapeableVariantOptions)[numb
 /**
  * Supported size names for the public button APIs.
  */
-export const buttonSizeOptions = [
-  'extra-small',
-  'small',
-  'medium',
-  'large',
-  'extra-large',
-] as const;
+export const buttonSizeOptions = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
 
 /**
  * Standard size scale for Button and IconButton spacing.
@@ -71,7 +65,7 @@ export type ButtonSize = (typeof buttonSizeOptions)[number];
 /**
  * Supported shape names for variants that expose the `shape` prop.
  */
-export const buttonShapeOptions = ['rect', 'rounded', 'pill'] as const;
+export const buttonShapeOptions = ['rect', 'float', 'pill'] as const;
 
 /**
  * Public shape values for `filled` and `outlined` Buttons.
@@ -87,8 +81,8 @@ type AnchorDomProps = AnchorHTMLAttributes<HTMLAnchorElement>;
  * Documents which shapes are supported by each public button variant.
  */
 export const buttonShapeSupport = {
-  filled: ['rect', 'rounded', 'pill'],
-  outlined: ['rect', 'rounded', 'pill'],
+  filled: ['rect', 'float', 'pill'],
+  outlined: ['rect', 'float', 'pill'],
   ghost: [],
   link: [],
 } as const satisfies Record<ButtonVariant, readonly ButtonShape[]>;
@@ -97,8 +91,8 @@ export const buttonShapeSupport = {
  * Documents the default shape used when a shapeable variant omits `shape`.
  */
 export const buttonDefaultShapeByVariant = {
-  filled: 'rounded',
-  outlined: 'rounded',
+  filled: 'float',
+  outlined: 'float',
 } as const satisfies Record<ShapeableButtonVariant, ButtonShape>;
 
 type SharedButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -135,9 +129,7 @@ type SharedButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
    * Displays a leading loading spinner and blocks repeated activation.
    */
   loading?: boolean;
-  /**
-   * Standard size scale for the Button. Defaults to `medium`.
-   */
+  /** Size scale. 'xs' | 'sm' | 'md' | 'lg' | 'xl'. Defaults to 'md'. */
   size?: ButtonSize;
   /**
    * Passes through to the button root without changing semantics.
@@ -203,16 +195,16 @@ const colorClassNames: Record<ButtonColor, string> = {
 };
 
 const sizeClassNames: Record<ButtonSize, string> = {
-  'extra-small': styles.sizeExtraSmall,
-  small: styles.sizeSmall,
-  medium: styles.sizeMedium,
-  large: styles.sizeLarge,
-  'extra-large': styles.sizeExtraLarge,
+  xs: styles.sizeXs,
+  sm: styles.sizeSm,
+  md: styles.sizeMd,
+  lg: styles.sizeLg,
+  xl: styles.sizeXl,
 };
 
 const shapeClassNames: Record<ButtonShape, string> = {
   rect: styles.shapeRect,
-  rounded: styles.shapeRounded,
+  float: styles.shapeFloat,
   pill: styles.shapePill,
 };
 
@@ -643,7 +635,7 @@ export const IconButton = forwardRef<HTMLElement, IconButtonProps>(function Icon
     icon,
     loading = false,
     shape,
-    size = 'medium',
+    size = 'md',
     target,
     type,
     variant = 'filled',
@@ -698,7 +690,7 @@ const ButtonBase = forwardRef<HTMLElement, ButtonProps>(function ButtonBase(
     label,
     loading = false,
     shape,
-    size = 'medium',
+    size = 'md',
     target,
     type,
     variant = 'filled',
