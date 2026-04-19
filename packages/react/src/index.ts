@@ -69,7 +69,13 @@ export {
 } from './menu/index.tsx';
 export { Input, type InputProps, type InputSize } from './input/index.tsx';
 export { Textarea, type TextareaProps, type TextareaSize } from './textarea/index.tsx';
-export { Badge, type BadgeProps, type BadgeVariant, type BadgeColor } from './badge/index.tsx';
+export {
+  Badge,
+  type BadgeProps,
+  type BadgeVariant,
+  type BadgeColor,
+  type BadgeShape,
+} from './badge/index.tsx';
 export { Spinner, type SpinnerProps } from './spinner/index.tsx';
 export { Separator, type SeparatorProps } from './separator/index.tsx';
 export { Alert, type AlertProps, type AlertVariant } from './alert/index.tsx';
