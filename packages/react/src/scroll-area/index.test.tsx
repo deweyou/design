@@ -1,9 +1,19 @@
 // @vitest-environment jsdom
 
 import { cleanup, render, screen } from '@testing-library/react';
-import { afterEach, describe, expect, it } from 'vite-plus/test';
+import { afterEach, beforeEach, describe, expect, it } from 'vite-plus/test';
 
 import { ScrollArea } from './index.tsx';
+
+beforeEach(() => {
+  if (!window.IntersectionObserver) {
+    window.IntersectionObserver = class IntersectionObserver {
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    } as unknown as typeof IntersectionObserver;
+  }
+});
 
 afterEach(() => {
   cleanup();

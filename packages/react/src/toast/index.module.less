@@ -3,37 +3,44 @@
 .toast {
   align-items: flex-start;
   background: var(--ui-color-surface);
-  border: 1px solid color-mix(in srgb, var(--ui-color-border) 50%, transparent);
-  border-radius: var(--ui-radius-auto, 0.8rem);
-  box-shadow: var(--ui-shadow-soft);
+  border: 1px solid var(--ui-color-border);
+  border-radius: var(--ui-radius-float);
   color: var(--ui-color-text);
   display: flex;
   gap: 12px;
-  max-width: min(400px, calc(100vw - 32px));
-  overflow: hidden;
-  padding: 14px 16px;
+  max-width: 100%;
+  padding: 12px 16px;
   position: relative;
+  width: 100%;
 }
 
 .toast[data-state='open'] {
-  animation: toastIn 300ms cubic-bezier(0.22, 1, 0.36, 1);
+  animation: toastIn 160ms cubic-bezier(0.22, 1, 0.36, 1);
 }
+
 .toast[data-state='closed'] {
   animation: toastOut 160ms ease forwards;
 }
 
-/* variant accent bars */
+/* variant — Alert-style tinted backgrounds */
 .info {
-  border-left: 4px solid #3b82f6;
+  background: color-mix(in srgb, var(--ui-color-brand-bg) 8%, transparent);
+  border-color: color-mix(in srgb, var(--ui-color-brand-bg) 24%, transparent);
 }
+
 .success {
-  border-left: 4px solid var(--ui-color-brand-bg, #22c55e);
+  background: color-mix(in srgb, #16a34a 8%, transparent);
+  border-color: color-mix(in srgb, #16a34a 24%, transparent);
 }
+
 .warning {
-  border-left: 4px solid #d97706;
+  background: color-mix(in srgb, #d97706 8%, transparent);
+  border-color: color-mix(in srgb, #d97706 24%, transparent);
 }
+
 .danger {
-  border-left: 4px solid var(--ui-color-danger-text, #ef4444);
+  background: color-mix(in srgb, var(--ui-color-danger-bg) 8%, transparent);
+  border-color: color-mix(in srgb, var(--ui-color-danger-bg) 24%, transparent);
 }
 
 .body {
@@ -52,7 +59,7 @@
 
 .description {
   color: var(--ui-color-text-muted);
-  font-size: 0.8rem;
+  font-size: 0.8125rem;
   line-height: 1.5;
 }
 
@@ -60,7 +67,7 @@
   align-items: center;
   background: none;
   border: none;
-  border-radius: 50%;
+  border-radius: var(--ui-radius-float);
   color: var(--ui-color-text);
   cursor: pointer;
   display: flex;
@@ -70,17 +77,18 @@
   opacity: 0.5;
   padding: 0;
   transition:
-    background 120ms ease,
-    opacity 120ms ease;
+    background 140ms ease,
+    opacity 140ms ease;
   width: 24px;
 
   &:hover {
-    background: color-mix(in srgb, currentColor 6%, transparent);
+    background: color-mix(in srgb, currentColor 8%, transparent);
     opacity: 1;
   }
+
   &:focus-visible {
     opacity: 1;
-    outline: 2px solid var(--ui-color-brand-bg);
+    outline: 2px solid var(--ui-color-focus-ring);
     outline-offset: 2px;
   }
 }
@@ -88,11 +96,11 @@
 @keyframes toastIn {
   from {
     opacity: 0;
-    transform: translateX(16px);
+    transform: translateY(-6px) scale(0.98);
   }
   to {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateY(0) scale(1);
   }
 }
 
@@ -103,7 +111,7 @@
   }
   to {
     opacity: 0;
-    transform: scale(0.96);
+    transform: scale(0.97) translateY(-4px);
   }
 }
 

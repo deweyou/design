@@ -37,7 +37,8 @@ const SwitchTrack = ({
       aria-disabled={ctx.disabled ? true : undefined}
       data-state={ctx.checked ? 'checked' : 'unchecked'}
       className={className}
-      onClick={() => {
+      onClick={(e) => {
+        e.stopPropagation();
         if (!ctx.disabled) {
           inputRef.current?.click();
         }

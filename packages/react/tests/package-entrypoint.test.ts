@@ -66,7 +66,6 @@ test('components root entry exposes Button, IconButton, Popover, Text, Menu fami
     'Breadcrumb',
     'Button',
     'Card',
-    'Carousel',
     'Checkbox',
     'ContextMenu',
     'Dialog',

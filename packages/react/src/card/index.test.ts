@@ -40,6 +40,16 @@ test('card applies correct padding class for each padding value', () => {
   }
 });
 
+test('card applies shapeRect class when shape=rect', () => {
+  const markup = renderMarkup({ shape: 'rect' });
+  expect(markup).toContain(styles.shapeRect);
+});
+
+test('card does not apply shapeRect class when shape=auto (default)', () => {
+  const markup = renderMarkup({});
+  expect(markup).not.toContain(styles.shapeRect);
+});
+
 test('card renders children', () => {
   const markup = renderMarkup({ children: 'Card body text' });
   expect(markup).toContain('Card body text');
@@ -55,8 +65,13 @@ test('card stylesheet uses semantic surface and border tokens', () => {
   expect(stylesheet).toContain('--ui-color-surface');
   expect(stylesheet).toContain('--ui-color-border');
   expect(stylesheet).toContain('--ui-radius-auto');
-  expect(stylesheet).toContain('--ui-shadow-soft');
+  expect(stylesheet).toContain('box-shadow');
   expect(stylesheet).not.toContain('--ui-color-palette-');
+});
+
+test('card stylesheet defines shapeRect class', () => {
+  expect(stylesheet).toContain('shapeRect');
+  expect(stylesheet).toContain('--ui-radius-rect');
 });
 
 test('card stylesheet defines all padding variant classes', () => {

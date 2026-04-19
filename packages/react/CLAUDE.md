@@ -409,31 +409,6 @@ toast.create({ title: '操作失败', description: '请重试', variant: 'danger
 
 ---
 
-### Carousel
-
-**意图**：横向滑动轮播组件。复合组件：`Carousel.Root + ItemGroup + Item + PrevTrigger + NextTrigger + IndicatorGroup + Indicator`。
-
-**正确用法**
-
-```tsx
-<Carousel.Root slideCount={3}>
-  <Carousel.ItemGroup>
-    <Carousel.Item index={0}>Slide 1</Carousel.Item>
-    <Carousel.Item index={1}>Slide 2</Carousel.Item>
-    <Carousel.Item index={2}>Slide 3</Carousel.Item>
-  </Carousel.ItemGroup>
-  <Carousel.PrevTrigger>‹</Carousel.PrevTrigger>
-  <Carousel.NextTrigger>›</Carousel.NextTrigger>
-</Carousel.Root>
-```
-
-**反模式**
-
-- `slideCount` 必须与实际 `Item` 数量匹配，否则导航行为不正确
-- 不要在 `Item` 内放置超大图片而不限制尺寸，会撑破布局
-
----
-
 ### Pagination
 
 **意图**：分页控制器，用于分批展示大量数据列表。Flat props API，不是 compound 模式。

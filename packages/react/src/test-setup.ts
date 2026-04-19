@@ -10,7 +10,7 @@ if (typeof HTMLElement !== 'undefined') {
 }
 
 // jsdom does not implement IntersectionObserver or ResizeObserver — stub them
-// to prevent unhandled errors from Ark UI's carousel and scroll-area state machines.
+// to prevent unhandled errors from Ark UI's scroll-area state machine.
 if (typeof globalThis.IntersectionObserver === 'undefined') {
   class IntersectionObserverStub {
     observe() {}

@@ -79,7 +79,7 @@ export {
 export { Spinner, type SpinnerProps } from './spinner/index.tsx';
 export { Separator, type SeparatorProps } from './separator/index.tsx';
 export { Alert, type AlertProps, type AlertVariant } from './alert/index.tsx';
-export { Card, type CardProps, type CardPadding } from './card/index.tsx';
+export { Card, type CardProps, type CardPadding, type CardShape } from './card/index.tsx';
 export {
   Breadcrumb,
   type BreadcrumbRootProps,
@@ -123,6 +123,7 @@ export {
   toast,
   Toaster,
   type ToastVariant,
+  type ToastPosition,
   type ToastOptions,
   type ToasterProps,
 } from './toast/index.tsx';
@@ -133,14 +134,4 @@ export {
   type ScrollAreaScrollbarProps,
   type ScrollAreaThumbProps,
 } from './scroll-area/index.tsx';
-export {
-  Carousel,
-  type CarouselRootProps,
-  type CarouselItemGroupProps,
-  type CarouselItemProps,
-  type CarouselPrevTriggerProps,
-  type CarouselNextTriggerProps,
-  type CarouselIndicatorGroupProps,
-  type CarouselIndicatorProps,
-} from './carousel/index.tsx';
 export { Pagination, type PaginationProps } from './pagination/index.tsx';

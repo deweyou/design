@@ -78,11 +78,6 @@
       "import": "./dist/scroll-area/index.js",
       "types": "./dist/scroll-area/index.d.ts"
     },
-    "./carousel": {
-      "default": "./dist/carousel/index.js",
-      "import": "./dist/carousel/index.js",
-      "types": "./dist/carousel/index.d.ts"
-    },
     "./pagination": {
       "default": "./dist/pagination/index.js",
       "import": "./dist/pagination/index.js",

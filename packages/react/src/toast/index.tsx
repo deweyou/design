@@ -13,6 +13,7 @@ import classNames from 'classnames';
 import styles from './index.module.less';
 
 export type ToastVariant = 'info' | 'success' | 'warning' | 'danger';
+export type ToastPosition = 'top' | 'bottom';
 
 export type ToastOptions = {
   title: string;
@@ -21,15 +22,18 @@ export type ToastOptions = {
   duration?: number;
 };
 
-const toasterInstance = createToaster({
-  placement: 'top-end',
-  overlap: false,
-  gap: 8,
-});
+// Two toaster instances — one per position. Only one should be mounted at a time.
+const toasters: Record<ToastPosition, ReturnType<typeof createToaster>> = {
+  top: createToaster({ placement: 'top', overlap: false, gap: 8 }),
+  bottom: createToaster({ placement: 'bottom', overlap: false, gap: 8 }),
+};
+
+// Tracks which position the mounted Toaster component uses.
+let _mountedPosition: ToastPosition = 'top';
 
 export const toast = {
   create: (options: ToastOptions) => {
-    toasterInstance.create({
+    toasters[_mountedPosition].create({
       title: options.title,
       description: options.description,
       duration: options.duration ?? 5000,
@@ -40,13 +44,24 @@ export const toast = {
 };
 
 export type ToasterProps = {
+  /** Toast 出现的位置，默认 'top'（顶部居中）*/
+  position?: ToastPosition;
   className?: string;
   style?: CSSProperties;
 };
 
-export const Toaster = ({ className, style }: ToasterProps) =>
-  createPortal(
-    <ArkToaster toaster={toasterInstance}>
+const CloseIcon = () => (
+  <svg aria-hidden focusable="false" height="14" viewBox="0 0 14 14" width="14">
+    <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" />
+  </svg>
+);
+
+export const Toaster = ({ position = 'top', className, style }: ToasterProps) => {
+  _mountedPosition = position;
+  const toaster = toasters[position];
+
+  return createPortal(
+    <ArkToaster toaster={toaster}>
       {(t) => {
         const variant = (t.meta as Record<string, unknown>)?.variant as ToastVariant | undefined;
 
@@ -63,14 +78,7 @@ export const Toaster = ({ className, style }: ToasterProps) =>
               )}
             </div>
             <ToastCloseTrigger className={styles.close} aria-label="Dismiss notification">
-              <svg aria-hidden focusable="false" height="14" viewBox="0 0 14 14" width="14">
-                <path
-                  d="M1 1l12 12M13 1L1 13"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeWidth="1.5"
-                />
-              </svg>
+              <CloseIcon />
             </ToastCloseTrigger>
           </ToastRoot>
         );
@@ -78,3 +86,4 @@ export const Toaster = ({ className, style }: ToasterProps) =>
     </ArkToaster>,
     document.body,
   );
+};
