@@ -83,12 +83,12 @@ Requires npm login locally (`npm login`) or `NODE_AUTH_TOKEN` in the environment
 - React components should be authored in TSX files instead of `React.createElement`
   patterns.
 - Governed files and folders use lowercase names with hyphen separators.
-- In `packages/components`, `packages/hooks`, and `packages/utils`, each source
+- In `packages/react`, `packages/react-hooks`, and `packages/utils`, each source
   unit lives in its own `src/<unit-name>/` directory with colocated `index` and
   `index.test` files.
 - Commit messages use `<type>(<scope>): <summary>` when a scope is useful, or
   `<type>: <summary>` otherwise.
-- Consumers must import global styles from `@deweyou-ui/styles/theme.css` explicitly.
+- Consumers must import global styles from `@deweyou-design/styles/theme.css` explicitly.
 - `apps/website` owns public guidance; `apps/storybook` stays focused on internal review.
 - Storybook runs on the repository-standard `vp run storybook#dev` workflow and defaults to port `6106`.
 - Every user-visible component change must include automated tests and updated preview coverage in `apps/website`.
