@@ -89,6 +89,18 @@ export const lightTheme = {
   '--ui-text-line-height-h4': internalPrimitives.text.heading4LineHeight,
   '--ui-text-size-h5': internalPrimitives.text.heading5Size,
   '--ui-text-line-height-h5': internalPrimitives.text.heading5LineHeight,
+  '--ui-space-xs': internalPrimitives.spacing.xs,
+  '--ui-space-sm': internalPrimitives.spacing.sm,
+  '--ui-space-md': internalPrimitives.spacing.md,
+  '--ui-space-lg': internalPrimitives.spacing.lg,
+  '--ui-space-xl': internalPrimitives.spacing.xl,
+  '--ui-z-tooltip': internalPrimitives.zIndex.tooltip,
+  '--ui-z-popover': internalPrimitives.zIndex.popover,
+  '--ui-z-dialog': internalPrimitives.zIndex.dialog,
+  '--ui-z-toast': internalPrimitives.zIndex.toast,
+  '--ui-shadow-sm': internalPrimitives.shadow.sm,
+  '--ui-shadow-md': internalPrimitives.shadow.md,
+  '--ui-shadow-lg': internalPrimitives.shadow.lg,
   ...lightTextColorThemeSurface,
 } as const;
 
@@ -137,5 +149,8 @@ export const darkTheme = {
   '--ui-text-line-height-h4': internalPrimitives.text.heading4LineHeight,
   '--ui-text-size-h5': internalPrimitives.text.heading5Size,
   '--ui-text-line-height-h5': internalPrimitives.text.heading5LineHeight,
+  '--ui-shadow-sm': internalPrimitives.shadow.smDark,
+  '--ui-shadow-md': internalPrimitives.shadow.mdDark,
+  '--ui-shadow-lg': internalPrimitives.shadow.lgDark,
   ...darkTextColorThemeSurface,
 } as const;
