@@ -1,11 +1,10 @@
-import { readFileSync, writeFileSync, readdirSync, statSync } from 'fs';
-import { join, resolve } from 'path';
-import { fileURLToPath } from 'url';
+import { readFileSync, writeFileSync, readdirSync, statSync } from 'node:fs';
+import { join, resolve } from 'node:path';
 
-const distDir = resolve(fileURLToPath(import.meta.url), '../../dist');
+const distDir = resolve(import.meta.dirname, '../dist');
 
 const cssFiles = [];
-const walk = (dir) => {
+function walk(dir) {
   for (const entry of readdirSync(dir)) {
     const full = join(dir, entry);
     if (statSync(full).isDirectory()) {
@@ -14,7 +13,7 @@ const walk = (dir) => {
       cssFiles.push(full);
     }
   }
-};
+}
 walk(distDir);
 cssFiles.sort();
 
