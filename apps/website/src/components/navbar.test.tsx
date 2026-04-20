@@ -2,16 +2,14 @@
 
 import { cleanup, render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { afterEach, expect, test } from 'vite-plus/test';
-import * as jestDomMatchers from '@testing-library/jest-dom/matchers';
+import { afterEach, test } from 'vite-plus/test';
 
-expect.extend(jestDomMatchers);
+import { expect } from '../test-setup';
+import { Navbar } from './navbar';
 
 afterEach(() => {
   cleanup();
 });
-
-import { Navbar } from './navbar';
 
 const renderNavbar = (initialPath = '/') =>
   render(
