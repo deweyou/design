@@ -1,0 +1,220 @@
+.page {
+  padding-bottom: 80px;
+}
+
+// ─── Shared container ────────────────────────────────────────────────────────
+
+.container {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+// ─── Section label ────────────────────────────────────────────────────────────
+
+.sectionLabel {
+  font-size: 10px;
+  color: var(--ui-color-text-muted);
+  letter-spacing: 0.14em;
+  text-align: center;
+  margin-bottom: 32px;
+  text-transform: uppercase;
+  font-family: system-ui, sans-serif;
+}
+
+// ─── Hero ─────────────────────────────────────────────────────────────────────
+
+.hero {
+  padding: 80px 0 64px;
+  border-bottom: 1px solid var(--ui-color-border);
+  text-align: center;
+}
+
+.heroEyebrow {
+  font-size: 10px;
+  color: var(--ui-color-text-muted);
+  letter-spacing: 0.14em;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+  font-family: system-ui, sans-serif;
+}
+
+.heroTitle {
+  margin-bottom: 22px !important;
+}
+
+.heroRule {
+  width: 44px;
+  height: 2px;
+  background: var(--ui-color-text);
+  margin: 0 auto 22px;
+}
+
+.heroDesc {
+  max-width: 400px;
+  margin: 0 auto 30px !important;
+}
+
+.heroActions {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 22px;
+}
+
+.installCmd {
+  display: inline-block;
+  background: var(--ui-color-surface);
+  border: 1px solid var(--ui-color-border);
+  border-radius: var(--ui-radius-float);
+  padding: 8px 16px;
+  font-family: var(--ui-font-mono);
+  font-size: 11px;
+  color: var(--ui-color-text-muted);
+}
+
+// ─── Design & Components section ─────────────────────────────────────────────
+
+.designSection {
+  padding: 64px 0;
+  border-bottom: 1px solid var(--ui-color-border);
+}
+
+.subLabel {
+  font-size: 10px;
+  color: var(--ui-color-text-muted);
+  letter-spacing: 0.1em;
+  text-align: center;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  font-family: system-ui, sans-serif;
+}
+
+.subSection {
+  margin-bottom: 44px;
+  padding-bottom: 44px;
+  border-bottom: 1px solid var(--ui-color-surface);
+
+  &:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+}
+
+// Color swatches
+.colorStrip {
+  display: flex;
+  gap: 3px;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.colorSwatch {
+  width: 20px;
+  height: 20px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+// Typography rows
+.typeRows {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.typeRow {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--ui-color-surface);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.typeLabel {
+  font-size: 9px;
+  color: var(--ui-color-text-muted);
+  letter-spacing: 0.08em;
+  font-family: system-ui, sans-serif;
+  min-width: 40px;
+  flex-shrink: 0;
+  padding-top: 4px;
+}
+
+// ─── Components tabs ──────────────────────────────────────────────────────────
+
+.tabContent {
+  padding: 24px 0 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  min-height: 80px;
+}
+
+.tabDivider {
+  width: 1px;
+  height: 20px;
+  background: var(--ui-color-border);
+  flex-shrink: 0;
+}
+
+// ─── Icons preview ────────────────────────────────────────────────────────────
+
+.iconsSection {
+  padding: 64px 0;
+  border-bottom: 1px solid var(--ui-color-border);
+}
+
+.iconGrid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.iconCell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.iconBox {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--ui-color-border);
+  border-radius: var(--ui-radius-float);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ui-color-surface);
+  color: var(--ui-color-text);
+  font-size: 18px;
+}
+
+.iconName {
+  font-size: 7px;
+  color: var(--ui-color-text-muted);
+  text-align: center;
+  font-family: system-ui, sans-serif;
+  line-height: 1.2;
+}
+
+.iconViewAll {
+  text-align: center;
+}
+
+// ─── Footer ───────────────────────────────────────────────────────────────────
+
+.footer {
+  padding: 28px 0;
+  border-top: 1px solid var(--ui-color-border);
+  text-align: center;
+}

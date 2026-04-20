@@ -1,0 +1,24 @@
+.navbar {
+  border-bottom: 1px solid var(--ui-color-text);
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+}
+
+.link {
+  font-size: 11px;
+  color: var(--ui-color-text-muted);
+  text-decoration: none;
+  transition: color 140ms ease;
+
+  &:hover {
+    color: var(--ui-color-text);
+  }
+}
+
+.active {
+  color: var(--ui-color-text);
+  font-weight: 500;
+}

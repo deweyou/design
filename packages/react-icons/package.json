@@ -9,18 +9,14 @@
   "sideEffects": false,
   "types": "./src/index.ts",
   "exports": {
-    ".": {
-      "types": "./src/index.ts",
-      "import": "./dist/index.mjs",
-      "default": "./dist/index.mjs"
-    },
+    ".": "./dist/index.mjs",
     "./package.json": "./package.json"
   },
   "publishConfig": {
     "directory": "dist"
   },
   "scripts": {
-    "build": "vp pack",
+    "build": "vp pack && node ../infra/scripts/write-published-manifest.mjs .",
     "dev": "vp pack --watch",
     "generate": "node ./scripts/generate-icons.mjs",
     "test": "vp test"
