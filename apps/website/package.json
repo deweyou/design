@@ -14,7 +14,8 @@
     "@deweyou-design/react-icons": "workspace:*",
     "@deweyou-design/styles": "workspace:*",
     "react": "catalog:",
-    "react-dom": "catalog:"
+    "react-dom": "catalog:",
+    "react-router-dom": "^6"
   },
   "devDependencies": {
     "@types/react": "catalog:",
