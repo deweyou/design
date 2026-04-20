@@ -72,3 +72,56 @@
   font-size: 11px;
   color: var(--ui-color-text-muted);
 }
+
+// ─── Design & Components section ─────────────────────────────────────────────
+
+.designSection {
+  padding: 64px 0;
+  border-bottom: 1px solid var(--ui-color-border);
+}
+
+.subLabel {
+  font-size: 10px;
+  color: var(--ui-color-text-muted);
+  letter-spacing: 0.1em;
+  text-align: center;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  font-family: system-ui, sans-serif;
+}
+
+.subSection {
+  margin-bottom: 44px;
+  padding-bottom: 44px;
+  border-bottom: 1px solid var(--ui-color-surface);
+
+  &:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+}
+
+// Color swatches
+.colorStrip {
+  display: flex;
+  gap: 3px;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.colorSwatch {
+  width: 20px;
+  height: 20px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+// Typography stack
+.typeStack {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+  text-align: center;
+}
