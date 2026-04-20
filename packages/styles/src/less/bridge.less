@@ -13,8 +13,7 @@
 @brand-text: var(--ui-color-brand-text);
 @surface-raised: var(--ui-color-surface-raised);
 
-// 焦点环 mixin — 使用 box-shadow 避免 outline 视觉突兀感
-// 注意：不使用 outline: none 完全关闭，而是保留 UA 默认 outline 作为高对比模式 fallback
+// 焦点环 mixin — 使用 box-shadow 替代 outline，获得更柔和且兼容 border-radius 的焦点效果
 .focus-ring() {
   box-shadow: 0 0 0 2px var(--ui-color-focus-ring);
   outline: none;
