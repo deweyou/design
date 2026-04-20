@@ -1,4 +1,23 @@
-import { Button, Text } from '@deweyou-design/react';
+import {
+  Badge,
+  Button,
+  Checkbox,
+  Input,
+  Menu,
+  MenuContent,
+  MenuItem,
+  MenuTrigger,
+  Popover,
+  Select,
+  Spinner,
+  Switch,
+  TabContent,
+  TabList,
+  TabTrigger,
+  Tabs,
+  Text,
+  toast,
+} from '@deweyou-design/react';
 
 import styles from './home.module.less';
 
@@ -47,6 +66,7 @@ const DesignSection = () => (
       <p className={styles.sectionLabel}>Design &amp; Components</p>
       <ColorSubSection />
       <TypographySubSection />
+      <ComponentsSubSection />
     </div>
   </section>
 );
@@ -84,5 +104,116 @@ const TypographySubSection = () => (
       <Text variant="body">正文 Body — 清晰易读，适合长文阅读</Text>
       <Text variant="caption">说明 Caption · 辅助信息层级</Text>
     </div>
+  </div>
+);
+
+// ─── Components tabs ──────────────────────────────────────────────────────────
+
+const ComponentsSubSection = () => (
+  <div className={styles.subSection}>
+    <p className={styles.subLabel}>Components · 27 个</p>
+    <Tabs defaultValue="buttons" variant="line" color="neutral" size="sm">
+      <TabList>
+        <TabTrigger value="buttons">按钮 / 操作</TabTrigger>
+        <TabTrigger value="form">表单输入</TabTrigger>
+        <TabTrigger value="overlay">浮层 / 菜单</TabTrigger>
+        <TabTrigger value="feedback">反馈 / 徽标</TabTrigger>
+      </TabList>
+
+      <TabContent value="buttons">
+        <div className={styles.tabContent}>
+          <Button color="neutral" variant="filled">
+            Neutral
+          </Button>
+          <Button color="primary" variant="filled">
+            Primary
+          </Button>
+          <Button color="danger" variant="filled">
+            Danger
+          </Button>
+          <div className={styles.tabDivider} />
+          <Button color="neutral" variant="outlined">
+            Outlined
+          </Button>
+          <Button color="neutral" variant="ghost">
+            Ghost
+          </Button>
+        </div>
+      </TabContent>
+
+      <TabContent value="form">
+        <div className={styles.tabContent}>
+          <Input placeholder="普通输入框" style={{ width: 160 }} />
+          <Input placeholder="错误状态" error="必填项" style={{ width: 160 }} />
+          <div className={styles.tabDivider} />
+          <div style={{ width: 160 }}>
+            <Select.Root placeholder="请选择">
+              <Select.Trigger />
+              <Select.Content>
+                <Select.Item value="a" label="选项 A" />
+                <Select.Item value="b" label="选项 B" />
+                <Select.Item value="c" label="选项 C" />
+              </Select.Content>
+            </Select.Root>
+          </div>
+          <div className={styles.tabDivider} />
+          <Switch defaultChecked>开启</Switch>
+          <Switch>关闭</Switch>
+          <div className={styles.tabDivider} />
+          <Checkbox defaultChecked>已勾选</Checkbox>
+          <Checkbox>未勾选</Checkbox>
+        </div>
+      </TabContent>
+
+      <TabContent value="overlay">
+        <div className={styles.tabContent}>
+          <Popover content={<span style={{ fontSize: 13 }}>这是一个 Popover 内容</span>}>
+            <Button color="neutral" variant="outlined">
+              打开 Popover
+            </Button>
+          </Popover>
+          <div className={styles.tabDivider} />
+          <Menu>
+            <MenuTrigger>
+              <Button color="neutral" variant="outlined">
+                打开菜单
+              </Button>
+            </MenuTrigger>
+            <MenuContent>
+              <MenuItem value="edit">编辑</MenuItem>
+              <MenuItem value="copy">复制</MenuItem>
+              <MenuItem value="delete">删除</MenuItem>
+            </MenuContent>
+          </Menu>
+        </div>
+      </TabContent>
+
+      <TabContent value="feedback">
+        <div className={styles.tabContent}>
+          <Badge color="neutral">中性</Badge>
+          <Badge color="success" variant="soft">
+            成功
+          </Badge>
+          <Badge color="primary" variant="solid">
+            主要
+          </Badge>
+          <Badge color="danger" variant="outline">
+            危险
+          </Badge>
+          <div className={styles.tabDivider} />
+          <Spinner />
+          <div className={styles.tabDivider} />
+          <Button
+            color="primary"
+            variant="filled"
+            onClick={() =>
+              toast.create({ title: '操作成功', description: '内容已保存', variant: 'success' })
+            }
+          >
+            触发 Toast
+          </Button>
+        </div>
+      </TabContent>
+    </Tabs>
   </div>
 );
