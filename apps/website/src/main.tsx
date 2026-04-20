@@ -8,7 +8,7 @@ import '@deweyou-design/styles/theme.css';
 
 import { Navbar } from './components/navbar';
 import { HomePage } from './pages/home';
-import { IconGuidance as IconsPage } from './pages/icons';
+import { IconsPage } from './pages/icons';
 import './style.css';
 
 const SunIcon = () => (

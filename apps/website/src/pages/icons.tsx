@@ -1,95 +1,95 @@
-import {
-  AlertCircleIcon,
-  CheckIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  InfoIcon,
-  Menu2Icon,
-  PlusIcon,
-  SearchIcon,
-  XIcon,
-} from '@deweyou-design/react-icons';
+import { useState } from 'react';
 
-const iconExamples = [
-  { name: 'plus', Component: PlusIcon },
-  { name: 'check', Component: CheckIcon },
-  { name: 'chevron-left', Component: ChevronLeftIcon },
-  { name: 'chevron-right', Component: ChevronRightIcon },
-  { name: 'x', Component: XIcon },
-  { name: 'alert-circle', Component: AlertCircleIcon },
-  { name: 'info', Component: InfoIcon },
-  { name: 'menu-2', Component: Menu2Icon },
-  { name: 'search', Component: SearchIcon },
-] as const;
+import { Input, Text, toast } from '@deweyou-design/react';
+import * as Icons from '@deweyou-design/react-icons';
 
-export const IconGuidance = () => {
+import styles from './icons.module.less';
+
+type IconEntry = {
+  name: string;
+  Icon: React.ComponentType<{ size?: number; 'aria-hidden'?: boolean }>;
+};
+
+// Build the full icon list from all exports ending with "Icon"
+const ALL_ICONS: IconEntry[] = (
+  Object.entries(Icons) as Array<[string, React.ComponentType<{ size?: number }>]>
+)
+  .filter(([key]) => key.endsWith('Icon') && key !== 'createTablerIcon')
+  .map(([exportName, Icon]) => ({
+    // "AlertCircleIcon" → "alert-circle"
+    name: exportName
+      .replace(/Icon$/, '')
+      .replace(/([A-Z])/g, (m, l, i) => (i === 0 ? l.toLowerCase() : `-${l.toLowerCase()}`)),
+    Icon,
+  }));
+
+const copyImport = (displayName: string) => {
+  // Reconstruct the PascalCase export name from the kebab display name
+  const exportName =
+    displayName
+      .split('-')
+      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+      .join('') + 'Icon';
+
+  navigator.clipboard
+    .writeText(`import { ${exportName} } from '@deweyou-design/react-icons'`)
+    .then(() => {
+      toast.create({ title: '已复制', description: exportName });
+    })
+    .catch(() => {
+      toast.create({ title: '复制失败' });
+    });
+};
+
+export const IconsPage = () => {
+  const [query, setQuery] = useState('');
+
+  const filtered = query.trim()
+    ? ALL_ICONS.filter(({ name }) => name.includes(query.trim().toLowerCase()))
+    : ALL_ICONS;
+
   return (
-    <section className="icon-layout">
-      <div className="icon-panel">
-        <p className="eyebrow">Official icon package</p>
-        <h2>Tabler Icons wrapped with square caps and miter joins</h2>
-        <p className="hero-copy">
-          The `@deweyou-design/react-icons` package exports named icon components built on top of
-          Tabler Icons (MIT). All icons use `currentColor`, `strokeLinecap="square"`, and
-          `strokeLinejoin="miter"` to match the rect-first design language. Import named exports
-          directly — no registry lookup, no lazy loading.
-        </p>
-        <div className="icon-contract">
-          <div>
-            <strong>Props</strong>
-            <code>aria-label | className | size | stroke | style</code>
-          </div>
-          <div>
-            <strong>Size</strong>
-            <code>number (px) | CSS string — defaults to 1em</code>
-          </div>
-          <div>
-            <strong>Delivery</strong>
-            <code>synchronous named exports</code>
+    <main className={styles.page}>
+      <div className={styles.container}>
+        <div className={styles.header}>
+          <Text className={styles.title} variant="h3">
+            Icons
+          </Text>
+          <Text className={styles.subtitle} variant="caption">
+            @deweyou-design/react-icons · 基于 Tabler Icons · 点击图标复制 import 语句
+          </Text>
+          <div className={styles.searchWrapper}>
+            <Input
+              placeholder="搜索图标..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
           </div>
         </div>
-      </div>
-      <div className="icon-panel">
-        <h2>Foundational icon set</h2>
-        <div className="icon-grid">
-          {iconExamples.map(({ Component, name }) => (
-            <article key={name} className="icon-card">
-              <Component size={24} />
-              <strong>{name}</strong>
-              <code>{name}</code>
-            </article>
-          ))}
+
+        <div className={styles.grid}>
+          {filtered.length === 0 ? (
+            <div className={styles.empty}>
+              <Text variant="caption">没有匹配「{query}」的图标</Text>
+            </div>
+          ) : (
+            filtered.map(({ name, Icon }) => (
+              <button
+                key={name}
+                aria-label={`复制 ${name} 图标的 import 语句`}
+                className={styles.iconCell}
+                type="button"
+                onClick={() => copyImport(name)}
+              >
+                <div className={styles.iconBox}>
+                  <Icon aria-hidden size={20} />
+                </div>
+                <span className={styles.iconName}>{name}</span>
+              </button>
+            ))
+          )}
         </div>
       </div>
-      <div className="icon-panel">
-        <h2>Accessibility and sizing</h2>
-        <div className="icon-usage-grid">
-          <article className="icon-usage-card">
-            <h3>Unlabeled usage</h3>
-            <Menu2Icon size={24} />
-            <p>
-              Without `aria-label`, icons are treated as decorative and hidden from assistive
-              technology via `aria-hidden="true"`.
-            </p>
-          </article>
-          <article className="icon-usage-card">
-            <h3>Labeled usage</h3>
-            <InfoIcon aria-label="Information" size={24} />
-            <p>
-              Provide `aria-label` whenever the icon carries meaning that surrounding text does not
-              already provide. The icon renders with `role="img"`.
-            </p>
-          </article>
-          <article className="icon-usage-card">
-            <h3>Named import usage</h3>
-            <code>{'<SearchIcon size={18} />'}</code>
-            <p>
-              Import named icons directly from `@deweyou-design/react-icons`. Tree-shaking works
-              automatically and icons render synchronously without a loading state.
-            </p>
-          </article>
-        </div>
-      </div>
-    </section>
+    </main>
   );
 };
