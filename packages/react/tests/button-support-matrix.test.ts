@@ -25,17 +25,17 @@ test('button support matrix matches the documented text and icon button variants
   expect(buttonVariantOptions).toEqual(['filled', 'outlined', 'ghost', 'link']);
   expect(iconButtonVariantOptions).toEqual(['filled', 'outlined', 'ghost']);
   expect(buttonColorOptions).toEqual(['neutral', 'primary', 'danger']);
-  expect(buttonSizeOptions).toEqual(['extra-small', 'small', 'medium', 'large', 'extra-large']);
-  expect(buttonShapeOptions).toEqual(['rect', 'rounded', 'pill']);
+  expect(buttonSizeOptions).toEqual(['xs', 'sm', 'md', 'lg', 'xl']);
+  expect(buttonShapeOptions).toEqual(['rect', 'float', 'pill']);
   expect(buttonShapeSupport).toEqual({
-    filled: ['rect', 'rounded', 'pill'],
-    outlined: ['rect', 'rounded', 'pill'],
+    filled: ['rect', 'float', 'pill'],
+    outlined: ['rect', 'float', 'pill'],
     ghost: [],
     link: [],
   });
   expect(buttonDefaultShapeByVariant).toEqual({
-    filled: 'rounded',
-    outlined: 'rounded',
+    filled: 'float',
+    outlined: 'float',
   });
 });
 
@@ -59,12 +59,12 @@ test('button support matrix keeps outlined shapes and compact link sizes compati
     createElement(Button, { shape: 'pill', variant: 'outlined' }, 'Pill'),
   );
   const compactLinkMarkup = renderToStaticMarkup(
-    createElement(Button, { size: 'extra-small', variant: 'link' }, 'Compact'),
+    createElement(Button, { size: 'xs', variant: 'link' }, 'Compact'),
   );
 
   expect(rectMarkup).toContain('data-shape="rect"');
   expect(pillMarkup).toContain('data-shape="pill"');
-  expect(compactLinkMarkup).toContain('data-size="extra-small"');
+  expect(compactLinkMarkup).toContain('data-size="xs"');
   expect(compactLinkMarkup).toContain('data-variant="link"');
 });
 

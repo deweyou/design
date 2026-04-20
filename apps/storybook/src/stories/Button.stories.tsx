@@ -5,8 +5,8 @@ import { Button, IconButton } from '@deweyou-design/react/button';
 import { Menu2Icon, PlusIcon, SearchIcon } from '@deweyou-design/react-icons';
 
 const colorOptions = ['neutral', 'primary', 'danger'] as const;
-const sizeOptions = ['extra-small', 'small', 'medium', 'large', 'extra-large'] as const;
-const shapeOptions = ['rect', 'rounded', 'pill'] as const;
+const sizeOptions = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
+const shapeOptions = ['rect', 'float', 'pill'] as const;
 const storyStyles = {
   boundaryGrid: {
     display: 'grid',
@@ -89,19 +89,19 @@ const meta = {
     size: {
       description: 'Controls the button height and font size.',
       control: { type: 'select' },
-      options: ['extra-small', 'small', 'medium', 'large', 'extra-large'],
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
       table: {
-        type: { summary: "'extra-small' | 'small' | 'medium' | 'large' | 'extra-large'" },
-        defaultValue: { summary: 'medium' },
+        type: { summary: "'xs' | 'sm' | 'md' | 'lg' | 'xl'" },
+        defaultValue: { summary: 'md' },
       },
     },
     shape: {
       description:
         'Corner shape. Only supported by `filled` and `outlined` variants. Has no effect on `ghost` or `link`.',
       control: { type: 'select' },
-      options: ['rect', 'rounded', 'pill'],
+      options: ['rect', 'float', 'pill'],
       table: {
-        type: { summary: "'rect' | 'rounded' | 'pill'" },
+        type: { summary: "'rect' | 'float' | 'pill'" },
         defaultValue: { summary: '—' },
       },
     },
@@ -338,7 +338,7 @@ const PublicPropsGallery = () => {
             onClick={() => {
               focusTargetRef.current?.focus();
             }}
-            size="small"
+            size="sm"
           >
             Focus via ref
           </Button>
@@ -454,7 +454,7 @@ const ShapeGallery = () => {
             </Button>
           ))}
         </div>
-        <span style={storyStyles.meta}>Supported shapes: rect, rounded, pill</span>
+        <span style={storyStyles.meta}>Supported shapes: rect, float, pill</span>
       </article>
       <article style={storyStyles.card}>
         <strong>outlined</strong>
@@ -465,7 +465,7 @@ const ShapeGallery = () => {
             </Button>
           ))}
         </div>
-        <span style={storyStyles.meta}>Supported shapes: rect, rounded, pill</span>
+        <span style={storyStyles.meta}>Supported shapes: rect, float, pill</span>
       </article>
       <article style={storyStyles.card}>
         <strong>ghost + link</strong>
@@ -496,7 +496,7 @@ const BoundaryGallery = () => {
         <strong>Long label</strong>
         <div style={storyStyles.longLabelPreview}>
           <Button
-            size="extra-small"
+            size="xs"
             style={{ boxSizing: 'border-box', maxWidth: '100%', width: '100%' }}
             variant="outlined"
           >
@@ -559,7 +559,7 @@ const HoverFeedbackGallery = () => {
           <Button color="primary" variant="link">
             Primary link
           </Button>
-          <Button size="extra-small" variant="link">
+          <Button size="xs" variant="link">
             Compact link
           </Button>
         </div>

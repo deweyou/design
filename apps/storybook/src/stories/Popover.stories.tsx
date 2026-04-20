@@ -362,7 +362,7 @@ const AccessibilityGallery = () => {
                 </Text>
                 <div style={storyStyles.row}>
                   <Button
-                    size="small"
+                    size="sm"
                     onClick={() => {
                       setVisible(false);
                     }}
@@ -370,7 +370,7 @@ const AccessibilityGallery = () => {
                     Close
                   </Button>
                   <Button
-                    size="small"
+                    size="sm"
                     variant="ghost"
                     onClick={() => {
                       setVisible(true);
@@ -392,7 +392,7 @@ const AccessibilityGallery = () => {
             <Button color="primary">{visible ? 'Open' : 'Open controlled'}</Button>
           </Popover>
           <Button
-            size="small"
+            size="sm"
             variant="ghost"
             onClick={() => {
               setVisible((current) => !current);
@@ -425,7 +425,7 @@ const AccessibilityGallery = () => {
                     padding: '8px 10px',
                   }}
                 />
-                <Button icon={<SearchIcon />} size="small">
+                <Button icon={<SearchIcon />} size="sm">
                   Search
                 </Button>
               </div>

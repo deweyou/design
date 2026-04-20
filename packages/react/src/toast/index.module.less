@@ -1,0 +1,110 @@
+@import '@deweyou-design/styles/less/bridge';
+
+// Individual toast — uses Ark UI CSS variables (--y, --opacity) for stacking.
+// Group container is position:fixed spanning full viewport width; toasts are position:absolute.
+// Centering is done via layout (left:0 right:0 margin:auto), NOT via translateX,
+// so the CSS transition on transform only involves vertical movement and avoids
+// the GPU compositing split-layer artifact (ghost duplicate card during reposition).
+.toast {
+  align-items: flex-start;
+  background: var(--ui-color-surface);
+  border: 1px solid var(--ui-color-border);
+  border-radius: var(--ui-radius-float);
+  box-shadow: 0 2px 8px rgba(24, 33, 29, 0.04);
+  box-sizing: border-box;
+  color: var(--ui-color-text);
+  display: flex;
+  gap: 12px;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+  min-width: 240px;
+  opacity: var(--opacity, 1);
+  padding: 12px 16px;
+  transform: translateY(var(--y, 0));
+  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  width: 38vw;
+  max-width: 480px;
+}
+
+/* Prevent stray clicks on a closing toast from re-triggering actions */
+.toast[data-state='closed'] {
+  pointer-events: none;
+}
+
+/* variant — tinted solid background + matching border (Alert-style) */
+.info {
+  background: color-mix(in srgb, var(--ui-color-brand-bg) 10%, var(--ui-color-surface));
+  border-color: color-mix(in srgb, var(--ui-color-brand-bg) 25%, transparent);
+}
+
+.success {
+  background: color-mix(in srgb, #16a34a 10%, var(--ui-color-surface));
+  border-color: color-mix(in srgb, #16a34a 25%, transparent);
+}
+
+.warning {
+  background: color-mix(in srgb, #d97706 10%, var(--ui-color-surface));
+  border-color: color-mix(in srgb, #d97706 25%, transparent);
+}
+
+.danger {
+  background: color-mix(in srgb, var(--ui-color-danger-bg) 10%, var(--ui-color-surface));
+  border-color: color-mix(in srgb, var(--ui-color-danger-bg) 25%, transparent);
+}
+
+.body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.description {
+  color: var(--ui-color-text-muted);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+.close {
+  align-items: center;
+  background: none;
+  border: none;
+  border-radius: var(--ui-radius-float);
+  color: var(--ui-color-text);
+  cursor: pointer;
+  display: flex;
+  flex-shrink: 0;
+  height: 24px;
+  justify-content: center;
+  opacity: 0.5;
+  padding: 0;
+  transition:
+    background 140ms ease,
+    opacity 140ms ease;
+  width: 24px;
+
+  &:hover {
+    background: color-mix(in srgb, currentColor 8%, transparent);
+    opacity: 1;
+  }
+
+  &:focus-visible {
+    opacity: 1;
+    outline: 2px solid var(--ui-color-focus-ring);
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast {
+    transition: none;
+  }
+}

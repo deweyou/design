@@ -54,10 +54,10 @@ const meta: Meta<typeof Tabs> = {
     size: {
       description: 'Size of the tab triggers.',
       control: { type: 'select' },
-      options: ['small', 'medium', 'large'],
+      options: ['sm', 'md', 'lg'],
       table: {
-        type: { summary: "'small' | 'medium' | 'large'" },
-        defaultValue: { summary: 'medium' },
+        type: { summary: "'sm' | 'md' | 'lg'" },
+        defaultValue: { summary: 'md' },
       },
     },
     orientation: {
@@ -183,7 +183,7 @@ export const Playground: StoryObj<typeof Tabs> = {
     defaultValue: 'tab1',
     variant: 'line',
     color: 'neutral',
-    size: 'medium',
+    size: 'md',
     orientation: 'horizontal',
   },
   render: (args) => (
@@ -249,7 +249,7 @@ export const Color: StoryObj = {
 export const Size: StoryObj = {
   render: () => (
     <div style={storyStyles.grid}>
-      {(['small', 'medium', 'large'] as const).map((size) => (
+      {(['sm', 'md', 'lg'] as const).map((size) => (
         <div key={size} style={storyStyles.card}>
           <div style={storyStyles.label}>{size}</div>
           <Tabs defaultValue="a" size={size}>
@@ -597,27 +597,27 @@ export const Interaction: StoryObj = {
     const tabs = canvas.getAllByRole('tab');
     const [firstTab, secondTab] = tabs;
 
-    expect(firstTab).toHaveAttribute('aria-selected', 'true');
-    expect(secondTab).toHaveAttribute('aria-selected', 'false');
+    await expect(firstTab).toHaveAttribute('aria-selected', 'true');
+    await expect(secondTab).toHaveAttribute('aria-selected', 'false');
 
     await userEvent.click(secondTab!);
 
-    await waitFor(() => {
-      expect(secondTab).toHaveAttribute('aria-selected', 'true');
-      expect(firstTab).toHaveAttribute('aria-selected', 'false');
+    await waitFor(async () => {
+      await expect(secondTab).toHaveAttribute('aria-selected', 'true');
+      await expect(firstTab).toHaveAttribute('aria-selected', 'false');
     });
 
     const secondPanel = canvas.getByText('Second panel');
-    expect(secondPanel).toBeVisible();
+    await expect(secondPanel).toBeVisible();
 
     // US2: focus first tab, ArrowRight → second tab gains focus, aria-selected follows
     await userEvent.click(firstTab!);
     firstTab!.focus();
-    expect(document.activeElement).toBe(firstTab);
+    await expect(document.activeElement).toBe(firstTab);
 
     await userEvent.keyboard('{ArrowRight}');
-    await waitFor(() => {
-      expect(document.activeElement).toBe(secondTab);
+    await waitFor(async () => {
+      await expect(document.activeElement).toBe(secondTab);
     });
   },
 };

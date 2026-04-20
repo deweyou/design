@@ -32,8 +32,8 @@ import { IconGuidance } from './pages/icons';
 import './style.css';
 
 const colorOptions = ['neutral', 'primary', 'danger'] as const;
-const sizeOptions = ['extra-small', 'small', 'medium', 'large', 'extra-large'] as const;
-const shapeOptions = ['rect', 'rounded', 'pill'] as const;
+const sizeOptions = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
+const shapeOptions = ['rect', 'float', 'pill'] as const;
 const typographyTiers = [
   {
     body: '正文层级默认覆盖组件文案、按钮、表单说明与普通数据文本。',
@@ -240,7 +240,7 @@ const PublicPropsPreview = () => {
             Focus target
           </Button>
           <Button
-            size="small"
+            size="sm"
             onClick={() => {
               focusTargetRef.current?.focus();
             }}
@@ -330,7 +330,7 @@ const ThemeSwitcher = () => {
           key={preview.mode}
           aria-pressed={mode === preview.mode}
           color={mode === preview.mode ? 'primary' : 'neutral'}
-          size="small"
+          size="sm"
           variant={mode === preview.mode ? 'filled' : 'outlined'}
           onClick={() => {
             applyThemeMode(preview.mode);
@@ -340,7 +340,7 @@ const ThemeSwitcher = () => {
           {preview.label}
         </Button>
       ))}
-      <Button size="small" variant="ghost" onClick={toggleMode}>
+      <Button size="sm" variant="ghost" onClick={toggleMode}>
         Toggle mode
       </Button>
     </div>
@@ -554,7 +554,7 @@ const PopoverComponentPreview = () => {
                       面板内点击默认保持打开；这里用显式动作关闭。
                     </Text>
                     <Button
-                      size="small"
+                      size="sm"
                       variant="ghost"
                       onClick={() => {
                         setControlledVisible(false);
@@ -563,7 +563,7 @@ const PopoverComponentPreview = () => {
                       Close popover
                     </Button>
                     <Button
-                      size="small"
+                      size="sm"
                       variant="ghost"
                       onClick={() => {
                         setControlledVisible(true);
@@ -587,7 +587,7 @@ const PopoverComponentPreview = () => {
                 </Button>
               </Popover>
               <Button
-                size="small"
+                size="sm"
                 variant="ghost"
                 onClick={() => {
                   setControlledVisible((value) => !value);
@@ -603,7 +603,7 @@ const PopoverComponentPreview = () => {
               {(['top', 'bottom', 'right-bottom'] as const).map((option) => (
                 <Button
                   key={option}
-                  size="small"
+                  size="sm"
                   variant={placement === option ? 'filled' : 'outlined'}
                   onClick={() => {
                     setPlacement(option);
@@ -646,8 +646,8 @@ const PopoverComponentPreview = () => {
                       placeholder="Focus should keep popover open"
                     />
                     <div className="button-row">
-                      <Button size="small">Apply</Button>
-                      <Button size="small" variant="ghost">
+                      <Button size="sm">Apply</Button>
+                      <Button size="sm" variant="ghost">
                         Keep open
                       </Button>
                     </div>
@@ -853,7 +853,7 @@ const MenuComponentPreview = () => {
             <div className="button-row">
               <Menu size="sm">
                 <MenuTrigger>
-                  <Button size="small" variant="outlined">
+                  <Button size="sm" variant="outlined">
                     sm
                   </Button>
                 </MenuTrigger>
@@ -865,7 +865,7 @@ const MenuComponentPreview = () => {
               </Menu>
               <Menu size="md">
                 <MenuTrigger>
-                  <Button size="small" variant="outlined">
+                  <Button size="sm" variant="outlined">
                     md
                   </Button>
                 </MenuTrigger>
@@ -877,7 +877,7 @@ const MenuComponentPreview = () => {
               </Menu>
               <Menu size="lg">
                 <MenuTrigger>
-                  <Button size="small" variant="outlined">
+                  <Button size="sm" variant="outlined">
                     lg
                   </Button>
                 </MenuTrigger>
@@ -894,7 +894,7 @@ const MenuComponentPreview = () => {
             <div className="button-row">
               <Menu shape="rounded">
                 <MenuTrigger>
-                  <Button size="small" variant="outlined">
+                  <Button size="sm" variant="outlined">
                     rounded
                   </Button>
                 </MenuTrigger>
@@ -905,7 +905,7 @@ const MenuComponentPreview = () => {
               </Menu>
               <Menu shape="rect">
                 <MenuTrigger>
-                  <Button size="small" variant="outlined">
+                  <Button size="sm" variant="outlined">
                     rect
                   </Button>
                 </MenuTrigger>
@@ -978,7 +978,7 @@ const TabsComponentPreview = () => {
       <article>
         <h3>尺寸对比（small / medium / large）</h3>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          {(['small', 'medium', 'large'] as const).map((size) => (
+          {(['sm', 'md', 'lg'] as const).map((size) => (
             <Tabs key={size} defaultValue="a" size={size}>
               <TabList>
                 <TabTrigger value="a">标签 A</TabTrigger>
@@ -1280,7 +1280,7 @@ const App = () => (
                 </Button>
                 <Button icon={<SearchIcon />}>Search</Button>
                 <IconButton aria-label="Open search" icon={<SearchIcon />} />
-                <Button size="extra-small" variant="outlined">
+                <Button size="xs" variant="outlined">
                   This extra-small button stays single-line by default, even when the copy gets
                   verbose.
                 </Button>
@@ -1424,7 +1424,7 @@ const App = () => (
               <Button color="primary" variant="link">
                 Primary link
               </Button>
-              <Button size="extra-small" variant="link">
+              <Button size="xs" variant="link">
                 Compact link
               </Button>
             </div>

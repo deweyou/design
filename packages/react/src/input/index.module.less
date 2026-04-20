@@ -1,0 +1,93 @@
+.root {
+  display: grid;
+  gap: 4px;
+}
+
+.label {
+  font: var(--ui-font-weight-emphasis) 0.875rem / 1.25 var(--ui-font-body);
+  color: var(--ui-color-text);
+}
+
+.field {
+  border: 1px solid var(--ui-color-border);
+  border-radius: var(--ui-radius-rect);
+  padding: 0.4rem 0.6rem;
+  background: var(--ui-color-canvas);
+  color: var(--ui-color-text);
+  font: 0.875rem / 1.5 var(--ui-font-body);
+  width: 100%;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.15s ease;
+
+  &::placeholder {
+    color: var(--ui-color-text-muted);
+  }
+
+  &:focus-visible {
+    border-color: var(--ui-color-focus-ring);
+  }
+}
+
+.fieldError {
+  border-color: var(--ui-color-danger-bg);
+
+  &:focus-visible {
+    border-color: var(--ui-color-danger-bg);
+  }
+}
+
+.hint {
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: var(--ui-color-text-muted);
+  margin: 0;
+}
+
+.error {
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: var(--ui-color-danger-text);
+  margin: 0;
+}
+
+.disabled {
+  .field {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .label {
+    opacity: 0.5;
+  }
+}
+
+// Size variants
+.sizeSm {
+  .field {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  .label {
+    font-size: 0.8rem;
+  }
+}
+
+.sizeMd {
+  .field {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.875rem;
+  }
+}
+
+.sizeLg {
+  .field {
+    padding: 0.55rem 0.75rem;
+    font-size: 1rem;
+  }
+
+  .label {
+    font-size: 1rem;
+  }
+}

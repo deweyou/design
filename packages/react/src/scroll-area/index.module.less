@@ -1,0 +1,94 @@
+@import '@deweyou-design/styles/less/bridge';
+
+.root {
+  overflow: hidden;
+  position: relative;
+}
+
+.viewport {
+  height: 100%;
+  outline: none;
+  overflow: scroll;
+  width: 100%;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.scrollbar {
+  display: flex;
+  opacity: 0;
+  padding: 2px;
+  touch-action: none;
+  transition: opacity 200ms ease;
+  user-select: none;
+
+  &[data-orientation='vertical'] {
+    bottom: 0;
+    flex-direction: column;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 8px;
+  }
+
+  &[data-orientation='horizontal'] {
+    bottom: 0;
+    flex-direction: row;
+    height: 8px;
+    left: 0;
+    position: absolute;
+    right: 0;
+  }
+}
+
+/* Size variants */
+.sizeSm {
+  &[data-orientation='vertical'] {
+    width: 4px;
+  }
+  &[data-orientation='horizontal'] {
+    height: 4px;
+  }
+}
+
+.sizeLg {
+  &[data-orientation='vertical'] {
+    width: 12px;
+  }
+  &[data-orientation='horizontal'] {
+    height: 12px;
+  }
+}
+
+.root:hover .scrollbar,
+.scrollbar[data-scrolling],
+.scrollbar[data-hover],
+.scrollbar[data-dragging] {
+  opacity: 1;
+}
+
+.thumb {
+  background: color-mix(in srgb, var(--ui-color-brand-bg) 40%, transparent);
+  border-radius: var(--ui-radius-pill);
+  position: relative;
+  transition: background 120ms ease;
+
+  &::before {
+    bottom: 50%;
+    content: '';
+    left: 50%;
+    min-height: 44px;
+    min-width: 44px;
+    position: absolute;
+    right: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  &:hover {
+    background: color-mix(in srgb, var(--ui-color-brand-bg) 60%, transparent);
+  }
+}

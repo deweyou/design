@@ -418,10 +418,7 @@ export const SizeVariants: StoryObj = {
           <strong>size="{size}"</strong>
           <Menu size={size}>
             <MenuTrigger>
-              <Button
-                variant="outlined"
-                size={size === 'sm' ? 'small' : size === 'lg' ? 'large' : 'medium'}
-              >
+              <Button variant="outlined" size={size === 'sm' ? 'sm' : size === 'lg' ? 'lg' : 'md'}>
                 {size.toUpperCase()} menu
               </Button>
             </MenuTrigger>
@@ -453,7 +450,7 @@ export const ShapeVariants: StoryObj = {
           <strong>shape="{shape}"</strong>
           <Menu shape={shape}>
             <MenuTrigger>
-              <Button variant="outlined" shape={shape === 'rect' ? 'rect' : 'rounded'}>
+              <Button variant="outlined" shape={shape === 'rect' ? 'rect' : 'float'}>
                 {shape === 'rounded' ? 'Rounded menu' : 'Rect menu'}
               </Button>
             </MenuTrigger>
@@ -513,8 +510,8 @@ export const Interaction: StoryObj = {
 
     await waitFor(() => {
       const menu = document.querySelector('[role="menu"]');
-      expect(menu).toBeInTheDocument();
-      expect(menu).toBeVisible();
+      void expect(menu).toBeInTheDocument();
+      void expect(menu).toBeVisible();
     });
 
     // US1: hover submenu trigger (MenuTriggerItem) → nested menu appears
@@ -527,7 +524,7 @@ export const Interaction: StoryObj = {
       await userEvent.hover(submenuTrigger);
       await waitFor(() => {
         const menus = document.querySelectorAll('[role="menu"]');
-        expect(menus.length).toBeGreaterThanOrEqual(2);
+        void expect(menus.length).toBeGreaterThanOrEqual(2);
       });
     }
 
@@ -535,13 +532,13 @@ export const Interaction: StoryObj = {
     await userEvent.keyboard('{Escape}');
     await waitFor(() => {
       const menus = document.querySelectorAll('[role="menu"]');
-      expect(menus.length).toBe(0);
+      void expect(menus.length).toBe(0);
     });
 
     // US1: Escape closes menu
     await userEvent.click(trigger);
     await waitFor(() => {
-      expect(document.querySelector('[role="menu"]')).toBeInTheDocument();
+      void expect(document.querySelector('[role="menu"]')).toBeInTheDocument();
     });
 
     // US2: ArrowDown navigates — focused element gains role menuitem or menu (Ark UI focuses menu, then items on ArrowDown)
@@ -550,12 +547,12 @@ export const Interaction: StoryObj = {
     await waitFor(() => {
       const focused = document.activeElement;
       const role = focused?.getAttribute('role') ?? '';
-      expect(['menuitem', 'menu'].includes(role)).toBe(true);
+      void expect(['menuitem', 'menu'].includes(role)).toBe(true);
     });
 
     await userEvent.keyboard('{Escape}');
     await waitFor(() => {
-      expect(document.querySelector('[role="menu"]')).not.toBeInTheDocument();
+      void expect(document.querySelector('[role="menu"]')).not.toBeInTheDocument();
     });
   },
 };

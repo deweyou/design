@@ -118,7 +118,7 @@
   block-size: 1em;
   border: 0.12em solid currentColor;
   border-inline-end-color: transparent;
-  border-radius: 999px;
+  border-radius: var(--ui-radius-pill);
   box-sizing: border-box;
   display: inline-block;
   flex: none;
@@ -153,10 +153,10 @@
   inset-inline: 0;
   inset-block-end: calc(-1 * 0.24em);
   block-size: 0.08em;
-  border-radius: 999px;
+  border-radius: var(--ui-radius-pill);
   background: currentColor;
   pointer-events: none;
-  clip-path: inset(0 100% 0 0 round 999px);
+  clip-path: inset(0 100% 0 0 round var(--ui-radius-pill));
   transition: clip-path 260ms ease;
   will-change: clip-path;
 }
@@ -214,7 +214,7 @@
     var(--ui-color-surface)
   );
   --button-ghost-text-color: var(--ui-color-brand-bg);
-  --button-link-text-color: var(--ui-color-link);
+  --button-link-text-color: var(--ui-color-text);
 }
 
 .colorDanger {
@@ -275,7 +275,7 @@
   --button-background-hover: var(--button-ghost-background-hover);
   --button-background-active: var(--button-ghost-background-active);
   --button-border-color: transparent;
-  --button-radius: 0.4rem;
+  --button-radius: var(--ui-radius-float);
   --button-text-color: var(--button-ghost-text-color);
   font-weight: 500;
   padding-block: 0.3rem;
@@ -287,7 +287,7 @@
   --button-background-hover: transparent;
   --button-background-active: transparent;
   --button-border-color: transparent;
-  --button-radius: 0.4rem;
+  --button-radius: var(--ui-radius-float);
   --button-text-color: var(--button-link-text-color);
   font-weight: 500;
   gap: 0.35rem;
@@ -317,7 +317,7 @@
 }
 
 .link:hover:not([data-disabled='true']) .linkUnderlineDecoration {
-  clip-path: inset(0 0 0 0 round 999px);
+  clip-path: inset(0 0 0 0 round var(--ui-radius-pill));
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -336,48 +336,48 @@
   }
 }
 
-.sizeExtraSmall {
+.sizeXs {
   --button-font-size: 0.75rem;
   --button-padding-block: 0.22rem;
   --button-padding-inline: 0.46rem;
 }
 
-.sizeSmall {
+.sizeSm {
   --button-font-size: 0.8125rem;
   --button-padding-block: 0.28rem;
   --button-padding-inline: 0.58rem;
 }
 
-.sizeMedium {
+.sizeMd {
   --button-font-size: 0.875rem;
   --button-padding-block: 0.34rem;
   --button-padding-inline: 0.72rem;
 }
 
-.sizeLarge {
+.sizeLg {
   --button-font-size: 0.9375rem;
   --button-padding-block: 0.4rem;
   --button-padding-inline: 0.84rem;
 }
 
-.sizeExtraLarge {
+.sizeXl {
   --button-font-size: 1rem;
   --button-padding-block: 0.48rem;
   --button-padding-inline: 0.98rem;
 }
 
 .shapeAuto {
-  --button-radius: 0.8rem;
+  --button-radius: var(--ui-radius-float);
 }
 
 .shapeRect {
-  --button-radius: 0;
+  --button-radius: var(--ui-radius-rect);
 }
 
-.shapeRounded {
-  --button-radius: 0.4rem;
+.shapeFloat {
+  --button-radius: var(--ui-radius-float);
 }
 
 .shapePill {
-  --button-radius: 999px;
+  --button-radius: var(--ui-radius-pill);
 }

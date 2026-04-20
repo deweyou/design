@@ -57,6 +57,11 @@ const preview: Preview = {
         { name: 'dark', value: '#000000' },
       ],
     },
+    options: {
+      storySort: {
+        method: 'alphabetical',
+      },
+    },
   },
 };
 

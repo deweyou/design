@@ -20,12 +20,26 @@ import styles from './index.module.less';
 // ─── Type exports ─────────────────────────────────────────────────────────────
 
 export const tabsVariantOptions = ['line', 'bg'] as const;
+/**
+ * Visual variant for the active indicator.
+ * - 'line' — a sliding underline indicator (default).
+ * - 'bg' — a background highlight on the active trigger.
+ */
 export type TabsVariant = (typeof tabsVariantOptions)[number];
 
 export const tabsColorOptions = ['neutral', 'primary'] as const;
+/**
+ * Semantic color for the active indicator.
+ * - 'neutral' — uses --ui-color-text (default).
+ * - 'primary' — uses --ui-color-brand-bg.
+ */
 export type TabsColor = (typeof tabsColorOptions)[number];
 
-export const tabsSizeOptions = ['small', 'medium', 'large'] as const;
+export const tabsSizeOptions = ['sm', 'md', 'lg'] as const;
+/**
+ * Size scale for tab triggers.
+ * 'sm' | 'md' | 'lg'. Defaults to 'md'.
+ */
 export type TabsSize = (typeof tabsSizeOptions)[number];
 
 export const tabsOrientationOptions = ['horizontal', 'vertical'] as const;
@@ -35,6 +49,11 @@ export const tabsActivationModeOptions = ['automatic', 'manual'] as const;
 export type TabsActivationMode = (typeof tabsActivationModeOptions)[number];
 
 export const tabsOverflowModeOptions = ['scroll', 'collapse'] as const;
+/**
+ * How to handle tabs that overflow the container width.
+ * - 'scroll' — tabs scroll horizontally (default).
+ * - 'collapse' — overflowing tabs collapse into a trailing "More" dropdown.
+ */
 export type TabsOverflowMode = (typeof tabsOverflowModeOptions)[number];
 
 export type TabMenuItemDef = {
@@ -66,21 +85,29 @@ export type TabsProps = {
   value?: string;
   /** Default tab value for uncontrolled usage. */
   defaultValue?: string;
+  /** Callback fired when the active tab changes. */
   onValueChange?: (details: TabsValueChangeDetails) => void;
+  /** Callback fired when keyboard focus moves between tab triggers. */
   onFocusChange?: (details: TabsFocusChangeDetails) => void;
+  /** Layout direction: 'horizontal' (default) or 'vertical'. */
   orientation?: TabsOrientation;
+  /** Whether tabs activate on focus ('automatic') or require explicit selection ('manual'). */
   activationMode?: TabsActivationMode;
+  /** Whether keyboard focus wraps from the last tab back to the first. Defaults to true. */
   loopFocus?: boolean;
   /** Visual variant: 'line' shows a sliding indicator, 'bg' uses background highlight. */
   variant?: TabsVariant;
   /** Semantic color emphasis for the active indicator. */
   color?: TabsColor;
+  /** Size scale for tab triggers. 'sm' | 'md' | 'lg'. Defaults to 'md'. */
   size?: TabsSize;
   /** How to handle tabs that overflow the container. */
   overflowMode?: TabsOverflowMode;
   /** When true, no TabContent panels are rendered (tabs-only mode). */
   hideContent?: boolean;
+  /** When true, tab content panels are not mounted until first activated. */
   lazyMount?: boolean;
+  /** When true, tab content panels are unmounted when deactivated. */
   unmountOnExit?: boolean;
   className?: string;
   style?: CSSProperties;
@@ -136,7 +163,7 @@ type TabsContextValue = {
 const TabsContext = createContext<TabsContextValue>({
   variant: 'line',
   color: 'neutral',
-  size: 'medium',
+  size: 'md',
   orientation: 'horizontal',
   overflowMode: 'scroll',
   hideContent: false,
@@ -167,7 +194,7 @@ export const Tabs = ({
   loopFocus = true,
   variant = 'line',
   color = 'neutral',
-  size = 'medium',
+  size = 'md',
   overflowMode = 'scroll',
   hideContent = false,
   lazyMount = false,

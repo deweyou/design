@@ -1,0 +1,16 @@
+@keyframes spinner-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.root {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  border: 0.125em solid currentColor;
+  border-top-color: transparent;
+  border-radius: var(--ui-radius-pill);
+  animation: spinner-spin 600ms linear infinite;
+  flex-shrink: 0;
+}

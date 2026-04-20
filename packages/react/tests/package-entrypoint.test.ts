@@ -16,7 +16,7 @@ const exampleButtonProps: import('../src').ButtonProps = {
   color: 'primary',
   icon: createElement(SearchIcon),
   shape: 'pill',
-  size: 'medium',
+  size: 'md',
   type: 'button',
   variant: 'outlined',
 };
@@ -29,7 +29,7 @@ const exampleIconButtonProps: import('../src').IconButtonProps = {
   icon: createElement(SearchIcon),
   loading: true,
   shape: 'pill',
-  size: 'medium',
+  size: 'md',
   target: '_blank',
   variant: 'outlined',
 };
@@ -59,11 +59,17 @@ void exampleIconButtonProps;
 void examplePopoverProps;
 void exampleTextProps;
 
-test('components root entry exposes Button, IconButton, Popover, Text, Menu family, and Tabs family as the runtime public exports', () => {
+test('components root entry exposes Button, IconButton, Popover, Text, Menu family, Tabs family, Phase 2 and Phase 3 components as the runtime public exports', () => {
   expect(Object.keys(components).sort()).toEqual([
+    'Badge',
+    'Breadcrumb',
     'Button',
+    'Card',
+    'Checkbox',
     'ContextMenu',
+    'Dialog',
     'IconButton',
+    'Input',
     'Menu',
     'MenuCheckboxItem',
     'MenuContent',
@@ -75,13 +81,25 @@ test('components root entry exposes Button, IconButton, Popover, Text, Menu fami
     'MenuSeparator',
     'MenuTrigger',
     'MenuTriggerItem',
+    'Pagination',
     'Popover',
+    'RadioGroup',
+    'ScrollArea',
+    'Select',
+    'Separator',
+    'Skeleton',
+    'Spinner',
+    'Switch',
     'TabContent',
     'TabIndicator',
     'TabList',
     'TabTrigger',
     'Tabs',
     'Text',
+    'Textarea',
+    'Toaster',
+    'Tooltip',
+    'toast',
   ]);
 });
 

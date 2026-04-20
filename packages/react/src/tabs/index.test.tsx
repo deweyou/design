@@ -349,7 +349,7 @@ describe('Tabs — 边界状态', () => {
 
   it('size 和 color 属性正确传递到根节点', () => {
     const { container } = render(
-      <Tabs color="primary" defaultValue="t1" size="large">
+      <Tabs color="primary" defaultValue="t1" size="lg">
         <TabList>
           <TabTrigger value="t1">T1</TabTrigger>
         </TabList>
@@ -358,7 +358,7 @@ describe('Tabs — 边界状态', () => {
     );
     const root = container.firstElementChild;
     expect(root?.getAttribute('data-color')).toBe('primary');
-    expect(root?.getAttribute('data-size')).toBe('large');
+    expect(root?.getAttribute('data-size')).toBe('lg');
   });
 
   it('vertical 方向切换后 indicator 更新且 data-orientation 正确', async () => {
@@ -474,5 +474,13 @@ describe('Tabs — stylesheet token 约束', () => {
     expect(stylesheet).toContain('--ui-color-brand-bg');
     expect(stylesheet).toContain('--ui-color-text');
     expect(stylesheet).not.toContain('--ui-color-palette-');
+  });
+
+  it('tabs stylesheet 使用语义 radius token，不含硬编码 border-radius 值', () => {
+    expect(stylesheet).not.toContain('border-radius: 0.4rem');
+    expect(stylesheet).not.toContain('border-radius: 0.3rem');
+    expect(stylesheet).not.toContain('border-radius: 999px');
+    expect(stylesheet).toContain('var(--ui-radius-float)');
+    expect(stylesheet).toContain('var(--ui-radius-pill)');
   });
 });
