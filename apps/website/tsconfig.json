@@ -4,7 +4,7 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "jsx": "react-jsx",
-    "types": ["vite/client"],
+    "types": ["vite/client", "@testing-library/jest-dom"],
     "paths": {
       "@deweyou-design/react-icons": ["../../packages/react-icons/src/index.ts"],
       "@deweyou-design/react-icons/*": ["../../packages/react-icons/src/exports/*.ts"],
@@ -15,5 +15,5 @@
       "@deweyou-design/styles/*": ["../../packages/styles/src/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "src/**/*.test.tsx", "src/**/*.test.ts"]
 }

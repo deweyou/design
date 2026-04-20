@@ -6,6 +6,9 @@ const stylesEntry = fileURLToPath(new URL('../../packages/styles/src/index.ts', 
 const stylesCssDir = fileURLToPath(new URL('../../packages/styles/src/css', import.meta.url));
 
 export default defineConfig({
+  test: {
+    setupFiles: ['src/test-setup.ts'],
+  },
   resolve: {
     alias: [
       {
