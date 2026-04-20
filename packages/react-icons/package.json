@@ -1,6 +1,6 @@
 {
   "name": "@deweyou-design/react-icons",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "React icon components for Deweyou UI — thin wrapper over @tabler/icons-react.",
   "files": [
     "dist"
