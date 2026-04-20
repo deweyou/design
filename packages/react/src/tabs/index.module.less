@@ -195,8 +195,7 @@
 
 // Focus-visible
 .trigger:focus-visible {
-  outline: 2px solid var(--ui-color-focus-ring);
-  outline-offset: 2px;
+  .focus-ring-offset();
 }
 
 // Selected state — Ark UI sets data-selected="" (empty string) for selected triggers
@@ -357,8 +356,7 @@
 }
 
 .content:focus-visible {
-  outline: 2px solid var(--ui-color-focus-ring);
-  outline-offset: 2px;
+  .focus-ring-offset();
 }
 
 // ─── "更多" overflow button ───────────────────────────────────────────────────
@@ -409,8 +407,7 @@
 }
 
 .moreButton:focus-visible {
-  outline: 2px solid var(--ui-color-focus-ring);
-  outline-offset: 2px;
+  .focus-ring-offset();
 }
 
 // When the active tab is in the overflow list
