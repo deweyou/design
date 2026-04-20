@@ -154,9 +154,9 @@ test('exposes z-index tokens in lightTheme', () => {
 
 test('exposes shadow scale tokens with correct light and dark values', () => {
   expect(lightTheme['--ui-shadow-sm']).toBe('0 2px 8px rgba(24, 33, 29, 0.06)');
-  expect(lightTheme['--ui-shadow-md']).toBe('0 8px 24px rgba(24, 33, 29, 0.10)');
+  expect(lightTheme['--ui-shadow-md']).toBe('0 8px 24px rgba(24, 33, 29, 0.1)');
   expect(lightTheme['--ui-shadow-lg']).toBe('0 18px 40px rgba(24, 33, 29, 0.12)');
-  expect(darkTheme['--ui-shadow-sm']).toBe('0 2px 8px rgba(0, 0, 0, 0.20)');
+  expect(darkTheme['--ui-shadow-sm']).toBe('0 2px 8px rgba(0, 0, 0, 0.2)');
   expect(darkTheme['--ui-shadow-md']).toBe('0 8px 24px rgba(0, 0, 0, 0.28)');
   expect(darkTheme['--ui-shadow-lg']).toBe('0 18px 40px rgba(0, 0, 0, 0.34)');
 });
