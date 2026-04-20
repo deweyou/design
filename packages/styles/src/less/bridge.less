@@ -12,3 +12,18 @@
 @focus-ring: var(--ui-color-focus-ring);
 @brand-text: var(--ui-color-brand-text);
 @surface-raised: var(--ui-color-surface-raised);
+
+// 焦点环 mixin — 使用 box-shadow 避免 outline 视觉突兀感
+// 注意：不使用 outline: none 完全关闭，而是保留 UA 默认 outline 作为高对比模式 fallback
+.focus-ring() {
+  box-shadow: 0 0 0 2px var(--ui-color-focus-ring);
+  outline: none;
+}
+
+// 带 offset 的焦点环（用于需要视觉间距的场景，如 button、checkbox）
+.focus-ring-offset() {
+  box-shadow:
+    0 0 0 2px var(--ui-color-surface),
+    0 0 0 4px var(--ui-color-focus-ring);
+  outline: none;
+}
