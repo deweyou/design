@@ -144,3 +144,57 @@
   background: var(--ui-color-border);
   flex-shrink: 0;
 }
+
+// ─── Icons preview ────────────────────────────────────────────────────────────
+
+.iconsSection {
+  padding: 64px 0;
+  border-bottom: 1px solid var(--ui-color-border);
+}
+
+.iconGrid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.iconCell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.iconBox {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--ui-color-border);
+  border-radius: var(--ui-radius-float);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ui-color-surface);
+  color: var(--ui-color-text);
+  font-size: 18px;
+}
+
+.iconName {
+  font-size: 7px;
+  color: var(--ui-color-text-muted);
+  text-align: center;
+  font-family: system-ui, sans-serif;
+  line-height: 1.2;
+}
+
+.iconViewAll {
+  text-align: center;
+}
+
+// ─── Footer ───────────────────────────────────────────────────────────────────
+
+.footer {
+  padding: 28px 0;
+  border-top: 1px solid var(--ui-color-border);
+  text-align: center;
+}

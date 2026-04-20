@@ -18,15 +18,73 @@ import {
   Text,
   toast,
 } from '@deweyou-design/react';
+import * as Icons from '@deweyou-design/react-icons';
+import { useNavigate } from 'react-router-dom';
 
 import styles from './home.module.less';
+
+// 20 representative icons for the landing preview
+const PREVIEW_ICONS: Array<{ name: string; Icon: React.ComponentType<{ size?: number }> }> = [
+  { name: 'plus', Icon: Icons.PlusIcon },
+  { name: 'x', Icon: Icons.XIcon },
+  { name: 'check', Icon: Icons.CheckIcon },
+  { name: 'search', Icon: Icons.SearchIcon },
+  { name: 'edit', Icon: Icons.EditIcon },
+  { name: 'trash', Icon: Icons.TrashIcon },
+  { name: 'settings', Icon: Icons.SettingsIcon },
+  { name: 'bell', Icon: Icons.BellIcon },
+  { name: 'home', Icon: Icons.HomeIcon },
+  { name: 'user', Icon: Icons.UserIcon },
+  { name: 'download', Icon: Icons.DownloadIcon },
+  { name: 'upload', Icon: Icons.UploadIcon },
+  { name: 'refresh', Icon: Icons.RefreshIcon },
+  { name: 'filter', Icon: Icons.FilterIcon },
+  { name: 'copy', Icon: Icons.CopyIcon },
+  { name: 'eye', Icon: Icons.EyeIcon },
+  { name: 'eye-off', Icon: Icons.EyeOffIcon },
+  { name: 'arrow-left', Icon: Icons.ArrowLeftIcon },
+  { name: 'arrow-right', Icon: Icons.ArrowRightIcon },
+  { name: 'external-link', Icon: Icons.ExternalLinkIcon },
+];
 
 export const HomePage = () => (
   <main className={styles.page}>
     <HeroSection />
     <DesignSection />
+    <IconsPreviewSection />
+    <footer className={styles.footer}>
+      <div className={styles.container}>
+        <Text variant="caption">MIT License · 2026</Text>
+      </div>
+    </footer>
   </main>
 );
+
+const IconsPreviewSection = () => {
+  const navigate = useNavigate();
+  return (
+    <section className={styles.iconsSection}>
+      <div className={styles.container}>
+        <p className={styles.sectionLabel}>Icons · Tabler Icons</p>
+        <div className={styles.iconGrid}>
+          {PREVIEW_ICONS.map(({ name, Icon }) => (
+            <div key={name} className={styles.iconCell}>
+              <div className={styles.iconBox}>
+                <Icon size={18} />
+              </div>
+              <span className={styles.iconName}>{name}</span>
+            </div>
+          ))}
+        </div>
+        <div className={styles.iconViewAll}>
+          <Button variant="link" onClick={() => navigate('/icons')}>
+            查看全部图标 →
+          </Button>
+        </div>
+      </div>
+    </section>
+  );
+};
 
 // ─── Hero ─────────────────────────────────────────────────────────────────────
 
