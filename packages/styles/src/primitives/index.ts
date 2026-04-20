@@ -179,6 +179,12 @@ export const internalPrimitives = {
   shadow: {
     soft: '0 18px 40px rgba(24, 33, 29, 0.12)',
     softDark: '0 18px 40px rgba(0, 0, 0, 0.34)',
+    sm: '0 2px 8px rgba(24, 33, 29, 0.06)',
+    smDark: '0 2px 8px rgba(0, 0, 0, 0.20)',
+    md: '0 8px 24px rgba(24, 33, 29, 0.10)',
+    mdDark: '0 8px 24px rgba(0, 0, 0, 0.28)',
+    lg: '0 18px 40px rgba(24, 33, 29, 0.12)',
+    lgDark: '0 18px 40px rgba(0, 0, 0, 0.34)',
   },
   font: {
     body: '"Source Han Serif CN Web", "Songti SC", "STSong", "SimSun", "NSimSun", serif',
@@ -224,5 +230,11 @@ export const internalPrimitives = {
     heading4LineHeight: '1.22',
     heading5Size: '1.15rem',
     heading5LineHeight: '1.32',
+  },
+  zIndex: {
+    tooltip: '1000',
+    popover: '1100',
+    dialog: '1200',
+    toast: '1300',
   },
 } as const;
