@@ -86,3 +86,14 @@ test('input stylesheet contains focus-visible outline rule', () => {
   expect(stylesheet).toContain('focus-visible');
   expect(stylesheet).toContain('outline');
 });
+
+test('input renders outlined variant (default) with border class', () => {
+  const markup = renderMarkup({});
+  expect(markup).toContain(styles.variantOutlined);
+});
+
+test('input renders ghost variant without border class', () => {
+  const markup = renderMarkup({ variant: 'ghost' });
+  expect(markup).toContain(styles.variantGhost);
+  expect(markup).not.toContain(styles.variantOutlined);
+});
