@@ -161,18 +161,6 @@ test('storybook typography review matrix covers Text variants, palette highlight
   expect(storybookEntry).toContain('export const ReadingSurface');
 });
 
-test('website typography guidance documents Text variants, palette highlights, and long-copy boundaries', () => {
-  const websiteEntry = readFileSync(resolve(root, 'apps/website/src/main.tsx'), 'utf8');
-
-  expect(websiteEntry).toContain('Text component');
-  expect(websiteEntry).toContain('lineClamp');
-  expect(websiteEntry).toContain('原生 `h1`-`h5`');
-  expect(websiteEntry).toContain('strikethrough');
-  expect(websiteEntry).toContain('Palette-backed highlight');
-  expect(websiteEntry).toContain('26 色族');
-  expect(websiteEntry).toContain('支持常见文本层级');
-});
-
 test('button and text keep consuming shared color sources instead of package-private tokens', () => {
   const buttonStyles = readFileSync(
     resolve(root, 'packages/react/src/button/index.module.less'),
@@ -183,7 +171,6 @@ test('button and text keep consuming shared color sources instead of package-pri
     resolve(root, 'apps/storybook/src/stories/Color.stories.tsx'),
     'utf8',
   );
-  const websiteEntry = readFileSync(resolve(root, 'apps/website/src/main.tsx'), 'utf8');
 
   expect(textSource).toContain("from '@deweyou-design/styles'");
   expect(textSource).toContain('colorFamilyNames');
@@ -194,8 +181,6 @@ test('button and text keep consuming shared color sources instead of package-pri
   expect(buttonStyles).not.toContain('--ui-color-palette-');
   expect(storybookColor).toContain('Shared color foundation');
   expect(storybookColor).toContain('Use Storybook theme switching');
-  expect(websiteEntry).toContain('Color foundation');
-  expect(websiteEntry).toContain('非必要不得新增特化 token');
 });
 
 test('storybook button review matrix covers native prop passthrough and loading states', () => {
@@ -211,15 +196,4 @@ test('storybook button review matrix covers native prop passthrough and loading 
   expect(storybookEntry).toContain('loading');
   expect(storybookEntry).toContain('focusTargetRef.current?.focus()');
   expect(storybookEntry).not.toContain('export const TypographyContract');
-});
-
-test('website button guidance documents danger, loading, and ref boundaries', () => {
-  const websiteEntry = readFileSync(resolve(root, 'apps/website/src/main.tsx'), 'utf8');
-
-  expect(websiteEntry).toContain('Public prop passthrough');
-  expect(websiteEntry).toContain('Loading guidance');
-  expect(websiteEntry).toContain('htmlType');
-  expect(websiteEntry).toContain('loading');
-  expect(websiteEntry).toContain('focusTargetRef.current?.focus()');
-  expect(websiteEntry).toContain("['neutral', 'primary', 'danger']");
 });

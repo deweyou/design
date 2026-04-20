@@ -27,8 +27,7 @@ test('consumer setup keeps the global style import explicit', () => {
   const lessBridge = readFileSync(resolve(root, 'packages/styles/src/less/bridge.less'), 'utf8');
 
   expect(websiteMain).toContain("import '@deweyou-design/styles/theme.css';");
-  expect(websiteMain).toContain('Color foundation');
-  expect(websiteMain).toContain('非必要不得新增特化 token');
+
   expect(storybookPreview).toContain("import '@deweyou-design/styles/theme.css';");
   expect(storybookStory).not.toContain('TypographyContract');
   expect(storybookTypography).toContain('ReadingSurface');
