@@ -1,6 +1,6 @@
 {
   "name": "@deweyou-design/utils",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Framework-agnostic runtime utilities for Deweyou Design consumers.",
   "type": "module",
   "types": "./dist/index.d.mts",
