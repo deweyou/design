@@ -1,3 +1,5 @@
+@import '@deweyou-design/styles/less/bridge';
+
 .root {
   --button-background: transparent;
   --button-background-active: transparent;
@@ -70,8 +72,7 @@
 }
 
 .root:focus-visible {
-  outline: 2px solid var(--ui-color-focus-ring);
-  outline-offset: 2px;
+  .focus-ring-offset();
 }
 
 .root[data-disabled='true'] {

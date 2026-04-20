@@ -177,7 +177,8 @@ test('button styles consume shared semantic theme tokens instead of raw palette 
   expect(stylesheet).toContain('--ui-color-brand-bg');
   expect(stylesheet).toContain('--ui-color-danger-bg');
   expect(stylesheet).not.toContain('--ui-color-link');
-  expect(stylesheet).toContain('--ui-color-focus-ring');
+  expect(stylesheet).toContain('@import');
+  expect(stylesheet).toContain('focus-ring');
   expect(stylesheet).not.toContain('--ui-color-palette-');
 });
 
@@ -441,7 +442,7 @@ test('button stylesheet includes loading cursor overrides and spinner animation'
 
 test('button stylesheet keeps focus-visible affordance alongside loading and disabled states', () => {
   expect(stylesheet).toContain('.root:focus-visible');
-  expect(stylesheet).toContain('outline: 2px solid var(--ui-color-focus-ring);');
+  expect(stylesheet).toContain('.focus-ring-offset()');
   expect(stylesheet).toContain(".root[data-disabled='true']");
 });
 
