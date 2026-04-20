@@ -6,6 +6,9 @@
     "dist"
   ],
   "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
@@ -13,94 +16,134 @@
       "import": "./dist/index.js",
       "default": "./dist/index.js"
     },
+    "./badge": {
+      "types": "./dist/badge/index.d.ts",
+      "import": "./dist/badge/index.js",
+      "default": "./dist/badge/index.js"
+    },
+    "./breadcrumb": {
+      "types": "./dist/breadcrumb/index.d.ts",
+      "import": "./dist/breadcrumb/index.js",
+      "default": "./dist/breadcrumb/index.js"
+    },
     "./button": {
       "types": "./dist/button/index.d.ts",
       "import": "./dist/button/index.js",
       "default": "./dist/button/index.js"
     },
-    "./popover": {
-      "types": "./dist/popover/index.d.ts",
-      "import": "./dist/popover/index.js",
-      "default": "./dist/popover/index.js"
+    "./card": {
+      "types": "./dist/card/index.d.ts",
+      "import": "./dist/card/index.js",
+      "default": "./dist/card/index.js"
     },
-    "./text": {
-      "types": "./dist/text/index.d.ts",
-      "import": "./dist/text/index.js",
-      "default": "./dist/text/index.js"
+    "./checkbox": {
+      "types": "./dist/checkbox/index.d.ts",
+      "import": "./dist/checkbox/index.js",
+      "default": "./dist/checkbox/index.js"
+    },
+    "./dialog": {
+      "types": "./dist/dialog/index.d.ts",
+      "import": "./dist/dialog/index.js",
+      "default": "./dist/dialog/index.js"
+    },
+    "./input": {
+      "types": "./dist/input/index.d.ts",
+      "import": "./dist/input/index.js",
+      "default": "./dist/input/index.js"
     },
     "./menu": {
       "types": "./dist/menu/index.d.ts",
       "import": "./dist/menu/index.js",
       "default": "./dist/menu/index.js"
     },
+    "./pagination": {
+      "types": "./dist/pagination/index.d.ts",
+      "import": "./dist/pagination/index.js",
+      "default": "./dist/pagination/index.js"
+    },
+    "./popover": {
+      "types": "./dist/popover/index.d.ts",
+      "import": "./dist/popover/index.js",
+      "default": "./dist/popover/index.js"
+    },
+    "./radio-group": {
+      "types": "./dist/radio-group/index.d.ts",
+      "import": "./dist/radio-group/index.js",
+      "default": "./dist/radio-group/index.js"
+    },
+    "./scroll-area": {
+      "types": "./dist/scroll-area/index.d.ts",
+      "import": "./dist/scroll-area/index.js",
+      "default": "./dist/scroll-area/index.js"
+    },
+    "./select": {
+      "types": "./dist/select/index.d.ts",
+      "import": "./dist/select/index.js",
+      "default": "./dist/select/index.js"
+    },
+    "./separator": {
+      "types": "./dist/separator/index.d.ts",
+      "import": "./dist/separator/index.js",
+      "default": "./dist/separator/index.js"
+    },
+    "./skeleton": {
+      "types": "./dist/skeleton/index.d.ts",
+      "import": "./dist/skeleton/index.js",
+      "default": "./dist/skeleton/index.js"
+    },
+    "./spinner": {
+      "types": "./dist/spinner/index.d.ts",
+      "import": "./dist/spinner/index.js",
+      "default": "./dist/spinner/index.js"
+    },
+    "./switch": {
+      "types": "./dist/switch/index.d.ts",
+      "import": "./dist/switch/index.js",
+      "default": "./dist/switch/index.js"
+    },
     "./tabs": {
       "types": "./dist/tabs/index.d.ts",
       "import": "./dist/tabs/index.js",
       "default": "./dist/tabs/index.js"
     },
-    "./checkbox": {
-      "default": "./dist/checkbox/index.js",
-      "import": "./dist/checkbox/index.js",
-      "types": "./dist/checkbox/index.d.ts"
+    "./text": {
+      "types": "./dist/text/index.d.ts",
+      "import": "./dist/text/index.js",
+      "default": "./dist/text/index.js"
     },
-    "./radio-group": {
-      "default": "./dist/radio-group/index.js",
-      "import": "./dist/radio-group/index.js",
-      "types": "./dist/radio-group/index.d.ts"
-    },
-    "./switch": {
-      "default": "./dist/switch/index.js",
-      "import": "./dist/switch/index.js",
-      "types": "./dist/switch/index.d.ts"
-    },
-    "./select": {
-      "default": "./dist/select/index.js",
-      "import": "./dist/select/index.js",
-      "types": "./dist/select/index.d.ts"
-    },
-    "./dialog": {
-      "default": "./dist/dialog/index.js",
-      "import": "./dist/dialog/index.js",
-      "types": "./dist/dialog/index.d.ts"
-    },
-    "./tooltip": {
-      "default": "./dist/tooltip/index.js",
-      "import": "./dist/tooltip/index.js",
-      "types": "./dist/tooltip/index.d.ts"
+    "./textarea": {
+      "types": "./dist/textarea/index.d.ts",
+      "import": "./dist/textarea/index.js",
+      "default": "./dist/textarea/index.js"
     },
     "./toast": {
-      "default": "./dist/toast/index.js",
+      "types": "./dist/toast/index.d.ts",
       "import": "./dist/toast/index.js",
-      "types": "./dist/toast/index.d.ts"
+      "default": "./dist/toast/index.js"
     },
-    "./scroll-area": {
-      "default": "./dist/scroll-area/index.js",
-      "import": "./dist/scroll-area/index.js",
-      "types": "./dist/scroll-area/index.d.ts"
+    "./tooltip": {
+      "types": "./dist/tooltip/index.d.ts",
+      "import": "./dist/tooltip/index.js",
+      "default": "./dist/tooltip/index.js"
     },
-    "./pagination": {
-      "default": "./dist/pagination/index.js",
-      "import": "./dist/pagination/index.js",
-      "types": "./dist/pagination/index.d.ts"
-    },
-    "./package.json": "./package.json",
-    "./style.css": "./dist/style.css"
+    "./style.css": "./dist/style.css",
+    "./package.json": "./package.json"
   },
   "publishConfig": {
     "directory": "dist"
   },
   "scripts": {
-    "build": "vp build && tsc -p tsconfig.build.json && node ../infra/scripts/write-published-manifest.mjs .",
+    "build": "vp build && tsc -p tsconfig.build.json && node scripts/inject-css-imports.mjs && node scripts/concat-style.mjs && node ../infra/scripts/write-published-manifest.mjs .",
     "dev": "vp build --watch",
     "test": "vp test"
   },
   "dependencies": {
+    "@ark-ui/react": "catalog:",
     "@deweyou-design/react-hooks": "workspace:*",
     "@deweyou-design/styles": "workspace:*",
     "classnames": "catalog:"
   },
   "devDependencies": {
-    "@ark-ui/react": "catalog:",
     "@testing-library/jest-dom": "catalog:",
     "@testing-library/react": "catalog:",
     "@testing-library/user-event": "catalog:",

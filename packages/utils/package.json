@@ -3,6 +3,7 @@
   "version": "0.0.5",
   "description": "Framework-agnostic runtime utilities for Deweyou Design consumers.",
   "type": "module",
+  "sideEffects": false,
   "types": "./dist/index.d.mts",
   "exports": {
     ".": "./dist/index.mjs",

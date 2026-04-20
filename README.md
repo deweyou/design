@@ -5,9 +5,9 @@ A Vite+ monorepo for building and validating an opinionated React UI library.
 ## Workspace Layout
 
 - `packages/utils`: framework-agnostic helpers and repository assertions.
-- `packages/hooks`: reusable React hooks shared across apps and components.
+- `packages/react-hooks`: reusable React hooks shared across apps and components.
 - `packages/styles`: token sources, Less bridge files, and explicit global CSS entrypoints.
-- `packages/components`: reusable components with CSS Modules and root `className` overrides.
+- `packages/react`: reusable React components with CSS Modules and root `className` overrides.
 - `apps/website`: public documentation, theme guidance, and curated demos.
 - `apps/storybook`: Storybook 10 internal review surface for state coverage and exploratory development.
 
@@ -73,6 +73,33 @@ scripts/release.sh stable --dry-run
 **Via GitHub Actions:** Go to Actions → Release → Run workflow, select `channel` and optionally enable `dry_run`.
 
 Requires npm login locally (`npm login`) or `NODE_AUTH_TOKEN` in the environment for CI.
+
+## Consuming the Library
+
+### Importing Components
+
+**Barrel import** — convenient for development; modern bundlers (Vite, Webpack 5, Rollup) will tree-shake unused components automatically because `sideEffects` is declared in each package:
+
+```ts
+import { Button, Text } from '@deweyou-design/react';
+```
+
+**Per-component import** — most explicit, recommended for production builds or bundlers without reliable tree-shaking:
+
+```ts
+import { Button } from '@deweyou-design/react/button';
+import { Text } from '@deweyou-design/react/text';
+```
+
+### Styles
+
+Each component's CSS is emitted as a side effect of its JS import. Bundlers that respect the `sideEffects` field (Vite, Webpack 5, Rollup) include component styles automatically when the component is imported.
+
+To load all styles at once — for example in SSR or non-bundled contexts:
+
+```ts
+import '@deweyou-design/react/style.css';
+```
 
 ## Monorepo Rules
 
