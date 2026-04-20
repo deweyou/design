@@ -1,4 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="18" fill="#211c1a"/>
-  <path d="M18 18h19c11 0 17 6 17 14 0 7-5 12-12 13l11 13H41L31 46h-5v12H18V18Zm8 21h10c6 0 10-3 10-7s-4-7-10-7H26v14Z" fill="#fff6eb"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
+  <!-- emerald row -->
+  <rect x="0"  y="0"  width="9" height="9" rx="1.5" fill="#14532d"/>
+  <rect x="10" y="0"  width="9" height="9" rx="1.5" fill="#166534"/>
+  <rect x="21" y="0"  width="9" height="9" rx="1.5" fill="#4ade80"/>
+  <!-- red row -->
+  <rect x="0"  y="10" width="9" height="9" rx="1.5" fill="#450a0a"/>
+  <rect x="10" y="10" width="9" height="9" rx="1.5" fill="#7f1d1d"/>
+  <rect x="21" y="10" width="9" height="9" rx="1.5" fill="#b91c1c"/>
+  <!-- stone row -->
+  <rect x="0"  y="21" width="9" height="9" rx="1.5" fill="#1c1917"/>
+  <rect x="10" y="21" width="9" height="9" rx="1.5" fill="#44403c"/>
+  <rect x="21" y="21" width="9" height="9" rx="1.5" fill="#78716c"/>
 </svg>

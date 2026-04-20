@@ -93,24 +93,12 @@ const HeroSection = () => (
     <div className={styles.container}>
       <p className={styles.heroEyebrow}>Component Library · v1.0</p>
       <Text variant="h1" className={styles.heroTitle}>
-        为汉字排印
-        <br />
-        而生的
-        <br />
-        组件库
+        Deweyou Design
       </Text>
       <div className={styles.heroRule} />
       <Text variant="body" className={styles.heroDesc}>
         基于宋体字形节奏与温暖色系构建，27 个组件覆盖完整 UI 场景。深浅双主题，开箱即用。
       </Text>
-      <div className={styles.heroActions}>
-        <Button color="neutral" variant="filled">
-          查看文档 →
-        </Button>
-        <Button color="neutral" variant="outlined">
-          Storybook ↗
-        </Button>
-      </div>
       <code className={styles.installCmd}>npm install @deweyou-design/react</code>
     </div>
   </section>
@@ -153,14 +141,28 @@ const ColorSubSection = () => (
   </div>
 );
 
+const TYPE_SPECIMENS = [
+  { label: 'H1', sample: 'Design 设计', variant: 'h1' as const },
+  { label: 'H2', sample: '组件库 · 深浅双主题', variant: 'h2' as const },
+  { label: 'H3', sample: '简约 · 线条感 · 中文优先', variant: 'h3' as const },
+  {
+    label: 'Body',
+    sample: '基于宋体字形节奏与温暖色系构建，覆盖完整 UI 场景。',
+    variant: 'body' as const,
+  },
+  { label: 'Caption', sample: '辅助信息层级 · 用于标注与说明文字', variant: 'caption' as const },
+];
+
 const TypographySubSection = () => (
   <div className={styles.subSection}>
     <p className={styles.subLabel}>Type · Source Han Serif CN · 4 字重</p>
-    <div className={styles.typeStack}>
-      <Text variant="h1">标题一 H1</Text>
-      <Text variant="h3">标题三 H3</Text>
-      <Text variant="body">正文 Body — 清晰易读，适合长文阅读</Text>
-      <Text variant="caption">说明 Caption · 辅助信息层级</Text>
+    <div className={styles.typeRows}>
+      {TYPE_SPECIMENS.map(({ label, sample, variant }) => (
+        <div key={label} className={styles.typeRow}>
+          <span className={styles.typeLabel}>{label}</span>
+          <Text variant={variant}>{sample}</Text>
+        </div>
+      ))}
     </div>
   </div>
 );
@@ -202,7 +204,6 @@ const ComponentsSubSection = () => (
       <TabContent value="form">
         <div className={styles.tabContent}>
           <Input placeholder="普通输入框" style={{ width: 160 }} />
-          <Input placeholder="错误状态" error="必填项" style={{ width: 160 }} />
           <div className={styles.tabDivider} />
           <div style={{ width: 160 }}>
             <Select.Root placeholder="请选择">

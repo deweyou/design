@@ -117,13 +117,33 @@
   flex-shrink: 0;
 }
 
-// Typography stack
-.typeStack {
+// Typography rows
+.typeRows {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  align-items: center;
-  text-align: center;
+  gap: 0;
+}
+
+.typeRow {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--ui-color-surface);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.typeLabel {
+  font-size: 9px;
+  color: var(--ui-color-text-muted);
+  letter-spacing: 0.08em;
+  font-family: system-ui, sans-serif;
+  min-width: 40px;
+  flex-shrink: 0;
+  padding-top: 4px;
 }
 
 // ─── Components tabs ──────────────────────────────────────────────────────────
