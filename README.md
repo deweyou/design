@@ -1,4 +1,4 @@
-# Deweyou UI
+# Deweyou Design
 
 一套基于 React 的 UI 组件库，内置设计 token 和主题系统。
 
@@ -8,6 +8,12 @@
 
 ```bash
 npm install @deweyou-design/react @deweyou-design/styles
+```
+
+如需使用图标，额外安装图标包：
+
+```bash
+npm install @deweyou-design/react-icons
 ```
 
 ## 快速上手
@@ -23,7 +29,7 @@ import '@deweyou-design/styles/theme.css';
 **2. 使用组件**
 
 ```tsx
-import { Button, Input, Toast } from '@deweyou-design/react';
+import { Button, Input } from '@deweyou-design/react';
 
 export default function App() {
   return <Button>Hello</Button>;
@@ -49,6 +55,40 @@ import { Input } from '@deweyou-design/react/input';
 
 ```ts
 import '@deweyou-design/react/style.css';
+```
+
+## 图标
+
+图标包基于 [Tabler Icons](https://tabler.io/icons) 封装，统一了描边风格（square cap、miter join）。
+
+```tsx
+import { SearchIcon, TrashIcon, PlusIcon } from '@deweyou-design/react-icons';
+
+<SearchIcon />
+<SearchIcon size={20} stroke={2} />
+<SearchIcon aria-label="搜索" />  {/* 有 aria-label 时对屏幕阅读器可见 */}
+```
+
+**Props**
+
+| Prop         | 类型               | 默认值  | 说明                       |
+| ------------ | ------------------ | ------- | -------------------------- |
+| `size`       | `number \| string` | `'1em'` | 图标尺寸                   |
+| `stroke`     | `number`           | `1.5`   | 描边宽度                   |
+| `className`  | `string`           | —       | 自定义样式类               |
+| `aria-label` | `string`           | —       | 传入后图标对无障碍设备可见 |
+
+**内置图标**
+
+`AlertCircle` · `AlertTriangle` · `ArrowLeft` · `ArrowRight` · `Bell` · `Check` · `ChevronDown` · `ChevronLeft` · `ChevronRight` · `ChevronUp` · `Copy` · `Download` · `Edit` · `ExternalLink` · `Eye` · `EyeOff` · `Filter` · `Home` · `Info` · `Loader2` · `Menu2` · `Minus` · `Plus` · `Refresh` · `Search` · `Settings` · `Trash` · `Upload` · `User` · `X`
+
+如需使用 Tabler 中其他图标，可直接用 `createTablerIcon` 自行包装：
+
+```ts
+import { createTablerIcon } from '@deweyou-design/react-icons';
+import { IconRocket } from '@tabler/icons-react';
+
+export const RocketIcon = createTablerIcon(IconRocket);
 ```
 
 ## 组件
