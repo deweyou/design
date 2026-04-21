@@ -1,0 +1,32 @@
+name: Bug 修复
+description: 报告现有组件的问题
+labels: ['autodev', 'bugfix']
+body:
+  - type: input
+    id: component
+    attributes:
+      label: 涉及组件
+      placeholder: 'e.g. Button, Popover'
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: 问题描述
+      placeholder: '现在的行为是什么，期望的行为是什么'
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 复现步骤
+      placeholder: "1. ...\n2. ...\n3. ..."
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: 附加上下文（可选）
+      placeholder: '截图、报错信息、浏览器版本'
+    validations:
+      required: false

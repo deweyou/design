@@ -1,0 +1,32 @@
+name: 新增 Icon
+description: 新增一个或多个 SVG 图标
+labels: ['autodev', 'icon']
+body:
+  - type: input
+    id: name
+    attributes:
+      label: Icon 名称
+      placeholder: 'e.g. ChevronDown, StarFilled（多个用逗号分隔）'
+    validations:
+      required: true
+  - type: input
+    id: category
+    attributes:
+      label: 分类
+      placeholder: 'e.g. navigation, action, status'
+    validations:
+      required: true
+  - type: textarea
+    id: usage
+    attributes:
+      label: 使用场景
+      placeholder: '在哪个组件或页面用'
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: SVG 来源（可选）
+      placeholder: '粘贴 SVG 代码，或描述图形形态'
+    validations:
+      required: false

@@ -1,0 +1,35 @@
+name: 组件能力扩展
+description: 为现有组件新增功能或 prop
+labels: ['autodev', 'enhance']
+body:
+  - type: input
+    id: component
+    attributes:
+      label: 目标组件
+      placeholder: 'e.g. Button, Input'
+    validations:
+      required: true
+  - type: textarea
+    id: capability
+    attributes:
+      label: 新增能力描述
+      placeholder: '要加什么，解决什么问题'
+    validations:
+      required: true
+  - type: textarea
+    id: api_hints
+    attributes:
+      label: API 变更提示（可选）
+      placeholder: 'e.g. 新增 prefix slot，loading 支持自定义图标'
+    validations:
+      required: false
+  - type: dropdown
+    id: breaking
+    attributes:
+      label: 是否可能有破坏性变更
+      options:
+        - 不确定
+        - 否
+        - 是
+    validations:
+      required: true
