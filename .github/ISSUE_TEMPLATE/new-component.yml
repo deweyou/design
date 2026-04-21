@@ -1,0 +1,39 @@
+name: 新增组件
+description: 新增一个 React UI 组件
+labels: ['autodev', 'component']
+body:
+  - type: input
+    id: name
+    attributes:
+      label: 组件名称
+      placeholder: 'e.g. Tag, Badge, Tooltip'
+    validations:
+      required: true
+  - type: textarea
+    id: variants
+    attributes:
+      label: 需要的 variant / size / color
+      placeholder: 'e.g. filled/outlined, small/medium/large, neutral/primary/danger'
+    validations:
+      required: true
+  - type: textarea
+    id: usage
+    attributes:
+      label: 使用场景描述
+      placeholder: '这个组件在哪里用、解决什么问题'
+    validations:
+      required: true
+  - type: textarea
+    id: api_hints
+    attributes:
+      label: API 提示（可选）
+      placeholder: 'e.g. 需要 closable prop, 支持 icon slot'
+    validations:
+      required: false
+  - type: input
+    id: ref
+    attributes:
+      label: 参考（可选）
+      placeholder: '设计稿链接或截图说明'
+    validations:
+      required: false
