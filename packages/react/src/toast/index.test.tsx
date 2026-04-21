@@ -1,9 +1,14 @@
 // @vitest-environment jsdom
 
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+
 import { cleanup, render } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vite-plus/test';
 
 import { Toaster, toast } from './index.tsx';
+
+const stylesheet = readFileSync(resolve(import.meta.dirname, 'index.module.less'), 'utf8');
 
 afterEach(() => {
   cleanup();
@@ -26,9 +31,15 @@ describe('toast', () => {
     expect(typeof toast.create).toBe('function');
   });
 
-  it('toast.create accepts warning variant without throwing', () => {
-    expect(() => {
-      toast.create({ title: 'Warning', variant: 'warning' });
-    }).not.toThrow();
+  it('warning variant uses semantic token instead of hardcoded color', () => {
+    expect(stylesheet).toContain('.warning');
+    expect(stylesheet).toContain('var(--ui-color-warning-bg)');
+    expect(stylesheet).not.toContain('#d97706');
+  });
+
+  it('success variant uses palette token instead of hardcoded color', () => {
+    expect(stylesheet).toContain('.success');
+    expect(stylesheet).toContain('var(--ui-color-palette-green-600)');
+    expect(stylesheet).not.toContain('#16a34a');
   });
 });
