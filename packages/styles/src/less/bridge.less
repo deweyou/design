@@ -12,3 +12,17 @@
 @focus-ring: var(--ui-color-focus-ring);
 @brand-text: var(--ui-color-brand-text);
 @surface-raised: var(--ui-color-surface-raised);
+
+// 焦点环 mixin — 使用 box-shadow 替代 outline，获得更柔和且兼容 border-radius 的焦点效果
+.focus-ring() {
+  box-shadow: 0 0 0 2px var(--ui-color-focus-ring);
+  outline: none;
+}
+
+// 带 offset 的焦点环（用于需要视觉间距的场景，如 button、checkbox）
+.focus-ring-offset() {
+  box-shadow:
+    0 0 0 2px var(--ui-color-surface),
+    0 0 0 4px var(--ui-color-focus-ring);
+  outline: none;
+}

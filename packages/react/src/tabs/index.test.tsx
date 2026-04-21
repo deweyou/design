@@ -469,7 +469,7 @@ describe('Tabs — onFocusChange', () => {
 
 describe('Tabs — stylesheet token 约束', () => {
   it('tabs stylesheet 消费语义 token，不引用 raw palette', () => {
-    expect(stylesheet).toContain('--ui-color-focus-ring');
+    expect(stylesheet).toContain('.focus-ring-offset()');
     expect(stylesheet).toContain('--ui-color-border');
     expect(stylesheet).toContain('--ui-color-brand-bg');
     expect(stylesheet).toContain('--ui-color-text');

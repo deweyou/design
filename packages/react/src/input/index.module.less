@@ -1,3 +1,5 @@
+@import '@deweyou-design/styles/less/bridge';
+
 .root {
   display: grid;
   gap: 4px;
@@ -26,6 +28,7 @@
 
   &:focus-visible {
     border-color: var(--ui-color-focus-ring);
+    .focus-ring();
   }
 }
 
@@ -34,6 +37,7 @@
 
   &:focus-visible {
     border-color: var(--ui-color-danger-bg);
+    box-shadow: 0 0 0 2px var(--ui-color-danger-bg);
   }
 }
 
