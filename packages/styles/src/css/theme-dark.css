@@ -19,6 +19,11 @@
   --ui-color-danger-bg-active: var(--ui-color-palette-red-300);
   --ui-color-danger-text: var(--ui-color-palette-red-400);
   --ui-color-text-on-danger: var(--ui-color-white);
+  --ui-color-warning-bg: var(--ui-color-palette-amber-500);
+  --ui-color-warning-bg-hover: var(--ui-color-palette-amber-400);
+  --ui-color-warning-bg-active: var(--ui-color-palette-amber-300);
+  --ui-color-warning-text: var(--ui-color-palette-amber-400);
+  --ui-color-text-on-warning: var(--ui-color-white);
   --ui-color-focus-ring: var(--ui-color-palette-emerald-400);
   --ui-radius-rect: 0;
   --ui-radius-auto: 0.5rem;
