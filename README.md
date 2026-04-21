@@ -1,122 +1,92 @@
 # Deweyou UI
 
-A Vite+ monorepo for building and validating an opinionated React UI library.
+一套基于 React 的 UI 组件库，内置设计 token 和主题系统。
 
-## Workspace Layout
+预览：[design.deweyou.me](https://design.deweyou.me)
 
-- `packages/utils`: framework-agnostic helpers and repository assertions.
-- `packages/react-hooks`: reusable React hooks shared across apps and components.
-- `packages/styles`: token sources, Less bridge files, and explicit global CSS entrypoints.
-- `packages/react`: reusable React components with CSS Modules and root `className` overrides.
-- `apps/website`: public documentation, theme guidance, and curated demos.
-- `apps/storybook`: Storybook 10 internal review surface for state coverage and exploratory development.
-
-## Development
-
-- Check everything is ready:
+## 安装
 
 ```bash
-vp run ready
+npm install @deweyou-design/react @deweyou-design/styles
 ```
 
-- Run workspace tests:
+## 快速上手
 
-```bash
-vp run test -r
-```
+**1. 引入主题样式**
 
-- Build the monorepo:
-
-```bash
-vp run build -r
-```
-
-- Run the component preview site:
-
-```bash
-vp run dev
-```
-
-- Run internal Storybook review:
-
-```bash
-vp run storybook#dev
-```
-
-## Publishing
-
-Packages are versioned independently. Only packages with changes since their last release are published.
-
-**Publish a beta package (from any non-`main` branch):**
-
-```bash
-scripts/release.sh beta
-```
-
-This bumps the version to `X.Y.Z-beta.N`, publishes to the `beta` dist-tag, and does not affect `latest`.
-
-**Publish a stable release (from `main` only):**
-
-```bash
-scripts/release.sh stable
-```
-
-This infers the version bump from commit types (`fix` → patch, `feat` → minor, breaking → major), publishes to `latest`, and updates each package's `CHANGELOG.md`.
-
-**Dry-run (no files written, no publish, no push):**
-
-```bash
-scripts/release.sh beta --dry-run
-scripts/release.sh stable --dry-run
-```
-
-**Via GitHub Actions:** Go to Actions → Release → Run workflow, select `channel` and optionally enable `dry_run`.
-
-Requires npm login locally (`npm login`) or `NODE_AUTH_TOKEN` in the environment for CI.
-
-## Consuming the Library
-
-### Importing Components
-
-**Barrel import** — convenient for development; modern bundlers (Vite, Webpack 5, Rollup) will tree-shake unused components automatically because `sideEffects` is declared in each package:
+在应用入口文件（如 `main.tsx`）顶部引入全局主题：
 
 ```ts
-import { Button, Text } from '@deweyou-design/react';
+import '@deweyou-design/styles/theme.css';
 ```
 
-**Per-component import** — most explicit, recommended for production builds or bundlers without reliable tree-shaking:
+**2. 使用组件**
+
+```tsx
+import { Button, Input, Toast } from '@deweyou-design/react';
+
+export default function App() {
+  return <Button>Hello</Button>;
+}
+```
+
+## 导入方式
+
+**统一导入** — 适合大多数场景，支持 tree-shaking 的构建工具（Vite、Webpack 5、Rollup）会自动剔除未使用的组件：
+
+```ts
+import { Button, Input } from '@deweyou-design/react';
+```
+
+**按组件导入** — 适合对构建产物大小有严格要求的场景：
 
 ```ts
 import { Button } from '@deweyou-design/react/button';
-import { Text } from '@deweyou-design/react/text';
+import { Input } from '@deweyou-design/react/input';
 ```
 
-### Styles
-
-Each component's CSS is emitted as a side effect of its JS import. Bundlers that respect the `sideEffects` field (Vite, Webpack 5, Rollup) include component styles automatically when the component is imported.
-
-To load all styles at once — for example in SSR or non-bundled contexts:
+每个组件的样式会随 JS 导入自动加载，无需单独引入 CSS 文件。如果需要一次性加载所有样式（如 SSR 场景）：
 
 ```ts
 import '@deweyou-design/react/style.css';
 ```
 
-## Monorepo Rules
+## 组件
 
-- Reusable UI logic belongs in packages, not in apps.
-- Use `vp` commands for install, lint, format, test, pack, build, and preview
-  workflows.
-- Functions default to arrow functions in governed packages and demo-app source.
-- React components should be authored in TSX files instead of `React.createElement`
-  patterns.
-- Governed files and folders use lowercase names with hyphen separators.
-- In `packages/react`, `packages/react-hooks`, and `packages/utils`, each source
-  unit lives in its own `src/<unit-name>/` directory with colocated `index` and
-  `index.test` files.
-- Commit messages use `<type>(<scope>): <summary>` when a scope is useful, or
-  `<type>: <summary>` otherwise.
-- Consumers must import global styles from `@deweyou-design/styles/theme.css` explicitly.
-- `apps/website` owns public guidance; `apps/storybook` stays focused on internal review.
-- Storybook runs on the repository-standard `vp run storybook#dev` workflow and defaults to port `6106`.
-- Every user-visible component change must include automated tests and updated preview coverage in `apps/website`.
-- Generated documents under `specs/` must use Simplified Chinese, except for literal code identifiers, commands, paths, protocol fields, and third-party API names.
+| 组件         | 说明                     |
+| ------------ | ------------------------ |
+| `Button`     | 按钮，支持多种变体和尺寸 |
+| `Input`      | 单行文本输入框           |
+| `Textarea`   | 多行文本输入框           |
+| `Select`     | 下拉选择器               |
+| `Checkbox`   | 复选框                   |
+| `RadioGroup` | 单选组                   |
+| `Switch`     | 开关                     |
+| `Badge`      | 状态标签                 |
+| `Text`       | 排版文本                 |
+| `Card`       | 卡片容器                 |
+| `Separator`  | 分隔线                   |
+| `Skeleton`   | 加载占位符               |
+| `Spinner`    | 加载指示器               |
+| `Breadcrumb` | 面包屑导航               |
+| `Tabs`       | 标签页                   |
+| `Pagination` | 分页器                   |
+| `Menu`       | 下拉菜单 / 右键菜单      |
+| `Popover`    | 弹出层                   |
+| `Tooltip`    | 文字提示                 |
+| `Dialog`     | 模态对话框               |
+| `Toast`      | 轻提示通知               |
+| `ScrollArea` | 自定义滚动条容器         |
+
+## 主题定制
+
+组件样式通过 CSS 自定义属性（design token）实现，可以在引入 `theme.css` 后覆盖任意 token：
+
+```css
+:root {
+  --ui-color-brand-bg: #6366f1;
+  --ui-radius-rect: 6px;
+}
+```
+
+完整 token 列表参见 `@deweyou-design/styles`。
