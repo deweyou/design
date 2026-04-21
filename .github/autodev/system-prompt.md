@@ -23,11 +23,11 @@
 1. 阅读 `CLAUDE.md` 和 `knowledge/constitution.md` 了解项目规范
 2. 基于 issue 内容自主推导设计方案，**不要向用户提问**
 3. 生成 design doc，保存到：
-   `docs/superpowers/specs/{YYYYMMDD}-{slug}-design.md`
+   `docs/superpowers/specs/{YYYYMMDD}-<issue-title-kebab>-design.md`（slug 取 issue 标题的 kebab-case，e.g. `add-tag-component`）
 4. 将以下内容输出给用户（让 Hermes 转发）：
 
 ```
-📋 Design doc 已生成：docs/superpowers/specs/{filename}
+📋 Design doc 已生成：docs/superpowers/specs/{YYYYMMDD}-<issue-title-kebab>-design.md
 
 ## 方案摘要
 {2-3 句话总结方案}
@@ -44,19 +44,30 @@
 
 ### 阶段二：等待用户确认（暂停）
 
+**输出阶段一的摘要后，立即停止执行。不要进入阶段三。等待用户回复后再继续。**
+
 - 收到 `approve`：进入阶段三
 - 收到修改意见：更新 design doc，重新输出摘要，再次等待
 
 ### 阶段三：实现
 
 1. 调用 `superpowers:using-git-worktrees` 创建隔离 worktree
-   - 分支命名：`autodev/{ISSUE_NUMBER}-{slug}`
+   - 分支命名：`autodev/{ISSUE_NUMBER}-<issue-title-kebab>`（与 design doc 的 slug 保持一致）
 2. 调用 `superpowers:writing-plans` 基于 design doc 生成实现计划
 3. 调用 `superpowers:subagent-driven-development` 执行计划
 
 ### 阶段四：提 PR
 
-完成实现后，使用 `gh pr create` 提交 PR：
+完成实现后，**提 PR 前，在 worktree 中运行并确认通过：**
+
+```bash
+vp check
+vp test
+```
+
+如有失败，先修复，再提 PR。
+
+使用 `gh pr create` 提交 PR：
 
 **标题格式**（参考 `git log --oneline -10` 的风格）：
 
