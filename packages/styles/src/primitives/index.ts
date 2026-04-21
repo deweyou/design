@@ -158,6 +158,12 @@ export const internalPrimitives = {
     dangerBackgroundHover: colorPalette.red['800'],
     dangerBackgroundActive: colorPalette.red['900'],
     dangerText: colorPalette.red['700'],
+    // 警告
+    warningBackground: colorPalette.amber['600'],
+    warningBackgroundHover: colorPalette.amber['700'],
+    warningBackgroundActive: colorPalette.amber['800'],
+    warningText: colorPalette.amber['700'],
+    textOnWarning: baseMonochrome.white,
     // 焦点
     focusRing: colorPalette.emerald['600'],
     // 调色板引用
