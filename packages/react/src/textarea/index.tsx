@@ -5,6 +5,8 @@ import styles from './index.module.less';
 
 export type TextareaSize = 'sm' | 'md' | 'lg';
 
+export type TextareaVariant = 'outlined' | 'ghost';
+
 export type TextareaProps = Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'size'> & {
   /** 标签文字，显示在文本域上方 */
   label?: string;
@@ -14,6 +16,8 @@ export type TextareaProps = Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 's
   error?: string;
   /** 文本域尺寸，默认 'md' */
   size?: TextareaSize;
+  /** 文本域视觉变体，默认 'outlined' */
+  variant?: TextareaVariant;
   /** 禁用文本域 */
   disabled?: boolean;
   className?: string;
@@ -26,6 +30,11 @@ const sizeClassMap: Record<TextareaSize, string> = {
   lg: styles.sizeLg,
 };
 
+const variantClassMap: Record<TextareaVariant, string> = {
+  outlined: styles.variantOutlined,
+  ghost: styles.variantGhost,
+};
+
 export const Textarea = ({
   className,
   disabled,
@@ -35,6 +44,7 @@ export const Textarea = ({
   label,
   size = 'md',
   style,
+  variant = 'outlined',
   ...props
 }: TextareaProps) => {
   const hasError = Boolean(error);
@@ -59,7 +69,7 @@ export const Textarea = ({
       )}
       <textarea
         {...props}
-        className={classNames(styles.field, {
+        className={classNames(styles.field, variantClassMap[variant], {
           [styles.fieldError]: hasError,
         })}
         disabled={disabled}

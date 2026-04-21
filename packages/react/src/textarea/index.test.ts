@@ -80,3 +80,14 @@ test('textarea stylesheet contains resize and min-height rules', () => {
   expect(stylesheet).toContain('resize');
   expect(stylesheet).toContain('min-height');
 });
+
+test('textarea renders outlined variant (default) with border class', () => {
+  const markup = renderMarkup({});
+  expect(markup).toContain(styles.variantOutlined);
+});
+
+test('textarea renders ghost variant without border class', () => {
+  const markup = renderMarkup({ variant: 'ghost' });
+  expect(markup).toContain(styles.variantGhost);
+  expect(markup).not.toContain(styles.variantOutlined);
+});

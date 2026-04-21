@@ -5,6 +5,8 @@ import styles from './index.module.less';
 
 export type InputSize = 'sm' | 'md' | 'lg';
 
+export type InputVariant = 'outlined' | 'ghost';
+
 export type InputProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> & {
   /** 标签文字，显示在输入框上方 */
   label?: string;
@@ -14,6 +16,8 @@ export type InputProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> & {
   error?: string;
   /** 输入框尺寸，默认 'md' */
   size?: InputSize;
+  /** 输入框视觉变体，默认 'outlined' */
+  variant?: InputVariant;
   /** 禁用输入框 */
   disabled?: boolean;
   className?: string;
@@ -26,6 +30,11 @@ const sizeClassMap: Record<InputSize, string> = {
   lg: styles.sizeLg,
 };
 
+const variantClassMap: Record<InputVariant, string> = {
+  outlined: styles.variantOutlined,
+  ghost: styles.variantGhost,
+};
+
 export const Input = ({
   className,
   disabled,
@@ -35,6 +44,7 @@ export const Input = ({
   label,
   size = 'md',
   style,
+  variant = 'outlined',
   ...props
 }: InputProps) => {
   const hasError = Boolean(error);
@@ -59,7 +69,7 @@ export const Input = ({
       )}
       <input
         {...props}
-        className={classNames(styles.field, {
+        className={classNames(styles.field, variantClassMap[variant], {
           [styles.fieldError]: hasError,
         })}
         disabled={disabled}

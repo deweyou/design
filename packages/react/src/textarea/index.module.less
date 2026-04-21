@@ -11,10 +11,8 @@
 }
 
 .field {
-  border: 1px solid var(--ui-color-border);
   border-radius: var(--ui-radius-rect);
   padding: 0.4rem 0.6rem;
-  background: var(--ui-color-canvas);
   color: var(--ui-color-text);
   font: 0.875rem / 1.5 var(--ui-font-body);
   width: 100%;
@@ -31,6 +29,25 @@
   &:focus-visible {
     border-color: var(--ui-color-focus-ring);
     .focus-ring();
+  }
+}
+
+// Variant
+.variantOutlined {
+  border: 1px solid var(--ui-color-border);
+  background: var(--ui-color-canvas);
+}
+
+.variantGhost {
+  border: 1px solid transparent;
+  background: transparent;
+
+  &:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--ui-color-text) 5%, transparent);
+  }
+
+  &:focus-visible {
+    background: transparent;
   }
 }
 
