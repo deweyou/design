@@ -46,4 +46,7 @@
   --ui-text-line-height-h4: 1.22;
   --ui-text-size-h5: 1.15rem;
   --ui-text-line-height-h5: 1.32;
+  --ui-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+  --ui-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.28);
+  --ui-shadow-lg: 0 18px 40px rgba(0, 0, 0, 0.34);
 }

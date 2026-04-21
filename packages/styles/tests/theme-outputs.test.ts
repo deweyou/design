@@ -137,6 +137,30 @@ test('fonts asset directory contains the vendored Source Han Serif CN files', ()
   expect(readFileSync(resolve(fontsDir, 'SourceHanSerifCN-Bold.otf'))).toBeTruthy();
 });
 
+test('exposes spacing tokens in lightTheme', () => {
+  expect(lightTheme['--ui-space-xs']).toBe('0.25rem');
+  expect(lightTheme['--ui-space-sm']).toBe('0.5rem');
+  expect(lightTheme['--ui-space-md']).toBe('1rem');
+  expect(lightTheme['--ui-space-lg']).toBe('1.5rem');
+  expect(lightTheme['--ui-space-xl']).toBe('2.5rem');
+});
+
+test('exposes z-index tokens in lightTheme', () => {
+  expect(lightTheme['--ui-z-tooltip']).toBe('1000');
+  expect(lightTheme['--ui-z-popover']).toBe('1100');
+  expect(lightTheme['--ui-z-dialog']).toBe('1200');
+  expect(lightTheme['--ui-z-toast']).toBe('1300');
+});
+
+test('exposes shadow scale tokens with correct light and dark values', () => {
+  expect(lightTheme['--ui-shadow-sm']).toBe('0 2px 8px rgba(24, 33, 29, 0.06)');
+  expect(lightTheme['--ui-shadow-md']).toBe('0 8px 24px rgba(24, 33, 29, 0.1)');
+  expect(lightTheme['--ui-shadow-lg']).toBe('0 18px 40px rgba(24, 33, 29, 0.12)');
+  expect(darkTheme['--ui-shadow-sm']).toBe('0 2px 8px rgba(0, 0, 0, 0.2)');
+  expect(darkTheme['--ui-shadow-md']).toBe('0 8px 24px rgba(0, 0, 0, 0.28)');
+  expect(darkTheme['--ui-shadow-lg']).toBe('0 18px 40px rgba(0, 0, 0, 0.34)');
+});
+
 test('styles publish manifest drops workspace-only metadata and rewrites dist-root entrypaths', () => {
   const sourceManifest = JSON.parse(
     readFileSync(resolve(import.meta.dirname, '../package.json'), 'utf8'),

@@ -47,4 +47,19 @@
   --ui-text-line-height-h4: 1.22;
   --ui-text-size-h5: 1.15rem;
   --ui-text-line-height-h5: 1.32;
+  /* spacing — 基于 4px 网格，不随主题变化 */
+  --ui-space-xs: 0.25rem;
+  --ui-space-sm: 0.5rem;
+  --ui-space-md: 1rem;
+  --ui-space-lg: 1.5rem;
+  --ui-space-xl: 2.5rem;
+  /* z-index 层级 — 不随主题变化 */
+  --ui-z-tooltip: 1000;
+  --ui-z-popover: 1100;
+  --ui-z-dialog: 1200;
+  --ui-z-toast: 1300;
+  /* shadow 三档 */
+  --ui-shadow-sm: 0 2px 8px rgba(24, 33, 29, 0.06);
+  --ui-shadow-md: 0 8px 24px rgba(24, 33, 29, 0.1);
+  --ui-shadow-lg: 0 18px 40px rgba(24, 33, 29, 0.12);
 }
