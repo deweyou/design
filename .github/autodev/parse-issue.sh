@@ -33,11 +33,18 @@ fi
 YYYYMMDD=$(date +%Y%m%d)
 
 # 将模板中的占位符替换为实际值
-# 使用 perl 避免 sed 在 macOS/Linux 上的换行符差异
-perl -pe "
-  s|\{REPO_DIR\}|$REPO_DIR|g;
-  s|\{ISSUE_NUMBER\}|$ISSUE_NUMBER|g;
-  s|\{ISSUE_TYPE\}|$ISSUE_TYPE|g;
-  s|\{ISSUE_TITLE\}|$ISSUE_TITLE|g;
-  s|\{YYYYMMDD\}|$YYYYMMDD|g;
-" "$PROMPT_TEMPLATE" | perl -0pe "s|\{ISSUE_BODY\}|$ISSUE_BODY|g"
+# 通过环境变量传入，避免将用户内容嵌入 perl 代码字符串
+REPO_DIR="$REPO_DIR" \
+ISSUE_NUMBER="$ISSUE_NUMBER" \
+ISSUE_TYPE="$ISSUE_TYPE" \
+ISSUE_TITLE="$ISSUE_TITLE" \
+ISSUE_BODY="$ISSUE_BODY" \
+YYYYMMDD="$YYYYMMDD" \
+perl -0pe '
+  s|\{REPO_DIR\}|$ENV{REPO_DIR}|g;
+  s|\{ISSUE_NUMBER\}|$ENV{ISSUE_NUMBER}|g;
+  s|\{ISSUE_TYPE\}|$ENV{ISSUE_TYPE}|g;
+  s|\{ISSUE_TITLE\}|$ENV{ISSUE_TITLE}|g;
+  s|\{ISSUE_BODY\}|$ENV{ISSUE_BODY}|g;
+  s|\{YYYYMMDD\}|$ENV{YYYYMMDD}|g;
+' "$PROMPT_TEMPLATE"
