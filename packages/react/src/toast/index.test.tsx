@@ -25,4 +25,10 @@ describe('toast', () => {
   it('toast.create is a function', () => {
     expect(typeof toast.create).toBe('function');
   });
+
+  it('toast.create accepts warning variant without throwing', () => {
+    expect(() => {
+      toast.create({ title: 'Warning', variant: 'warning' });
+    }).not.toThrow();
+  });
 });

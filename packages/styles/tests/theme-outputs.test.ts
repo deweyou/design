@@ -161,6 +161,12 @@ test('exposes shadow scale tokens with correct light and dark values', () => {
   expect(darkTheme['--ui-shadow-lg']).toBe('0 18px 40px rgba(0, 0, 0, 0.34)');
 });
 
+test('exposes warning color tokens with correct light/dark values', () => {
+  expect(lightTheme['--ui-color-warning-bg']).toBe('var(--ui-color-palette-amber-600)');
+  expect(darkTheme['--ui-color-warning-bg']).toBe('var(--ui-color-palette-amber-500)');
+  expect(lightTheme['--ui-color-text-on-warning']).toBe('var(--ui-color-white)');
+});
+
 test('styles publish manifest drops workspace-only metadata and rewrites dist-root entrypaths', () => {
   const sourceManifest = JSON.parse(
     readFileSync(resolve(import.meta.dirname, '../package.json'), 'utf8'),
