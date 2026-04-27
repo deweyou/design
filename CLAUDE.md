@@ -55,10 +55,9 @@ vp install          # 安装依赖
 
 AI 辅助开发的上下文与知识库：
 
-- **宪章**（项目原则）: [knowledge/constitution.md](knowledge/constitution.md)
-- **设计风格**: [knowledge/design-style.md](knowledge/design-style.md)
-- **测试标准**: [knowledge/testing-standards.md](knowledge/testing-standards.md)
-- **Feature specs 索引**: [knowledge/specs/index.md](knowledge/specs/index.md)
+- **宪章**（项目原则）: [docs/constitution.md](docs/constitution.md)
+- **设计风格**: [docs/design-style.md](docs/design-style.md)
+- **测试标准**: [docs/testing-standards.md](docs/testing-standards.md)
+- **Feature specs 索引**: [docs/specs/index.md](docs/specs/index.md)
 
-> Scripts 和 templates 由 harness-dev 管理于 `knowledge/.scripts/` — 请勿手动编辑。
-> 主题知识文件（如 `knowledge/design-style.md`）由 archive 步骤在发现可泛化模式时添加。
+> 主题知识文件（如 `docs/design-style.md`）由 archive 步骤在发现可泛化模式时添加。
