@@ -1,6 +1,6 @@
 # Feature Specs 索引
 
-所有 harness-dev 迭代记录，按时间倒序排列。每个条目链接到对应的 spec 目录；完成迭代后应补充 archive.md。
+所有迭代记录按时间倒序排列。每个条目链接到对应的 spec 目录；完成实现后应补充 archive.md。
 
 ---
 
@@ -45,5 +45,5 @@
 
 ## 归档说明
 
-- **archive.md**：完成实现后由 `/harness-dev` archive 步骤生成，记录关键决策、踩坑和可复用模式。
-- **知识沉淀**：可泛化的规范/模式在 archive 步骤中按需 promote 至 `docs/<topic>.md`，并在 `CLAUDE.md` 中添加指针。
+- **archive.md**：完成实现后补充，记录关键决策、踩坑和可复用模式。
+- **知识沉淀**：可泛化的规范或模式可在归档时按需沉淀到 `docs/<topic>.md`，并在 `CLAUDE.md` 中添加指针。
