@@ -9,7 +9,7 @@ export default defineConfig({
       'dist/**',
       'coverage/**',
       'storybook-static/**',
-      'knowledge/**',
+      'docs/knowledge/**',
       'packages/**/dist/**',
       'packages/**/src/generated/**',
       'packages/**/src/exports/**',

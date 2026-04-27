@@ -87,7 +87,7 @@ Issue 内容：
 
 - 仓库本地路径
 - issue 类型 + 解析后的结构化字段
-- 加载 CLAUDE.md、knowledge/constitution.md
+- 加载 CLAUDE.md、docs/knowledge/constitution.md
 
 ### Brainstorming 阶段（自主）
 

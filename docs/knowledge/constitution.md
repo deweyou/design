@@ -40,7 +40,7 @@ package 都必须能够在 monorepo 的任务图中独立构建和测试。
 package 文档中说明为什么默认约定不足。理由：Vite+ 的价值之一就是统一构建心智和
 降低维护成本，例外必须被显式约束，而不能成为新包的默认起点。
 
-`knowledge/specs/` 目录下由 harness-dev 生成或维护的 `spec.md`、`plan.md`、
+`docs/knowledge/specs/` 目录下由 harness-dev 生成或维护的 `spec.md`、`plan.md`、
 `tasks.md`、`research.md`、`data-model.md`、`quickstart.md`、`checklist` 及同类
 评审文档，正文必须使用简体中文。代码标识符、命令、文件路径、环境变量、协议字段名、
 第三方 API 名称和 semver 版本号可以保留原文。理由：统一工具链与统一文档语言
@@ -73,7 +73,7 @@ package 文档中说明为什么默认约定不足。理由：Vite+ 的价值之
 ### VII. 设计系统视觉规范
 
 所有组件的视觉与交互实现必须严格对照以下约束，不得随意偏差。评审时以下数值视为
-不可谈判（non-negotiable）。详细规范参见 [knowledge/design-style.md](design-style.md)。
+不可谈判（non-negotiable）。详细规范参见 [docs/knowledge/design-style.md](design-style.md)。
 
 **组件变体模型**：交互组件必须基于以下四个正交维度建模：
 
@@ -124,7 +124,7 @@ ghost 和 link variant 不支持 shape prop。
 ## 工作流与质量门禁
 
 - 功能 spec 必须明确目标 package、公开 API 变化、无障碍预期、token 或主题影响，以及 demo 覆盖计划。
-- `knowledge/specs/` 下新建或更新的评审文档必须默认使用简体中文；如需保留英文，仅限代码标识符、命令、路径和外部协议原文。
+- `docs/knowledge/specs/` 下新建或更新的评审文档必须默认使用简体中文；如需保留英文，仅限代码标识符、命令、路径和外部协议原文。
 - 如果 implementation plan 缺少 package 边界、可访问交互定义、必要测试、`vp` 验证命令，或违反原则 VI（编码规范）、VII（设计数值），那么其 Constitution Check 必须视为失败。
 - 任务拆解必须包含 package 侧工作、website 预览更新，以及 `vp check` 加相关 `vp test` 或 `vp run` 命令的验证任务。
 - 只有当受影响 package 可以构建、测试通过、预览覆盖已更新、且面向评审者的文档反映了变更时，该变更才算完成。
@@ -133,19 +133,19 @@ ghost 和 link variant 不支持 shape prop。
 
 ## 治理
 
-本宪章优先于与其冲突的本地实践和模板。任何修订都必须记录在 `knowledge/constitution.md` 中，附带同步影响报告，并在同一变更中同步更新所有受影响的模板或指导文件。
+本宪章优先于与其冲突的本地实践和模板。任何修订都必须记录在 `docs/knowledge/constitution.md` 中，附带同步影响报告，并在同一变更中同步更新所有受影响的模板或指导文件。
 
 本宪章采用语义化版本控制：MAJOR 用于以不兼容方式移除或重定义原则，MINOR 用于
 新增原则或实质性扩大治理范围，PATCH 用于不改变政策含义的措辞澄清。每个 plan 和
 pull request 都必须进行合规评审：评审者在批准前必须确认包优先架构、无障碍、
 token 使用、测试与预览覆盖、Vite+ 工作流合规性、仓库编码规范（原则 VI）、
-设计系统数值合规性（原则 VII），以及 `knowledge/specs/` 下文档语言是否符合简体中文要求。
+设计系统数值合规性（原则 VII），以及 `docs/knowledge/specs/` 下文档语言是否符合简体中文要求。
 
 ---
 
 ## VIII. Accumulated Learnings
 
-> 各 feature 的完整归档记录见 [knowledge/specs/index.md](specs/index.md)，每个 spec 目录下的 `archive.md` 包含关键决策、踩坑和可复用模式。
+> 各 feature 的完整归档记录见 [docs/knowledge/specs/index.md](specs/index.md)，每个 spec 目录下的 `archive.md` 包含关键决策、踩坑和可复用模式。
 > 本节仅保留需要直接影响宪章决策的跨 feature 级别洞察。
 
 <!-- harness-dev archive step appends entries here -->
