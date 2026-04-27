@@ -19,7 +19,7 @@
 
 ## Phase 4 — 规范文档落地
 
-- [x] **TASK-05**：创建 `docs/knowledge/testing-standards.md`，内容从 spec.md 中的规范正文章节提取整理为独立参考文档
+- [x] **TASK-05**：创建 `docs/testing-standards.md`，内容从 spec.md 中的规范正文章节提取整理为独立参考文档
 
 ## Phase 5 — 验证
 

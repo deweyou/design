@@ -8,7 +8,7 @@
 
 ## 交付摘要
 
-通过系统性分析现有 Button、Popover、Text 组件及 `@deweyou-design/styles` 设计 token，将隐含在代码中的设计决策显式化为 `docs/knowledge/design-style.md` 文档。覆盖字体排印（宋体优先，字重梯度 400/500/600/700）、色彩系统（emerald 品牌主色，语义色分层）、形状与圆角（rect/rounded/pill 三档）、尺寸与间距、阴影、交互反馈（hover/active/disabled/loading 公式）、过渡与动画（交互 140ms ease，浮层出入场 160ms）、焦点与无障碍（2px emerald 焦点环）、组件变体模型（variant/color/size/shape 正交）、主题机制（CSS 自定义属性 + `[data-theme]`）共 10 个维度。
+通过系统性分析现有 Button、Popover、Text 组件及 `@deweyou-design/styles` 设计 token，将隐含在代码中的设计决策显式化为 `docs/design-style.md` 文档。覆盖字体排印（宋体优先，字重梯度 400/500/600/700）、色彩系统（emerald 品牌主色，语义色分层）、形状与圆角（rect/rounded/pill 三档）、尺寸与间距、阴影、交互反馈（hover/active/disabled/loading 公式）、过渡与动画（交互 140ms ease，浮层出入场 160ms）、焦点与无障碍（2px emerald 焦点环）、组件变体模型（variant/color/size/shape 正交）、主题机制（CSS 自定义属性 + `[data-theme]`）共 10 个维度。
 
 ---
 

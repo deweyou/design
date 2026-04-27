@@ -20,7 +20,7 @@
 | 覆盖率收集器              | `@vitest/coverage-v8`，固定版本 `^4.1.0`        | 必须与 `@voidzero-dev/vite-plus-test` 内部捆绑的 vitest 版本一致，版本不一致时会触发 `fetchCache` 运行时报错                             | `istanbul`（不依赖 vite-plus 内部，但精度较低）     |
 | 覆盖率运行目录            | 在 `packages/react` 内执行 `vp test --coverage` | 从 workspace root 运行会聚合所有子包（icons、styles 等），拉低到约 51%，无法反映组件实现质量                                             | 根目录运行（数值失真）                              |
 | CI Storybook e2e 接入方式 | build → serve → test-runner                     | 与本地 `storybook#test` 保持一致，避免引入新的浏览器 CI 层                                                                               | 直接用 Playwright（需单独搭建）                     |
-| 测试规范文档位置          | `docs/knowledge/testing-standards.md`           | 作为组件开发者的持久参考文档，独立于宪章，不会让 constitution.md 过于臃肿                                                                | 内嵌到 constitution.md（会让宪章文档变得过长）      |
+| 测试规范文档位置          | `docs/testing-standards.md`                     | 作为组件开发者的持久参考文档，独立于宪章，不会让 constitution.md 过于臃肿                                                                | 内嵌到 constitution.md（会让宪章文档变得过长）      |
 
 ---
 

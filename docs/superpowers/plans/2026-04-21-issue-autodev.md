@@ -265,7 +265,7 @@ mkdir -p .github/autodev
 
 ### 阶段一：自主 Brainstorming
 
-1. 阅读 `CLAUDE.md` 和 `docs/knowledge/constitution.md` 了解项目规范
+1. 阅读 `CLAUDE.md` 和 `docs/constitution.md` 了解项目规范
 2. 基于 issue 内容自主推导设计方案，**不要向用户提问**
 3. 生成 design doc，保存到：
    `docs/superpowers/specs/{YYYYMMDD}-{slug}-design.md`

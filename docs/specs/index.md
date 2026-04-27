@@ -20,7 +20,7 @@
 | [20260331-tabs-component](20260331-tabs-component/)                     | feature  | 基于 Ark UI 实现 Tabs 组件：线条 / bg 两种 active 样式，切换动画，超长滑动 + 渐变，嵌套 Menu 下拉                   |
 | [20260330-storybook-docs-upgrade](20260330-storybook-docs-upgrade/)     | chore    | 升级 Storybook 版本；重组 stories（color / components 分类）；补齐所有 API 文档说明                                 |
 | [20260329-menu-component](20260329-menu-component/)                     | feature  | 基于 Ark UI 实现 Menu 组件：分组、分割线、多级子菜单、单选/多选、contextMenu                                        |
-| [20260329-distill-design-style](20260329-distill-design-style/)         | docs     | 从现有组件中提炼设计风格指南，沉淀为 `docs/knowledge/design-style.md`；完成 AGENTS.md → CLAUDE.md 迁移              |
+| [20260329-distill-design-style](20260329-distill-design-style/)         | docs     | 从现有组件中提炼设计风格指南，沉淀为 `docs/design-style.md`；完成 AGENTS.md → CLAUDE.md 迁移                        |
 | [20260327-ark-ui-integration](20260327-ark-ui-integration/)             | refactor | 引入 `@ark-ui/react` 作为组件行为基础层；基于 Ark UI 重构 Popover；建立后续交互型组件开发范式                       |
 | [20260326-optimize-package-outputs](20260326-optimize-package-outputs/) | build    | 包构建与发布产物治理：preserveModules + CSS split，精简构建配置，peerDep 对齐，workspace 版本号解析                 |
 | [20260324-define-color-palette](20260324-define-color-palette/)         | feature  | 在 `@deweyou-design/styles` 建立统一颜色 token 体系（26 色 × 11 色阶 + 纯黑白）                                     |
@@ -46,4 +46,4 @@
 ## 归档说明
 
 - **archive.md**：完成实现后由 `/harness-dev` archive 步骤生成，记录关键决策、踩坑和可复用模式。
-- **知识沉淀**：可泛化的规范/模式在 archive 步骤中按需 promote 至 `docs/knowledge/<topic>.md`，并在 `CLAUDE.md` 中添加指针。
+- **知识沉淀**：可泛化的规范/模式在 archive 步骤中按需 promote 至 `docs/<topic>.md`，并在 `CLAUDE.md` 中添加指针。
