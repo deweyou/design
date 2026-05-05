@@ -80,3 +80,25 @@ test('card stylesheet defines all padding variant classes', () => {
   expect(stylesheet).toContain('paddingMd');
   expect(stylesheet).toContain('paddingLg');
 });
+
+test('card renders as an anchor element when href is provided', () => {
+  const markup = renderMarkup({ href: '/detail/123' });
+  expect(markup).toContain('<a');
+  expect(markup).toContain('href="/detail/123"');
+  expect(markup).not.toContain('<div');
+});
+
+test('card renders as div when href is not provided', () => {
+  const markup = renderMarkup({});
+  expect(markup).toContain('<div');
+  expect(markup).not.toContain('<a');
+});
+
+test('card forwards target when href is provided', () => {
+  const markup = renderMarkup({ href: '/detail', target: '_blank' });
+  expect(markup).toContain('target="_blank"');
+});
+
+test('card throws when target is provided without href', () => {
+  expect(() => renderMarkup({ target: '_blank' })).toThrow('Card: target requires href');
+});
