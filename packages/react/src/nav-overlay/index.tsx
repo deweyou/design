@@ -21,15 +21,13 @@ const CloseSvg = () => (
 
 // ── Types ─────────────────────────────────────────────────────────────────
 
-export type NavOverlayOpenChangeDetails = { open: boolean };
-
 export type NavOverlayRootProps = {
   /** Controlled open state. Use with onOpenChange for full control. */
   open?: boolean;
   /** Initial open state for uncontrolled usage. Defaults to false. */
   defaultOpen?: boolean;
   /** Callback fired when the overlay opens or closes. */
-  onOpenChange?: (details: NavOverlayOpenChangeDetails) => void;
+  onOpenChange?: (open: boolean) => void;
   children: ReactNode;
 };
 
@@ -49,21 +47,28 @@ export type NavOverlayCloseButtonProps = {
   /** Override the default top-right positioning. */
   className?: string;
   style?: CSSProperties;
+  /** Accessible label for the close button. Defaults to 'Close navigation'. */
+  'aria-label'?: string;
 };
 
 // ── Sub-components ────────────────────────────────────────────────────────
 
-const NavOverlayRoot = ({ open, defaultOpen, onOpenChange, children }: NavOverlayRootProps) => (
-  <ArkDialogRoot
-    open={open}
-    defaultOpen={defaultOpen}
-    onOpenChange={onOpenChange}
-    lazyMount
-    unmountOnExit
-  >
-    {children}
-  </ArkDialogRoot>
-);
+const NavOverlayRoot = ({ open, defaultOpen, onOpenChange, children }: NavOverlayRootProps) => {
+  const handleOpenChange = (details: { open: boolean }) => {
+    onOpenChange?.(details.open);
+  };
+  return (
+    <ArkDialogRoot
+      open={open}
+      defaultOpen={defaultOpen}
+      onOpenChange={handleOpenChange}
+      lazyMount
+      unmountOnExit
+    >
+      {children}
+    </ArkDialogRoot>
+  );
+};
 
 const NavOverlayTrigger = ({ children }: NavOverlayTriggerProps) => (
   <ArkDialogTrigger asChild>{children}</ArkDialogTrigger>
@@ -77,10 +82,14 @@ const NavOverlayContent = ({ children, className, style }: NavOverlayContentProp
     document.body,
   );
 
-const NavOverlayCloseButton = ({ className, style }: NavOverlayCloseButtonProps) => (
+const NavOverlayCloseButton = ({
+  className,
+  style,
+  'aria-label': ariaLabel = 'Close navigation',
+}: NavOverlayCloseButtonProps) => (
   <ArkDialogCloseTrigger asChild>
     <IconButton
-      aria-label="关闭导航"
+      aria-label={ariaLabel}
       className={classNames(styles.closeButton, className)}
       icon={<CloseSvg />}
       style={style}

@@ -149,5 +149,4 @@ export {
   type NavOverlayTriggerProps,
   type NavOverlayContentProps,
   type NavOverlayCloseButtonProps,
-  type NavOverlayOpenChangeDetails,
 } from './nav-overlay/index.tsx';
