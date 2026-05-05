@@ -114,6 +114,7 @@ export {
 } from './dialog/index.tsx';
 export {
   Tooltip,
+  type TooltipPlacement,
   type TooltipRootProps,
   type TooltipTriggerProps,
   type TooltipContentProps,

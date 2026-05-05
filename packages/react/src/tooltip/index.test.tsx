@@ -40,4 +40,47 @@ describe('Tooltip', () => {
     expect(typeof Tooltip.Trigger).toBe('function');
     expect(typeof Tooltip.Content).toBe('function');
   });
+
+  it('accepts placement prop without error', () => {
+    render(
+      <Tooltip.Root placement="top">
+        <Tooltip.Trigger>
+          <button>Hover me</button>
+        </Tooltip.Trigger>
+        <Tooltip.Content>Tooltip text</Tooltip.Content>
+      </Tooltip.Root>,
+    );
+    expect(screen.getByRole('button', { name: 'Hover me' })).toBeTruthy();
+  });
+
+  it('accepts all valid placement values without error', () => {
+    const placements = [
+      'top',
+      'top-start',
+      'top-end',
+      'bottom',
+      'bottom-start',
+      'bottom-end',
+      'left',
+      'left-start',
+      'left-end',
+      'right',
+      'right-start',
+      'right-end',
+    ] as const;
+
+    for (const placement of placements) {
+      expect(() =>
+        render(
+          <Tooltip.Root placement={placement}>
+            <Tooltip.Trigger>
+              <button>t</button>
+            </Tooltip.Trigger>
+            <Tooltip.Content>c</Tooltip.Content>
+          </Tooltip.Root>,
+        ),
+      ).not.toThrow();
+      cleanup();
+    }
+  });
 });
