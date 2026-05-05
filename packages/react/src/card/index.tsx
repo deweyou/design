@@ -42,7 +42,7 @@ export const Card = ({
   ...props
 }: CardProps) => {
   if (target !== undefined && href === undefined) {
-    throw new Error('Card: target requires href.');
+    throw new Error('Card: target requires href');
   }
 
   const sharedClassName = classNames(
