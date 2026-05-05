@@ -1,6 +1,6 @@
 {
   "name": "@deweyou-design/react-hooks",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Reusable React hooks for Deweyou UI packages and apps.",
   "files": [
     "dist"
