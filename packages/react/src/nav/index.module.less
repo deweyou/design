@@ -1,0 +1,108 @@
+@import '@deweyou-design/styles/less/bridge';
+
+// ── Root ──────────────────────────────────────────────────────────────────
+
+.root {
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.orientationHorizontal {
+  align-items: center;
+  flex-direction: row;
+}
+
+.orientationVertical {
+  flex-direction: column;
+}
+
+// ── Size scale ────────────────────────────────────────────────────────────
+
+.sizeSm {
+  font-size: 0.875rem;
+}
+
+.sizeMd {
+  font-size: 1rem;
+}
+
+.sizeLg {
+  font-size: 1.0625rem;
+}
+
+// ── Link ──────────────────────────────────────────────────────────────────
+
+.link {
+  align-items: center;
+  border-radius: var(--ui-radius-float);
+  color: var(--ui-color-text-muted);
+  cursor: pointer;
+  display: flex;
+  font: inherit;
+  gap: 6px;
+  padding: 6px 10px;
+  position: relative;
+  text-decoration: none;
+  transition:
+    background 140ms ease,
+    color 140ms ease;
+
+  &:hover {
+    background: color-mix(in srgb, var(--ui-color-text) 8%, transparent);
+    color: var(--ui-color-text);
+  }
+
+  &:focus-visible {
+    .focus-ring-offset();
+  }
+
+  &[data-active] {
+    color: var(--ui-color-text);
+  }
+}
+
+// Active indicator — horizontal: bottom bar
+.linkHorizontal {
+  &[data-active]::after {
+    background: var(--ui-color-brand-bg);
+    bottom: 0;
+    content: '';
+    height: 2px;
+    left: 6px;
+    position: absolute;
+    right: 6px;
+  }
+}
+
+// Active indicator — vertical: left bar
+.linkVertical {
+  &[data-active]::before {
+    background: var(--ui-color-brand-bg);
+    bottom: 6px;
+    content: '';
+    left: 0;
+    position: absolute;
+    top: 6px;
+    width: 2px;
+  }
+}
+
+// ── Link internals ────────────────────────────────────────────────────────
+
+.linkIcon {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.linkLabel {
+  // semantic wrapper only
+}
+
+// ── Reduced motion ────────────────────────────────────────────────────────
+
+@media (prefers-reduced-motion: reduce) {
+  .link {
+    transition: none;
+  }
+}

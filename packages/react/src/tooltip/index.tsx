@@ -6,6 +6,21 @@ import styles from './index.module.less';
 
 type TooltipSize = 'sm' | 'md' | 'lg';
 
+// Keep in sync with @floating-ui/dom Placement type — no auto-tracking
+export type TooltipPlacement =
+  | 'top'
+  | 'top-start'
+  | 'top-end'
+  | 'bottom'
+  | 'bottom-start'
+  | 'bottom-end'
+  | 'left'
+  | 'left-start'
+  | 'left-end'
+  | 'right'
+  | 'right-start'
+  | 'right-end';
+
 const TooltipSizeContext = createContext<TooltipSize>('sm');
 
 export type TooltipRootProps = {
@@ -13,6 +28,8 @@ export type TooltipRootProps = {
   closeDelay?: number;
   children: ReactNode;
   size?: TooltipSize;
+  /** Preferred placement of the tooltip relative to its trigger. Defaults to Ark UI's 'bottom'. */
+  placement?: TooltipPlacement;
 };
 
 export type TooltipTriggerProps = {
@@ -36,9 +53,16 @@ const TooltipRoot = ({
   closeDelay = 100,
   children,
   size = 'sm',
+  placement,
 }: TooltipRootProps) => (
   <TooltipSizeContext value={size}>
-    <ArkTooltip.Root closeDelay={closeDelay} lazyMount openDelay={openDelay} unmountOnExit>
+    <ArkTooltip.Root
+      closeDelay={closeDelay}
+      lazyMount
+      openDelay={openDelay}
+      positioning={placement !== undefined ? { placement } : undefined}
+      unmountOnExit
+    >
       {children}
     </ArkTooltip.Root>
   </TooltipSizeContext>

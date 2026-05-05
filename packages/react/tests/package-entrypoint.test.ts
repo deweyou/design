@@ -81,6 +81,8 @@ test('components root entry exposes Button, IconButton, Popover, Text, Menu fami
     'MenuSeparator',
     'MenuTrigger',
     'MenuTriggerItem',
+    'Nav',
+    'NavOverlay',
     'Pagination',
     'Popover',
     'RadioGroup',
