@@ -6,6 +6,7 @@ import styles from './index.module.less';
 
 type TooltipSize = 'sm' | 'md' | 'lg';
 
+// Keep in sync with @floating-ui/dom Placement type — no auto-tracking
 export type TooltipPlacement =
   | 'top'
   | 'top-start'
@@ -59,7 +60,7 @@ const TooltipRoot = ({
       closeDelay={closeDelay}
       lazyMount
       openDelay={openDelay}
-      positioning={{ placement }}
+      positioning={placement !== undefined ? { placement } : undefined}
       unmountOnExit
     >
       {children}
