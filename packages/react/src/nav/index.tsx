@@ -90,6 +90,7 @@ const NavLink = ({ active, icon, children, className, style, ...props }: NavLink
   return (
     <a
       {...props}
+      aria-current={active ? 'page' : undefined}
       className={classNames(
         styles.link,
         orientation === 'vertical' ? styles.linkVertical : styles.linkHorizontal,
