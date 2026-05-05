@@ -55,6 +55,7 @@ export const Card = ({
   if (href !== undefined) {
     return (
       <a
+        rel={target ? 'noreferrer' : undefined}
         {...(props as AnchorHTMLAttributes<HTMLAnchorElement>)}
         className={sharedClassName}
         href={href}

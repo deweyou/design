@@ -4,7 +4,7 @@ import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { expect, test } from 'vite-plus/test';
 
-import { Nav, type NavRootProps, type NavLinkProps } from './index';
+import { Nav } from './index';
 
 const stylesheet = readFileSync(resolve(import.meta.dirname, 'index.module.less'), 'utf8');
 
