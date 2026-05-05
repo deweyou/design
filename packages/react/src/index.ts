@@ -143,3 +143,11 @@ export {
   type NavOrientation,
   type NavSize,
 } from './nav/index.tsx';
+export {
+  NavOverlay,
+  type NavOverlayRootProps,
+  type NavOverlayTriggerProps,
+  type NavOverlayContentProps,
+  type NavOverlayCloseButtonProps,
+  type NavOverlayOpenChangeDetails,
+} from './nav-overlay/index.tsx';
