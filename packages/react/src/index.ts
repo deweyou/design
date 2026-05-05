@@ -136,3 +136,10 @@ export {
   type ScrollAreaThumbProps,
 } from './scroll-area/index.tsx';
 export { Pagination, type PaginationProps } from './pagination/index.tsx';
+export {
+  Nav,
+  type NavRootProps,
+  type NavLinkProps,
+  type NavOrientation,
+  type NavSize,
+} from './nav/index.tsx';
