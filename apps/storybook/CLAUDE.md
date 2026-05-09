@@ -22,3 +22,5 @@
 - **删除 story**：若被删 story 对应有 `Interaction.play` 中的测试用例，需一并移除，避免断言引用不存在的场景。
 
 `Interaction` story 的 `play` 函数通过 `@storybook/test-runner` 作为 e2e 测试运行，是该文件唯一的行为验证层，不可省略。
+
+覆盖范围按仓库测试标准维护：[docs/testing-standards.md](../../docs/testing-standards.md)。
