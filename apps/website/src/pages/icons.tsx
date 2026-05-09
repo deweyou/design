@@ -14,7 +14,7 @@ type IconEntry = {
 const ALL_ICONS: IconEntry[] = (
   Object.entries(Icons) as Array<[string, React.ComponentType<{ size?: number }>]>
 )
-  .filter(([key]) => key.endsWith('Icon') && key !== 'createTablerIcon')
+  .filter(([key]) => key.endsWith('Icon'))
   .map(([exportName, Icon]) => ({
     // "AlertCircleIcon" → "alert-circle"
     name: exportName

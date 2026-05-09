@@ -34,8 +34,8 @@ The shared action primitive. Supports `filled`, `outlined`, `ghost`, and `link` 
 
 - `variant`: `'filled' | 'outlined' | 'ghost' | 'link'` — defaults to `filled`
 - `color`: `'neutral' | 'primary' | 'danger'` — defaults to `neutral`
-- `size`: `'extra-small' | 'small' | 'medium' | 'large' | 'extra-large'` — defaults to `medium`
-- `shape`: `'rect' | 'rounded' | 'pill'` — only for `filled` and `outlined`, defaults to `rounded`
+- `size`: `'xs' | 'sm' | 'md' | 'lg' | 'xl'` — defaults to `md`
+- `shape`: `'rect' | 'float' | 'pill'` — only for `filled` and `outlined`, defaults to `float`
 - `icon`: leading graphic slot for mixed-content usage
 - `href`: renders an `<a>` root when present
 - `target`: only valid with `href`

@@ -70,7 +70,7 @@ test('textarea forwards className and style to root element', () => {
 
 test('textarea stylesheet uses semantic tokens', () => {
   expect(stylesheet).toContain('--ui-color-border');
-  expect(stylesheet).toContain('--ui-color-canvas');
+  expect(stylesheet).toContain('--ui-color-surface');
   expect(stylesheet).toContain('--ui-color-text');
   expect(stylesheet).toContain('--ui-color-focus-ring');
   expect(stylesheet).not.toContain('--ui-color-palette-');

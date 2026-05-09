@@ -20,7 +20,10 @@
   outline: none;
   resize: vertical;
   min-height: 80px;
-  transition: border-color 0.15s ease;
+  transition:
+    border-color 140ms ease,
+    box-shadow 140ms ease,
+    background 140ms ease;
 
   &::placeholder {
     color: var(--ui-color-text-muted);
@@ -28,14 +31,14 @@
 
   &:focus-visible {
     border-color: var(--ui-color-focus-ring);
-    .focus-ring();
+    .focus-ring-offset();
   }
 }
 
 // Variant
 .variantOutlined {
-  border: 1px solid var(--ui-color-border);
-  background: var(--ui-color-canvas);
+  border: 1px solid var(--ui-color-border-strong);
+  background: var(--ui-color-surface);
 }
 
 .variantGhost {
@@ -56,7 +59,7 @@
 
   &:focus-visible {
     border-color: var(--ui-color-danger-bg);
-    box-shadow: 0 0 0 2px var(--ui-color-danger-bg);
+    .focus-ring-offset();
   }
 }
 
@@ -74,15 +77,15 @@
   margin: 0;
 }
 
-.disabled {
+.root[data-disabled='true'] {
   .field {
-    opacity: 0.5;
+    opacity: 0.56;
     cursor: not-allowed;
     resize: none;
   }
 
   .label {
-    opacity: 0.5;
+    opacity: 0.56;
   }
 }
 

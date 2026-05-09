@@ -1,6 +1,6 @@
 # @deweyou-design/react-icons
 
-Generated React icon components for Deweyou Design, sourced from TDesign icons.
+Curated React icon components for Deweyou Design. The package wraps a fixed Tabler icon set so icon geometry, stroke weight, accessibility behavior, and naming stay consistent across components and apps.
 
 ## Installation
 
@@ -10,59 +10,37 @@ npm install @deweyou-design/react-icons
 
 ## Usage
 
-### Subpath imports (recommended)
-
-Use per-icon subpath imports for the strongest tree-shaking and immediate render:
-
 ```tsx
-import { AddIcon } from '@deweyou-design/react-icons/add';
-import { ChevronRightIcon } from '@deweyou-design/react-icons/chevron-right';
-import { SearchIcon } from '@deweyou-design/react-icons/search';
+import { CheckIcon, ChevronDownIcon, SearchIcon } from '@deweyou-design/react-icons';
 
-<AddIcon />
-<ChevronRightIcon size="small" />
-<SearchIcon label="Search" size="large" />
-```
-
-### Generic `Icon` component
-
-Use the generic `Icon` component only when the icon name is determined at runtime. This path lazy-loads the matching definition:
-
-```tsx
-import { Icon } from '@deweyou-design/react-icons';
-
-<Icon name="search" size="large" />
-<Icon label="Open menu" name="menu" />
+<SearchIcon />
+<ChevronDownIcon size={16} />
+<CheckIcon aria-label="已选择" />
 ```
 
 ## Props
 
-| Prop        | Type                                                                         | Description                                                                                     |
-| ----------- | ---------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| `size`      | `number \| 'extra-small' \| 'small' \| 'medium' \| 'large' \| 'extra-large'` | Icon size. Defaults to `1em` when omitted.                                                      |
-| `label`     | `string`                                                                     | Accessible name. When set, renders with `role="img"`. When omitted, renders with `aria-hidden`. |
-| `className` | `string`                                                                     | Primary styling hook.                                                                           |
-| `style`     | `CSSProperties`                                                              | Inline override for size, color, and layout.                                                    |
-
-Named sizes: `extra-small` = 12px, `small` = 14px, `medium` = 16px, `large` = 20px, `extra-large` = 24px.
+| Prop         | Type               | Description                                                                                |
+| ------------ | ------------------ | ------------------------------------------------------------------------------------------ |
+| `size`       | `number \| string` | Icon size. Defaults to `1em`, so icons inherit the surrounding text scale.                 |
+| `stroke`     | `number`           | Stroke width. Defaults to `1.5`.                                                           |
+| `aria-label` | `string`           | Accessible name. When set, renders with `role="img"`; when omitted, renders as decorative. |
+| `className`  | `string`           | Styling hook.                                                                              |
+| `style`      | `CSSProperties`    | Inline override for size, color, and layout.                                               |
 
 ## Accessibility
 
-- Icons with `label` expose an accessible name and `role="img"`.
-- Icons without `label` render as decorative (`aria-hidden="true"`).
-- Icons are not keyboard-focusable by default; the surrounding interactive control owns the label.
+- Icons without `aria-label` render with `aria-hidden="true"`.
+- Icons with `aria-label` render with `role="img"`.
+- Interactive controls should usually own the accessible label; pass `aria-label` to the icon only when the icon itself conveys standalone meaning.
 
-## Updating Icons
+## Icon Set
 
-After updating `tdesign-icons-svg`, regenerate the icon package from the repository root:
-
-```bash
-vp run generate --filter @deweyou-design/react-icons
-```
+The public surface is the curated named export list in `src/icons/index.ts`. Additions should be deliberate design-system decisions, not bulk-generated upstream mirrors.
 
 ## Source Attribution
 
-SVG assets are sourced from `tdesign-icons-svg` under the MIT license. Deweyou Design owns the public icon naming, package API, and accessibility behavior.
+Icon glyphs are provided by `@tabler/icons-react` under the MIT license. Deweyou Design owns the package API, naming, and accessibility wrapper behavior.
 
 ## License
 

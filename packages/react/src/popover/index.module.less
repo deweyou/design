@@ -1,3 +1,5 @@
+@import '@deweyou-design/styles/less/bridge';
+
 .reference {
   display: inline-flex;
   min-inline-size: 0;
@@ -16,7 +18,7 @@
   --popover-surface-background: var(--ui-color-surface);
   --popover-surface-padding-block: 0.8rem;
   --popover-surface-padding-inline: 0.9rem;
-  --popover-surface-radius: var(--ui-radius-float);
+  --popover-surface-radius: var(--ui-radius-auto);
   --popover-surface-transform-distance: 6px;
   --popover-surface-width: max-content;
   --popover-z-index: 1080;
@@ -34,14 +36,14 @@
 }
 
 .overlay[data-shape='rounded'] {
-  --popover-surface-radius: var(--ui-radius-float);
+  --popover-surface-radius: var(--ui-radius-auto);
 }
 
 .surface {
   background: var(--popover-surface-background);
   border: 1px solid var(--ui-color-border);
   border-radius: var(--popover-surface-radius);
-  box-shadow: var(--ui-shadow-soft);
+  box-shadow: var(--ui-shadow-md);
   color: var(--ui-color-text);
   min-inline-size: 0;
   position: relative;
@@ -49,8 +51,7 @@
 }
 
 .surface:focus-visible {
-  outline: 2px solid var(--ui-color-focus-ring);
-  outline-offset: 2px;
+  .focus-ring-offset();
 }
 
 .surface[data-mode='card'] {

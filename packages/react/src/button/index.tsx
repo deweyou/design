@@ -599,6 +599,11 @@ const renderButtonSurface = ({
           icon,
           variant,
         })}
+        {loading && (
+          <span aria-hidden className={styles.loadingOverlay}>
+            {renderLoadingIndicator('loading-overlay-indicator')}
+          </span>
+        )}
       </a>
     );
   }
@@ -619,6 +624,11 @@ const renderButtonSurface = ({
         icon,
         variant,
       })}
+      {loading && (
+        <span aria-hidden className={styles.loadingOverlay}>
+          {renderLoadingIndicator('loading-overlay-indicator')}
+        </span>
+      )}
     </button>
   );
 };
@@ -666,7 +676,7 @@ export const IconButton = forwardRef<HTMLElement, IconButtonProps>(function Icon
     className,
     color,
     href,
-    icon: loading ? renderLoadingIndicator('icon-loading-indicator') : icon,
+    icon,
     loading,
     mode: 'icon-button',
     ref,
@@ -708,8 +718,6 @@ const ButtonBase = forwardRef<HTMLElement, ButtonProps>(function ButtonBase(
     htmlType,
     nativeType: type,
   });
-  const resolvedIcon = loading ? renderLoadingIndicator('button-loading-indicator') : icon;
-
   if (explicitIconProvided && !textLikeContent) {
     const resolvedVariant = resolveIconButtonVariant(variant);
 
@@ -724,7 +732,7 @@ const ButtonBase = forwardRef<HTMLElement, ButtonProps>(function ButtonBase(
       className,
       color,
       href,
-      icon: resolvedIcon,
+      icon,
       loading,
       mode: 'icon-button',
       ref,
@@ -752,12 +760,9 @@ const ButtonBase = forwardRef<HTMLElement, ButtonProps>(function ButtonBase(
     className,
     color,
     href,
-    icon: resolvedIcon,
+    icon,
     loading,
-    mode:
-      hasRenderableContent(resolvedIcon) || contentAnalysis.hasGraphic
-        ? 'text-with-icon'
-        : 'text-only',
+    mode: hasRenderableContent(icon) || contentAnalysis.hasGraphic ? 'text-with-icon' : 'text-only',
     ref,
     shape,
     size,

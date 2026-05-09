@@ -60,6 +60,7 @@ export const Input = ({
         },
         className,
       )}
+      data-disabled={disabled ? 'true' : undefined}
       style={style}
     >
       {label && (

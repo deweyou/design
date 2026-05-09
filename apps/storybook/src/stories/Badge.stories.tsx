@@ -4,8 +4,8 @@ import { expect, within } from 'storybook/test';
 import { Badge } from '@deweyou-design/react/badge';
 
 const variants = ['soft', 'solid', 'outline'] as const;
-const colors = ['neutral', 'primary', 'danger', 'success', 'warning'] as const;
-const shapes = ['pill', 'rounded', 'rect'] as const;
+const colors = ['neutral', 'primary', 'danger'] as const;
+const shapes = ['pill', 'float', 'rect'] as const;
 
 const meta = {
   title: 'Components/Badge',
@@ -29,7 +29,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Badge is a compact inline label for status, categories, or counts. Three variants × five semantic colors.',
+          'Badge is a compact inline label for status, categories, or counts. Three variants × three semantic colors.',
       },
     },
   },
@@ -68,9 +68,9 @@ export const Variants: Story = {
 export const States: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-      <Badge color="success">Active</Badge>
+      <Badge color="primary">Active</Badge>
       <Badge color="danger">Error</Badge>
-      <Badge color="warning">Pending</Badge>
+      <Badge color="neutral">Pending</Badge>
       <Badge color="primary">New</Badge>
       <Badge color="neutral">Draft</Badge>
     </div>
@@ -91,7 +91,7 @@ export const Shapes: Story = {
           <Badge shape={shape} variant="solid" color="danger">
             Solid
           </Badge>
-          <Badge shape={shape} variant="outline" color="success">
+          <Badge shape={shape} variant="outline" color="neutral">
             Outline
           </Badge>
         </div>
@@ -109,7 +109,7 @@ export const Interaction: Story = {
       <Badge data-testid="solid-badge" variant="solid" color="danger">
         Solid
       </Badge>
-      <Badge data-testid="outline-badge" variant="outline" color="success">
+      <Badge data-testid="outline-badge" variant="outline" color="neutral">
         Outline
       </Badge>
     </div>

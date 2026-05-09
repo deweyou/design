@@ -64,7 +64,7 @@ test('input does not apply error classes when error is absent', () => {
 
 test('input applies disabled class and disabled attribute when disabled is true', () => {
   const markup = renderMarkup({ disabled: true });
-  expect(markup).toContain(styles.disabled);
+  expect(markup).toContain('data-disabled="true"');
   expect(markup).toContain('disabled');
 });
 
@@ -76,15 +76,15 @@ test('input forwards className and style to root element', () => {
 
 test('input stylesheet uses semantic tokens and does not reference raw palette steps', () => {
   expect(stylesheet).toContain('--ui-color-border');
-  expect(stylesheet).toContain('--ui-color-canvas');
+  expect(stylesheet).toContain('--ui-color-surface');
   expect(stylesheet).toContain('--ui-color-text');
   expect(stylesheet).toContain('--ui-color-focus-ring');
   expect(stylesheet).not.toContain('--ui-color-palette-');
 });
 
-test('input stylesheet contains focus-visible outline rule', () => {
+test('input stylesheet contains focus-visible box-shadow ring rule', () => {
   expect(stylesheet).toContain('focus-visible');
-  expect(stylesheet).toContain('outline');
+  expect(stylesheet).toContain('.focus-ring-offset()');
 });
 
 test('input renders outlined variant (default) with border class', () => {

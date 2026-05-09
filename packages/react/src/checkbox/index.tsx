@@ -6,21 +6,10 @@ import {
   CheckboxLabel as ArkCheckboxLabel,
   CheckboxHiddenInput as ArkCheckboxHiddenInput,
 } from '@ark-ui/react/checkbox';
+import { CheckIcon, MinusIcon } from '@deweyou-design/react-icons';
 import classNames from 'classnames';
 
 import styles from './index.module.less';
-
-const CheckmarkSvg = () => (
-  <svg viewBox="0 0 16 16" width="1em" height="1em" fill="none" aria-hidden="true">
-    <path stroke="currentColor" strokeWidth="2" strokeLinecap="square" d="M3 8.5L6.5 12L13 5" />
-  </svg>
-);
-
-const IndeterminateSvg = () => (
-  <svg viewBox="0 0 16 16" width="1em" height="1em" fill="none" aria-hidden="true">
-    <path stroke="currentColor" strokeWidth="2" strokeLinecap="square" d="M3 8H13" />
-  </svg>
-);
 
 export type CheckboxProps = {
   checked?: boolean;
@@ -70,7 +59,7 @@ export const Checkbox = ({
       />
       <ArkCheckboxControl className={styles.control}>
         <ArkCheckboxIndicator className={styles.indicator}>
-          {indeterminate ? <IndeterminateSvg /> : <CheckmarkSvg />}
+          {indeterminate ? <MinusIcon /> : <CheckIcon />}
         </ArkCheckboxIndicator>
       </ArkCheckboxControl>
       {children !== undefined && (

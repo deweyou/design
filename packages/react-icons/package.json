@@ -7,7 +7,7 @@
   ],
   "type": "module",
   "sideEffects": false,
-  "types": "./src/index.ts",
+  "types": "./dist/index.d.mts",
   "exports": {
     ".": "./dist/index.mjs",
     "./package.json": "./package.json"
@@ -16,14 +16,12 @@
     "directory": "dist"
   },
   "scripts": {
-    "build": "vp pack && node ../infra/scripts/write-published-manifest.mjs .",
+    "build": "node ./scripts/clean-dist.mjs && vp pack && node ../infra/scripts/write-published-manifest.mjs .",
     "dev": "vp pack --watch",
-    "generate": "node ./scripts/generate-icons.mjs",
     "test": "vp test"
   },
   "dependencies": {
-    "@tabler/icons-react": "^3",
-    "tdesign-icons-svg": "catalog:"
+    "@tabler/icons-react": "^3"
   },
   "devDependencies": {
     "@testing-library/react": "catalog:",

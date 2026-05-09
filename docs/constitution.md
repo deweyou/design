@@ -73,7 +73,7 @@ package 文档中说明为什么默认约定不足。理由：Vite+ 的价值之
 ### VII. 设计系统视觉规范
 
 所有组件的视觉与交互实现必须严格对照以下约束，不得随意偏差。评审时以下数值视为
-不可谈判（non-negotiable）。详细规范参见 [docs/design-style.md](design-style.md)。
+不可谈判（non-negotiable）。详细规范参见 [docs/design/system.md](design/system.md)。
 
 **组件变体模型**：交互组件必须基于以下四个正交维度建模：
 
@@ -82,26 +82,26 @@ package 文档中说明为什么默认约定不足。理由：Vite+ 的价值之
 | variant | filled / outlined / ghost / link                   | 视觉层级（实心→线框→幽灵→文本） |
 | color   | neutral / primary / danger                         | 语义色三档                      |
 | size    | extra-small / small / medium / large / extra-large | 尺寸五档                        |
-| shape   | rect / rounded / pill                              | 仅 filled/outlined 支持         |
+| shape   | rect / float / pill                                | 仅 filled/outlined 支持         |
 
 ghost 和 link variant 不支持 shape prop。
 
 **交互状态数值**（以下数值为强制值，常见偏差见括号）：
 
-| 属性        | 强制值                                                               | 常见错误        |
-| ----------- | -------------------------------------------------------------------- | --------------- |
-| disabled    | `opacity: 0.56`                                                      | 0.3、0.4        |
-| 交互过渡    | `140ms ease`                                                         | 200ms、300ms    |
-| 浮层动效    | `160ms`（入场 cubic-bezier，出场 ease）                              | 200ms、300ms    |
-| 焦点环      | `outline: 2px solid var(--ui-color-focus-ring); outline-offset: 2px` | 1px、3px        |
-| hover 混色  | `color-mix(in srgb, <color> 6–12%, transparent)`                     | 直接改背景色    |
-| active 位移 | `translateY(1px)`                                                    | translateY(2px) |
+| 属性        | 强制值                                                                                               | 常见错误        |
+| ----------- | ---------------------------------------------------------------------------------------------------- | --------------- |
+| disabled    | `opacity: 0.56`                                                                                      | 0.3、0.4        |
+| 交互过渡    | `140ms ease`                                                                                         | 200ms、300ms    |
+| 浮层动效    | `160ms`（入场 cubic-bezier，出场 ease）                                                              | 200ms、300ms    |
+| 焦点环      | `box-shadow: 0 0 0 2px var(--ui-color-surface), 0 0 0 4px var(--ui-color-focus-ring); outline: none` | outline、border |
+| hover 混色  | `color-mix(in srgb, <color> 6–12%, transparent)`                                                     | 直接改背景色    |
+| active 位移 | `translateY(1px)`                                                                                    | translateY(2px) |
 
 **字体族**：Source Han Serif CN Web → Songti SC → STSong → SimSun → NSimSun → serif（body 与 display 同族）。
 
-**圆角档位**：rect（0）/ rounded（0.4rem）/ auto（0.8rem）/ pill（999px）。
+**圆角档位**：rect（0）/ float（4px）/ auto（8px）/ pill（999px）。
 
-**阴影**：浮层与卡片使用 `--ui-shadow-soft`（`0 18px 40px rgba(24, 33, 29, 0.12)`），不得使用其他阴影值。
+**阴影**：卡片默认 border-first，不带阴影；浮层按层级使用 `--ui-shadow-sm` / `--ui-shadow-md` / `--ui-shadow-lg`，不得 hardcode 阴影值。
 
 **焦点**：所有可交互元素仅在 `:focus-visible` 时显示焦点环，不在鼠标点击时触发。
 

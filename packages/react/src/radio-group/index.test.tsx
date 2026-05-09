@@ -13,6 +13,12 @@ beforeEach(() => {
       disconnect() {}
     };
   }
+  if (!globalThis.CSS) {
+    globalThis.CSS = {} as typeof CSS;
+  }
+  if (!globalThis.CSS.escape) {
+    globalThis.CSS.escape = (value: string) => value.replace(/["\\]/g, '\\$&');
+  }
 });
 
 afterEach(() => {

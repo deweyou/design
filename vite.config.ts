@@ -7,6 +7,7 @@ export default defineConfig({
   lint: {
     ignorePatterns: [
       'dist/**',
+      '.worktrees/**',
       'coverage/**',
       'storybook-static/**',
       'docs/specs/**',
@@ -39,6 +40,7 @@ export default defineConfig({
   fmt: {
     ignorePatterns: [
       'dist/**',
+      '.worktrees/**',
       'coverage/**',
       'storybook-static/**',
       'packages/**/dist/**',
@@ -46,5 +48,8 @@ export default defineConfig({
       'packages/**/src/exports/**',
     ],
     singleQuote: true,
+  },
+  test: {
+    include: ['apps/**/*.test.{ts,tsx}', 'packages/**/*.test.{ts,tsx}'],
   },
 });

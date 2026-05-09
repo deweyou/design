@@ -41,8 +41,6 @@ test('badge applies correct color classes', () => {
     neutral: styles.colorNeutral,
     primary: styles.colorPrimary,
     danger: styles.colorDanger,
-    success: styles.colorSuccess,
-    warning: styles.colorWarning,
   };
   for (const [color, expectedClass] of Object.entries(colorMap)) {
     const markup = renderMarkup({ color: color as BadgeProps['color'] });
@@ -73,6 +71,6 @@ test('badge stylesheet contains all variant and color class definitions', () => 
   expect(stylesheet).toContain('solid');
   expect(stylesheet).toContain('outline');
   expect(stylesheet).toContain('colorDanger');
-  expect(stylesheet).toContain('colorSuccess');
-  expect(stylesheet).toContain('colorWarning');
+  expect(stylesheet).not.toContain('colorSuccess');
+  expect(stylesheet).not.toContain('colorWarning');
 });
