@@ -20,15 +20,15 @@ const renderNavbar = (initialPath = '/') =>
 
 test('renders all four nav links', () => {
   renderNavbar();
-  expect(screen.getByText('Home')).toBeInTheDocument();
+  expect(screen.getByText('Overview')).toBeInTheDocument();
   expect(screen.getByText('Icons')).toBeInTheDocument();
   expect(screen.getByText('Storybook ↗')).toBeInTheDocument();
   expect(screen.getByText('GitHub ↗')).toBeInTheDocument();
 });
 
-test('Home link is active on /', () => {
+test('Overview link is active on /', () => {
   renderNavbar('/');
-  const homeLink = screen.getByText('Home').closest('a');
+  const homeLink = screen.getByText('Overview').closest('a');
   expect(homeLink?.className).toContain('active');
 });
 

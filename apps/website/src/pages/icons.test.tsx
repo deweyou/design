@@ -34,7 +34,7 @@ test('search filters the icon list', () => {
 
   const filteredCells = screen.getAllByRole('button');
   expect(filteredCells.length).toBeLessThan(allCells.length);
-  filteredCells.forEach((cell) => {
+  filteredCells.forEach((cell: HTMLElement) => {
     expect(cell.getAttribute('aria-label')).toContain('arrow');
   });
 });
