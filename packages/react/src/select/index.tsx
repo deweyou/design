@@ -24,6 +24,7 @@ import {
 import { CheckIcon, ChevronDownIcon } from '@deweyou-design/react-icons';
 import classNames from 'classnames';
 
+import { Field, useFieldControlProps } from '../field/index.tsx';
 import styles from './index.module.less';
 
 type ItemData = { value: string; label: string; disabled?: boolean };
@@ -60,8 +61,13 @@ export type SelectRootProps = {
   defaultValue?: string[];
   onValueChange?: (value: string[]) => void;
   disabled?: boolean;
+  error?: string;
+  hint?: string;
+  id?: string;
+  label?: ReactNode;
   multiple?: boolean;
   placeholder?: string;
+  required?: boolean;
   children: ReactNode;
   className?: string;
   style?: CSSProperties;
@@ -92,13 +98,19 @@ const SelectRoot = ({
   defaultValue,
   onValueChange,
   disabled,
+  error,
+  hint,
+  id,
+  label,
   multiple,
   placeholder,
+  required,
   children,
   className,
   style,
 }: SelectRootProps) => {
   const items = useMemo(() => extractItems(children), [children]);
+  const hasError = Boolean(error);
 
   const collection = useMemo(
     () => createListCollection<ItemData>({ items }),
@@ -116,27 +128,45 @@ const SelectRoot = ({
   const ctxValue = useMemo(() => ({ placeholder, disabled }), [placeholder, disabled]);
 
   return (
-    <SelectContext.Provider value={ctxValue}>
-      <ArkSelectRoot
-        collection={collection}
-        value={value}
-        defaultValue={defaultValue}
-        onValueChange={handleValueChange}
-        disabled={disabled}
-        multiple={multiple}
-        className={classNames(styles.root, className)}
-        style={style}
-      >
-        {children}
-      </ArkSelectRoot>
-    </SelectContext.Provider>
+    <Field.Root
+      disabled={disabled}
+      hasDescription={hint !== undefined && !hasError}
+      hasError={hasError}
+      id={id}
+      invalid={hasError}
+      required={required}
+    >
+      {label && <Field.Label>{label}</Field.Label>}
+      <SelectContext.Provider value={ctxValue}>
+        <ArkSelectRoot
+          collection={collection}
+          value={value}
+          defaultValue={defaultValue}
+          onValueChange={handleValueChange}
+          disabled={disabled}
+          multiple={multiple}
+          className={classNames(styles.root, className)}
+          style={style}
+        >
+          {children}
+        </ArkSelectRoot>
+      </SelectContext.Provider>
+      {hasError ? (
+        <Field.ErrorText>{error}</Field.ErrorText>
+      ) : (
+        hint && <Field.Description>{hint}</Field.Description>
+      )}
+    </Field.Root>
   );
 };
 
 const SelectTrigger = ({ className, style }: SelectTriggerProps) => {
   const { placeholder, disabled } = useContext(SelectContext);
+  const fieldControlProps = useFieldControlProps();
+
   return (
     <ArkSelectTrigger
+      {...fieldControlProps}
       className={classNames(styles.trigger, className)}
       style={style}
       aria-disabled={disabled ? 'true' : undefined}

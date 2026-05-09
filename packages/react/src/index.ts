@@ -70,6 +70,16 @@ export {
 export { Input, type InputProps, type InputSize } from './input/index.tsx';
 export { Textarea, type TextareaProps, type TextareaSize } from './textarea/index.tsx';
 export {
+  Field,
+  useFieldContext,
+  useFieldControlProps,
+  type FieldControlProps,
+  type FieldDescriptionProps,
+  type FieldErrorTextProps,
+  type FieldLabelProps,
+  type FieldRootProps,
+} from './field/index.tsx';
+export {
   Badge,
   type BadgeProps,
   type BadgeVariant,

@@ -12,6 +12,10 @@ import classNames from 'classnames';
 import { IconButton } from '../button/index.tsx';
 import styles from './index.module.less';
 
+const getDefaultPortalContainer = () => {
+  return typeof document === 'undefined' ? null : document.body;
+};
+
 // ── Types ─────────────────────────────────────────────────────────────────
 
 export type NavOverlayRootProps = {
@@ -67,13 +71,16 @@ const NavOverlayTrigger = ({ children }: NavOverlayTriggerProps) => (
   <ArkDialogTrigger asChild>{children}</ArkDialogTrigger>
 );
 
-const NavOverlayContent = ({ children, className, style }: NavOverlayContentProps) =>
-  createPortal(
+const NavOverlayContent = ({ children, className, style }: NavOverlayContentProps) => {
+  const content = (
     <ArkDialogContent className={classNames(styles.content, className)} style={style}>
       {children}
-    </ArkDialogContent>,
-    document.body,
+    </ArkDialogContent>
   );
+  const container = getDefaultPortalContainer();
+
+  return container ? createPortal(content, container) : content;
+};
 
 const NavOverlayCloseButton = ({
   className,

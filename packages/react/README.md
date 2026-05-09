@@ -16,15 +16,11 @@ import '@deweyou-design/styles/theme.css';
 
 ## Components
 
-| Component                           | Subpath import                  | Root import |
-| ----------------------------------- | ------------------------------- | ----------- |
-| `Button`, `IconButton`              | `@deweyou-design/react/button`  | ✓           |
-| `Text`                              | `@deweyou-design/react/text`    | ✓           |
-| `Popover`                           | `@deweyou-design/react/popover` | ✓           |
-| `Menu`, `ContextMenu` and sub-parts | `@deweyou-design/react/menu`    | ✓           |
-| `Tabs` and sub-parts                | `@deweyou-design/react/tabs`    | ✓           |
+Every public component supports root import and a documented subpath import. The full import matrix, composition trees, and accessibility contracts live in [docs/design/components.md](../../docs/design/components.md).
 
 Prefer subpath imports for better tree-shaking; use the root `@deweyou-design/react` import when consuming multiple components together.
+
+Core coverage: `Button`, `IconButton`, `Field`, `Input`, `Textarea`, `Select`, `Checkbox`, `RadioGroup`, `Switch`, `Dialog`, `Menu`, `Popover`, `Tooltip`, `Toast`, `Tabs`, `Pagination`, `Breadcrumb`, `Nav`, `NavOverlay`, `ScrollArea`, `Text`, `Badge`, `Card`, `Separator`, `Skeleton`, and `Spinner`.
 
 ## Button
 

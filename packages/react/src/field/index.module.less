@@ -1,0 +1,35 @@
+@import '@deweyou-design/styles/less/bridge';
+
+.root {
+  display: grid;
+  gap: var(--ui-space-xs);
+}
+
+.label {
+  color: var(--ui-color-text);
+  font: var(--ui-font-weight-emphasis) 0.875rem / 1.25 var(--ui-font-body);
+}
+
+.requiredMark {
+  color: var(--ui-color-danger-text);
+  margin-inline-start: 0.25em;
+}
+
+.description,
+.error {
+  font-size: 0.8rem;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.description {
+  color: var(--ui-color-text-muted);
+}
+
+.error {
+  color: var(--ui-color-danger-text);
+}
+
+.root[data-disabled='true'] .label {
+  opacity: 0.56;
+}

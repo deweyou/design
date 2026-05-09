@@ -15,7 +15,7 @@ function walk(dir) {
   }
 }
 walk(distDir);
-cssFiles.sort();
+cssFiles.sort((a, b) => a.localeCompare(b));
 
 const combined = cssFiles.map((f) => readFileSync(f, 'utf8')).join('\n');
 writeFileSync(join(distDir, 'style.css'), combined);

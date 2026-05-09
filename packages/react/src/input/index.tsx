@@ -1,6 +1,7 @@
 import type { CSSProperties, InputHTMLAttributes } from 'react';
 import classNames from 'classnames';
 
+import { Field } from '../field/index.tsx';
 import styles from './index.module.less';
 
 export type InputSize = 'sm' | 'md' | 'lg';
@@ -42,6 +43,7 @@ export const Input = ({
   hint,
   id,
   label,
+  required,
   size = 'md',
   style,
   variant = 'outlined',
@@ -51,7 +53,7 @@ export const Input = ({
   const hintText = error ?? hint;
 
   return (
-    <div
+    <Field.Root
       className={classNames(
         styles.root,
         sizeClassMap[size],
@@ -60,27 +62,32 @@ export const Input = ({
         },
         className,
       )}
-      data-disabled={disabled ? 'true' : undefined}
+      disabled={disabled}
+      hasDescription={hint !== undefined && !hasError}
+      hasError={hasError}
+      id={id}
+      invalid={hasError}
+      required={required}
       style={style}
     >
-      {label && (
-        <label className={styles.label} htmlFor={id}>
-          {label}
-        </label>
-      )}
-      <input
-        {...props}
-        className={classNames(styles.field, variantClassMap[variant], {
-          [styles.fieldError]: hasError,
-        })}
-        disabled={disabled}
-        id={id}
-      />
-      {hintText && (
-        <p className={classNames({ [styles.hint]: !hasError, [styles.error]: hasError })}>
-          {hintText}
-        </p>
-      )}
-    </div>
+      {label && <Field.Label className={styles.label}>{label}</Field.Label>}
+      <Field.Control>
+        <input
+          {...props}
+          className={classNames(styles.field, variantClassMap[variant], {
+            [styles.fieldError]: hasError,
+          })}
+          disabled={disabled}
+          id={id}
+          required={required}
+        />
+      </Field.Control>
+      {hintText &&
+        (hasError ? (
+          <Field.ErrorText className={styles.error}>{hintText}</Field.ErrorText>
+        ) : (
+          <Field.Description className={styles.hint}>{hintText}</Field.Description>
+        ))}
+    </Field.Root>
   );
 };

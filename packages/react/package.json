@@ -46,6 +46,11 @@
       "import": "./dist/dialog/index.js",
       "default": "./dist/dialog/index.js"
     },
+    "./field": {
+      "types": "./dist/field/index.d.ts",
+      "import": "./dist/field/index.js",
+      "default": "./dist/field/index.js"
+    },
     "./input": {
       "types": "./dist/input/index.d.ts",
       "import": "./dist/input/index.js",
@@ -55,6 +60,16 @@
       "types": "./dist/menu/index.d.ts",
       "import": "./dist/menu/index.js",
       "default": "./dist/menu/index.js"
+    },
+    "./nav": {
+      "types": "./dist/nav/index.d.ts",
+      "import": "./dist/nav/index.js",
+      "default": "./dist/nav/index.js"
+    },
+    "./nav-overlay": {
+      "types": "./dist/nav-overlay/index.d.ts",
+      "import": "./dist/nav-overlay/index.js",
+      "default": "./dist/nav-overlay/index.js"
     },
     "./pagination": {
       "types": "./dist/pagination/index.d.ts",
