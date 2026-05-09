@@ -24,6 +24,7 @@ import {
   MenuItemIndicator as ArkMenuItemIndicator,
   MenuContextTrigger as ArkMenuContextTrigger,
 } from '@ark-ui/react/menu';
+import { CheckIcon, ChevronRightIcon } from '@deweyou-design/react-icons';
 import classNames from 'classnames';
 
 import styles from './index.module.less';
@@ -52,38 +53,6 @@ const shapeClassMap: Record<MenuShape, string> = {
   rect: styles.shapeRect,
   rounded: styles.shapeRounded,
 };
-
-// ---------------------------------------------------------------------------
-// Inline SVG icons (avoids cross-package dependency on @deweyou-ui/icons)
-// ---------------------------------------------------------------------------
-
-const CheckSvg = () => (
-  <svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" aria-hidden="true">
-    <g id="check">
-      <path
-        id="stroke1"
-        stroke="currentColor"
-        d="M19.5708 7.37842L10.3785 16.5708L5.42871 11.6211"
-        strokeLinecap="square"
-        strokeWidth="2"
-      />
-    </g>
-  </svg>
-);
-
-const ChevronRightSvg = () => (
-  <svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" aria-hidden="true">
-    <g id="chevron-right">
-      <path
-        id="stroke1"
-        stroke="currentColor"
-        d="M9.5 17.5L15 12L9.5 6.5"
-        strokeLinecap="square"
-        strokeWidth="2"
-      />
-    </g>
-  </svg>
-);
 
 // ---------------------------------------------------------------------------
 // Types
@@ -275,7 +244,7 @@ export const MenuItem = ({
     <span className={styles.itemLabel}>{children}</span>
     {selected && (
       <span aria-hidden className={styles.itemCheckmark}>
-        <CheckSvg />
+        <CheckIcon />
       </span>
     )}
   </ArkMenuItem>
@@ -381,7 +350,7 @@ export const MenuTriggerItem = ({
     {icon !== undefined && <span className={styles.itemIcon}>{icon}</span>}
     <span className={styles.itemLabel}>{children}</span>
     <span className={styles.triggerItemArrow} aria-hidden="true">
-      <ChevronRightSvg />
+      <ChevronRightIcon />
     </span>
   </ArkMenuTriggerItem>
 );
@@ -472,7 +441,7 @@ export const MenuRadioItem = ({
     {icon !== undefined && <span className={styles.itemIcon}>{icon}</span>}
     <span className={styles.itemLabel}>{children}</span>
     <ArkMenuItemIndicator className={styles.itemIndicator}>
-      <CheckSvg />
+      <CheckIcon />
     </ArkMenuItemIndicator>
   </ArkMenuRadioItem>
 );
@@ -536,7 +505,7 @@ export const MenuCheckboxItem = ({
       {icon !== undefined && <span className={styles.itemIcon}>{icon}</span>}
       <span className={styles.itemLabel}>{children}</span>
       <ArkMenuItemIndicator className={styles.itemIndicator}>
-        <CheckSvg />
+        <CheckIcon />
       </ArkMenuItemIndicator>
     </ArkMenuCheckboxItem>
   );

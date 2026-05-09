@@ -61,7 +61,7 @@ const renderSurface = (
   ).render(props, ref);
 };
 
-test('button defaults to filled medium with rounded shape and text-only mode', () => {
+test('button defaults to filled medium with float shape and text-only mode', () => {
   const markup = renderToStaticMarkup(createElement(Button, null, 'Save'));
 
   expect(markup).toContain('type="button"');
@@ -285,12 +285,13 @@ test('button rejects shape on ghost and link variants', () => {
   );
 });
 
-test('button loading keeps text visible, marks the button as loading, and disables repeated activation', () => {
+test('button loading keeps content in place, marks the button as loading, and disables repeated activation', () => {
   const markup = renderToStaticMarkup(createElement(Button, { loading: true }, 'Save changes'));
 
-  expect(markup).toContain('data-content-mode="text-with-icon"');
+  expect(markup).toContain('data-content-mode="text-only"');
   expect(markup).toContain('data-loading="true"');
   expect(markup).toContain('disabled=""');
+  expect(markup).toContain(styles.loadingOverlay);
   expect(markup).toContain(styles.loadingIndicator);
   expect(markup).toContain('>Save changes<');
 });
@@ -314,13 +315,14 @@ test('button link mode renders an anchor when href is provided', () => {
   expect(markup).not.toContain('type="button"');
 });
 
-test('button loading replaces the leading icon with a spinner in text-with-icon mode', () => {
+test('button loading overlays a spinner while preserving the leading icon and text', () => {
   const markup = renderToStaticMarkup(
     createElement(Button, { icon: createElement(SearchIcon), loading: true }, 'Search results'),
   );
 
   expect(markup).toContain(styles.loadingIndicator);
-  expect(markup).not.toContain('<svg');
+  expect(markup).toContain(styles.loadingOverlay);
+  expect(markup).toContain('<svg');
   expect(markup).toContain('>Search results<');
 });
 
@@ -347,7 +349,7 @@ test('icon button renders the square icon-button mode and matches the Button.Ico
   expect(aliasMarkup).toBe(iconButtonMarkup);
 });
 
-test('icon button loading replaces the original icon with a spinner', () => {
+test('icon button loading overlays a spinner while preserving the original icon', () => {
   const markup = renderToStaticMarkup(
     createElement(IconButton, {
       'aria-label': 'Refreshing search results',
@@ -361,8 +363,9 @@ test('icon button loading replaces the original icon with a spinner', () => {
   expect(markup).toContain('disabled=""');
   expect(markup).toContain('aria-busy="true"');
   expect(markup).toContain('aria-label="Refreshing search results"');
+  expect(markup).toContain(styles.loadingOverlay);
   expect(markup).toContain(styles.loadingIndicator);
-  expect(markup).not.toContain('<svg');
+  expect(markup).toContain('<svg');
 });
 
 test('button keeps loading feedback visible when disabled and loading are both true', () => {
@@ -435,6 +438,9 @@ test('button stylesheet reveals the link underline on hover without falling back
 
 test('button stylesheet includes loading cursor overrides and spinner animation', () => {
   expect(stylesheet).toContain(".root[data-loading='true'][data-disabled='true']");
+  expect(stylesheet).toContain(".root[data-loading='true'] .contentGraphic");
+  expect(stylesheet).toContain('color: transparent;');
+  expect(stylesheet).toContain('.loadingOverlay');
   expect(stylesheet).toContain('.loadingIndicator');
   expect(stylesheet).toContain('@keyframes button-loading-spin');
   expect(stylesheet).toContain('cursor: default;');

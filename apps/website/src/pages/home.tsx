@@ -269,7 +269,7 @@ const ComponentsSubSection = () => (
         <TabContent value="feedback">
           <div className={styles.tabContent}>
             <Badge color="neutral">中性</Badge>
-            <Badge color="success" variant="soft">
+            <Badge color="primary" variant="soft">
               成功
             </Badge>
             <Badge color="primary" variant="solid">

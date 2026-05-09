@@ -20,15 +20,21 @@ SearchIcon.displayName = 'SearchIcon';
 test('text buttons use split block and inline padding variables', () => {
   expect(stylesheet).toContain('padding-block: var(--button-padding-block);');
   expect(stylesheet).toContain('padding-inline: var(--button-padding-inline);');
-  expect(stylesheet).toContain('--button-square-size: calc(');
+  expect(stylesheet).toContain('--button-square-size: var(--button-height);');
+  expect(stylesheet).toContain('min-block-size: var(--button-height);');
 });
 
-test('button typography scale keeps extra-small and reduces the larger sizes', () => {
+test('button typography and height scale follows the design-system size ladder', () => {
   expect(stylesheet).toContain('--button-font-size: 0.75rem;');
-  expect(stylesheet).toContain('--button-font-size: 0.8125rem;');
   expect(stylesheet).toContain('--button-font-size: 0.875rem;');
-  expect(stylesheet).toContain('--button-font-size: 0.9375rem;');
   expect(stylesheet).toContain('--button-font-size: 1rem;');
+  expect(stylesheet).toContain('--button-font-size: 1.0625rem;');
+  expect(stylesheet).toContain('--button-font-size: 1.125rem;');
+  expect(stylesheet).toContain('--button-height: 1.5rem;');
+  expect(stylesheet).toContain('--button-height: 2rem;');
+  expect(stylesheet).toContain('--button-height: 2.5rem;');
+  expect(stylesheet).toContain('--button-height: 3rem;');
+  expect(stylesheet).toContain('--button-height: 3.5rem;');
 });
 
 test('icon buttons use the dedicated square-size mode', () => {

@@ -140,6 +140,7 @@
   "dependencies": {
     "@ark-ui/react": "catalog:",
     "@deweyou-design/react-hooks": "workspace:*",
+    "@deweyou-design/react-icons": "workspace:*",
     "@deweyou-design/styles": "workspace:*",
     "classnames": "catalog:"
   },

@@ -8,6 +8,7 @@ import {
   ToastRoot,
   ToastTitle,
 } from '@ark-ui/react/toast';
+import { XIcon } from '@deweyou-design/react-icons';
 import classNames from 'classnames';
 
 import styles from './index.module.less';
@@ -55,12 +56,6 @@ export type ToasterProps = {
   style?: CSSProperties;
 };
 
-const CloseIcon = () => (
-  <svg aria-hidden focusable="false" height="14" viewBox="0 0 14 14" width="14">
-    <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" />
-  </svg>
-);
-
 export const Toaster = ({ position = 'top', className, style }: ToasterProps) => {
   _mountedPosition = position;
   const toaster = toasters[position];
@@ -104,7 +99,7 @@ export const Toaster = ({ position = 'top', className, style }: ToasterProps) =>
               )}
             </div>
             <ToastCloseTrigger className={styles.close} aria-label="Dismiss notification">
-              <CloseIcon />
+              <XIcon size={14} />
             </ToastCloseTrigger>
           </ToastRoot>
         );

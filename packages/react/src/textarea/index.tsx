@@ -60,6 +60,7 @@ export const Textarea = ({
         },
         className,
       )}
+      data-disabled={disabled ? 'true' : undefined}
       style={style}
     >
       {label && (

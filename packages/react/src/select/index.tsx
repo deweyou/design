@@ -21,6 +21,7 @@ import {
   SelectValueText as ArkSelectValueText,
   createListCollection,
 } from '@ark-ui/react/select';
+import { CheckIcon, ChevronDownIcon } from '@deweyou-design/react-icons';
 import classNames from 'classnames';
 
 import styles from './index.module.less';
@@ -33,24 +34,6 @@ type SelectContextValue = {
 };
 
 const SelectContext = createContext<SelectContextValue>({});
-
-const ChevronDownSvg = () => (
-  <svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" aria-hidden="true">
-    <path stroke="currentColor" strokeWidth="2" strokeLinecap="square" d="M6 9L12 15L18 9" />
-  </svg>
-);
-
-const CheckSvg = () => (
-  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" aria-hidden="true">
-    <path
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="square"
-      strokeLinejoin="miter"
-      d="M5 12L10 17L19 8"
-    />
-  </svg>
-);
 
 /** Recursively extract SelectItem data from children tree at render time. */
 const extractItems = (children: ReactNode): ItemData[] => {
@@ -160,7 +143,7 @@ const SelectTrigger = ({ className, style }: SelectTriggerProps) => {
     >
       <ArkSelectValueText className={styles.valueText} placeholder={placeholder} />
       <span className={styles.chevron}>
-        <ChevronDownSvg />
+        <ChevronDownIcon />
       </span>
     </ArkSelectTrigger>
   );
@@ -209,7 +192,7 @@ const SelectItem = ({ value, label, disabled, className, style }: SelectItemProp
   >
     <ArkSelectItemText>{label}</ArkSelectItemText>
     <span className={styles.itemCheck}>
-      <CheckSvg />
+      <CheckIcon size={14} />
     </span>
   </ArkSelectItem>
 );

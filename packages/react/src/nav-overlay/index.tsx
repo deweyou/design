@@ -6,18 +6,11 @@ import {
   DialogRoot as ArkDialogRoot,
   DialogTrigger as ArkDialogTrigger,
 } from '@ark-ui/react/dialog';
+import { XIcon } from '@deweyou-design/react-icons';
 import classNames from 'classnames';
 
 import { IconButton } from '../button/index.tsx';
 import styles from './index.module.less';
-
-// ── Inline close icon (no cross-package dependency) ───────────────────────
-
-const CloseSvg = () => (
-  <svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" aria-hidden="true">
-    <path stroke="currentColor" strokeLinecap="square" strokeWidth="2" d="M6 6l12 12M18 6l-12 12" />
-  </svg>
-);
 
 // ── Types ─────────────────────────────────────────────────────────────────
 
@@ -91,7 +84,7 @@ const NavOverlayCloseButton = ({
     <IconButton
       aria-label={ariaLabel}
       className={classNames(styles.closeButton, className)}
-      icon={<CloseSvg />}
+      icon={<XIcon />}
       style={style}
       variant="ghost"
     />

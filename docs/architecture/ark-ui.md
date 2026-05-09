@@ -14,7 +14,7 @@
 3. 保持公开 API 与 Ark UI 原语解耦（不直接透传 Ark UI props 给消费方）
 4. 如需在 Ark UI 不支持的触发类型上叠加行为，使用受控模式（`open` prop）桥接
 
-参考实现：`packages/components/src/popover/index.tsx`
+参考实现：`packages/react/src/popover/index.tsx`
 
 ## 开发工具
 

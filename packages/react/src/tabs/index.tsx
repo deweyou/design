@@ -12,6 +12,7 @@ import {
   Tabs as ArkTabs,
   type TabsFocusChangeDetails as ArkFocusChangeDetails,
 } from '@ark-ui/react/tabs';
+import { ChevronDownIcon } from '@deweyou-design/react-icons';
 import classNames from 'classnames';
 
 import { Menu, MenuContent, MenuItem, MenuTrigger, MenuTriggerItem } from '../menu/index.tsx';
@@ -173,14 +174,6 @@ const TabsContext = createContext<TabsContextValue>({
   unregisterTab: () => {},
   tabs: [],
 });
-
-// ─── Inline SVG helpers ───────────────────────────────────────────────────────
-
-const ChevronDownSvg = () => (
-  <svg aria-hidden="true" fill="none" height="1em" viewBox="0 0 24 24" width="1em">
-    <path d="M6 9l6 6 6-6" stroke="currentColor" strokeLinecap="square" strokeWidth="2" />
-  </svg>
-);
 
 // ─── Tabs (root) ──────────────────────────────────────────────────────────────
 
@@ -541,7 +534,7 @@ export const TabList = ({ className, style, children }: TabListProps) => {
               >
                 More
                 <span aria-hidden className={styles.moreButtonArrow}>
-                  <ChevronDownSvg />
+                  <ChevronDownIcon />
                 </span>
               </button>
             </MenuTrigger>
@@ -639,7 +632,7 @@ export const TabTrigger = ({
           >
             <span className={styles.triggerLabel}>{children}</span>
             <span aria-hidden className={styles.triggerMenuArrow}>
-              <ChevronDownSvg />
+              <ChevronDownIcon />
             </span>
           </button>
         </MenuTrigger>

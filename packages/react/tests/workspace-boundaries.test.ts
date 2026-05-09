@@ -41,13 +41,13 @@ test('cross-package boundary coverage stays in top-level tests', () => {
 
   expect(componentPackage.dependencies).toMatchObject({
     '@deweyou-design/react-hooks': 'workspace:*',
+    '@deweyou-design/react-icons': 'workspace:*',
     '@deweyou-design/styles': 'workspace:*',
   });
   expect(componentPackage.peerDependencies).toMatchObject({
     react: 'catalog:',
     'react-dom': 'catalog:',
   });
-  expect(componentPackage.dependencies ?? {}).not.toHaveProperty('@deweyou-design/react-icons');
   expect(componentPackage.dependencies ?? {}).not.toHaveProperty('@storybook/react');
   expect(hooksPackage.dependencies ?? {}).not.toHaveProperty('@deweyou-ui/utils');
   expect(hooksPackage.dependencies ?? {}).not.toHaveProperty('@deweyou-ui/infra');
@@ -55,8 +55,9 @@ test('cross-package boundary coverage stays in top-level tests', () => {
     react: 'catalog:',
   });
   expect(iconsPackage.dependencies).toMatchObject({
-    'tdesign-icons-svg': 'catalog:',
+    '@tabler/icons-react': '^3',
   });
+  expect(iconsPackage.dependencies ?? {}).not.toHaveProperty('tdesign-icons-svg');
   expect(iconsPackage.peerDependencies).toMatchObject({
     react: 'catalog:',
   });
@@ -133,7 +134,7 @@ test('workspace publish flow writes dist package manifests instead of mutating s
     'utf8',
   );
   const iconsScript = readFileSync(
-    resolve(root, 'packages/react-icons/scripts/organize-dist.mjs'),
+    resolve(root, 'packages/react-icons/scripts/clean-dist.mjs'),
     'utf8',
   );
 
@@ -142,8 +143,7 @@ test('workspace publish flow writes dist package manifests instead of mutating s
   expect(utilsPackage).toContain('write-published-manifest.mjs');
   expect(stylesScript).toContain('writePublishedManifest');
   expect(stylesScript).not.toContain('writeFileSync');
-  expect(iconsScript).toContain('writePublishedManifest');
-  expect(iconsScript).toContain("resolve(distDir, 'src')");
+  expect(iconsScript).toContain("resolve(packageRoot, 'dist')");
 });
 
 test('storybook typography review matrix covers Text variants, palette highlights, and lineClamp', () => {

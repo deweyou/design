@@ -75,9 +75,8 @@ const RadioGroupRoot = ({
 };
 
 const RadioGroupItem = ({ value, disabled, children, className, style }: RadioGroupItemProps) => {
-  const { value: selectedValue, groupDisabled } = useContext(RadioGroupCtx);
+  const { groupDisabled } = useContext(RadioGroupCtx);
   const isDisabled = disabled || groupDisabled;
-  const isChecked = selectedValue === value;
 
   return (
     <ArkRadioGroupItem

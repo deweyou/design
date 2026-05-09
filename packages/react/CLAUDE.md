@@ -95,14 +95,14 @@
 
 ### Badge
 
-**意图**：紧凑的内联标签，用于状态、分类或计数。三个视觉变体 × 五种语义颜色。
+**意图**：紧凑的内联标签，用于状态、分类或计数。三个视觉变体 × 三种语义颜色。
 
 **正确用法**
 
 ```tsx
-<Badge color="success">Active</Badge>
+<Badge color="primary">Active</Badge>
 <Badge variant="solid" color="danger">Error</Badge>
-<Badge variant="outline" color="warning">Pending</Badge>
+<Badge variant="outline" color="neutral">Pending</Badge>
 ```
 
 **反模式**

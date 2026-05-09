@@ -1,2 +1,2 @@
-export { createTablerIcon, type IconProps } from './icon-wrapper';
+export type { IconProps } from './icon-wrapper';
 export * from './icons';

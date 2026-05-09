@@ -30,6 +30,7 @@ describe('createTablerIcon', () => {
     const { container } = render(<HomeIcon />);
     const svg = container.querySelector('svg');
 
+    expect(svg?.getAttribute('stroke-width')).toBe('1.5');
     expect(svg?.getAttribute('stroke-linecap')).toBe('square');
     expect(svg?.getAttribute('stroke-linejoin')).toBe('miter');
   });
