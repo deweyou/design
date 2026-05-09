@@ -1,5 +1,3 @@
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { expect, test } from 'vite-plus/test';
@@ -7,10 +5,6 @@ import { colorFamilyNames } from '@deweyou-design/styles';
 
 import { Text, textColorFamilyOptions, type TextProps } from './index';
 import styles from './index.module.less';
-
-const stylesheet = readFileSync(resolve(import.meta.dirname, 'index.module.less'), 'utf8');
-
-// stylesheet is used for CSS token assertions below
 
 const renderSurface = (props: TextProps) => {
   return Text(props) as {
@@ -60,9 +54,6 @@ test('heading variants render on native heading roots with distinct variant clas
     expect(String(surface.props.className)).toContain(styles[variant]);
     expect(markup.startsWith(`<${variant}`)).toBe(true);
   }
-
-  expect(stylesheet).toContain('margin-block-start');
-  expect(stylesheet).toContain('margin-block-end');
 });
 
 test('text supports composable italic, bold, underline, and strikethrough styles', () => {
@@ -118,8 +109,6 @@ test('text applies lineClamp only for positive integers', () => {
   expect(String(unclampedSurface.props.className)).not.toContain(styles.clamped);
   expect(unclampedStyle.WebkitLineClamp).toBeUndefined();
   expect(unclampedStyle['--text-line-clamp']).toBeUndefined();
-  expect(stylesheet).toContain('-webkit-box-orient');
-  expect(stylesheet).toContain('max-block-size');
 });
 
 test('text forwards standard node props to the rendered root node', () => {
@@ -149,20 +138,4 @@ test('text forwards standard node props to the rendered root node', () => {
   (surface.props.onClick as () => void)();
 
   expect(clickCount).toBe(1);
-});
-
-test('text stylesheet has no hardcoded border-radius values', () => {
-  expect(stylesheet).not.toContain('border-radius');
-});
-
-test('text stylesheet consumes semantic tokens and does not reference raw palette steps', () => {
-  // color/typography tokens sourced from @deweyou-design/styles
-  expect(stylesheet).toContain('--ui-color-text');
-  expect(stylesheet).toContain('--ui-font-body');
-  expect(stylesheet).toContain('--ui-text-size-body');
-  // color/background families are applied via inline style in index.tsx using
-  // --text-color-current / --text-background-current bridge tokens
-  expect(stylesheet).toContain('--text-color-current');
-  expect(stylesheet).toContain('--text-background-current');
-  expect(stylesheet).not.toContain('--ui-color-palette-');
 });

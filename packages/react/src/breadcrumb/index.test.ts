@@ -1,12 +1,8 @@
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { expect, test } from 'vite-plus/test';
 
 import { Breadcrumb } from './index';
-
-const stylesheet = readFileSync(resolve(import.meta.dirname, 'index.module.less'), 'utf8');
 
 const renderBreadcrumbMarkup = () =>
   renderToStaticMarkup(
@@ -69,16 +65,4 @@ test('breadcrumb root has aria-label', () => {
     createElement(Breadcrumb.Root, { 'aria-label': 'Navigation trail' }, null),
   );
   expect(markup).toContain('aria-label="Navigation trail"');
-});
-
-test('breadcrumb stylesheet uses semantic tokens', () => {
-  expect(stylesheet).toContain('--ui-color-text');
-  expect(stylesheet).toContain('--ui-color-text-muted');
-  expect(stylesheet).not.toContain('--ui-color-palette-');
-});
-
-test('breadcrumb stylesheet defines list and item layout', () => {
-  expect(stylesheet).toContain('list');
-  expect(stylesheet).toContain('item');
-  expect(stylesheet).toContain('flex');
 });

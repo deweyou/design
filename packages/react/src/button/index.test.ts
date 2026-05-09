@@ -1,13 +1,9 @@
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
 import { createElement, createRef } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { expect, test } from 'vite-plus/test';
 
 import { Button, IconButton, type ButtonProps, type IconButtonProps } from './index';
 import styles from './index.module.less';
-
-const stylesheet = readFileSync(resolve(import.meta.dirname, 'index.module.less'), 'utf8');
 
 const SearchIcon = () => {
   return createElement('svg', { 'aria-hidden': true, viewBox: '0 0 16 16' });
@@ -171,15 +167,6 @@ test('outlined buttons rely on the native border instead of an extra overlay lay
   expect(markup).toContain(styles.shapePill);
   expect(markup).not.toContain('<svg');
   expect(markup).not.toContain('outlinedAnimation');
-});
-
-test('button styles consume shared semantic theme tokens instead of raw palette steps', () => {
-  expect(stylesheet).toContain('--ui-color-brand-bg');
-  expect(stylesheet).toContain('--ui-color-danger-bg');
-  expect(stylesheet).not.toContain('--ui-color-link');
-  expect(stylesheet).toContain('@import');
-  expect(stylesheet).toContain('focus-ring');
-  expect(stylesheet).not.toContain('--ui-color-palette-');
 });
 
 test('button falls back to label when children are omitted', () => {
@@ -418,45 +405,6 @@ test('button supports the danger color across the public API', () => {
 
   expect(markup).toContain('data-color="danger"');
   expect(markup).toContain(styles.colorDanger);
-});
-
-test('button stylesheet protects descenders and keeps the custom underline anchored to link labels', () => {
-  expect(stylesheet).toContain('font: 600 var(--button-font-size) / 1.25 var(--ui-font-body);');
-  expect(stylesheet).toContain('padding-block-end: 0.08em;');
-  expect(stylesheet).toContain('margin-block-end: -0.08em;');
-  expect(stylesheet).toContain('.linkContent');
-  expect(stylesheet).toContain('.linkUnderlineDecoration');
-  expect(stylesheet).toContain('clip-path: inset(0 100% 0 0 round var(--ui-radius-pill));');
-});
-
-test('button stylesheet reveals the link underline on hover without falling back to native underline styling', () => {
-  expect(stylesheet).toContain(".link:hover:not([data-disabled='true']) .linkUnderlineDecoration");
-  expect(stylesheet).toContain('clip-path: inset(0 0 0 0 round var(--ui-radius-pill));');
-  expect(stylesheet).toContain('text-decoration-line: none;');
-  expect(stylesheet).not.toContain('text-decoration: underline;');
-});
-
-test('button stylesheet includes loading cursor overrides and spinner animation', () => {
-  expect(stylesheet).toContain(".root[data-loading='true'][data-disabled='true']");
-  expect(stylesheet).toContain(".root[data-loading='true'] .contentGraphic");
-  expect(stylesheet).toContain('color: transparent;');
-  expect(stylesheet).toContain('.loadingOverlay');
-  expect(stylesheet).toContain('.loadingIndicator');
-  expect(stylesheet).toContain('@keyframes button-loading-spin');
-  expect(stylesheet).toContain('cursor: default;');
-});
-
-test('button stylesheet keeps focus-visible affordance alongside loading and disabled states', () => {
-  expect(stylesheet).toContain('.root:focus-visible');
-  expect(stylesheet).toContain('.focus-ring-offset()');
-  expect(stylesheet).toContain(".root[data-disabled='true']");
-});
-
-test('button stylesheet includes the danger color branch for semantic destructive actions', () => {
-  expect(stylesheet).toContain('.colorDanger');
-  expect(stylesheet).toContain('--ui-color-danger-bg');
-  expect(stylesheet).toContain('--ui-color-danger-text');
-  expect(stylesheet).toContain('--ui-color-text-on-danger');
 });
 
 test('disabled anchor button prevents navigation and stops propagation on both click phases', () => {

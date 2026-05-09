@@ -14,6 +14,10 @@ import classNames from 'classnames';
 
 import styles from './index.module.less';
 
+const getDefaultPortalContainer = () => {
+  return typeof document === 'undefined' ? null : document.body;
+};
+
 export type DialogRootProps = {
   open?: boolean;
   defaultOpen?: boolean;
@@ -52,8 +56,8 @@ const DialogTrigger = ({ children }: DialogTriggerProps) => (
   <ArkDialogTrigger asChild>{children}</ArkDialogTrigger>
 );
 
-const DialogContent = ({ children, className, style }: DialogContentProps) =>
-  createPortal(
+const DialogContent = ({ children, className, style }: DialogContentProps) => {
+  const content = (
     <>
       <ArkDialogBackdrop className={styles.backdrop} />
       <ArkDialogPositioner className={styles.positioner}>
@@ -61,9 +65,12 @@ const DialogContent = ({ children, className, style }: DialogContentProps) =>
           {children}
         </ArkDialogContent>
       </ArkDialogPositioner>
-    </>,
-    document.body,
+    </>
   );
+  const container = getDefaultPortalContainer();
+
+  return container ? createPortal(content, container) : content;
+};
 
 const DialogTitle = ({ children, className, style }: DialogTitleProps) => (
   <ArkDialogTitle className={classNames(styles.title, className)} style={style}>

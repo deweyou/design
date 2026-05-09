@@ -120,15 +120,15 @@ export const Interaction: StoryObj = {
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    expect(canvas.queryByText('Interaction test toast')).toBeNull();
+    await expect(canvas.queryByText('Interaction test toast')).toBeNull();
 
     const btn = canvas.getByTestId('show-toast-btn');
     await userEvent.click(btn);
 
-    await waitFor(() => {
-      expect(within(document.body).getByText('Interaction test toast')).toBeTruthy();
+    await waitFor(async () => {
+      await expect(within(document.body).getByText('Interaction test toast')).toBeTruthy();
     });
-    expect(
+    await expect(
       within(document.body).getByText('This toast was created programmatically.'),
     ).toBeTruthy();
   },

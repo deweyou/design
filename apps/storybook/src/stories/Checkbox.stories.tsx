@@ -124,17 +124,17 @@ export const Interaction: StoryObj = {
       '[data-scope="checkbox"][data-part="control"]',
     ) as HTMLElement;
     const label = canvas.getByText('Click to toggle');
-    expect(control).toBeInTheDocument();
-    expect(control.getAttribute('data-state')).toBe('unchecked');
+    await expect(control).toBeInTheDocument();
+    await expect(control.getAttribute('data-state')).toBe('unchecked');
 
     await userEvent.click(label);
-    await waitFor(() => {
-      expect(control.getAttribute('data-state')).toBe('checked');
+    await waitFor(async () => {
+      await expect(control.getAttribute('data-state')).toBe('checked');
     });
 
     await userEvent.click(label);
-    await waitFor(() => {
-      expect(control.getAttribute('data-state')).toBe('unchecked');
+    await waitFor(async () => {
+      await expect(control.getAttribute('data-state')).toBe('unchecked');
     });
   },
 };

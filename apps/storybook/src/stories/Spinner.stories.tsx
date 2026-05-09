@@ -72,11 +72,11 @@ export const Interaction: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const labeledSpinner = canvas.getByTestId('labeled-spinner');
-    expect(labeledSpinner).toBeInTheDocument();
-    expect(labeledSpinner).toHaveAttribute('role', 'status');
-    expect(labeledSpinner).toHaveAttribute('aria-label', 'Loading content');
+    await expect(labeledSpinner).toBeInTheDocument();
+    await expect(labeledSpinner).toHaveAttribute('role', 'status');
+    await expect(labeledSpinner).toHaveAttribute('aria-label', 'Loading content');
     const hiddenSpinner = canvas.getByTestId('hidden-spinner');
-    expect(hiddenSpinner).toBeInTheDocument();
-    expect(hiddenSpinner).toHaveAttribute('aria-hidden', 'true');
+    await expect(hiddenSpinner).toBeInTheDocument();
+    await expect(hiddenSpinner).toHaveAttribute('aria-hidden', 'true');
   },
 };

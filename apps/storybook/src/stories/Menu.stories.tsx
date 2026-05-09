@@ -508,7 +508,7 @@ export const Interaction: StoryObj = {
     const trigger = canvas.getByTestId('menu-trigger');
     await userEvent.click(trigger);
 
-    await waitFor(() => {
+    await waitFor(async () => {
       const menu = document.querySelector('[role="menu"]');
       void expect(menu).toBeInTheDocument();
       void expect(menu).toBeVisible();
@@ -522,7 +522,7 @@ export const Interaction: StoryObj = {
 
     if (submenuTrigger) {
       await userEvent.hover(submenuTrigger);
-      await waitFor(() => {
+      await waitFor(async () => {
         const menus = document.querySelectorAll('[role="menu"]');
         void expect(menus.length).toBeGreaterThanOrEqual(2);
       });
@@ -530,28 +530,28 @@ export const Interaction: StoryObj = {
 
     // US2: ArrowDown navigates menuitems — focus moves between items
     await userEvent.keyboard('{Escape}');
-    await waitFor(() => {
+    await waitFor(async () => {
       const menus = document.querySelectorAll('[role="menu"]');
       void expect(menus.length).toBe(0);
     });
 
     // US1: Escape closes menu
     await userEvent.click(trigger);
-    await waitFor(() => {
+    await waitFor(async () => {
       void expect(document.querySelector('[role="menu"]')).toBeInTheDocument();
     });
 
     // US2: ArrowDown navigates — focused element gains role menuitem or menu (Ark UI focuses menu, then items on ArrowDown)
     await userEvent.keyboard('{ArrowDown}');
     await userEvent.keyboard('{ArrowDown}');
-    await waitFor(() => {
+    await waitFor(async () => {
       const focused = document.activeElement;
       const role = focused?.getAttribute('role') ?? '';
       void expect(['menuitem', 'menu'].includes(role)).toBe(true);
     });
 
     await userEvent.keyboard('{Escape}');
-    await waitFor(() => {
+    await waitFor(async () => {
       void expect(document.querySelector('[role="menu"]')).not.toBeInTheDocument();
     });
   },

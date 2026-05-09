@@ -530,11 +530,11 @@ export const Interaction: StoryObj = {
     await userEvent.keyboard('{Escape}');
 
     await waitFor(
-      () => {
+      async () => {
         const el = document.querySelector('[data-popover-overlay="true"]');
         // unmountOnExit: element removed from DOM, or data-state is closed
         const isGone = el == null || el.getAttribute('data-state') === 'closed';
-        expect(isGone).toBe(true);
+        await expect(isGone).toBe(true);
       },
       { timeout: 3000 },
     );

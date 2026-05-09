@@ -99,17 +99,17 @@ export const Interaction: Story = {
 
     // E2E-P-01: textarea is visible and accepts typing
     const feedbackTextarea = canvas.getByTestId('feedback-textarea');
-    expect(feedbackTextarea).toBeInTheDocument();
+    await expect(feedbackTextarea).toBeInTheDocument();
     await userEvent.type(feedbackTextarea, 'Great product!');
-    expect(feedbackTextarea).toHaveValue('Great product!');
+    await expect(feedbackTextarea).toHaveValue('Great product!');
 
     // error state: error message is visible
     const errorTextarea = canvas.getByTestId('error-textarea');
-    expect(errorTextarea).toBeInTheDocument();
-    expect(canvas.getByText('This field cannot be empty.')).toBeInTheDocument();
+    await expect(errorTextarea).toBeInTheDocument();
+    await expect(canvas.getByText('This field cannot be empty.')).toBeInTheDocument();
 
     // E2E-P-02: disabled textarea cannot be interacted with
     const disabledTextarea = canvas.getByTestId('disabled-textarea');
-    expect(disabledTextarea).toBeDisabled();
+    await expect(disabledTextarea).toBeDisabled();
   },
 };

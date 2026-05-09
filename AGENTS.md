@@ -4,6 +4,7 @@
 
 - [Ark UI 组件范式](docs/architecture/ark-ui.md) — 交互型组件的行为基础层选型与实现约定
 - [包层级规则](docs/architecture/package-layers.md) — 已发布包 vs 构建基础设施的划分与依赖规则
+- [测试架构](docs/architecture/testing.md) — 单测、contract test、样式测试与 Storybook e2e 的职责边界
 
 ## 技术栈
 

@@ -1,13 +1,9 @@
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { expect, test } from 'vite-plus/test';
 
 import { Badge, type BadgeProps } from './index';
 import styles from './index.module.less';
-
-const stylesheet = readFileSync(resolve(import.meta.dirname, 'index.module.less'), 'utf8');
 
 const renderMarkup = (props: BadgeProps) =>
   renderToStaticMarkup(createElement(Badge, props, props.children ?? 'Label'));
@@ -57,20 +53,4 @@ test('badge forwards className and style', () => {
   const markup = renderMarkup({ className: 'consumer-badge', style: { marginLeft: '4px' } });
   expect(markup).toContain('consumer-badge');
   expect(markup).toContain('margin-left');
-});
-
-test('badge stylesheet uses semantic tokens and pill radius', () => {
-  expect(stylesheet).toContain('--ui-radius-pill');
-  expect(stylesheet).toContain('--ui-color-text');
-  expect(stylesheet).toContain('--ui-font-body');
-  expect(stylesheet).not.toContain('--ui-color-palette-');
-});
-
-test('badge stylesheet contains all variant and color class definitions', () => {
-  expect(stylesheet).toContain('soft');
-  expect(stylesheet).toContain('solid');
-  expect(stylesheet).toContain('outline');
-  expect(stylesheet).toContain('colorDanger');
-  expect(stylesheet).not.toContain('colorSuccess');
-  expect(stylesheet).not.toContain('colorWarning');
 });

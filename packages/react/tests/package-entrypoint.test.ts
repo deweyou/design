@@ -68,6 +68,7 @@ test('components root entry exposes Button, IconButton, Popover, Text, Menu fami
     'Checkbox',
     'ContextMenu',
     'Dialog',
+    'Field',
     'IconButton',
     'Input',
     'Menu',
@@ -102,6 +103,8 @@ test('components root entry exposes Button, IconButton, Popover, Text, Menu fami
     'Toaster',
     'Tooltip',
     'toast',
+    'useFieldContext',
+    'useFieldControlProps',
   ]);
 });
 

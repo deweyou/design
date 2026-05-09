@@ -130,3 +130,48 @@ describe('Select — disabled state', () => {
     expect(trigger.getAttribute('aria-disabled')).toBe('true');
   });
 });
+
+describe('Select — field semantics', () => {
+  it('links label, hint, and trigger when field copy is provided', () => {
+    render(
+      <Select.Root id="fruit" label="Fruit" hint="Pick one fruit." placeholder="Pick a fruit">
+        <Select.Trigger />
+        <Select.Content>
+          {options.map((o) => (
+            <Select.Item key={o.value} value={o.value} label={o.label} />
+          ))}
+        </Select.Content>
+      </Select.Root>,
+    );
+
+    const trigger = screen.getByRole('combobox');
+    expect(screen.getByText('Fruit').getAttribute('for')).toBe('fruit');
+    expect(trigger.getAttribute('id')).toBe('fruit');
+    expect(trigger.getAttribute('aria-describedby')).toBe('fruit-description');
+    expect(screen.getByText('Pick one fruit.').getAttribute('id')).toBe('fruit-description');
+  });
+
+  it('marks trigger invalid and prefers error text over hint', () => {
+    render(
+      <Select.Root
+        id="fruit"
+        label="Fruit"
+        hint="Pick one fruit."
+        error="Fruit is required."
+        placeholder="Pick a fruit"
+      >
+        <Select.Trigger />
+        <Select.Content>
+          {options.map((o) => (
+            <Select.Item key={o.value} value={o.value} label={o.label} />
+          ))}
+        </Select.Content>
+      </Select.Root>,
+    );
+
+    const trigger = screen.getByRole('combobox');
+    expect(trigger.getAttribute('aria-invalid')).toBe('true');
+    expect(trigger.getAttribute('aria-describedby')).toBe('fruit-error');
+    expect(screen.getByText('Fruit is required.').getAttribute('role')).toBe('alert');
+  });
+});

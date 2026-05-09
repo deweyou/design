@@ -1,6 +1,3 @@
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
-
 import { expect, it } from 'vite-plus/test';
 
 import * as icons from './index';
@@ -45,12 +42,4 @@ it('exports the curated Tabler icon set only', () => {
 
 it('keeps the root public surface to types plus curated icons', () => {
   expect(Object.keys(publicSurface).sort()).toEqual([...curatedIconNames].sort());
-});
-
-it('does not restore the retired TDesign generator dependency', () => {
-  const packageJson = readFileSync(resolve(import.meta.dirname, '../../package.json'), 'utf8');
-
-  expect(packageJson).toContain('@tabler/icons-react');
-  expect(packageJson).not.toContain('tdesign-icons-svg');
-  expect(packageJson).not.toContain('"generate"');
 });

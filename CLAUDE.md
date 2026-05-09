@@ -4,6 +4,7 @@
 
 - [Ark UI 组件范式](docs/architecture/ark-ui.md) — 交互型组件的行为基础层选型与实现约定
 - [包层级规则](docs/architecture/package-layers.md) — 已发布包 vs 构建基础设施的划分与依赖规则
+- [测试架构](docs/architecture/testing.md) — 单测、contract test、样式测试与 Storybook e2e 的职责边界
 
 ## 技术栈
 
@@ -56,7 +57,7 @@ vp install          # 安装依赖
 AI 辅助开发的上下文与知识库：
 
 - **宪章**（项目原则）: [docs/constitution.md](docs/constitution.md)
-- **设计风格**: [docs/design-style.md](docs/design-style.md)
+- **设计系统**: [docs/design/system.md](docs/design/system.md)
 - **测试标准**: [docs/testing-standards.md](docs/testing-standards.md)
 - **Feature specs 索引**: [docs/specs/index.md](docs/specs/index.md)
 

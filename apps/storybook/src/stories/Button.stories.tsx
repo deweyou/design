@@ -691,7 +691,7 @@ export const Interaction: Story = {
 
     // US1: disabled button has disabled attribute
     const disabled = canvas.getByTestId('disabled-btn');
-    expect(disabled).toBeDisabled();
+    await expect(disabled).toBeDisabled();
 
     // US2: Tab to disabled button, verify aria-disabled, Enter/Space do not trigger click
     let clickCount = 0;
@@ -704,6 +704,6 @@ export const Interaction: Story = {
     );
     await userEvent.keyboard('{Enter}');
     await userEvent.keyboard(' ');
-    expect(clickCount).toBe(0);
+    await expect(clickCount).toBe(0);
   },
 };

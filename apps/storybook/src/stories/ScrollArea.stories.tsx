@@ -250,7 +250,7 @@ export const Interaction: StoryObj = {
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await waitFor(() => {
+    await waitFor(async () => {
       const scrollbars = canvasElement.querySelectorAll('[data-orientation="vertical"]');
       void expect(scrollbars.length).toBeGreaterThan(0);
     });

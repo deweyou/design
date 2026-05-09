@@ -78,13 +78,7 @@ test('components package keeps root compatibility while exposing documented subp
     files: string[];
     types: string;
   };
-  const componentEntry = readFileSync(resolve(root, 'packages/react/src/index.ts'), 'utf8');
 
-  expect(componentEntry).toContain('Button');
-  expect(componentEntry).toContain('IconButton');
-  expect(componentEntry).toContain('Text');
-  expect(componentEntry).toContain("from './button/index.tsx'");
-  expect(componentEntry).toContain("from './text/index.tsx'");
   expect(componentPackage.files).toEqual(['dist']);
   expect(componentPackage.types).toBe('./dist/index.d.ts');
   expect(componentPackage.exports).toMatchObject({
@@ -113,22 +107,16 @@ test('components package keeps root compatibility while exposing documented subp
   expect(componentPackage.exports).not.toHaveProperty('./icon-button');
 });
 
-test('react-hooks and infra follow the default pack path while icons and styles stay documented exceptions', () => {
-  const hooksVite = readFileSync(resolve(root, 'packages/react-hooks/vite.config.ts'), 'utf8');
-  const infraVite = readFileSync(resolve(root, 'packages/infra/vite.config.ts'), 'utf8');
-  const stylesVite = readFileSync(resolve(root, 'packages/styles/vite.config.ts'), 'utf8');
-  const iconsVite = readFileSync(resolve(root, 'packages/react-icons/vite.config.ts'), 'utf8');
-
-  expect(hooksVite).toContain('default Vite+ pack contract');
-  expect(infraVite).toContain('default Vite+ pack path');
-  expect(stylesVite).toContain('asset copy stage');
-  expect(iconsVite).toContain('explicit exception');
-});
-
 test('workspace publish flow writes dist package manifests instead of mutating source manifests during release builds', () => {
-  const componentsPackage = readFileSync(resolve(root, 'packages/react/package.json'), 'utf8');
-  const hooksPackage = readFileSync(resolve(root, 'packages/react-hooks/package.json'), 'utf8');
-  const utilsPackage = readFileSync(resolve(root, 'packages/utils/package.json'), 'utf8');
+  const componentsPackage = JSON.parse(
+    readFileSync(resolve(root, 'packages/react/package.json'), 'utf8'),
+  ) as { scripts?: Record<string, string> };
+  const hooksPackage = JSON.parse(
+    readFileSync(resolve(root, 'packages/react-hooks/package.json'), 'utf8'),
+  ) as { scripts?: Record<string, string> };
+  const utilsPackage = JSON.parse(
+    readFileSync(resolve(root, 'packages/utils/package.json'), 'utf8'),
+  ) as { scripts?: Record<string, string> };
   const stylesScript = readFileSync(
     resolve(root, 'packages/styles/scripts/copy-assets.mjs'),
     'utf8',
@@ -138,62 +126,10 @@ test('workspace publish flow writes dist package manifests instead of mutating s
     'utf8',
   );
 
-  expect(componentsPackage).toContain('write-published-manifest.mjs');
-  expect(hooksPackage).toContain('write-published-manifest.mjs');
-  expect(utilsPackage).toContain('write-published-manifest.mjs');
+  expect(componentsPackage.scripts?.build).toContain('write-published-manifest.mjs');
+  expect(hooksPackage.scripts?.build).toContain('write-published-manifest.mjs');
+  expect(utilsPackage.scripts?.build).toContain('write-published-manifest.mjs');
   expect(stylesScript).toContain('writePublishedManifest');
   expect(stylesScript).not.toContain('writeFileSync');
   expect(iconsScript).toContain("resolve(packageRoot, 'dist')");
-});
-
-test('storybook typography review matrix covers Text variants, palette highlights, and lineClamp', () => {
-  const storybookEntry = readFileSync(
-    resolve(root, 'apps/storybook/src/stories/Typography.stories.tsx'),
-    'utf8',
-  );
-
-  expect(storybookEntry).toContain('Text component contract');
-  expect(storybookEntry).toContain('lineClamp');
-  expect(storybookEntry).toContain('strikethrough');
-  expect(storybookEntry).toContain('Palette highlights');
-  expect(storybookEntry).toContain('background');
-  expect(storybookEntry).toContain("variant: 'h1'");
-  expect(storybookEntry).toContain('export const ReadingSurface');
-});
-
-test('button and text keep consuming shared color sources instead of package-private tokens', () => {
-  const buttonStyles = readFileSync(
-    resolve(root, 'packages/react/src/button/index.module.less'),
-    'utf8',
-  );
-  const textSource = readFileSync(resolve(root, 'packages/react/src/text/index.tsx'), 'utf8');
-  const storybookColor = readFileSync(
-    resolve(root, 'apps/storybook/src/stories/Color.stories.tsx'),
-    'utf8',
-  );
-
-  expect(textSource).toContain("from '@deweyou-design/styles'");
-  expect(textSource).toContain('colorFamilyNames');
-  expect(buttonStyles).toContain('--ui-color-brand-bg');
-  expect(buttonStyles).toContain('--ui-color-danger-bg');
-  // --ui-color-link was removed from the design token library; link variant now uses --ui-color-text
-  expect(buttonStyles).not.toContain('--ui-color-link');
-  expect(buttonStyles).not.toContain('--ui-color-palette-');
-  expect(storybookColor).toContain('Shared color foundation');
-  expect(storybookColor).toContain('Use Storybook theme switching');
-});
-
-test('storybook button review matrix covers native prop passthrough and loading states', () => {
-  const storybookEntry = readFileSync(
-    resolve(root, 'apps/storybook/src/stories/Button.stories.tsx'),
-    'utf8',
-  );
-
-  expect(storybookEntry).toContain("['neutral', 'primary', 'danger']");
-  expect(storybookEntry).toContain('export const PublicProps');
-  expect(storybookEntry).toContain('export const LoadingStates');
-  expect(storybookEntry).toContain('htmlType');
-  expect(storybookEntry).toContain('loading');
-  expect(storybookEntry).toContain('focusTargetRef.current?.focus()');
-  expect(storybookEntry).not.toContain('export const TypographyContract');
 });

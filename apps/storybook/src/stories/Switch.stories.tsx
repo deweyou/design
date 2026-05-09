@@ -80,17 +80,17 @@ export const Interaction: StoryObj = {
     // native input-forwarding mechanism.
     const sw = canvas.getByRole('switch');
     const label = canvas.getByText('Toggle me');
-    expect(sw).toBeInTheDocument();
-    expect(sw.getAttribute('aria-checked')).toBe('false');
+    await expect(sw).toBeInTheDocument();
+    await expect(sw.getAttribute('aria-checked')).toBe('false');
 
     await userEvent.click(label);
-    await waitFor(() => {
-      expect(sw.getAttribute('aria-checked')).toBe('true');
+    await waitFor(async () => {
+      await expect(sw.getAttribute('aria-checked')).toBe('true');
     });
 
     await userEvent.click(label);
-    await waitFor(() => {
-      expect(sw.getAttribute('aria-checked')).toBe('false');
+    await waitFor(async () => {
+      await expect(sw.getAttribute('aria-checked')).toBe('false');
     });
   },
 };

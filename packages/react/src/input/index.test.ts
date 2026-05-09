@@ -1,13 +1,9 @@
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { expect, test } from 'vite-plus/test';
 
 import { Input, type InputProps } from './index';
 import styles from './index.module.less';
-
-const stylesheet = readFileSync(resolve(import.meta.dirname, 'index.module.less'), 'utf8');
 
 const renderMarkup = (props: InputProps) => renderToStaticMarkup(createElement(Input, props));
 
@@ -38,6 +34,17 @@ test('input renders label element with htmlFor when label prop is provided', () 
   expect(markup).toContain('for="email"');
 });
 
+test('input links generated label and hint ids when id is omitted', () => {
+  const markup = renderMarkup({
+    hint: 'We will never share your email.',
+    label: 'Email address',
+  });
+
+  expect(markup).toContain('for="field-');
+  expect(markup).toContain('id="field-');
+  expect(markup).toContain('aria-describedby="field-');
+});
+
 test('input does not render label element when label prop is absent', () => {
   const markup = renderMarkup({});
   expect(markup).not.toContain('<label');
@@ -54,6 +61,19 @@ test('input renders error message and applies error classes when error prop is p
   expect(markup).toContain('This field is required.');
   expect(markup).toContain(styles.error);
   expect(markup).toContain(styles.fieldError);
+  expect(markup).toContain('aria-invalid="true"');
+});
+
+test('input prefers error text over hint for aria-describedby', () => {
+  const markup = renderMarkup({
+    error: 'This field is required.',
+    hint: 'Optional hint.',
+    id: 'email',
+  });
+
+  expect(markup).toContain('id="email-error"');
+  expect(markup).toContain('aria-describedby="email-error"');
+  expect(markup).not.toContain('aria-describedby="email-description"');
 });
 
 test('input does not apply error classes when error is absent', () => {
@@ -72,19 +92,6 @@ test('input forwards className and style to root element', () => {
   const markup = renderMarkup({ className: 'consumer-input', style: { marginTop: '8px' } });
   expect(markup).toContain('consumer-input');
   expect(markup).toContain('margin-top');
-});
-
-test('input stylesheet uses semantic tokens and does not reference raw palette steps', () => {
-  expect(stylesheet).toContain('--ui-color-border');
-  expect(stylesheet).toContain('--ui-color-surface');
-  expect(stylesheet).toContain('--ui-color-text');
-  expect(stylesheet).toContain('--ui-color-focus-ring');
-  expect(stylesheet).not.toContain('--ui-color-palette-');
-});
-
-test('input stylesheet contains focus-visible box-shadow ring rule', () => {
-  expect(stylesheet).toContain('focus-visible');
-  expect(stylesheet).toContain('.focus-ring-offset()');
 });
 
 test('input renders outlined variant (default) with border class', () => {

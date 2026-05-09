@@ -1,13 +1,9 @@
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { expect, test } from 'vite-plus/test';
 
 import { Textarea, type TextareaProps } from './index';
 import styles from './index.module.less';
-
-const stylesheet = readFileSync(resolve(import.meta.dirname, 'index.module.less'), 'utf8');
 
 const renderMarkup = (props: TextareaProps) => renderToStaticMarkup(createElement(Textarea, props));
 
@@ -38,6 +34,17 @@ test('textarea renders label element with htmlFor when label prop is provided', 
   expect(markup).toContain('for="msg"');
 });
 
+test('textarea links generated label and hint ids when id is omitted', () => {
+  const markup = renderMarkup({
+    hint: 'Max 500 characters.',
+    label: 'Message',
+  });
+
+  expect(markup).toContain('for="field-');
+  expect(markup).toContain('id="field-');
+  expect(markup).toContain('aria-describedby="field-');
+});
+
 test('textarea does not render label element when label prop is absent', () => {
   const markup = renderMarkup({});
   expect(markup).not.toContain('<label');
@@ -54,6 +61,19 @@ test('textarea renders error message and applies error classes when error prop i
   expect(markup).toContain('Message is required.');
   expect(markup).toContain(styles.error);
   expect(markup).toContain(styles.fieldError);
+  expect(markup).toContain('aria-invalid="true"');
+});
+
+test('textarea prefers error text over hint for aria-describedby', () => {
+  const markup = renderMarkup({
+    error: 'Message is required.',
+    hint: 'Optional hint.',
+    id: 'message',
+  });
+
+  expect(markup).toContain('id="message-error"');
+  expect(markup).toContain('aria-describedby="message-error"');
+  expect(markup).not.toContain('aria-describedby="message-description"');
 });
 
 test('textarea applies disabled class and disabled attribute when disabled is true', () => {
@@ -66,19 +86,6 @@ test('textarea forwards className and style to root element', () => {
   const markup = renderMarkup({ className: 'consumer-textarea', style: { marginTop: '8px' } });
   expect(markup).toContain('consumer-textarea');
   expect(markup).toContain('margin-top');
-});
-
-test('textarea stylesheet uses semantic tokens', () => {
-  expect(stylesheet).toContain('--ui-color-border');
-  expect(stylesheet).toContain('--ui-color-surface');
-  expect(stylesheet).toContain('--ui-color-text');
-  expect(stylesheet).toContain('--ui-color-focus-ring');
-  expect(stylesheet).not.toContain('--ui-color-palette-');
-});
-
-test('textarea stylesheet contains resize and min-height rules', () => {
-  expect(stylesheet).toContain('resize');
-  expect(stylesheet).toContain('min-height');
 });
 
 test('textarea renders outlined variant (default) with border class', () => {
