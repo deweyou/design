@@ -1,6 +1,9 @@
 import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import { defineConfig } from 'vite-plus';
+
+const stylesLessBridge = fileURLToPath(new URL('../styles/src/less/bridge.less', import.meta.url));
 
 export default defineConfig({
   build: {
@@ -24,6 +27,13 @@ export default defineConfig({
         preserveModules: true,
         preserveModulesRoot: 'src',
         entryFileNames: '[name].js',
+      },
+    },
+  },
+  css: {
+    preprocessorOptions: {
+      less: {
+        additionalData: `@import "${stylesLessBridge}";\n`,
       },
     },
   },

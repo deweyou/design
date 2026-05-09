@@ -13,10 +13,7 @@ body {
 body {
   background-color: var(--ui-color-canvas);
   color: var(--ui-color-text);
-  font-family:
-    system-ui,
-    -apple-system,
-    sans-serif;
+  font-family: var(--ui-font-body);
   -webkit-font-smoothing: antialiased;
 }
 

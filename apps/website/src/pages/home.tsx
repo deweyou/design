@@ -53,9 +53,8 @@ export const HomePage = () => (
     <DesignSection />
     <IconsPreviewSection />
     <footer className={styles.footer}>
-      <div className={styles.container}>
-        <Text variant="caption">MIT License · 2026</Text>
-      </div>
+      <span>MIT · 2026</span>
+      <span>§ FIN</span>
     </footer>
   </main>
 );
@@ -63,15 +62,13 @@ export const HomePage = () => (
 const IconsPreviewSection = () => {
   const navigate = useNavigate();
   return (
-    <section className={styles.iconsSection}>
-      <div className={styles.container}>
-        <p className={styles.sectionLabel}>Icons · Tabler Icons</p>
+    <section className={styles.cell}>
+      <CellHead number="05" title="Icons" meta="Tabler · stroke 1.5 square / miter" />
+      <div className={styles.cellBodyFlush}>
         <div className={styles.iconGrid}>
           {PREVIEW_ICONS.map(({ name, Icon }) => (
             <div key={name} className={styles.iconCell}>
-              <div className={styles.iconBox}>
-                <Icon size={18} />
-              </div>
+              <Icon size={18} />
               <span className={styles.iconName}>{name}</span>
             </div>
           ))}
@@ -89,17 +86,33 @@ const IconsPreviewSection = () => {
 // ─── Hero ─────────────────────────────────────────────────────────────────────
 
 const HeroSection = () => (
-  <section className={styles.hero}>
-    <div className={styles.container}>
+  <section className={styles.heroCell}>
+    <div className={styles.heroGrid} />
+    <div className={styles.heroInner}>
       <p className={styles.heroEyebrow}>Component Library · v1.0</p>
       <Text variant="h1" className={styles.heroTitle}>
-        Deweyou Design
+        Architecture for <span>serif</span> interfaces.
       </Text>
-      <div className={styles.heroRule} />
       <Text variant="body" className={styles.heroDesc}>
-        基于宋体字形节奏与温暖色系构建，27 个组件覆盖完整 UI 场景。深浅双主题，开箱即用。
+        二十七个组件，以宋体字形节奏与温暖色系构建，深浅双主题，开箱即用。专为中文优先的产品而设计。
       </Text>
-      <code className={styles.installCmd}>npm install @deweyou-design/react</code>
+      <div className={styles.heroActions}>
+        <code className={styles.installCmd}>$ npm i @deweyou-design/react</code>
+        <Button
+          color="neutral"
+          href="https://design-storybook-deweyous-projects.vercel.app"
+          target="_blank"
+          variant="filled"
+        >
+          查看 Storybook →
+        </Button>
+      </div>
+      <div className={styles.stats}>
+        <Stat value="27" label="Components" />
+        <Stat value="30" label="Icons" />
+        <Stat value="26" label="Color Families" />
+        <Stat value="02" label="Themes" />
+      </div>
     </div>
   </section>
 );
@@ -107,14 +120,11 @@ const HeroSection = () => (
 // ─── Design & Components ──────────────────────────────────────────────────────
 
 const DesignSection = () => (
-  <section className={styles.designSection}>
-    <div className={styles.container}>
-      <p className={styles.sectionLabel}>Design &amp; Components</p>
-      <ColorSubSection />
-      <TypographySubSection />
-      <ComponentsSubSection />
-    </div>
-  </section>
+  <>
+    <ColorSubSection />
+    <TypographySubSection />
+    <ComponentsSubSection />
+  </>
 );
 
 // Color swatches — emerald (brand), red (danger), stone (neutral)
@@ -125,20 +135,25 @@ const COLOR_ROWS: Array<{ family: string; steps: number[] }> = [
 ];
 
 const ColorSubSection = () => (
-  <div className={styles.subSection}>
-    <p className={styles.subLabel}>Color · 26 色族 · 11 色阶</p>
-    {COLOR_ROWS.map(({ family, steps }) => (
-      <div key={family} className={styles.colorStrip}>
-        {steps.map((step) => (
-          <div
-            key={step}
-            className={styles.colorSwatch}
-            style={{ backgroundColor: `var(--ui-color-palette-${family}-${step})` }}
-          />
-        ))}
+  <section className={styles.cell}>
+    <CellHead number="02" title="Palette" meta="3 semantic roles 9 tonal steps each" />
+    <div className={styles.cellBodyFlush}>
+      <div className={styles.palette}>
+        {COLOR_ROWS.flatMap(({ family, steps }) =>
+          steps.map((step) => (
+            <div
+              key={`${family}-${step}`}
+              className={styles.colorSwatch}
+              style={{ backgroundColor: `var(--ui-color-palette-${family}-${step})` }}
+            >
+              {step === 950 ? <strong>{family}</strong> : null}
+              <span>{step}</span>
+            </div>
+          )),
+        )}
       </div>
-    ))}
-  </div>
+    </div>
+  </section>
 );
 
 const TYPE_SPECIMENS = [
@@ -154,125 +169,145 @@ const TYPE_SPECIMENS = [
 ];
 
 const TypographySubSection = () => (
-  <div className={styles.subSection}>
-    <p className={styles.subLabel}>Type · Source Han Serif CN · 4 字重</p>
-    <div className={styles.typeRows}>
-      {TYPE_SPECIMENS.map(({ label, sample, variant }) => (
-        <div key={label} className={styles.typeRow}>
-          <span className={styles.typeLabel}>{label}</span>
-          <Text variant={variant}>{sample}</Text>
-        </div>
-      ))}
+  <section className={styles.cell}>
+    <CellHead number="03" title="Type" meta="Source Han Serif CN 5 levels · 4 weights" />
+    <div className={styles.cellBodyFlush}>
+      <div className={styles.typeRows}>
+        {TYPE_SPECIMENS.map(({ label, sample, variant }) => (
+          <div key={label} className={styles.typeRow}>
+            <span className={styles.typeLabel}>{label}</span>
+            <Text variant={variant}>{sample}</Text>
+            <span className={styles.typeMeta}>{variant}</span>
+          </div>
+        ))}
+      </div>
     </div>
-  </div>
+  </section>
 );
 
 // ─── Components tabs ──────────────────────────────────────────────────────────
 
 const ComponentsSubSection = () => (
-  <div className={styles.subSection}>
-    <p className={styles.subLabel}>Components · 27 个</p>
-    <Tabs defaultValue="buttons" variant="line" color="neutral" size="sm">
-      <TabList>
-        <TabTrigger value="buttons">按钮 / 操作</TabTrigger>
-        <TabTrigger value="form">表单输入</TabTrigger>
-        <TabTrigger value="overlay">浮层 / 菜单</TabTrigger>
-        <TabTrigger value="feedback">反馈 / 徽标</TabTrigger>
-      </TabList>
+  <section className={styles.cell}>
+    <CellHead number="04" title="Components" meta="27 primitives stable" />
+    <div className={styles.cellBodyFlush}>
+      <Tabs defaultValue="buttons" variant="line" color="neutral" size="sm">
+        <TabList>
+          <TabTrigger value="buttons">按钮 / 操作</TabTrigger>
+          <TabTrigger value="form">表单输入</TabTrigger>
+          <TabTrigger value="overlay">浮层 / 菜单</TabTrigger>
+          <TabTrigger value="feedback">反馈 / 徽标</TabTrigger>
+        </TabList>
 
-      <TabContent value="buttons">
-        <div className={styles.tabContent}>
-          <Button color="neutral" variant="filled">
-            Neutral
-          </Button>
-          <Button color="primary" variant="filled">
-            Primary
-          </Button>
-          <Button color="danger" variant="filled">
-            Danger
-          </Button>
-          <div className={styles.tabDivider} />
-          <Button color="neutral" variant="outlined">
-            Outlined
-          </Button>
-          <Button color="neutral" variant="ghost">
-            Ghost
-          </Button>
-        </div>
-      </TabContent>
-
-      <TabContent value="form">
-        <div className={styles.tabContent}>
-          <Input placeholder="普通输入框" style={{ width: 160 }} />
-          <div className={styles.tabDivider} />
-          <div style={{ width: 160 }}>
-            <Select.Root placeholder="请选择">
-              <Select.Trigger />
-              <Select.Content>
-                <Select.Item value="a" label="选项 A" />
-                <Select.Item value="b" label="选项 B" />
-                <Select.Item value="c" label="选项 C" />
-              </Select.Content>
-            </Select.Root>
-          </div>
-          <div className={styles.tabDivider} />
-          <Switch defaultChecked>开启</Switch>
-          <Switch>关闭</Switch>
-          <div className={styles.tabDivider} />
-          <Checkbox defaultChecked>已勾选</Checkbox>
-          <Checkbox>未勾选</Checkbox>
-        </div>
-      </TabContent>
-
-      <TabContent value="overlay">
-        <div className={styles.tabContent}>
-          <Popover content={<span style={{ fontSize: 13 }}>这是一个 Popover 内容</span>}>
-            <Button color="neutral" variant="outlined">
-              打开 Popover
+        <TabContent value="buttons">
+          <div className={styles.tabContent}>
+            <Button color="neutral" variant="filled">
+              Neutral
             </Button>
-          </Popover>
-          <div className={styles.tabDivider} />
-          <Menu>
-            <MenuTrigger>
-              <Button color="neutral" variant="outlined">
-                打开菜单
-              </Button>
-            </MenuTrigger>
-            <MenuContent>
-              <MenuItem value="edit">编辑</MenuItem>
-              <MenuItem value="copy">复制</MenuItem>
-              <MenuItem value="delete">删除</MenuItem>
-            </MenuContent>
-          </Menu>
-        </div>
-      </TabContent>
+            <Button color="primary" variant="filled">
+              Primary
+            </Button>
+            <Button color="danger" variant="filled">
+              Danger
+            </Button>
+            <div className={styles.tabDivider} />
+            <Button color="neutral" variant="outlined">
+              Outlined
+            </Button>
+            <Button color="neutral" variant="ghost">
+              Ghost
+            </Button>
+          </div>
+        </TabContent>
 
-      <TabContent value="feedback">
-        <div className={styles.tabContent}>
-          <Badge color="neutral">中性</Badge>
-          <Badge color="success" variant="soft">
-            成功
-          </Badge>
-          <Badge color="primary" variant="solid">
-            主要
-          </Badge>
-          <Badge color="danger" variant="outline">
-            危险
-          </Badge>
-          <div className={styles.tabDivider} />
-          <Spinner />
-          <div className={styles.tabDivider} />
-          <Button
-            color="primary"
-            variant="filled"
-            onClick={() =>
-              toast.create({ title: '操作成功', description: '内容已保存', variant: 'success' })
-            }
-          >
-            触发 Toast
-          </Button>
-        </div>
-      </TabContent>
-    </Tabs>
+        <TabContent value="form">
+          <div className={styles.tabContent}>
+            <Input placeholder="普通输入框" style={{ width: 160 }} />
+            <div className={styles.tabDivider} />
+            <div style={{ width: 160 }}>
+              <Select.Root placeholder="请选择">
+                <Select.Trigger />
+                <Select.Content>
+                  <Select.Item value="a" label="选项 A" />
+                  <Select.Item value="b" label="选项 B" />
+                  <Select.Item value="c" label="选项 C" />
+                </Select.Content>
+              </Select.Root>
+            </div>
+            <div className={styles.tabDivider} />
+            <Switch defaultChecked>开启</Switch>
+            <Switch>关闭</Switch>
+            <div className={styles.tabDivider} />
+            <Checkbox defaultChecked>已勾选</Checkbox>
+            <Checkbox>未勾选</Checkbox>
+          </div>
+        </TabContent>
+
+        <TabContent value="overlay">
+          <div className={styles.tabContent}>
+            <Popover content={<span style={{ fontSize: 13 }}>这是一个 Popover 内容</span>}>
+              <Button color="neutral" variant="outlined">
+                打开 Popover
+              </Button>
+            </Popover>
+            <div className={styles.tabDivider} />
+            <Menu>
+              <MenuTrigger>
+                <Button color="neutral" variant="outlined">
+                  打开菜单
+                </Button>
+              </MenuTrigger>
+              <MenuContent>
+                <MenuItem value="edit">编辑</MenuItem>
+                <MenuItem value="copy">复制</MenuItem>
+                <MenuItem value="delete">删除</MenuItem>
+              </MenuContent>
+            </Menu>
+          </div>
+        </TabContent>
+
+        <TabContent value="feedback">
+          <div className={styles.tabContent}>
+            <Badge color="neutral">中性</Badge>
+            <Badge color="success" variant="soft">
+              成功
+            </Badge>
+            <Badge color="primary" variant="solid">
+              主要
+            </Badge>
+            <Badge color="danger" variant="outline">
+              危险
+            </Badge>
+            <div className={styles.tabDivider} />
+            <Spinner />
+            <div className={styles.tabDivider} />
+            <Button
+              color="primary"
+              variant="filled"
+              onClick={() =>
+                toast.create({ title: '操作成功', description: '内容已保存', variant: 'success' })
+              }
+            >
+              触发 Toast
+            </Button>
+          </div>
+        </TabContent>
+      </Tabs>
+    </div>
+  </section>
+);
+
+const CellHead = ({ meta, number, title }: { meta: string; number: string; title: string }) => (
+  <div className={styles.cellHead}>
+    <span className={styles.cellNumber}>§ {number}</span>
+    <span className={styles.cellTitle}>{title}</span>
+    <span className={styles.cellMeta}>{meta}</span>
+  </div>
+);
+
+const Stat = ({ label, value }: { label: string; value: string }) => (
+  <div className={styles.stat}>
+    <div className={styles.statValue}>{value}</div>
+    <div className={styles.statLabel}>{label}</div>
   </div>
 );

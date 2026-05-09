@@ -9,8 +9,18 @@ const componentsSourceDir = fileURLToPath(new URL('../../packages/react/src', im
 const iconsSourceDir = fileURLToPath(new URL('../../packages/react-icons/src', import.meta.url));
 const stylesEntry = fileURLToPath(new URL('../../packages/styles/src/index.ts', import.meta.url));
 const stylesCssDir = fileURLToPath(new URL('../../packages/styles/src/css', import.meta.url));
+const stylesLessBridge = fileURLToPath(
+  new URL('../../packages/styles/src/less/bridge.less', import.meta.url),
+);
 
 export default defineConfig({
+  css: {
+    preprocessorOptions: {
+      less: {
+        additionalData: `@import "${stylesLessBridge}";\n`,
+      },
+    },
+  },
   test: {
     setupFiles: ['src/test-setup.ts'],
   },
