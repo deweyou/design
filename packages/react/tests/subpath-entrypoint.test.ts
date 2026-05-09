@@ -4,6 +4,9 @@ import { resolve } from 'node:path';
 import { expect, test } from 'vite-plus/test';
 
 import * as buttonEntry from '../src/button/index.tsx';
+import * as fieldEntry from '../src/field/index.tsx';
+import * as navEntry from '../src/nav/index.tsx';
+import * as navOverlayEntry from '../src/nav-overlay/index.tsx';
 import * as rootEntry from '../src';
 import * as popoverEntry from '../src/popover/index.tsx';
 import * as textEntry from '../src/text/index.tsx';
@@ -27,6 +30,11 @@ test('components package exposes button, popover, and text subpath exports in pa
       import: './dist/button/index.js',
       types: './dist/button/index.d.ts',
     },
+    './field': {
+      default: './dist/field/index.js',
+      import: './dist/field/index.js',
+      types: './dist/field/index.d.ts',
+    },
     './popover': {
       default: './dist/popover/index.js',
       import: './dist/popover/index.js',
@@ -37,12 +45,25 @@ test('components package exposes button, popover, and text subpath exports in pa
       import: './dist/text/index.js',
       types: './dist/text/index.d.ts',
     },
+    './nav': {
+      default: './dist/nav/index.js',
+      import: './dist/nav/index.js',
+      types: './dist/nav/index.d.ts',
+    },
+    './nav-overlay': {
+      default: './dist/nav-overlay/index.js',
+      import: './dist/nav-overlay/index.js',
+      types: './dist/nav-overlay/index.d.ts',
+    },
   });
 });
 
 test('components subpath entries match the root entry public contract', () => {
   expect(buttonEntry.Button).toBe(rootEntry.Button);
   expect(buttonEntry.IconButton).toBe(rootEntry.IconButton);
+  expect(fieldEntry.Field).toBe(rootEntry.Field);
+  expect(navEntry.Nav).toBe(rootEntry.Nav);
+  expect(navOverlayEntry.NavOverlay).toBe(rootEntry.NavOverlay);
   expect(popoverEntry.Popover).toBe(rootEntry.Popover);
   expect(textEntry.Text).toBe(rootEntry.Text);
 });
@@ -59,6 +80,11 @@ test('components subpath entries expose their public API without requiring the p
     'buttonSizeOptions',
     'buttonVariantOptions',
     'iconButtonVariantOptions',
+  ]);
+  expect(Object.keys(fieldEntry).sort()).toEqual([
+    'Field',
+    'useFieldContext',
+    'useFieldControlProps',
   ]);
   expect(Object.keys(popoverEntry).sort()).toEqual([
     'Popover',

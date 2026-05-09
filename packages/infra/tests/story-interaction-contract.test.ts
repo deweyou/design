@@ -16,10 +16,12 @@ test('every story file exports an Interaction story with a play function', () =>
 
     const hasInteractionExport = /export\s+const\s+Interaction\s*[=:]/.test(content);
     const hasPlayFn = /\bplay\s*:/.test(content);
+    const interactionSource = content.slice(content.search(/export\s+const\s+Interaction\s*[=:]/));
+    const hasInteractionAssertion = /\bexpect\s*\(/.test(interactionSource);
 
-    if (!hasInteractionExport || !hasPlayFn) {
+    if (!hasInteractionExport || !hasPlayFn || !hasInteractionAssertion) {
       violations.push(
-        `${file}: missing ${!hasInteractionExport ? 'Interaction export' : ''} ${!hasPlayFn ? 'play function' : ''}`.trim(),
+        `${file}: missing ${!hasInteractionExport ? 'Interaction export' : ''} ${!hasPlayFn ? 'play function' : ''} ${!hasInteractionAssertion ? 'Interaction assertion' : ''}`.trim(),
       );
     }
   }

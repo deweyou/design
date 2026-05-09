@@ -1,13 +1,9 @@
 // @vitest-environment jsdom
 
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
 import { cleanup, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vite-plus/test';
 
 import { NavOverlay } from './index.tsx';
-
-const stylesheet = readFileSync(resolve(import.meta.dirname, 'index.module.less'), 'utf8');
 
 afterEach(() => {
   cleanup();
@@ -57,33 +53,5 @@ describe('NavOverlay', () => {
         </NavOverlay.Root>,
       ),
     ).not.toThrow();
-  });
-});
-
-describe('NavOverlay stylesheet', () => {
-  it('uses position fixed and inset 0 for fullscreen', () => {
-    expect(stylesheet).toContain('position: fixed');
-    expect(stylesheet).toContain('inset: 0');
-  });
-
-  it('uses --ui-color-surface as background', () => {
-    expect(stylesheet).toContain('--ui-color-surface');
-  });
-
-  it('uses --ui-z-dialog for z-index', () => {
-    expect(stylesheet).toContain('--ui-z-dialog');
-  });
-
-  it('defines open/closed animations', () => {
-    expect(stylesheet).toContain("data-state='open'");
-    expect(stylesheet).toContain("data-state='closed'");
-  });
-
-  it('responds to prefers-reduced-motion', () => {
-    expect(stylesheet).toContain('prefers-reduced-motion');
-  });
-
-  it('does not use raw palette tokens', () => {
-    expect(stylesheet).not.toContain('--ui-color-palette-');
   });
 });

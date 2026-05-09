@@ -100,17 +100,17 @@ export const Interaction: Story = {
 
     // E2E-P-01: default input is visible and accepts typing
     const nameInput = canvas.getByTestId('name-input');
-    expect(nameInput).toBeInTheDocument();
+    await expect(nameInput).toBeInTheDocument();
     await userEvent.type(nameInput, 'Alice');
-    expect(nameInput).toHaveValue('Alice');
+    await expect(nameInput).toHaveValue('Alice');
 
     // error state: error message is present
     const errorInput = canvas.getByTestId('error-input');
-    expect(errorInput).toBeInTheDocument();
-    expect(canvas.getByText('Invalid email address.')).toBeInTheDocument();
+    await expect(errorInput).toBeInTheDocument();
+    await expect(canvas.getByText('Invalid email address.')).toBeInTheDocument();
 
     // E2E-P-02: disabled input cannot be typed into
     const disabledInput = canvas.getByTestId('disabled-input');
-    expect(disabledInput).toBeDisabled();
+    await expect(disabledInput).toBeDisabled();
   },
 };

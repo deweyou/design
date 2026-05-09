@@ -162,16 +162,16 @@ export const Interaction: StoryObj = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const trigger = canvas.getByTestId('tooltip-trigger');
-    expect(canvas.queryByText('Tooltip is visible')).toBeNull();
+    await expect(canvas.queryByText('Tooltip is visible')).toBeNull();
 
     await userEvent.hover(trigger);
-    await waitFor(() => {
-      expect(canvas.getByText('Tooltip is visible')).toBeTruthy();
+    await waitFor(async () => {
+      await expect(canvas.getByText('Tooltip is visible')).toBeTruthy();
     });
 
     await userEvent.unhover(trigger);
-    await waitFor(() => {
-      expect(canvas.queryByText('Tooltip is visible')).toBeNull();
+    await waitFor(async () => {
+      await expect(canvas.queryByText('Tooltip is visible')).toBeNull();
     });
   },
 };

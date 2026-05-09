@@ -178,6 +178,6 @@ export const Interaction: Story = {
   render: () => <CatalogGallery />,
   play: async ({ canvasElement }) => {
     const svgs = canvasElement.querySelectorAll('svg');
-    expect(svgs.length).toBeGreaterThan(0);
+    await expect(svgs.length).toBeGreaterThan(0);
   },
 };

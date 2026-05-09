@@ -108,9 +108,9 @@ export const Interaction: Story = {
     const canvas = within(canvasElement);
     const cardAuto = canvas.getByTestId('card-auto');
     const cardRect = canvas.getByTestId('card-rect');
-    expect(cardAuto).toBeInTheDocument();
-    expect(cardRect).toBeInTheDocument();
-    expect(cardAuto.tagName).toBe('DIV');
-    expect(cardRect.tagName).toBe('DIV');
+    await expect(cardAuto).toBeInTheDocument();
+    await expect(cardRect).toBeInTheDocument();
+    await expect(cardAuto.tagName).toBe('DIV');
+    await expect(cardRect.tagName).toBe('DIV');
   },
 };

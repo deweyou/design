@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { readFileSync, statSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 import { expect, test } from 'vite-plus/test';
@@ -129,12 +129,18 @@ test('semantic theme colors trace back to the shared palette foundation or monoc
 
 test('fonts asset directory contains the vendored Source Han Serif CN files', () => {
   const license = readFileSync(resolve(fontsDir, 'LICENSE.txt'), 'utf8');
+  const fontFileNames = [
+    'SourceHanSerifCN-Regular.otf',
+    'SourceHanSerifCN-Medium.otf',
+    'SourceHanSerifCN-SemiBold.otf',
+    'SourceHanSerifCN-Bold.otf',
+  ];
 
   expect(license).toContain('SIL OPEN FONT LICENSE');
-  expect(readFileSync(resolve(fontsDir, 'SourceHanSerifCN-Regular.otf'))).toBeTruthy();
-  expect(readFileSync(resolve(fontsDir, 'SourceHanSerifCN-Medium.otf'))).toBeTruthy();
-  expect(readFileSync(resolve(fontsDir, 'SourceHanSerifCN-SemiBold.otf'))).toBeTruthy();
-  expect(readFileSync(resolve(fontsDir, 'SourceHanSerifCN-Bold.otf'))).toBeTruthy();
+
+  for (const fontFileName of fontFileNames) {
+    expect(statSync(resolve(fontsDir, fontFileName)).size).toBeGreaterThan(0);
+  }
 });
 
 test('exposes spacing tokens in lightTheme', () => {

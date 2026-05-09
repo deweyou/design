@@ -144,32 +144,31 @@ export const Interaction: StoryObj = {
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-
-    expect(document.querySelector('[role="dialog"]')).not.toBeInTheDocument();
+    await expect(document.querySelector('[role="dialog"]')).not.toBeInTheDocument();
 
     const trigger = canvas.getByTestId('dialog-trigger');
     await userEvent.click(trigger);
-    await waitFor(() => {
-      expect(document.querySelector('[role="dialog"]')).toBeInTheDocument();
+    await waitFor(async () => {
+      await expect(document.querySelector('[role="dialog"]')).toBeInTheDocument();
     });
 
     const dialog = document.querySelector('[role="dialog"]') as HTMLElement;
-    expect(within(dialog).getByText('Confirm action')).toBeInTheDocument();
+    await expect(within(dialog).getByText('Confirm action')).toBeInTheDocument();
 
     await userEvent.keyboard('{Escape}');
-    await waitFor(() => {
-      expect(document.querySelector('[role="dialog"]')).not.toBeInTheDocument();
+    await waitFor(async () => {
+      await expect(document.querySelector('[role="dialog"]')).not.toBeInTheDocument();
     });
 
     await userEvent.click(trigger);
-    await waitFor(() => {
-      expect(document.querySelector('[role="dialog"]')).toBeInTheDocument();
+    await waitFor(async () => {
+      await expect(document.querySelector('[role="dialog"]')).toBeInTheDocument();
     });
 
     const closeBtn = document.querySelector('[data-testid="dialog-close"]') as HTMLElement;
     await userEvent.click(closeBtn);
-    await waitFor(() => {
-      expect(document.querySelector('[role="dialog"]')).not.toBeInTheDocument();
+    await waitFor(async () => {
+      await expect(document.querySelector('[role="dialog"]')).not.toBeInTheDocument();
     });
   },
 };

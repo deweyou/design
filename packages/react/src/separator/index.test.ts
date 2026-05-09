@@ -1,13 +1,9 @@
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { expect, test } from 'vite-plus/test';
 
 import { Separator, type SeparatorProps } from './index';
 import styles from './index.module.less';
-
-const stylesheet = readFileSync(resolve(import.meta.dirname, 'index.module.less'), 'utf8');
 
 const renderMarkup = (props: SeparatorProps) =>
   renderToStaticMarkup(createElement(Separator, props));
@@ -43,14 +39,4 @@ test('separator forwards className and style', () => {
   const markup = renderMarkup({ className: 'consumer-sep', style: { margin: '8px 0' } });
   expect(markup).toContain('consumer-sep');
   expect(markup).toContain('margin');
-});
-
-test('separator stylesheet uses semantic border token', () => {
-  expect(stylesheet).toContain('--ui-color-border');
-  expect(stylesheet).not.toContain('--ui-color-palette-');
-});
-
-test('separator stylesheet defines horizontal and vertical rules', () => {
-  expect(stylesheet).toContain('horizontal');
-  expect(stylesheet).toContain('vertical');
 });

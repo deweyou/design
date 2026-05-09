@@ -94,7 +94,7 @@ export const Interaction: StoryObj = {
 
     // E2E-I-02: clicking Next navigates to page 2
     await userEvent.click(nextBtn);
-    await waitFor(() => {
+    await waitFor(async () => {
       const pageTwo = canvas.getByText('2');
       void expect(pageTwo.closest('[data-selected]')).toBeTruthy();
     });
@@ -102,14 +102,14 @@ export const Interaction: StoryObj = {
     // E2E-I-02: clicking a specific page navigates to it
     const pageFour = canvas.getByText('4');
     await userEvent.click(pageFour);
-    await waitFor(() => {
+    await waitFor(async () => {
       void expect(pageFour.closest('[data-selected]')).toBeTruthy();
     });
 
     // E2E-I-03: disabled state — on last page, Next should be disabled
     const pageFive = canvas.getByText('5');
     await userEvent.click(pageFive);
-    await waitFor(() => {
+    await waitFor(async () => {
       void expect(nextBtn.closest('[data-disabled]')).toBeTruthy();
     });
   },

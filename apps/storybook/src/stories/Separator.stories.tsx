@@ -90,14 +90,14 @@ export const Interaction: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const horizontalSep = canvas.getByTestId('horizontal-sep');
-    expect(horizontalSep).toBeInTheDocument();
-    expect(horizontalSep.tagName).toBe('HR');
+    await expect(horizontalSep).toBeInTheDocument();
+    await expect(horizontalSep.tagName).toBe('HR');
     const labeledSep = canvas.getByTestId('labeled-sep');
-    expect(labeledSep).toBeInTheDocument();
-    expect(labeledSep).toHaveTextContent('OR');
+    await expect(labeledSep).toBeInTheDocument();
+    await expect(labeledSep).toHaveTextContent('OR');
     const verticalSep = canvas.getByTestId('vertical-sep');
-    expect(verticalSep).toBeInTheDocument();
-    expect(verticalSep.tagName).toBe('DIV');
-    expect(verticalSep).toHaveAttribute('role', 'separator');
+    await expect(verticalSep).toBeInTheDocument();
+    await expect(verticalSep.tagName).toBe('DIV');
+    await expect(verticalSep).toHaveAttribute('role', 'separator');
   },
 };

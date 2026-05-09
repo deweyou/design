@@ -117,13 +117,13 @@ export const Interaction: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const softBadge = canvas.getByTestId('soft-badge');
-    expect(softBadge).toBeInTheDocument();
-    expect(softBadge).toHaveTextContent('Soft');
+    await expect(softBadge).toBeInTheDocument();
+    await expect(softBadge).toHaveTextContent('Soft');
     const solidBadge = canvas.getByTestId('solid-badge');
-    expect(solidBadge).toBeInTheDocument();
-    expect(solidBadge).toHaveTextContent('Solid');
+    await expect(solidBadge).toBeInTheDocument();
+    await expect(solidBadge).toHaveTextContent('Solid');
     const outlineBadge = canvas.getByTestId('outline-badge');
-    expect(outlineBadge).toBeInTheDocument();
-    expect(outlineBadge).toHaveTextContent('Outline');
+    await expect(outlineBadge).toBeInTheDocument();
+    await expect(outlineBadge).toHaveTextContent('Outline');
   },
 };

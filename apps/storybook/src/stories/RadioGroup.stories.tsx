@@ -125,7 +125,7 @@ export const Interaction: StoryObj = {
     const canvas = within(canvasElement);
 
     const group = canvas.getByRole('radiogroup');
-    expect(group).toBeInTheDocument();
+    await expect(group).toBeInTheDocument();
 
     // ArkRadioGroupItem renders as <label> with data-state managed by Ark.
     // Click the item (label) to trigger a single label→radio activation;
@@ -133,13 +133,13 @@ export const Interaction: StoryObj = {
     const items = Array.from(
       canvasElement.querySelectorAll('[data-scope="radio-group"][data-part="item"]'),
     ) as HTMLElement[];
-    expect(items[0].getAttribute('data-state')).toBe('checked');
-    expect(items[1].getAttribute('data-state')).toBe('unchecked');
+    await expect(items[0].getAttribute('data-state')).toBe('checked');
+    await expect(items[1].getAttribute('data-state')).toBe('unchecked');
 
     await userEvent.click(items[1]);
-    await waitFor(() => {
-      expect(items[1].getAttribute('data-state')).toBe('checked');
-      expect(items[0].getAttribute('data-state')).toBe('unchecked');
+    await waitFor(async () => {
+      await expect(items[1].getAttribute('data-state')).toBe('checked');
+      await expect(items[0].getAttribute('data-state')).toBe('unchecked');
     });
   },
 };

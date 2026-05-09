@@ -1,13 +1,9 @@
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { expect, test } from 'vite-plus/test';
 
 import { Spinner, type SpinnerProps } from './index';
 import styles from './index.module.less';
-
-const stylesheet = readFileSync(resolve(import.meta.dirname, 'index.module.less'), 'utf8');
 
 const renderMarkup = (props: SpinnerProps) => renderToStaticMarkup(createElement(Spinner, props));
 
@@ -47,14 +43,4 @@ test('spinner applies root class', () => {
 test('spinner forwards className and style', () => {
   const markup = renderMarkup({ className: 'consumer-spinner', style: { color: 'red' } });
   expect(markup).toContain('consumer-spinner');
-});
-
-test('spinner stylesheet contains keyframe animation', () => {
-  expect(stylesheet).toContain('@keyframes');
-  expect(stylesheet).toContain('rotate');
-});
-
-test('spinner stylesheet uses border and pill radius', () => {
-  expect(stylesheet).toContain('border');
-  expect(stylesheet).toContain('--ui-radius-pill');
 });

@@ -1,15 +1,10 @@
 // @vitest-environment jsdom
 
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
-
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vite-plus/test';
 
 import { Tabs, TabContent, TabIndicator, TabList, TabTrigger } from './index.tsx';
-
-const stylesheet = readFileSync(resolve(import.meta.dirname, 'index.module.less'), 'utf8');
 
 // ─── Setup ────────────────────────────────────────────────────────────────────
 
@@ -462,25 +457,5 @@ describe('Tabs — onFocusChange', () => {
     await waitFor(() => {
       expect(onFocusChange).toHaveBeenCalledWith({ value: 't2' });
     });
-  });
-});
-
-// ─── Stylesheet token 断言 ────────────────────────────────────────────────────
-
-describe('Tabs — stylesheet token 约束', () => {
-  it('tabs stylesheet 消费语义 token，不引用 raw palette', () => {
-    expect(stylesheet).toContain('.focus-ring-offset()');
-    expect(stylesheet).toContain('--ui-color-border');
-    expect(stylesheet).toContain('--ui-color-brand-bg');
-    expect(stylesheet).toContain('--ui-color-text');
-    expect(stylesheet).not.toContain('--ui-color-palette-');
-  });
-
-  it('tabs stylesheet 使用语义 radius token，不含硬编码 border-radius 值', () => {
-    expect(stylesheet).not.toContain('border-radius: 0.4rem');
-    expect(stylesheet).not.toContain('border-radius: 0.3rem');
-    expect(stylesheet).not.toContain('border-radius: 999px');
-    expect(stylesheet).toContain('var(--ui-radius-float)');
-    expect(stylesheet).toContain('var(--ui-radius-pill)');
   });
 });

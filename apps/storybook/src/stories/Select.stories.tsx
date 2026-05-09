@@ -152,35 +152,35 @@ export const Interaction: StoryObj = {
     const canvas = within(canvasElement);
 
     const trigger = canvas.getByRole('combobox');
-    expect(trigger).toBeInTheDocument();
+    await expect(trigger).toBeInTheDocument();
     // Check trigger state rather than listbox DOM presence — avoids racing
     // against the 160 ms selectExit animation that keeps the element in the
     // DOM until animationend fires (which may not fire in Playwright).
-    expect(trigger.getAttribute('data-state')).toBe('closed');
+    await expect(trigger.getAttribute('data-state')).toBe('closed');
 
     await userEvent.click(trigger);
-    await waitFor(() => {
-      expect(trigger.getAttribute('data-state')).toBe('open');
+    await waitFor(async () => {
+      await expect(trigger.getAttribute('data-state')).toBe('open');
     });
 
     // Scope option query to the listbox to avoid stale elements from other stories.
     const listbox = document.querySelector('[role="listbox"]') as HTMLElement;
-    expect(listbox).toBeInTheDocument();
+    await expect(listbox).toBeInTheDocument();
     const option = within(listbox).getByText('Banana');
-    expect(option).toBeInTheDocument();
+    await expect(option).toBeInTheDocument();
     await userEvent.click(option);
 
-    await waitFor(() => {
-      expect(trigger.getAttribute('data-state')).toBe('closed');
+    await waitFor(async () => {
+      await expect(trigger.getAttribute('data-state')).toBe('closed');
     });
 
     await userEvent.click(trigger);
-    await waitFor(() => {
-      expect(trigger.getAttribute('data-state')).toBe('open');
+    await waitFor(async () => {
+      await expect(trigger.getAttribute('data-state')).toBe('open');
     });
     await userEvent.keyboard('{Escape}');
-    await waitFor(() => {
-      expect(trigger.getAttribute('data-state')).toBe('closed');
+    await waitFor(async () => {
+      await expect(trigger.getAttribute('data-state')).toBe('closed');
     });
   },
 };
