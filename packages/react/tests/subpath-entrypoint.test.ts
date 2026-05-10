@@ -5,6 +5,7 @@ import { expect, test } from 'vite-plus/test';
 
 import * as buttonEntry from '../src/button/index.tsx';
 import * as fieldEntry from '../src/field/index.tsx';
+import * as markdownRenderEntry from '../src/markdown-render/index.tsx';
 import * as navEntry from '../src/nav/index.tsx';
 import * as navOverlayEntry from '../src/nav-overlay/index.tsx';
 import * as rootEntry from '../src';
@@ -35,6 +36,11 @@ test('components package exposes button, popover, and text subpath exports in pa
       default: './dist/field/index.js',
       import: './dist/field/index.js',
       types: './dist/field/index.d.ts',
+    },
+    './markdown-render': {
+      default: './dist/markdown-render/index.js',
+      import: './dist/markdown-render/index.js',
+      types: './dist/markdown-render/index.d.ts',
     },
     './popover': {
       default: './dist/popover/index.js',
@@ -68,6 +74,8 @@ test('components subpath entries match the root entry public contract', () => {
   expect(buttonEntry.Button).toBe(rootEntry.Button);
   expect(buttonEntry.IconButton).toBe(rootEntry.IconButton);
   expect(fieldEntry.Field).toBe(rootEntry.Field);
+  expect(markdownRenderEntry.MarkdownRender).toBe(rootEntry.MarkdownRender);
+  expect(markdownRenderEntry.markdownRenderSizeOptions).toBe(rootEntry.markdownRenderSizeOptions);
   expect(navEntry.Nav).toBe(rootEntry.Nav);
   expect(navOverlayEntry.NavOverlay).toBe(rootEntry.NavOverlay);
   expect(popoverEntry.Popover).toBe(rootEntry.Popover);
@@ -92,6 +100,10 @@ test('components subpath entries expose their public API without requiring the p
     'Field',
     'useFieldContext',
     'useFieldControlProps',
+  ]);
+  expect(Object.keys(markdownRenderEntry).sort()).toEqual([
+    'MarkdownRender',
+    'markdownRenderSizeOptions',
   ]);
   expect(Object.keys(popoverEntry).sort()).toEqual([
     'Popover',

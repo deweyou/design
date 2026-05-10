@@ -56,6 +56,11 @@
       "import": "./dist/input/index.js",
       "default": "./dist/input/index.js"
     },
+    "./markdown-render": {
+      "types": "./dist/markdown-render/index.d.ts",
+      "import": "./dist/markdown-render/index.js",
+      "default": "./dist/markdown-render/index.js"
+    },
     "./menu": {
       "types": "./dist/menu/index.d.ts",
       "import": "./dist/menu/index.js",
