@@ -19,6 +19,8 @@ catalog:
   less: ^4.4.1
   react: ^19.1.1
   react-dom: ^19.1.1
+  react-markdown: ^10.1.0
+  remark-gfm: ^4.0.1
   storybook: 10.3.3
   typescript: ^5
   vite: npm:@voidzero-dev/vite-plus-core@latest

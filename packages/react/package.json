@@ -162,7 +162,9 @@
     "@deweyou-design/react-hooks": "workspace:*",
     "@deweyou-design/react-icons": "workspace:*",
     "@deweyou-design/styles": "workspace:*",
-    "classnames": "catalog:"
+    "classnames": "catalog:",
+    "react-markdown": "catalog:",
+    "remark-gfm": "catalog:"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "catalog:",
