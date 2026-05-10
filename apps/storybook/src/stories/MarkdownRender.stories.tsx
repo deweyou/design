@@ -12,6 +12,22 @@ const comprehensiveMarkdown = [
   '',
   '---',
   '',
+  '## Heading Scale',
+  '',
+  'The page title above is the H1. The following headings show the remaining default scale.',
+  '',
+  '### H3 Section Heading',
+  '',
+  'H3 is used for major subsections inside an article or a longer assistant answer.',
+  '',
+  '#### H4 Detail Heading',
+  '',
+  'H4 is useful for grouped details under a section.',
+  '',
+  '##### H5 Compact Heading',
+  '',
+  'H5 is reserved for compact nested labels or dense documentation blocks.',
+  '',
   '## Rendering Goals',
   '',
   '> The renderer should make common Markdown readable by default, while keeping extension points open for code blocks, custom links, and future rich preview surfaces.',
@@ -192,6 +208,10 @@ export const Interaction: Story = {
     await expect(
       canvas.getByRole('heading', { name: 'Building a Markdown Renderer' }),
     ).toBeInTheDocument();
+    await expect(canvas.getByRole('heading', { name: 'Heading Scale' })).toBeInTheDocument();
+    await expect(canvas.getByRole('heading', { name: 'H3 Section Heading' })).toBeInTheDocument();
+    await expect(canvas.getByRole('heading', { name: 'H4 Detail Heading' })).toBeInTheDocument();
+    await expect(canvas.getByRole('heading', { name: 'H5 Compact Heading' })).toBeInTheDocument();
     await expect(canvas.getByText(/production markdown surface/)).toBeVisible();
     await expect(canvas.getByRole('link', { name: 'external links' })).toHaveAttribute(
       'target',
