@@ -152,6 +152,19 @@ describe('MarkdownRender', () => {
     expect(markup).toContain('data-language="ts"');
   });
 
+  it('renders a language label for language code fences only', () => {
+    const markup = renderMarkdown({
+      value: ['```tsx', 'const value = <MarkdownRender value={content} />;', '```'].join('\n'),
+    });
+    const plainMarkup = renderMarkdown({
+      value: ['```', 'plain text', '```'].join('\n'),
+    });
+
+    expect(markup).toContain('data-markdown-code-language-label="true"');
+    expect(markup).toContain('>tsx</span>');
+    expect(plainMarkup).not.toContain('data-markdown-code-language-label="true"');
+  });
+
   it('does not render raw HTML as live HTML', () => {
     const markup = renderMarkdown({
       value: '<script>alert("x")</script><span data-dangerous="true">HTML</span>',

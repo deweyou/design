@@ -94,7 +94,7 @@ import { MarkdownRender } from '@deweyou-design/react/markdown-render';
 <MarkdownRender value={content} components={{ a: CustomLink, pre: CodeBlock }} />;
 ```
 
-Use `components` to replace Markdown nodes such as links or code blocks. Fenced code blocks with a language are syntax-highlighted by default. Use `className` and `[data-markdown-node]` selectors for small visual adjustments; keep MDX and executable content in a separate renderer.
+Use `components` to replace Markdown nodes such as links or code blocks. Fenced code blocks with a language are syntax-highlighted by default and show a compact language tag. Tables and long lists use default max-height guards with scrolling; override `--markdown-table-max-height` or `--markdown-list-max-height` from `className` when a surface needs a different limit. Use `[data-markdown-node]` selectors for small visual adjustments; keep MDX and executable content in a separate renderer.
 
 ## Popover
 

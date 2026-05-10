@@ -247,6 +247,15 @@ const MarkdownPre = ({ children, ...props }: ComponentPropsWithoutRef<'pre'>) =>
       data-markdown-code="block"
       data-language={language}
     >
+      {language !== undefined && (
+        <span
+          aria-hidden="true"
+          className={styles.codeLanguage}
+          data-markdown-code-language-label="true"
+        >
+          {language}
+        </span>
+      )}
       {blockChildren}
     </pre>
   );

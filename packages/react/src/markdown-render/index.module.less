@@ -9,7 +9,9 @@
   --markdown-code-title: var(--ui-color-brand-bg-hover);
   --markdown-heading-gap: 1.35rem;
   --markdown-inline-code-background: color-mix(in srgb, var(--ui-color-text) 8%, transparent);
+  --markdown-list-max-height: 18rem;
   --markdown-muted-border: var(--ui-color-border);
+  --markdown-table-max-height: 24rem;
 
   color: var(--ui-color-text);
   font-family: var(--ui-font-body);
@@ -98,12 +100,17 @@
 }
 
 .list {
+  max-block-size: var(--markdown-list-max-height);
   margin-block: var(--markdown-block-gap);
+  overflow-y: auto;
   padding-inline-start: 1.45rem;
+  scrollbar-width: thin;
 }
 
 .list .list {
+  max-block-size: none;
   margin-block: 0.35rem;
+  overflow: visible;
 }
 
 .listItem {
@@ -113,8 +120,14 @@
 .listItem:has(.taskMarker) {
   align-items: center;
   display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
   list-style: none;
+}
+
+.listItem:has(.taskMarker) > .list {
+  flex-basis: 100%;
+  margin-inline-start: 1.5rem;
 }
 
 .listItem::marker {
@@ -179,6 +192,7 @@
   max-inline-size: 100%;
   overflow: auto;
   padding: 0.85rem 1rem;
+  position: relative;
 }
 
 .code,
@@ -206,6 +220,29 @@
   font-size: 0.88rem;
   line-height: 1.65;
   white-space: pre;
+}
+
+.codeLanguage {
+  background: color-mix(in srgb, var(--ui-color-surface) 90%, transparent);
+  border: 1px solid var(--ui-color-border);
+  border-radius: var(--ui-radius-rect);
+  color: var(--ui-color-text-muted);
+  font-family: var(
+    --ui-font-code,
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace
+  );
+  font-size: 0.72rem;
+  inset-block-start: 0.55rem;
+  inset-inline-end: 0.6rem;
+  line-height: 1;
+  padding: 0.22rem 0.4rem;
+  position: absolute;
+  text-transform: uppercase;
 }
 
 .code :global(.hljs-keyword),
@@ -247,8 +284,10 @@
 
 .tableScroller {
   margin-block: var(--markdown-block-gap);
+  max-block-size: var(--markdown-table-max-height);
   max-inline-size: 100%;
-  overflow-x: auto;
+  overflow: auto;
+  scrollbar-width: thin;
 }
 
 .table {
@@ -265,8 +304,11 @@
 }
 
 .table :where(th) {
-  background: color-mix(in srgb, var(--ui-color-text) 5%, transparent);
+  background: color-mix(in srgb, var(--ui-color-surface) 96%, var(--ui-color-text) 4%);
   font-weight: var(--ui-font-weight-strong);
+  inset-block-start: 0;
+  position: sticky;
+  z-index: 1;
 }
 
 .separator {
