@@ -1,0 +1,198 @@
+@import '@deweyou-design/styles/less/bridge';
+
+.root {
+  --markdown-block-gap: 0.85rem;
+  --markdown-heading-gap: 1.35rem;
+  --markdown-inline-code-background: color-mix(in srgb, var(--ui-color-text) 8%, transparent);
+  --markdown-muted-border: var(--ui-color-border);
+
+  color: var(--ui-color-text);
+  font-family: var(--ui-font-body);
+  overflow-wrap: anywhere;
+}
+
+.sizeSm {
+  --markdown-block-gap: 0.58rem;
+  --markdown-heading-gap: 1rem;
+}
+
+.sizeMd {
+  --markdown-block-gap: 0.85rem;
+  --markdown-heading-gap: 1.35rem;
+}
+
+.sizeLg {
+  --markdown-block-gap: 1.05rem;
+  --markdown-heading-gap: 1.65rem;
+}
+
+.root > :first-child,
+.root :where([data-markdown-node]):first-child {
+  margin-block-start: 0;
+}
+
+.root > :last-child,
+.root :where([data-markdown-node]):last-child {
+  margin-block-end: 0;
+}
+
+.paragraph {
+  margin-block: var(--markdown-block-gap);
+}
+
+.heading {
+  margin-block-start: var(--markdown-heading-gap);
+}
+
+.heading6 {
+  margin-block: var(--markdown-heading-gap) 0.35rem;
+  color: var(--ui-color-text);
+  font-family: var(--ui-font-display);
+  font-size: var(--ui-text-size-body);
+  font-weight: var(--ui-font-weight-strong);
+  line-height: var(--ui-text-line-height-body);
+}
+
+.link {
+  color: var(--ui-color-brand-bg);
+  text-decoration-line: underline;
+  text-decoration-thickness: from-font;
+  text-underline-offset: 0.16em;
+}
+
+.link:hover {
+  color: var(--ui-color-brand-bg-hover);
+}
+
+.link:focus-visible {
+  .focus-ring-offset();
+}
+
+.image {
+  border-radius: var(--ui-radius-rect);
+  display: block;
+  height: auto;
+  margin-block: var(--markdown-block-gap);
+  max-inline-size: 100%;
+}
+
+.blockquote {
+  border-inline-start: 3px solid var(--ui-color-border-strong);
+  color: var(--ui-color-text-muted);
+  margin-block: var(--markdown-block-gap);
+  margin-inline: 0;
+  padding-block: 0.1rem;
+  padding-inline-start: 1rem;
+}
+
+.list {
+  margin-block: var(--markdown-block-gap);
+  padding-inline-start: 1.45rem;
+}
+
+.list .list {
+  margin-block: 0.35rem;
+}
+
+.listItem {
+  margin-block: 0.25rem;
+}
+
+.listItem::marker {
+  color: var(--ui-color-text-muted);
+}
+
+.taskMarker {
+  align-items: center;
+  block-size: 1rem;
+  border: 1px solid var(--ui-color-border-strong);
+  border-radius: var(--ui-radius-rect);
+  display: inline-flex;
+  inline-size: 1rem;
+  justify-content: center;
+  margin-inline-end: 0.45rem;
+  vertical-align: -0.16em;
+}
+
+.taskMarker[data-checked='true'] {
+  background: var(--ui-color-brand-bg);
+  border-color: var(--ui-color-brand-bg);
+}
+
+.taskMarkerIndicator {
+  block-size: 0.42rem;
+  border-block-end: 0.12rem solid var(--ui-color-text-on-brand);
+  border-inline-end: 0.12rem solid var(--ui-color-text-on-brand);
+  display: none;
+  inline-size: 0.24rem;
+  transform: rotate(45deg) translate(-0.02rem, -0.03rem);
+}
+
+.taskMarker[data-checked='true'] .taskMarkerIndicator {
+  display: block;
+}
+
+.pre {
+  background: color-mix(in srgb, var(--ui-color-text) 6%, transparent);
+  border: 1px solid var(--ui-color-border);
+  border-radius: var(--ui-radius-rect);
+  margin-block: var(--markdown-block-gap);
+  max-inline-size: 100%;
+  overflow: auto;
+  padding: 0.85rem 1rem;
+}
+
+.code,
+.inlineCode {
+  font-family: var(
+    --ui-font-code,
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace
+  );
+}
+
+.inlineCode {
+  background: var(--markdown-inline-code-background);
+  border-radius: var(--ui-radius-rect);
+  font-size: 0.92em;
+  padding: 0.08em 0.32em;
+}
+
+.code {
+  background: transparent;
+  font-size: 0.88rem;
+  line-height: 1.65;
+  white-space: pre;
+}
+
+.tableScroller {
+  margin-block: var(--markdown-block-gap);
+  max-inline-size: 100%;
+  overflow-x: auto;
+}
+
+.table {
+  border-collapse: collapse;
+  inline-size: 100%;
+  min-inline-size: 32rem;
+}
+
+.table :where(th, td) {
+  border: 1px solid var(--ui-color-border);
+  padding: 0.55rem 0.7rem;
+  text-align: start;
+  vertical-align: top;
+}
+
+.table :where(th) {
+  background: color-mix(in srgb, var(--ui-color-text) 5%, transparent);
+  font-weight: var(--ui-font-weight-strong);
+}
+
+.separator {
+  margin-block: calc(var(--markdown-block-gap) * 1.4);
+}
