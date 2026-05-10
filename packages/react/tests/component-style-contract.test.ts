@@ -97,6 +97,8 @@ test('markdown render styles consume semantic typography and surface tokens', ()
   expect(stylesheet).toContain('var(--ui-radius-rect)');
   expect(stylesheet).toContain('.root :where(strong, b)');
   expect(stylesheet).toContain('font-weight: var(--ui-font-weight-strong);');
+  expect(stylesheet).toContain('.blockquote :where(.paragraph, .list, .listItem)');
+  expect(stylesheet).toContain('color: inherit;');
   expect(stylesheet).toContain('.listItem:has(.taskMarker)');
   expect(stylesheet).toContain('flex-wrap: wrap;');
   expect(stylesheet).toContain('list-style: none;');

@@ -103,6 +103,11 @@
   padding-inline-start: 1rem;
 }
 
+.blockquote :where(.paragraph, .list, .listItem),
+.blockquote .listItem::marker {
+  color: inherit;
+}
+
 .list {
   margin-block: var(--markdown-block-gap);
   padding-inline-start: 1.45rem;
