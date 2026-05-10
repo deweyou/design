@@ -145,6 +145,14 @@ export {
   type ScrollAreaScrollbarSize,
   type ScrollAreaThumbProps,
 } from './scroll-area/index.tsx';
+export {
+  VirtualList,
+  type VirtualItem,
+  type VirtualListProps,
+  type VirtualListRef,
+  type VirtualListRenderDetails,
+  type VirtualListScrollAlign,
+} from './virtual-list/index.tsx';
 export { Pagination, type PaginationProps } from './pagination/index.tsx';
 export {
   Nav,

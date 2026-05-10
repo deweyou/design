@@ -141,6 +141,11 @@
       "import": "./dist/tooltip/index.js",
       "default": "./dist/tooltip/index.js"
     },
+    "./virtual-list": {
+      "types": "./dist/virtual-list/index.d.ts",
+      "import": "./dist/virtual-list/index.js",
+      "default": "./dist/virtual-list/index.js"
+    },
     "./style.css": "./dist/style.css",
     "./package.json": "./package.json"
   },

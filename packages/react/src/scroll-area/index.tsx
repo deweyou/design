@@ -1,4 +1,9 @@
-import { type CSSProperties, type ReactNode } from 'react';
+import {
+  forwardRef,
+  type ComponentPropsWithoutRef,
+  type CSSProperties,
+  type ReactNode,
+} from 'react';
 import { ScrollArea as ArkScrollArea } from '@ark-ui/react/scroll-area';
 import classNames from 'classnames';
 
@@ -16,7 +21,10 @@ export type ScrollAreaViewportProps = {
   children: ReactNode;
   className?: string;
   style?: CSSProperties;
-};
+} & Omit<
+  ComponentPropsWithoutRef<typeof ArkScrollArea.Viewport>,
+  'children' | 'className' | 'style'
+>;
 
 export type ScrollAreaScrollbarSize = 'sm' | 'md' | 'lg';
 
@@ -46,11 +54,20 @@ const ScrollAreaRoot = ({ children, className, style, ...rest }: ScrollAreaRootP
   </ArkScrollArea.Root>
 );
 
-const ScrollAreaViewport = ({ children, className, style }: ScrollAreaViewportProps) => (
-  <ArkScrollArea.Viewport className={classNames(styles.viewport, className)} style={style}>
-    {children}
-  </ArkScrollArea.Viewport>
+const ScrollAreaViewport = forwardRef<HTMLDivElement, ScrollAreaViewportProps>(
+  ({ children, className, style, ...rest }, ref) => (
+    <ArkScrollArea.Viewport
+      ref={ref}
+      className={classNames(styles.viewport, className)}
+      style={style}
+      {...rest}
+    >
+      {children}
+    </ArkScrollArea.Viewport>
+  ),
 );
+
+ScrollAreaViewport.displayName = 'ScrollAreaViewport';
 
 const ScrollAreaScrollbar = ({
   orientation,
