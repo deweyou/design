@@ -98,6 +98,8 @@ test('markdown render styles consume semantic typography and surface tokens', ()
   expect(stylesheet).toContain('.listItem:has(.taskMarker)');
   expect(stylesheet).toContain('list-style: none;');
   expect(stylesheet).toContain('background: var(--ui-color-surface);');
+  expect(stylesheet).toContain(':global(.hljs-keyword)');
+  expect(stylesheet).toContain('--markdown-code-keyword');
   expect(stylesheet).toContain('transition:');
   expect(stylesheet).not.toContain('--ui-color-palette-');
 });

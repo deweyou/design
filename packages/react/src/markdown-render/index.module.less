@@ -2,6 +2,11 @@
 
 .root {
   --markdown-block-gap: 0.85rem;
+  --markdown-code-attribute: var(--ui-color-warning-text);
+  --markdown-code-keyword: var(--ui-color-brand-text);
+  --markdown-code-literal: var(--ui-color-brand-bg);
+  --markdown-code-string: var(--ui-color-danger-text);
+  --markdown-code-title: var(--ui-color-brand-bg-hover);
   --markdown-heading-gap: 1.35rem;
   --markdown-inline-code-background: color-mix(in srgb, var(--ui-color-text) 8%, transparent);
   --markdown-muted-border: var(--ui-color-border);
@@ -106,6 +111,9 @@
 }
 
 .listItem:has(.taskMarker) {
+  align-items: center;
+  display: flex;
+  gap: 0.5rem;
   list-style: none;
 }
 
@@ -123,11 +131,9 @@
   flex-shrink: 0;
   inline-size: 1rem;
   justify-content: center;
-  margin-inline-end: 0.45rem;
   transition:
     background 140ms ease,
     border-color 140ms ease;
-  vertical-align: -0.16em;
 }
 
 .taskMarker[data-checked='true'] {
@@ -136,16 +142,21 @@
 }
 
 .taskMarkerIndicator {
-  block-size: 0.44rem;
-  border-block-end: 0.12rem solid var(--ui-color-text-on-brand);
-  border-inline-end: 0.12rem solid var(--ui-color-text-on-brand);
+  align-items: center;
+  color: var(--ui-color-text-on-brand);
   display: none;
-  inline-size: 0.28rem;
-  transform: rotate(45deg) translate(-0.02rem, -0.04rem);
+  font-size: 0.75rem;
+  justify-content: center;
+  line-height: 1;
 }
 
 .taskMarker[data-checked='true'] .taskMarkerIndicator {
+  display: inline-flex;
+}
+
+.taskMarkerIndicator svg {
   display: block;
+  flex-shrink: 0;
 }
 
 .taskMarkerState {
@@ -195,6 +206,43 @@
   font-size: 0.88rem;
   line-height: 1.65;
   white-space: pre;
+}
+
+.code :global(.hljs-keyword),
+.code :global(.hljs-selector-tag),
+.code :global(.hljs-built_in) {
+  color: var(--markdown-code-keyword);
+}
+
+.code :global(.hljs-string),
+.code :global(.hljs-regexp),
+.code :global(.hljs-template-variable) {
+  color: var(--markdown-code-string);
+}
+
+.code :global(.hljs-number),
+.code :global(.hljs-literal),
+.code :global(.hljs-symbol) {
+  color: var(--markdown-code-literal);
+}
+
+.code :global(.hljs-title),
+.code :global(.hljs-title.function_),
+.code :global(.hljs-title.class_) {
+  color: var(--markdown-code-title);
+}
+
+.code :global(.hljs-attr),
+.code :global(.hljs-attribute),
+.code :global(.hljs-property),
+.code :global(.hljs-variable) {
+  color: var(--markdown-code-attribute);
+}
+
+.code :global(.hljs-comment),
+.code :global(.hljs-quote) {
+  color: var(--ui-color-text-muted);
+  font-style: italic;
 }
 
 .tableScroller {

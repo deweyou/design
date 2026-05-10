@@ -130,7 +130,6 @@ describe('MarkdownRender', () => {
     expect(markup).toContain('Completed task');
     expect(markup).toContain('Incomplete task');
     expect(markup).not.toContain('role="checkbox"');
-    expect(markup).not.toContain('aria-hidden="true"');
   });
 
   it('marks fenced code without a language as block code', () => {
@@ -141,6 +140,16 @@ describe('MarkdownRender', () => {
     expect(markup).toContain('data-markdown-node="pre"');
     expect(markup).toContain('data-markdown-code="block"');
     expect(markup).toContain('data-markdown-code="inline"');
+  });
+
+  it('highlights language code fences with semantic token classes', () => {
+    const markup = renderMarkdown({
+      value: ['```ts', 'const value = 1;', '```'].join('\n'),
+    });
+
+    expect(markup).toContain('class="hljs-keyword"');
+    expect(markup).toContain('const');
+    expect(markup).toContain('data-language="ts"');
   });
 
   it('does not render raw HTML as live HTML', () => {

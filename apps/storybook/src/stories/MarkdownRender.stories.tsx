@@ -130,6 +130,7 @@ export const Interaction: Story = {
     await expect(checkedTask).toBeInTheDocument();
 
     await expect(story.querySelector('[data-markdown-node="pre"]')).toBeInTheDocument();
+    await expect(story.querySelector('.hljs-keyword')).toBeInTheDocument();
     await expect(story.querySelector('[data-markdown-node="table"]')).toBeInTheDocument();
     await expect(story.querySelector('[data-markdown-node="img"]')).toBeInTheDocument();
   },

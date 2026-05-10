@@ -7,6 +7,8 @@ import {
   type ReactNode,
 } from 'react';
 import classNames from 'classnames';
+import { CheckIcon } from '@deweyou-design/react-icons';
+import rehypeHighlight from 'rehype-highlight';
 import ReactMarkdown, { type Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
@@ -199,7 +201,9 @@ const MarkdownTaskMarker = ({
     data-checked={checked ? 'true' : 'false'}
     data-markdown-task-marker="true"
   >
-    <span className={styles.taskMarkerIndicator} />
+    <span className={styles.taskMarkerIndicator}>
+      <CheckIcon aria-hidden="true" />
+    </span>
     <span className={styles.taskMarkerState}>{checked ? 'Completed task' : 'Incomplete task'}</span>
   </span>
 );
@@ -358,7 +362,11 @@ export const MarkdownRender = ({
     data-markdown-size={size}
     style={style}
   >
-    <ReactMarkdown components={mergeMarkdownComponents(components)} remarkPlugins={[remarkGfm]}>
+    <ReactMarkdown
+      components={mergeMarkdownComponents(components)}
+      rehypePlugins={[[rehypeHighlight, { detect: false, ignoreMissing: true }]]}
+      remarkPlugins={[remarkGfm]}
+    >
       {value}
     </ReactMarkdown>
   </div>

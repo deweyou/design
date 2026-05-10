@@ -155,7 +155,7 @@ Tabs
 <MarkdownRender value={content} components={{ a: CustomLink, pre: CodeBlock }} />
 ```
 
-`MarkdownRender` is the safe runtime Markdown path for CommonMark plus GFM content. Use `size` to adjust typography density, `components` to replace rendered nodes, and `className` with `[data-markdown-node]` selectors for light style overrides. MDX and executable content belong in a separate rendering boundary.
+`MarkdownRender` is the safe runtime Markdown path for CommonMark plus GFM content. Use `size` to adjust typography density, `components` to replace rendered nodes, and `className` with `[data-markdown-node]` selectors for light style overrides. Fenced code blocks with a language are syntax-highlighted by default. MDX and executable content belong in a separate rendering boundary.
 
 ### Navigation
 

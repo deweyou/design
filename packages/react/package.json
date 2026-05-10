@@ -169,6 +169,7 @@
     "@deweyou-design/styles": "workspace:*",
     "classnames": "catalog:",
     "react-markdown": "catalog:",
+    "rehype-highlight": "catalog:",
     "remark-gfm": "catalog:"
   },
   "devDependencies": {

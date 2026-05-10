@@ -94,7 +94,7 @@ import { MarkdownRender } from '@deweyou-design/react/markdown-render';
 <MarkdownRender value={content} components={{ a: CustomLink, pre: CodeBlock }} />;
 ```
 
-Use `components` to replace Markdown nodes such as links or code blocks. Use `className` and `[data-markdown-node]` selectors for small visual adjustments; keep MDX and executable content in a separate renderer.
+Use `components` to replace Markdown nodes such as links or code blocks. Fenced code blocks with a language are syntax-highlighted by default. Use `className` and `[data-markdown-node]` selectors for small visual adjustments; keep MDX and executable content in a separate renderer.
 
 ## Popover
 

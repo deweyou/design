@@ -138,5 +138,6 @@ test('components package externalizes markdown runtime dependencies in published
   const viteConfig = readFileSync(resolve(root, 'packages/react/vite.config.ts'), 'utf8');
 
   expect(viteConfig).toContain("'react-markdown'");
+  expect(viteConfig).toContain("'rehype-highlight'");
   expect(viteConfig).toContain("'remark-gfm'");
 });
