@@ -1,7 +1,9 @@
 import {
+  cloneElement,
   createElement,
   type ComponentPropsWithoutRef,
   type CSSProperties,
+  isValidElement,
   type ReactNode,
 } from 'react';
 import classNames from 'classnames';
@@ -32,11 +34,27 @@ const extractLanguage = (className?: string) => {
   return match?.[1];
 };
 
+type MarkdownExtraProps = {
+  node?: unknown;
+};
+
+type MarkdownCodeKind = 'block' | 'inline';
+
+type MarkdownCodeProps = ComponentPropsWithoutRef<'code'> & {
+  'data-markdown-code'?: MarkdownCodeKind;
+};
+
+const stripMarkdownExtraProps = <T extends object>(props: T): Omit<T, keyof MarkdownExtraProps> => {
+  const { node: _node, ...domProps } = props as T & MarkdownExtraProps;
+
+  return domProps;
+};
+
 const withMarkdownNode = <T extends object>(
   props: T,
   node: string,
-): T & { 'data-markdown-node': string } => ({
-  ...props,
+): Omit<T, keyof MarkdownExtraProps> & { 'data-markdown-node': string } => ({
+  ...stripMarkdownExtraProps(props),
   'data-markdown-node': node,
 });
 
@@ -181,25 +199,29 @@ const MarkdownTaskMarker = ({
 }: ComponentPropsWithoutRef<'input'>) => (
   <span
     {...withMarkdownNode(props, 'task-marker')}
-    aria-checked={checked ? 'true' : 'false'}
-    aria-readonly="true"
+    aria-hidden="true"
     className={classNames(styles.taskMarker, className)}
     data-checked={checked ? 'true' : 'false'}
     data-markdown-task-marker="true"
-    role="checkbox"
   >
     <span aria-hidden="true" className={styles.taskMarkerIndicator} />
   </span>
 );
 
-const MarkdownCode = ({ children, className, ...props }: ComponentPropsWithoutRef<'code'>) => {
+const MarkdownCode = ({
+  children,
+  className,
+  'data-markdown-code': codeKindProp,
+  ...props
+}: MarkdownCodeProps) => {
   const language = extractLanguage(className);
-  const isBlockCode = language !== undefined;
+  const codeKind = codeKindProp ?? (language === undefined ? 'inline' : 'block');
 
   return (
     <code
       {...withMarkdownNode(props, 'code')}
-      className={classNames(isBlockCode ? styles.code : styles.inlineCode, className)}
+      className={classNames(codeKind === 'block' ? styles.code : styles.inlineCode, className)}
+      data-markdown-code={codeKind}
       data-language={language}
     >
       {children}
@@ -214,14 +236,18 @@ const MarkdownPre = ({ children, ...props }: ComponentPropsWithoutRef<'pre'>) =>
       ? (child.props as { className?: string })
       : undefined;
   const language = extractLanguage(childProps?.className);
+  const blockChildren = isValidElement<MarkdownCodeProps>(child)
+    ? cloneElement(child, { 'data-markdown-code': 'block' })
+    : children;
 
   return (
     <pre
       {...withMarkdownNode(props, 'pre')}
       className={classNames(styles.pre, props.className)}
+      data-markdown-code="block"
       data-language={language}
     >
-      {children}
+      {blockChildren}
     </pre>
   );
 };
@@ -239,7 +265,7 @@ const MarkdownTable = ({ children, ...props }: ComponentPropsWithoutRef<'table'>
 
 const MarkdownHr = (props: ComponentPropsWithoutRef<'hr'>) => (
   <Separator
-    {...props}
+    {...stripMarkdownExtraProps(props)}
     className={classNames(styles.separator, props.className)}
     data-markdown-node="hr"
   />
@@ -306,11 +332,14 @@ const mergeMarkdownComponents = (
 
     const markdownNodeName = markdownNodeNames[name] ?? String(name);
 
-    merged[String(name)] = ((props: Record<string, unknown>) =>
-      createElement(Component as (props: Record<string, unknown>) => ReactNode, {
-        ...props,
+    merged[String(name)] = ((props: Record<string, unknown>) => {
+      const domProps = stripMarkdownExtraProps(props);
+
+      return createElement(Component as (props: Record<string, unknown>) => ReactNode, {
+        ...domProps,
         'data-markdown-node': markdownNodeName,
-      })) as never;
+      });
+    }) as never;
   }
 
   return merged as MarkdownRenderComponents;

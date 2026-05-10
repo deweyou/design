@@ -95,6 +95,40 @@ describe('MarkdownRender', () => {
     expect(markup).toContain('data-markdown-node="pre"');
   });
 
+  it('does not leak react-markdown node objects into rendered DOM attributes', () => {
+    const components: MarkdownRenderComponents = {
+      a: ({ children, ...props }: AnchorHTMLAttributes<HTMLAnchorElement>) =>
+        createElement('a', props, children),
+    };
+
+    const markup = renderMarkdown({
+      components,
+      value: ['# Title', '', '[Docs](/docs)', '', '```', 'const value = 1;', '```'].join('\n'),
+    });
+
+    expect(markup).not.toContain('node="[object Object]"');
+  });
+
+  it('renders task markers as decorative read-only state instead of checkbox controls', () => {
+    const markup = renderMarkdown({
+      value: ['- [x] done', '- [ ] open'].join('\n'),
+    });
+
+    expect(markup).toContain('data-markdown-task-marker="true"');
+    expect(markup).toContain('aria-hidden="true"');
+    expect(markup).not.toContain('role="checkbox"');
+  });
+
+  it('marks fenced code without a language as block code', () => {
+    const markup = renderMarkdown({
+      value: ['```', 'const value = 1;', '```', '', '`inline`'].join('\n'),
+    });
+
+    expect(markup).toContain('data-markdown-node="pre"');
+    expect(markup).toContain('data-markdown-code="block"');
+    expect(markup).toContain('data-markdown-code="inline"');
+  });
+
   it('does not render raw HTML as live HTML', () => {
     const markup = renderMarkdown({
       value: '<script>alert("x")</script><span data-dangerous="true">HTML</span>',
