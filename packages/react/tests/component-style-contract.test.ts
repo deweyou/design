@@ -107,6 +107,11 @@ test('markdown render styles consume semantic typography and surface tokens', ()
   expect(stylesheet).toContain('--markdown-code-keyword');
   expect(stylesheet).toContain('--markdown-code-max-height');
   expect(stylesheet).toContain('--markdown-table-max-height');
+  expect(stylesheet).toContain('overflow-x: hidden;');
+  expect(stylesheet).toContain('inline-size: 100%;');
+  expect(stylesheet).toContain('min-inline-size: 0;');
+  expect(stylesheet).toContain('inline-size: max-content;');
+  expect(stylesheet).toContain('min-inline-size: 100%;');
   expect(stylesheet).toContain('position: sticky;');
   expect(stylesheet).toContain('inset-block-start: 0;');
   expect(stylesheet).not.toContain('--markdown-list-max-height');

@@ -161,6 +161,9 @@ const meta = {
   title: 'Components/MarkdownRender',
   component: MarkdownRender,
   tags: ['autodocs'],
+  parameters: {
+    layout: 'padded',
+  },
   argTypes: {
     size: {
       control: { type: 'select' },
@@ -247,7 +250,10 @@ export const Interaction: Story = {
       story.querySelector('[data-markdown-code-language-label="true"]'),
     ).toBeInTheDocument();
     await expect(story.querySelector('.hljs-keyword')).toBeInTheDocument();
+    const tableWrapper = story.querySelector<HTMLElement>('[data-markdown-node="table-wrapper"]');
+    await expect(tableWrapper).toBeInTheDocument();
     await expect(story.querySelector('[data-markdown-node="table"]')).toBeInTheDocument();
+    await expect(tableWrapper?.scrollWidth ?? 0).toBeGreaterThan(tableWrapper?.clientWidth ?? 0);
     await expect(story.querySelector('[data-markdown-node="img"]')).toBeInTheDocument();
   },
 };

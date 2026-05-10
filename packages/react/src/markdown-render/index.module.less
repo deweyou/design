@@ -14,7 +14,12 @@
   --markdown-table-max-height: 24rem;
 
   color: var(--ui-color-text);
+  box-sizing: border-box;
   font-family: var(--ui-font-body);
+  inline-size: 100%;
+  max-inline-size: 100%;
+  min-inline-size: 0;
+  overflow-x: hidden;
   overflow-wrap: anywhere;
 }
 
@@ -291,17 +296,19 @@
 
 .tableScroller {
   box-sizing: border-box;
+  inline-size: 100%;
   margin-block: var(--markdown-block-gap);
   max-block-size: var(--markdown-table-max-height);
   max-inline-size: 100%;
+  min-inline-size: 0;
   overflow: auto;
   scrollbar-width: thin;
 }
 
 .table {
   border-collapse: collapse;
-  inline-size: 100%;
-  min-inline-size: 72rem;
+  inline-size: max-content;
+  min-inline-size: 100%;
 }
 
 .table :where(th, td) {
