@@ -63,6 +63,14 @@
   font-weight: var(--ui-font-weight-strong);
 }
 
+.root :where(del, s) {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0 54%;
+  background-repeat: repeat-x;
+  background-size: 100% 0.07em;
+  text-decoration-line: none;
+}
+
 .heading {
   margin-block-start: var(--markdown-heading-gap);
 }
