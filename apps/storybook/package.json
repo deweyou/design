@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "storybook dev -p 6106 --disable-telemetry --no-open",
     "build": "storybook build",
-    "test": "test-storybook --url http://localhost:6106 --ci"
+    "test": "test-storybook --url http://localhost:6106 --ci --index-json --maxWorkers=1"
   },
   "dependencies": {
     "@deweyou-design/react": "workspace:*",

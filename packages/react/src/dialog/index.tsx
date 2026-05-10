@@ -1,4 +1,4 @@
-import { type CSSProperties, type ReactNode } from 'react';
+import { useCallback, useEffect, useState, type CSSProperties, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import {
   DialogRoot as ArkDialogRoot,
@@ -36,17 +36,44 @@ export type DialogDescriptionProps = {
 export type DialogCloseTriggerProps = { children: ReactNode };
 
 const DialogRoot = ({ open, defaultOpen, onOpenChange, children }: DialogRootProps) => {
+  const isControlled = open !== undefined;
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen ?? false);
+  const currentOpen = isControlled ? open : uncontrolledOpen;
+
+  const setOpen = useCallback(
+    (nextOpen: boolean) => {
+      if (!isControlled) {
+        setUncontrolledOpen(nextOpen);
+      }
+      onOpenChange?.(nextOpen);
+    },
+    [isControlled, onOpenChange],
+  );
+
   const handleOpenChange = (details: { open: boolean }) => {
-    onOpenChange?.(details.open);
+    setOpen(details.open);
   };
+
+  useEffect(() => {
+    if (!currentOpen) {
+      return undefined;
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [currentOpen, setOpen]);
+
   return (
-    <ArkDialogRoot
-      open={open}
-      defaultOpen={defaultOpen}
-      onOpenChange={handleOpenChange}
-      lazyMount
-      unmountOnExit
-    >
+    <ArkDialogRoot open={currentOpen} onOpenChange={handleOpenChange} lazyMount unmountOnExit>
       {children}
     </ArkDialogRoot>
   );
