@@ -50,6 +50,16 @@ describe('MarkdownRender', () => {
     expect(markup).toContain('data-markdown-node="hr"');
   });
 
+  it('renders paragraphs as native paragraph elements', () => {
+    const markup = renderMarkdown({
+      value: 'Paragraph with **strong** text.',
+    });
+
+    expect(markup).toContain('<p');
+    expect(markup).toContain('data-markdown-node="p"');
+    expect(markup).not.toContain('<div data-markdown-node="p"');
+  });
+
   it('preserves size, className, style, images, and code fence language', () => {
     const markup = renderMarkdown({
       className: 'consumer-markdown',

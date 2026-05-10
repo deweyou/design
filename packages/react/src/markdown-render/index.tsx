@@ -62,13 +62,9 @@ const withTextMarkdownNode = <T extends object>(props: T, node: string): TextPro
   withMarkdownNode(props, node) as TextProps;
 
 const MarkdownParagraph = ({ children, ...props }: ComponentPropsWithoutRef<'p'>) => (
-  <Text
-    {...withTextMarkdownNode(props, 'p')}
-    className={classNames(styles.paragraph, props.className)}
-    variant="body"
-  >
+  <p {...withMarkdownNode(props, 'p')} className={classNames(styles.paragraph, props.className)}>
     {children}
-  </Text>
+  </p>
 );
 
 const MarkdownHeading1 = ({ children, ...props }: ComponentPropsWithoutRef<'h1'>) => (

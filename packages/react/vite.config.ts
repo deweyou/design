@@ -21,6 +21,8 @@ export default defineConfig({
         'react-dom',
         'react/jsx-runtime',
         'react/jsx-dev-runtime',
+        'react-markdown',
+        'remark-gfm',
         /^@ark-ui\/react(\/|$)/,
       ],
       output: {
