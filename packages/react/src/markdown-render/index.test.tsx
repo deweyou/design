@@ -109,14 +109,18 @@ describe('MarkdownRender', () => {
     expect(markup).not.toContain('node="[object Object]"');
   });
 
-  it('renders task markers as decorative read-only state instead of checkbox controls', () => {
+  it('renders task markers as accessible read-only state instead of checkbox controls', () => {
     const markup = renderMarkdown({
       value: ['- [x] done', '- [ ] open'].join('\n'),
     });
 
     expect(markup).toContain('data-markdown-task-marker="true"');
-    expect(markup).toContain('aria-hidden="true"');
+    expect(markup).toContain('data-checked="true"');
+    expect(markup).toContain('data-checked="false"');
+    expect(markup).toContain('Completed task');
+    expect(markup).toContain('Incomplete task');
     expect(markup).not.toContain('role="checkbox"');
+    expect(markup).not.toContain('aria-hidden="true"');
   });
 
   it('marks fenced code without a language as block code', () => {

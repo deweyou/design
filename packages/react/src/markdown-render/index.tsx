@@ -199,12 +199,12 @@ const MarkdownTaskMarker = ({
 }: ComponentPropsWithoutRef<'input'>) => (
   <span
     {...withMarkdownNode(props, 'task-marker')}
-    aria-hidden="true"
     className={classNames(styles.taskMarker, className)}
     data-checked={checked ? 'true' : 'false'}
     data-markdown-task-marker="true"
   >
-    <span aria-hidden="true" className={styles.taskMarkerIndicator} />
+    <span className={styles.taskMarkerIndicator} />
+    <span className={styles.taskMarkerState}>{checked ? 'Completed task' : 'Incomplete task'}</span>
   </span>
 );
 
