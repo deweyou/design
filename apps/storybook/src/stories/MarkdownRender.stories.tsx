@@ -161,6 +161,31 @@ const comprehensiveMarkdown = [
   'The same renderer can power a blog preview, a chat message, or a future editor preview layer without giving each surface a separate Markdown implementation.',
 ].join('\n');
 
+const anchorMarkdown = [
+  '# Anchor Attributes',
+  '',
+  'The same heading text can appear more than once while still receiving stable ids.',
+  '',
+  '## Repeated Section',
+  '',
+  'First section copy.',
+  '',
+  '## Repeated Section',
+  '',
+  'Second section copy.',
+  '',
+  '### Repeated Section',
+  '',
+  'Nested section copy.',
+].join('\n');
+
+const slugify = (value: string) =>
+  value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+
 const meta = {
   title: 'Components/MarkdownRender',
   component: MarkdownRender,
@@ -197,6 +222,27 @@ export const Sizes: Story = {
         <MarkdownRender key={size} value={comprehensiveMarkdown} size={size} />
       ))}
     </div>
+  ),
+};
+
+export const AnchoredHeadings: Story = {
+  args: {
+    value: anchorMarkdown,
+  },
+  render: () => (
+    <MarkdownRender
+      value={anchorMarkdown}
+      resolveNodeAttributes={({ index, node, text }) => {
+        if (!node.startsWith('h')) {
+          return undefined;
+        }
+
+        return {
+          id: `${node}-${slugify(text)}-${index}`,
+          'data-anchor': text,
+        };
+      }}
+    />
   ),
 };
 

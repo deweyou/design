@@ -152,10 +152,17 @@ Tabs
 ```tsx
 <MarkdownRender value={content} size="md" />
 
+<MarkdownRender
+  value={content}
+  resolveNodeAttributes={({ index, node, text }) =>
+    node.startsWith('h') ? { id: `${node}-${slugify(text)}-${index}` } : undefined
+  }
+/>
+
 <MarkdownRender value={content} components={{ a: CustomLink, pre: CodeBlock }} />
 ```
 
-`MarkdownRender` is the safe runtime Markdown path for CommonMark plus GFM content. Use `size` to adjust typography density, `components` to replace rendered nodes, and `className` with `[data-markdown-node]` selectors for light style overrides. Fenced code blocks with a language are syntax-highlighted by default and show a compact language tag. Tables and code blocks use default max-height guards with scrolling; override `--markdown-table-max-height` or `--markdown-code-max-height` from the consumer surface when needed. MDX and executable content belong in a separate rendering boundary.
+`MarkdownRender` is the safe runtime Markdown path for CommonMark plus GFM content. Use `size` to adjust typography density, `resolveNodeAttributes` to attach light DOM attributes such as heading ids, `components` to replace rendered nodes, and `className` with `[data-markdown-node]` selectors for light style overrides. `resolveNodeAttributes` receives the node name, text content, and a zero-based per-node `index`, which keeps repeated headings addressable without a component override. Fenced code blocks with a language are syntax-highlighted by default and show a compact language tag. Tables and code blocks use default max-height guards with scrolling; override `--markdown-table-max-height` or `--markdown-code-max-height` from the consumer surface when needed. MDX and executable content belong in a separate rendering boundary.
 
 ### Navigation
 

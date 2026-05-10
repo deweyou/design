@@ -108,6 +108,68 @@ describe('MarkdownRender', () => {
     expect(markup).toContain('data-markdown-node="pre"');
   });
 
+  it('allows consumers to resolve safe attributes for nodes with per-node indexes', () => {
+    const seen: string[] = [];
+
+    const markup = renderMarkdown({
+      resolveNodeAttributes: ({ index, node, text }) => {
+        seen.push(`${node}:${index}:${text}`);
+
+        if (node !== 'h2') {
+          return undefined;
+        }
+
+        return {
+          id: `section-${index}`,
+          className: 'consumer-heading',
+          'data-anchor-text': text,
+          'data-markdown-node': 'consumer-node',
+          href: '/unsafe',
+          onClick: () => undefined,
+        } as never;
+      },
+      value: ['## Repeat', '', '## Repeat'].join('\n'),
+    });
+
+    expect(seen).toContain('h2:0:Repeat');
+    expect(seen).toContain('h2:1:Repeat');
+    expect(markup).toContain('id="section-0"');
+    expect(markup).toContain('id="section-1"');
+    expect(markup).toContain('consumer-heading');
+    expect(markup).toContain('data-anchor-text="Repeat"');
+    expect(markup).toContain('data-markdown-node="h2"');
+    expect(markup).not.toContain('data-markdown-node="consumer-node"');
+    expect(markup).not.toContain('href="/unsafe"');
+    expect(markup).not.toContain('onClick');
+  });
+
+  it('applies resolved node attributes to overridden components', () => {
+    const components: MarkdownRenderComponents = {
+      a: ({ children, ...props }: AnchorHTMLAttributes<HTMLAnchorElement>) =>
+        createElement('a', { ...props, 'data-custom-link': 'true' }, children),
+    };
+
+    const markup = renderMarkdown({
+      components,
+      resolveNodeAttributes: ({ node }) => {
+        if (node !== 'a') {
+          return undefined;
+        }
+
+        return {
+          id: 'custom-link',
+          'data-tracking-id': 'docs-link',
+        };
+      },
+      value: '[Docs](/docs)',
+    });
+
+    expect(markup).toContain('data-custom-link="true"');
+    expect(markup).toContain('data-markdown-node="a"');
+    expect(markup).toContain('id="custom-link"');
+    expect(markup).toContain('data-tracking-id="docs-link"');
+  });
+
   it('does not leak react-markdown node objects into rendered DOM attributes', () => {
     const components: MarkdownRenderComponents = {
       a: ({ children, ...props }: AnchorHTMLAttributes<HTMLAnchorElement>) =>

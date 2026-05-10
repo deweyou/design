@@ -73,7 +73,11 @@ export {
   MarkdownRender,
   markdownRenderSizeOptions,
   type MarkdownRenderComponents,
+  type MarkdownRenderNodeAttributes,
+  type MarkdownRenderNodeAttributeValue,
+  type MarkdownRenderNodeName,
   type MarkdownRenderProps,
+  type MarkdownRenderResolveNodeAttributes,
   type MarkdownRenderSize,
 } from './markdown-render/index.tsx';
 export {

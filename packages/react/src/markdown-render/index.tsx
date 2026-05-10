@@ -19,14 +19,53 @@ import { Text, type TextProps } from '../text/index.tsx';
 import styles from './index.module.less';
 
 export const markdownRenderSizeOptions = ['sm', 'md', 'lg'] as const;
+const markdownRenderNodeNames = [
+  'a',
+  'blockquote',
+  'code',
+  'h1',
+  'h2',
+  'h3',
+  'h4',
+  'h5',
+  'h6',
+  'hr',
+  'img',
+  'li',
+  'ol',
+  'p',
+  'pre',
+  'table',
+  'table-wrapper',
+  'task-marker',
+  'ul',
+] as const;
 
 export type MarkdownRenderSize = (typeof markdownRenderSizeOptions)[number];
+export type MarkdownRenderNodeName = (typeof markdownRenderNodeNames)[number];
 export type MarkdownRenderComponents = Components;
+export type MarkdownRenderNodeAttributeValue = string | number | boolean | undefined;
+export type MarkdownRenderNodeAttributes = {
+  id?: string;
+  className?: string;
+  style?: CSSProperties;
+  title?: string;
+  role?: string;
+  tabIndex?: number;
+  [key: `aria-${string}`]: MarkdownRenderNodeAttributeValue;
+  [key: `data-${string}`]: MarkdownRenderNodeAttributeValue;
+};
+export type MarkdownRenderResolveNodeAttributes = (context: {
+  node: MarkdownRenderNodeName;
+  text: string;
+  index: number;
+}) => MarkdownRenderNodeAttributes | undefined;
 
 export type MarkdownRenderProps = {
   value: string;
   size?: MarkdownRenderSize;
   components?: MarkdownRenderComponents;
+  resolveNodeAttributes?: MarkdownRenderResolveNodeAttributes;
   className?: string;
   style?: CSSProperties;
 };
@@ -47,262 +86,426 @@ type MarkdownCodeProps = ComponentPropsWithoutRef<'code'> & {
   'data-markdown-code'?: MarkdownCodeKind;
 };
 
+type ResolveMarkdownNodeProps = <T extends object>(
+  props: T,
+  node: MarkdownRenderNodeName,
+  children?: ReactNode,
+) => Omit<T, keyof MarkdownExtraProps> & { 'data-markdown-node': MarkdownRenderNodeName };
+
 const stripMarkdownExtraProps = <T extends object>(props: T): Omit<T, keyof MarkdownExtraProps> => {
   const { node: _node, ...domProps } = props as T & MarkdownExtraProps;
 
   return domProps;
 };
 
-const withMarkdownNode = <T extends object>(
+const safeNodeAttributeNames = new Set(['id', 'className', 'style', 'title', 'role', 'tabIndex']);
+
+const isSafeNodeAttributeName = (name: string) =>
+  safeNodeAttributeNames.has(name) || name.startsWith('aria-') || name.startsWith('data-');
+
+const pickSafeNodeAttributes = (
+  attributes: MarkdownRenderNodeAttributes | undefined,
+): MarkdownRenderNodeAttributes => {
+  if (attributes === undefined) {
+    return {};
+  }
+
+  return Object.fromEntries(
+    Object.entries(attributes).filter(([name, value]) => {
+      return value !== undefined && isSafeNodeAttributeName(name);
+    }),
+  ) as MarkdownRenderNodeAttributes;
+};
+
+const getReactNodeText = (node: ReactNode): string => {
+  if (typeof node === 'string' || typeof node === 'number') {
+    return String(node);
+  }
+
+  if (Array.isArray(node)) {
+    return node.map(getReactNodeText).join('');
+  }
+
+  if (isValidElement<{ children?: ReactNode }>(node)) {
+    return getReactNodeText(node.props.children);
+  }
+
+  return '';
+};
+
+const createMarkdownNodePropsResolver = (
+  resolveNodeAttributes?: MarkdownRenderResolveNodeAttributes,
+): ResolveMarkdownNodeProps => {
+  const indexes = new Map<MarkdownRenderNodeName, number>();
+
+  return <T extends object>(props: T, node: MarkdownRenderNodeName, children?: ReactNode) => {
+    const domProps = stripMarkdownExtraProps(props);
+    const index = indexes.get(node) ?? 0;
+
+    indexes.set(node, index + 1);
+
+    const resolvedAttributes = pickSafeNodeAttributes(
+      resolveNodeAttributes?.({
+        index,
+        node,
+        text: getReactNodeText(children),
+      }),
+    );
+    const className = classNames(
+      (domProps as { className?: string }).className,
+      resolvedAttributes.className,
+    );
+
+    return {
+      ...domProps,
+      ...resolvedAttributes,
+      ...(className === '' ? {} : { className }),
+      'data-markdown-node': node,
+    };
+  };
+};
+
+const withTextMarkdownNode = <T extends object>(
+  resolveMarkdownNodeProps: ResolveMarkdownNodeProps,
   props: T,
-  node: string,
-): Omit<T, keyof MarkdownExtraProps> & { 'data-markdown-node': string } => ({
-  ...stripMarkdownExtraProps(props),
-  'data-markdown-node': node,
+  node: MarkdownRenderNodeName,
+  children: ReactNode,
+): TextProps => resolveMarkdownNodeProps(props, node, children) as TextProps;
+
+const createMarkdownParagraph =
+  (resolveMarkdownNodeProps: ResolveMarkdownNodeProps) =>
+  ({ children, ...props }: ComponentPropsWithoutRef<'p'>) => {
+    const nodeProps = resolveMarkdownNodeProps(props, 'p', children);
+
+    return (
+      <p {...nodeProps} className={classNames(styles.paragraph, nodeProps.className)}>
+        {children}
+      </p>
+    );
+  };
+
+const createMarkdownHeading1 =
+  (resolveMarkdownNodeProps: ResolveMarkdownNodeProps) =>
+  ({ children, ...props }: ComponentPropsWithoutRef<'h1'>) => {
+    const nodeProps = withTextMarkdownNode(resolveMarkdownNodeProps, props, 'h1', children);
+
+    return (
+      <Text {...nodeProps} className={classNames(styles.heading, nodeProps.className)} variant="h1">
+        {children}
+      </Text>
+    );
+  };
+
+const createMarkdownHeading2 =
+  (resolveMarkdownNodeProps: ResolveMarkdownNodeProps) =>
+  ({ children, ...props }: ComponentPropsWithoutRef<'h2'>) => {
+    const nodeProps = withTextMarkdownNode(resolveMarkdownNodeProps, props, 'h2', children);
+
+    return (
+      <Text {...nodeProps} className={classNames(styles.heading, nodeProps.className)} variant="h2">
+        {children}
+      </Text>
+    );
+  };
+
+const createMarkdownHeading3 =
+  (resolveMarkdownNodeProps: ResolveMarkdownNodeProps) =>
+  ({ children, ...props }: ComponentPropsWithoutRef<'h3'>) => {
+    const nodeProps = withTextMarkdownNode(resolveMarkdownNodeProps, props, 'h3', children);
+
+    return (
+      <Text {...nodeProps} className={classNames(styles.heading, nodeProps.className)} variant="h3">
+        {children}
+      </Text>
+    );
+  };
+
+const createMarkdownHeading4 =
+  (resolveMarkdownNodeProps: ResolveMarkdownNodeProps) =>
+  ({ children, ...props }: ComponentPropsWithoutRef<'h4'>) => {
+    const nodeProps = withTextMarkdownNode(resolveMarkdownNodeProps, props, 'h4', children);
+
+    return (
+      <Text {...nodeProps} className={classNames(styles.heading, nodeProps.className)} variant="h4">
+        {children}
+      </Text>
+    );
+  };
+
+const createMarkdownHeading5 =
+  (resolveMarkdownNodeProps: ResolveMarkdownNodeProps) =>
+  ({ children, ...props }: ComponentPropsWithoutRef<'h5'>) => {
+    const nodeProps = withTextMarkdownNode(resolveMarkdownNodeProps, props, 'h5', children);
+
+    return (
+      <Text {...nodeProps} className={classNames(styles.heading, nodeProps.className)} variant="h5">
+        {children}
+      </Text>
+    );
+  };
+
+const createMarkdownHeading6 =
+  (resolveMarkdownNodeProps: ResolveMarkdownNodeProps) =>
+  ({ children, ...props }: ComponentPropsWithoutRef<'h6'>) => {
+    const nodeProps = withTextMarkdownNode(resolveMarkdownNodeProps, props, 'h6', children);
+
+    return (
+      <Text {...nodeProps} className={classNames(styles.heading, nodeProps.className)} variant="h6">
+        {children}
+      </Text>
+    );
+  };
+
+const createMarkdownLink =
+  (resolveMarkdownNodeProps: ResolveMarkdownNodeProps) =>
+  ({ children, href, rel, target, ...props }: ComponentPropsWithoutRef<'a'>) => {
+    const isExternal = typeof href === 'string' && /^https?:\/\//.test(href);
+    const resolvedTarget = target ?? (isExternal ? '_blank' : undefined);
+    const resolvedRel = rel ?? (isExternal ? 'noreferrer' : undefined);
+    const nodeProps = resolveMarkdownNodeProps(props, 'a', children);
+
+    return (
+      <a
+        {...nodeProps}
+        className={classNames(styles.link, nodeProps.className)}
+        href={href}
+        rel={resolvedRel}
+        target={resolvedTarget}
+      >
+        {children}
+      </a>
+    );
+  };
+
+const createMarkdownImage =
+  (resolveMarkdownNodeProps: ResolveMarkdownNodeProps) =>
+  ({ alt, ...props }: ComponentPropsWithoutRef<'img'>) => {
+    const nodeProps = resolveMarkdownNodeProps(props, 'img', alt);
+
+    return (
+      <img
+        {...nodeProps}
+        alt={alt ?? ''}
+        className={classNames(styles.image, nodeProps.className)}
+      />
+    );
+  };
+
+const createMarkdownBlockquote =
+  (resolveMarkdownNodeProps: ResolveMarkdownNodeProps) =>
+  ({ children, ...props }: ComponentPropsWithoutRef<'blockquote'>) => {
+    const nodeProps = resolveMarkdownNodeProps(props, 'blockquote', children);
+
+    return (
+      <blockquote {...nodeProps} className={classNames(styles.blockquote, nodeProps.className)}>
+        {children}
+      </blockquote>
+    );
+  };
+
+const createMarkdownUl =
+  (resolveMarkdownNodeProps: ResolveMarkdownNodeProps) =>
+  ({ children, ...props }: ComponentPropsWithoutRef<'ul'>) => {
+    const nodeProps = resolveMarkdownNodeProps(props, 'ul', children);
+
+    return (
+      <ul
+        {...nodeProps}
+        className={classNames(styles.list, styles.unorderedList, nodeProps.className)}
+      >
+        {children}
+      </ul>
+    );
+  };
+
+const createMarkdownOl =
+  (resolveMarkdownNodeProps: ResolveMarkdownNodeProps) =>
+  ({ children, ...props }: ComponentPropsWithoutRef<'ol'>) => {
+    const nodeProps = resolveMarkdownNodeProps(props, 'ol', children);
+
+    return (
+      <ol
+        {...nodeProps}
+        className={classNames(styles.list, styles.orderedList, nodeProps.className)}
+      >
+        {children}
+      </ol>
+    );
+  };
+
+const createMarkdownListItem =
+  (resolveMarkdownNodeProps: ResolveMarkdownNodeProps) =>
+  ({ children, ...props }: ComponentPropsWithoutRef<'li'>) => {
+    const nodeProps = resolveMarkdownNodeProps(props, 'li', children);
+
+    return (
+      <li {...nodeProps} className={classNames(styles.listItem, nodeProps.className)}>
+        {children}
+      </li>
+    );
+  };
+
+const createMarkdownTaskMarker =
+  (resolveMarkdownNodeProps: ResolveMarkdownNodeProps) =>
+  ({
+    checked,
+    disabled: _disabled,
+    readOnly: _readOnly,
+    type: _type,
+    ...props
+  }: ComponentPropsWithoutRef<'input'>) => {
+    const nodeProps = resolveMarkdownNodeProps(props, 'task-marker', checked ? 'true' : 'false');
+
+    return (
+      <span
+        {...nodeProps}
+        className={classNames(styles.taskMarker, nodeProps.className)}
+        data-checked={checked ? 'true' : 'false'}
+        data-markdown-task-marker="true"
+      >
+        <span className={styles.taskMarkerIndicator}>
+          <CheckIcon aria-hidden="true" />
+        </span>
+        <span className={styles.taskMarkerState}>
+          {checked ? 'Completed task' : 'Incomplete task'}
+        </span>
+      </span>
+    );
+  };
+
+const createMarkdownCode =
+  (resolveMarkdownNodeProps: ResolveMarkdownNodeProps) =>
+  ({ children, className, 'data-markdown-code': codeKindProp, ...props }: MarkdownCodeProps) => {
+    const language = extractLanguage(className);
+    const codeKind = codeKindProp ?? (language === undefined ? 'inline' : 'block');
+    const nodeProps = resolveMarkdownNodeProps({ ...props, className }, 'code', children);
+
+    return (
+      <code
+        {...nodeProps}
+        className={classNames(
+          codeKind === 'block' ? styles.code : styles.inlineCode,
+          nodeProps.className,
+        )}
+        data-markdown-code={codeKind}
+        data-language={language}
+      >
+        {children}
+      </code>
+    );
+  };
+
+const createMarkdownPre =
+  (resolveMarkdownNodeProps: ResolveMarkdownNodeProps) =>
+  ({ children, ...props }: ComponentPropsWithoutRef<'pre'>) => {
+    const child = Array.isArray(children) ? children[0] : children;
+    const childProps =
+      typeof child === 'object' && child !== null && 'props' in child
+        ? (child.props as { className?: string })
+        : undefined;
+    const language = extractLanguage(childProps?.className);
+    const blockChildren = isValidElement<MarkdownCodeProps>(child)
+      ? cloneElement(child, { 'data-markdown-code': 'block' })
+      : children;
+    const nodeProps = resolveMarkdownNodeProps(props, 'pre', children);
+
+    return (
+      <ScrollArea.Root className={styles.codeScrollArea} data-testid="markdown-code-scroll-area">
+        {language !== undefined && (
+          <span
+            aria-hidden="true"
+            className={styles.codeLanguage}
+            data-markdown-code-language-label="true"
+          >
+            {language}
+          </span>
+        )}
+        <ScrollArea.Viewport className={styles.codeViewport}>
+          <pre
+            {...nodeProps}
+            className={classNames(styles.pre, nodeProps.className)}
+            data-markdown-code="block"
+            data-language={language}
+          >
+            {blockChildren}
+          </pre>
+        </ScrollArea.Viewport>
+        <ScrollArea.Scrollbar orientation="horizontal">
+          <ScrollArea.Thumb />
+        </ScrollArea.Scrollbar>
+        <ScrollArea.Scrollbar orientation="vertical">
+          <ScrollArea.Thumb />
+        </ScrollArea.Scrollbar>
+      </ScrollArea.Root>
+    );
+  };
+
+const createMarkdownTable =
+  (resolveMarkdownNodeProps: ResolveMarkdownNodeProps) =>
+  ({ children, ...props }: ComponentPropsWithoutRef<'table'>) => {
+    const wrapperProps = resolveMarkdownNodeProps(
+      {} as { className?: string },
+      'table-wrapper',
+      children,
+    );
+    const nodeProps = resolveMarkdownNodeProps(props, 'table', children);
+
+    return (
+      <div {...wrapperProps} className={classNames(styles.tableScroller, wrapperProps.className)}>
+        <ScrollArea.Root
+          className={styles.tableScrollArea}
+          data-testid="markdown-table-scroll-area"
+        >
+          <ScrollArea.Viewport className={styles.tableViewport}>
+            <table {...nodeProps} className={classNames(styles.table, nodeProps.className)}>
+              {children}
+            </table>
+          </ScrollArea.Viewport>
+          <ScrollArea.Scrollbar orientation="horizontal">
+            <ScrollArea.Thumb />
+          </ScrollArea.Scrollbar>
+          <ScrollArea.Scrollbar orientation="vertical">
+            <ScrollArea.Thumb />
+          </ScrollArea.Scrollbar>
+        </ScrollArea.Root>
+      </div>
+    );
+  };
+
+const createMarkdownHr =
+  (resolveMarkdownNodeProps: ResolveMarkdownNodeProps) =>
+  (props: ComponentPropsWithoutRef<'hr'>) => {
+    const nodeProps = resolveMarkdownNodeProps(props, 'hr');
+
+    return (
+      <Separator {...nodeProps} className={classNames(styles.separator, nodeProps.className)} />
+    );
+  };
+
+const createDefaultComponents = (
+  resolveMarkdownNodeProps: ResolveMarkdownNodeProps,
+): MarkdownRenderComponents => ({
+  a: createMarkdownLink(resolveMarkdownNodeProps),
+  blockquote: createMarkdownBlockquote(resolveMarkdownNodeProps),
+  code: createMarkdownCode(resolveMarkdownNodeProps),
+  h1: createMarkdownHeading1(resolveMarkdownNodeProps),
+  h2: createMarkdownHeading2(resolveMarkdownNodeProps),
+  h3: createMarkdownHeading3(resolveMarkdownNodeProps),
+  h4: createMarkdownHeading4(resolveMarkdownNodeProps),
+  h5: createMarkdownHeading5(resolveMarkdownNodeProps),
+  h6: createMarkdownHeading6(resolveMarkdownNodeProps),
+  hr: createMarkdownHr(resolveMarkdownNodeProps),
+  img: createMarkdownImage(resolveMarkdownNodeProps),
+  input: createMarkdownTaskMarker(resolveMarkdownNodeProps),
+  li: createMarkdownListItem(resolveMarkdownNodeProps),
+  ol: createMarkdownOl(resolveMarkdownNodeProps),
+  p: createMarkdownParagraph(resolveMarkdownNodeProps),
+  pre: createMarkdownPre(resolveMarkdownNodeProps),
+  table: createMarkdownTable(resolveMarkdownNodeProps),
+  ul: createMarkdownUl(resolveMarkdownNodeProps),
 });
 
-const withTextMarkdownNode = <T extends object>(props: T, node: string): TextProps =>
-  withMarkdownNode(props, node) as TextProps;
-
-const MarkdownParagraph = ({ children, ...props }: ComponentPropsWithoutRef<'p'>) => (
-  <p {...withMarkdownNode(props, 'p')} className={classNames(styles.paragraph, props.className)}>
-    {children}
-  </p>
-);
-
-const MarkdownHeading1 = ({ children, ...props }: ComponentPropsWithoutRef<'h1'>) => (
-  <Text
-    {...withTextMarkdownNode(props, 'h1')}
-    className={classNames(styles.heading, props.className)}
-    variant="h1"
-  >
-    {children}
-  </Text>
-);
-
-const MarkdownHeading2 = ({ children, ...props }: ComponentPropsWithoutRef<'h2'>) => (
-  <Text
-    {...withTextMarkdownNode(props, 'h2')}
-    className={classNames(styles.heading, props.className)}
-    variant="h2"
-  >
-    {children}
-  </Text>
-);
-
-const MarkdownHeading3 = ({ children, ...props }: ComponentPropsWithoutRef<'h3'>) => (
-  <Text
-    {...withTextMarkdownNode(props, 'h3')}
-    className={classNames(styles.heading, props.className)}
-    variant="h3"
-  >
-    {children}
-  </Text>
-);
-
-const MarkdownHeading4 = ({ children, ...props }: ComponentPropsWithoutRef<'h4'>) => (
-  <Text
-    {...withTextMarkdownNode(props, 'h4')}
-    className={classNames(styles.heading, props.className)}
-    variant="h4"
-  >
-    {children}
-  </Text>
-);
-
-const MarkdownHeading5 = ({ children, ...props }: ComponentPropsWithoutRef<'h5'>) => (
-  <Text
-    {...withTextMarkdownNode(props, 'h5')}
-    className={classNames(styles.heading, props.className)}
-    variant="h5"
-  >
-    {children}
-  </Text>
-);
-
-const MarkdownHeading6 = ({ children, ...props }: ComponentPropsWithoutRef<'h6'>) => (
-  <Text
-    {...withTextMarkdownNode(props, 'h6')}
-    className={classNames(styles.heading, props.className)}
-    variant="h6"
-  >
-    {children}
-  </Text>
-);
-
-const MarkdownLink = ({ children, href, rel, target, ...props }: ComponentPropsWithoutRef<'a'>) => {
-  const isExternal = typeof href === 'string' && /^https?:\/\//.test(href);
-  const resolvedTarget = target ?? (isExternal ? '_blank' : undefined);
-  const resolvedRel = rel ?? (isExternal ? 'noreferrer' : undefined);
-
-  return (
-    <a
-      {...withMarkdownNode(props, 'a')}
-      className={classNames(styles.link, props.className)}
-      href={href}
-      rel={resolvedRel}
-      target={resolvedTarget}
-    >
-      {children}
-    </a>
-  );
-};
-
-const MarkdownImage = ({ alt, ...props }: ComponentPropsWithoutRef<'img'>) => (
-  <img
-    {...withMarkdownNode(props, 'img')}
-    alt={alt ?? ''}
-    className={classNames(styles.image, props.className)}
-  />
-);
-
-const MarkdownBlockquote = ({ children, ...props }: ComponentPropsWithoutRef<'blockquote'>) => (
-  <blockquote
-    {...withMarkdownNode(props, 'blockquote')}
-    className={classNames(styles.blockquote, props.className)}
-  >
-    {children}
-  </blockquote>
-);
-
-const MarkdownUl = ({ children, ...props }: ComponentPropsWithoutRef<'ul'>) => (
-  <ul
-    {...withMarkdownNode(props, 'ul')}
-    className={classNames(styles.list, styles.unorderedList, props.className)}
-  >
-    {children}
-  </ul>
-);
-
-const MarkdownOl = ({ children, ...props }: ComponentPropsWithoutRef<'ol'>) => (
-  <ol
-    {...withMarkdownNode(props, 'ol')}
-    className={classNames(styles.list, styles.orderedList, props.className)}
-  >
-    {children}
-  </ol>
-);
-
-const MarkdownListItem = ({ children, className, ...props }: ComponentPropsWithoutRef<'li'>) => (
-  <li {...withMarkdownNode(props, 'li')} className={classNames(styles.listItem, className)}>
-    {children}
-  </li>
-);
-
-const MarkdownTaskMarker = ({
-  checked,
-  className,
-  disabled: _disabled,
-  readOnly: _readOnly,
-  type: _type,
-  ...props
-}: ComponentPropsWithoutRef<'input'>) => (
-  <span
-    {...withMarkdownNode(props, 'task-marker')}
-    className={classNames(styles.taskMarker, className)}
-    data-checked={checked ? 'true' : 'false'}
-    data-markdown-task-marker="true"
-  >
-    <span className={styles.taskMarkerIndicator}>
-      <CheckIcon aria-hidden="true" />
-    </span>
-    <span className={styles.taskMarkerState}>{checked ? 'Completed task' : 'Incomplete task'}</span>
-  </span>
-);
-
-const MarkdownCode = ({
-  children,
-  className,
-  'data-markdown-code': codeKindProp,
-  ...props
-}: MarkdownCodeProps) => {
-  const language = extractLanguage(className);
-  const codeKind = codeKindProp ?? (language === undefined ? 'inline' : 'block');
-
-  return (
-    <code
-      {...withMarkdownNode(props, 'code')}
-      className={classNames(codeKind === 'block' ? styles.code : styles.inlineCode, className)}
-      data-markdown-code={codeKind}
-      data-language={language}
-    >
-      {children}
-    </code>
-  );
-};
-
-const MarkdownPre = ({ children, ...props }: ComponentPropsWithoutRef<'pre'>) => {
-  const child = Array.isArray(children) ? children[0] : children;
-  const childProps =
-    typeof child === 'object' && child !== null && 'props' in child
-      ? (child.props as { className?: string })
-      : undefined;
-  const language = extractLanguage(childProps?.className);
-  const blockChildren = isValidElement<MarkdownCodeProps>(child)
-    ? cloneElement(child, { 'data-markdown-code': 'block' })
-    : children;
-
-  return (
-    <ScrollArea.Root className={styles.codeScrollArea} data-testid="markdown-code-scroll-area">
-      {language !== undefined && (
-        <span
-          aria-hidden="true"
-          className={styles.codeLanguage}
-          data-markdown-code-language-label="true"
-        >
-          {language}
-        </span>
-      )}
-      <ScrollArea.Viewport className={styles.codeViewport}>
-        <pre
-          {...withMarkdownNode(props, 'pre')}
-          className={classNames(styles.pre, props.className)}
-          data-markdown-code="block"
-          data-language={language}
-        >
-          {blockChildren}
-        </pre>
-      </ScrollArea.Viewport>
-      <ScrollArea.Scrollbar orientation="horizontal">
-        <ScrollArea.Thumb />
-      </ScrollArea.Scrollbar>
-      <ScrollArea.Scrollbar orientation="vertical">
-        <ScrollArea.Thumb />
-      </ScrollArea.Scrollbar>
-    </ScrollArea.Root>
-  );
-};
-
-const MarkdownTable = ({ children, ...props }: ComponentPropsWithoutRef<'table'>) => (
-  <div className={styles.tableScroller} data-markdown-node="table-wrapper">
-    <ScrollArea.Root className={styles.tableScrollArea} data-testid="markdown-table-scroll-area">
-      <ScrollArea.Viewport className={styles.tableViewport}>
-        <table
-          {...withMarkdownNode(props, 'table')}
-          className={classNames(styles.table, props.className)}
-        >
-          {children}
-        </table>
-      </ScrollArea.Viewport>
-      <ScrollArea.Scrollbar orientation="horizontal">
-        <ScrollArea.Thumb />
-      </ScrollArea.Scrollbar>
-      <ScrollArea.Scrollbar orientation="vertical">
-        <ScrollArea.Thumb />
-      </ScrollArea.Scrollbar>
-    </ScrollArea.Root>
-  </div>
-);
-
-const MarkdownHr = (props: ComponentPropsWithoutRef<'hr'>) => (
-  <Separator
-    {...stripMarkdownExtraProps(props)}
-    className={classNames(styles.separator, props.className)}
-    data-markdown-node="hr"
-  />
-);
-
-const markdownNodeNames: Partial<Record<keyof Components, string>> = {
+const markdownNodeNames: Partial<Record<keyof Components, MarkdownRenderNodeName>> = {
   a: 'a',
   blockquote: 'blockquote',
   code: 'code',
@@ -323,28 +526,9 @@ const markdownNodeNames: Partial<Record<keyof Components, string>> = {
   ul: 'ul',
 };
 
-const defaultComponents: MarkdownRenderComponents = {
-  a: MarkdownLink,
-  blockquote: MarkdownBlockquote,
-  code: MarkdownCode,
-  h1: MarkdownHeading1,
-  h2: MarkdownHeading2,
-  h3: MarkdownHeading3,
-  h4: MarkdownHeading4,
-  h5: MarkdownHeading5,
-  h6: MarkdownHeading6,
-  hr: MarkdownHr,
-  img: MarkdownImage,
-  input: MarkdownTaskMarker,
-  li: MarkdownListItem,
-  ol: MarkdownOl,
-  p: MarkdownParagraph,
-  pre: MarkdownPre,
-  table: MarkdownTable,
-  ul: MarkdownUl,
-};
-
 const mergeMarkdownComponents = (
+  defaultComponents: MarkdownRenderComponents,
+  resolveMarkdownNodeProps: ResolveMarkdownNodeProps,
   components?: MarkdownRenderComponents,
 ): MarkdownRenderComponents => {
   if (components === undefined) {
@@ -361,14 +545,17 @@ const mergeMarkdownComponents = (
       continue;
     }
 
-    const markdownNodeName = markdownNodeNames[name] ?? String(name);
+    const markdownNodeName = markdownNodeNames[name] ?? (String(name) as MarkdownRenderNodeName);
 
     merged[String(name)] = ((props: Record<string, unknown>) => {
-      const domProps = stripMarkdownExtraProps(props);
+      const resolvedProps = resolveMarkdownNodeProps(
+        props,
+        markdownNodeName,
+        (props as { children?: ReactNode }).children,
+      );
 
       return createElement(Component as (props: Record<string, unknown>) => ReactNode, {
-        ...domProps,
-        'data-markdown-node': markdownNodeName,
+        ...resolvedProps,
       });
     }) as never;
   }
@@ -379,28 +566,38 @@ const mergeMarkdownComponents = (
 export const MarkdownRender = ({
   className,
   components,
+  resolveNodeAttributes,
   size = 'md',
   style,
   value,
-}: MarkdownRenderProps) => (
-  <div
-    className={classNames(
-      styles.root,
-      styles[`size${size[0].toUpperCase()}${size.slice(1)}`],
-      className,
-    )}
-    data-markdown-root="true"
-    data-markdown-size={size}
-    style={style}
-  >
-    <ReactMarkdown
-      components={mergeMarkdownComponents(components)}
-      rehypePlugins={[[rehypeHighlight, { detect: false, ignoreMissing: true }]]}
-      remarkPlugins={[remarkGfm]}
+}: MarkdownRenderProps) => {
+  const resolveMarkdownNodeProps = createMarkdownNodePropsResolver(resolveNodeAttributes);
+  const defaultComponents = createDefaultComponents(resolveMarkdownNodeProps);
+
+  return (
+    <div
+      className={classNames(
+        styles.root,
+        styles[`size${size[0].toUpperCase()}${size.slice(1)}`],
+        className,
+      )}
+      data-markdown-root="true"
+      data-markdown-size={size}
+      style={style}
     >
-      {value}
-    </ReactMarkdown>
-  </div>
-);
+      <ReactMarkdown
+        components={mergeMarkdownComponents(
+          defaultComponents,
+          resolveMarkdownNodeProps,
+          components,
+        )}
+        rehypePlugins={[[rehypeHighlight, { detect: false, ignoreMissing: true }]]}
+        remarkPlugins={[remarkGfm]}
+      >
+        {value}
+      </ReactMarkdown>
+    </div>
+  );
+};
 
 MarkdownRender.displayName = 'MarkdownRender';
