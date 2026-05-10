@@ -10,6 +10,7 @@ import * as navOverlayEntry from '../src/nav-overlay/index.tsx';
 import * as rootEntry from '../src';
 import * as popoverEntry from '../src/popover/index.tsx';
 import * as textEntry from '../src/text/index.tsx';
+import * as virtualListEntry from '../src/virtual-list/index.tsx';
 
 const root = resolve(import.meta.dirname, '../../..');
 const componentRoot = resolve(root, 'packages/react');
@@ -45,6 +46,11 @@ test('components package exposes button, popover, and text subpath exports in pa
       import: './dist/text/index.js',
       types: './dist/text/index.d.ts',
     },
+    './virtual-list': {
+      default: './dist/virtual-list/index.js',
+      import: './dist/virtual-list/index.js',
+      types: './dist/virtual-list/index.d.ts',
+    },
     './nav': {
       default: './dist/nav/index.js',
       import: './dist/nav/index.js',
@@ -66,6 +72,7 @@ test('components subpath entries match the root entry public contract', () => {
   expect(navOverlayEntry.NavOverlay).toBe(rootEntry.NavOverlay);
   expect(popoverEntry.Popover).toBe(rootEntry.Popover);
   expect(textEntry.Text).toBe(rootEntry.Text);
+  expect(virtualListEntry.VirtualList).toBe(rootEntry.VirtualList);
 });
 
 test('components subpath entries expose their public API without requiring the package root', () => {
@@ -95,4 +102,5 @@ test('components subpath entries expose their public API without requiring the p
     'popoverVisibilityChangeReasonOptions',
   ]);
   expect(Object.keys(textEntry).sort()).toEqual(['Text', 'textColorFamilyOptions']);
+  expect(Object.keys(virtualListEntry).sort()).toEqual(['VirtualList']);
 });

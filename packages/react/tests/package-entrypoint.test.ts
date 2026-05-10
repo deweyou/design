@@ -102,6 +102,7 @@ test('components root entry exposes Button, IconButton, Popover, Text, Menu fami
     'Textarea',
     'Toaster',
     'Tooltip',
+    'VirtualList',
     'toast',
     'useFieldContext',
     'useFieldControlProps',

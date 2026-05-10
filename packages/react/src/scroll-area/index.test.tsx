@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 
-import { cleanup, render, screen } from '@testing-library/react';
-import { afterEach, beforeEach, describe, expect, it } from 'vite-plus/test';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vite-plus/test';
 
 import { ScrollArea } from './index.tsx';
 
@@ -54,8 +54,23 @@ describe('ScrollArea', () => {
 
   it('renders compound components as functions', () => {
     expect(typeof ScrollArea.Root).toBe('function');
-    expect(typeof ScrollArea.Viewport).toBe('function');
+    expect(ScrollArea.Viewport).toBeTruthy();
     expect(typeof ScrollArea.Scrollbar).toBe('function');
     expect(typeof ScrollArea.Thumb).toBe('function');
+  });
+
+  it('passes viewport DOM props and scroll events through', () => {
+    const onScroll = vi.fn();
+    render(
+      <ScrollArea.Root style={{ height: '200px' }}>
+        <ScrollArea.Viewport data-testid="viewport" onScroll={onScroll}>
+          <div>Content</div>
+        </ScrollArea.Viewport>
+      </ScrollArea.Root>,
+    );
+
+    fireEvent.scroll(screen.getByTestId('viewport'));
+
+    expect(onScroll).toHaveBeenCalledTimes(1);
   });
 });

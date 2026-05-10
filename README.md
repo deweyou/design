@@ -93,30 +93,31 @@ export const RocketIcon = createTablerIcon(IconRocket);
 
 ## 组件
 
-| 组件         | 说明                     |
-| ------------ | ------------------------ |
-| `Button`     | 按钮，支持多种变体和尺寸 |
-| `Input`      | 单行文本输入框           |
-| `Textarea`   | 多行文本输入框           |
-| `Select`     | 下拉选择器               |
-| `Checkbox`   | 复选框                   |
-| `RadioGroup` | 单选组                   |
-| `Switch`     | 开关                     |
-| `Badge`      | 状态标签                 |
-| `Text`       | 排版文本                 |
-| `Card`       | 卡片容器                 |
-| `Separator`  | 分隔线                   |
-| `Skeleton`   | 加载占位符               |
-| `Spinner`    | 加载指示器               |
-| `Breadcrumb` | 面包屑导航               |
-| `Tabs`       | 标签页                   |
-| `Pagination` | 分页器                   |
-| `Menu`       | 下拉菜单 / 右键菜单      |
-| `Popover`    | 弹出层                   |
-| `Tooltip`    | 文字提示                 |
-| `Dialog`     | 模态对话框               |
-| `Toast`      | 轻提示通知               |
-| `ScrollArea` | 自定义滚动条容器         |
+| 组件          | 说明                         |
+| ------------- | ---------------------------- |
+| `Button`      | 按钮，支持多种变体和尺寸     |
+| `Input`       | 单行文本输入框               |
+| `Textarea`    | 多行文本输入框               |
+| `Select`      | 下拉选择器                   |
+| `Checkbox`    | 复选框                       |
+| `RadioGroup`  | 单选组                       |
+| `Switch`      | 开关                         |
+| `Badge`       | 状态标签                     |
+| `Text`        | 排版文本                     |
+| `Card`        | 卡片容器                     |
+| `Separator`   | 分隔线                       |
+| `Skeleton`    | 加载占位符                   |
+| `Spinner`     | 加载指示器                   |
+| `Breadcrumb`  | 面包屑导航                   |
+| `Tabs`        | 标签页                       |
+| `Pagination`  | 分页器                       |
+| `Menu`        | 下拉菜单 / 右键菜单          |
+| `Popover`     | 弹出层                       |
+| `Tooltip`     | 文字提示                     |
+| `Dialog`      | 模态对话框                   |
+| `Toast`       | 轻提示通知                   |
+| `ScrollArea`  | 自定义滚动条容器             |
+| `VirtualList` | 虚拟列表，支持长文档锚点滚动 |
 
 ## 主题定制
 

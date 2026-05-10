@@ -52,6 +52,13 @@ vp install          # 安装依赖
 - 推荐 commit type：`feat`、`fix`、`refactor`、`docs`、`test`、`build`、`chore`。
 - commit subject 使用祈使语气、小写，聚焦单一逻辑变更。格式通过 `.vite-hooks/commit-msg` 强制校验。
 
+## 组件开发固定交付流程
+
+- 新增或实质修改组件时，默认必须同时补齐 colocated 单测、Storybook `Interaction` e2e、必要的 package/export/docs contract test。
+- 新增公开组件时，默认必须同步更新 `README.md`、`docs/design/components.md`、`packages/react/package.json` exports 和 `packages/react/src/index.ts`。
+- 若改动包含新设计决策、组件边界或后续演进方向，默认沉淀到 `docs/superpowers/specs/` 和 `docs/superpowers/plans/`。
+- 收尾默认运行 `vp check`、`vp test`、相关 Storybook e2e；新增或修改 Storybook story 时运行 `vp run storybook#test`，必要时再运行 `vp run build -r`。
+
 ## Harness Development
 
 AI 辅助开发的上下文与知识库：

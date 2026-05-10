@@ -6,33 +6,34 @@ This document is the human-readable companion to `packages/react/package.json` e
 
 ## Import Matrix
 
-| Component              | Root import             | Subpath import                      |
-| ---------------------- | ----------------------- | ----------------------------------- |
-| `Badge`                | `@deweyou-design/react` | `@deweyou-design/react/badge`       |
-| `Breadcrumb`           | `@deweyou-design/react` | `@deweyou-design/react/breadcrumb`  |
-| `Button`, `IconButton` | `@deweyou-design/react` | `@deweyou-design/react/button`      |
-| `Card`                 | `@deweyou-design/react` | `@deweyou-design/react/card`        |
-| `Checkbox`             | `@deweyou-design/react` | `@deweyou-design/react/checkbox`    |
-| `Dialog`               | `@deweyou-design/react` | `@deweyou-design/react/dialog`      |
-| `Field`                | `@deweyou-design/react` | `@deweyou-design/react/field`       |
-| `Input`                | `@deweyou-design/react` | `@deweyou-design/react/input`       |
-| `Menu`, `ContextMenu`  | `@deweyou-design/react` | `@deweyou-design/react/menu`        |
-| `Nav`                  | `@deweyou-design/react` | `@deweyou-design/react/nav`         |
-| `NavOverlay`           | `@deweyou-design/react` | `@deweyou-design/react/nav-overlay` |
-| `Pagination`           | `@deweyou-design/react` | `@deweyou-design/react/pagination`  |
-| `Popover`              | `@deweyou-design/react` | `@deweyou-design/react/popover`     |
-| `RadioGroup`           | `@deweyou-design/react` | `@deweyou-design/react/radio-group` |
-| `ScrollArea`           | `@deweyou-design/react` | `@deweyou-design/react/scroll-area` |
-| `Select`               | `@deweyou-design/react` | `@deweyou-design/react/select`      |
-| `Separator`            | `@deweyou-design/react` | `@deweyou-design/react/separator`   |
-| `Skeleton`             | `@deweyou-design/react` | `@deweyou-design/react/skeleton`    |
-| `Spinner`              | `@deweyou-design/react` | `@deweyou-design/react/spinner`     |
-| `Switch`               | `@deweyou-design/react` | `@deweyou-design/react/switch`      |
-| `Tabs` family          | `@deweyou-design/react` | `@deweyou-design/react/tabs`        |
-| `Text`                 | `@deweyou-design/react` | `@deweyou-design/react/text`        |
-| `Textarea`             | `@deweyou-design/react` | `@deweyou-design/react/textarea`    |
-| `toast`, `Toaster`     | `@deweyou-design/react` | `@deweyou-design/react/toast`       |
-| `Tooltip`              | `@deweyou-design/react` | `@deweyou-design/react/tooltip`     |
+| Component              | Root import             | Subpath import                       |
+| ---------------------- | ----------------------- | ------------------------------------ |
+| `Badge`                | `@deweyou-design/react` | `@deweyou-design/react/badge`        |
+| `Breadcrumb`           | `@deweyou-design/react` | `@deweyou-design/react/breadcrumb`   |
+| `Button`, `IconButton` | `@deweyou-design/react` | `@deweyou-design/react/button`       |
+| `Card`                 | `@deweyou-design/react` | `@deweyou-design/react/card`         |
+| `Checkbox`             | `@deweyou-design/react` | `@deweyou-design/react/checkbox`     |
+| `Dialog`               | `@deweyou-design/react` | `@deweyou-design/react/dialog`       |
+| `Field`                | `@deweyou-design/react` | `@deweyou-design/react/field`        |
+| `Input`                | `@deweyou-design/react` | `@deweyou-design/react/input`        |
+| `Menu`, `ContextMenu`  | `@deweyou-design/react` | `@deweyou-design/react/menu`         |
+| `Nav`                  | `@deweyou-design/react` | `@deweyou-design/react/nav`          |
+| `NavOverlay`           | `@deweyou-design/react` | `@deweyou-design/react/nav-overlay`  |
+| `Pagination`           | `@deweyou-design/react` | `@deweyou-design/react/pagination`   |
+| `Popover`              | `@deweyou-design/react` | `@deweyou-design/react/popover`      |
+| `RadioGroup`           | `@deweyou-design/react` | `@deweyou-design/react/radio-group`  |
+| `ScrollArea`           | `@deweyou-design/react` | `@deweyou-design/react/scroll-area`  |
+| `Select`               | `@deweyou-design/react` | `@deweyou-design/react/select`       |
+| `Separator`            | `@deweyou-design/react` | `@deweyou-design/react/separator`    |
+| `Skeleton`             | `@deweyou-design/react` | `@deweyou-design/react/skeleton`     |
+| `Spinner`              | `@deweyou-design/react` | `@deweyou-design/react/spinner`      |
+| `Switch`               | `@deweyou-design/react` | `@deweyou-design/react/switch`       |
+| `Tabs` family          | `@deweyou-design/react` | `@deweyou-design/react/tabs`         |
+| `Text`                 | `@deweyou-design/react` | `@deweyou-design/react/text`         |
+| `Textarea`             | `@deweyou-design/react` | `@deweyou-design/react/textarea`     |
+| `toast`, `Toaster`     | `@deweyou-design/react` | `@deweyou-design/react/toast`        |
+| `Tooltip`              | `@deweyou-design/react` | `@deweyou-design/react/tooltip`      |
+| `VirtualList`          | `@deweyou-design/react` | `@deweyou-design/react/virtual-list` |
 
 Use root imports when a file consumes several components together. Use subpath imports for examples, docs, and single-component usage so bundlers and AI agents can see the intended package boundary.
 
@@ -161,6 +162,22 @@ NavOverlay
 
 Use `Nav` for visible navigation landmarks. Use `NavOverlay` for responsive fullscreen navigation.
 
+### Virtualized Content
+
+```tsx
+const listRef = useRef<VirtualListRef>(null);
+
+<VirtualList
+  ref={listRef}
+  count={articles.length}
+  height={420}
+  estimateSize={() => 72}
+  renderItem={({ index }) => <ArticleAnchorRow article={articles[index]} />}
+/>;
+```
+
+`VirtualList` renders a scrollable window over large one-dimensional content and uses `ScrollArea` internally so scrollbar styling stays aligned with the rest of the system. Use `scrollToIndex(index)` for anchor-style navigation and `scrollToOffset(offset)` for precise document-position jumps.
+
 ### Floating And Feedback
 
 ```text
@@ -201,4 +218,5 @@ Toast
 - `Pagination`, `Breadcrumb`, `Nav`, and `Tabs` are navigation primitives. They should expose semantic markup first and visual variants second.
 - `ScrollArea` is a layout primitive. Keep viewport/scrollbar/thumb composition explicit.
 - Public component props should stay decoupled from Ark UI prop names unless the Ark term is already the common component vocabulary.
-- New components must include source, CSS module, colocated unit tests, Storybook `Interaction`, README/docs entry, and a subpath export.
+- New public components must include source, CSS module, colocated unit tests, Storybook `Interaction`, README entry, this component contract entry, root and subpath exports, and package/docs contract coverage.
+- New component designs with non-obvious trade-offs or future extension paths must be recorded in `docs/superpowers/specs/` and `docs/superpowers/plans/` before implementation continues.
