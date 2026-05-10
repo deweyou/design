@@ -13,6 +13,7 @@ import ReactMarkdown, { type Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
 import { Separator } from '../separator/index.tsx';
+import { ScrollArea } from '../scroll-area/index.tsx';
 import { Text, type TextProps } from '../text/index.tsx';
 
 import styles from './index.module.less';
@@ -241,12 +242,7 @@ const MarkdownPre = ({ children, ...props }: ComponentPropsWithoutRef<'pre'>) =>
     : children;
 
   return (
-    <pre
-      {...withMarkdownNode(props, 'pre')}
-      className={classNames(styles.pre, props.className)}
-      data-markdown-code="block"
-      data-language={language}
-    >
+    <ScrollArea.Root className={styles.codeScrollArea} data-testid="markdown-code-scroll-area">
       {language !== undefined && (
         <span
           aria-hidden="true"
@@ -256,19 +252,44 @@ const MarkdownPre = ({ children, ...props }: ComponentPropsWithoutRef<'pre'>) =>
           {language}
         </span>
       )}
-      {blockChildren}
-    </pre>
+      <ScrollArea.Viewport className={styles.codeViewport}>
+        <pre
+          {...withMarkdownNode(props, 'pre')}
+          className={classNames(styles.pre, props.className)}
+          data-markdown-code="block"
+          data-language={language}
+        >
+          {blockChildren}
+        </pre>
+      </ScrollArea.Viewport>
+      <ScrollArea.Scrollbar orientation="horizontal">
+        <ScrollArea.Thumb />
+      </ScrollArea.Scrollbar>
+      <ScrollArea.Scrollbar orientation="vertical">
+        <ScrollArea.Thumb />
+      </ScrollArea.Scrollbar>
+    </ScrollArea.Root>
   );
 };
 
 const MarkdownTable = ({ children, ...props }: ComponentPropsWithoutRef<'table'>) => (
   <div className={styles.tableScroller} data-markdown-node="table-wrapper">
-    <table
-      {...withMarkdownNode(props, 'table')}
-      className={classNames(styles.table, props.className)}
-    >
-      {children}
-    </table>
+    <ScrollArea.Root className={styles.tableScrollArea} data-testid="markdown-table-scroll-area">
+      <ScrollArea.Viewport className={styles.tableViewport}>
+        <table
+          {...withMarkdownNode(props, 'table')}
+          className={classNames(styles.table, props.className)}
+        >
+          {children}
+        </table>
+      </ScrollArea.Viewport>
+      <ScrollArea.Scrollbar orientation="horizontal">
+        <ScrollArea.Thumb />
+      </ScrollArea.Scrollbar>
+      <ScrollArea.Scrollbar orientation="vertical">
+        <ScrollArea.Thumb />
+      </ScrollArea.Scrollbar>
+    </ScrollArea.Root>
   </div>
 );
 

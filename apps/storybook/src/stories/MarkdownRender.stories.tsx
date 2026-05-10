@@ -250,10 +250,19 @@ export const Interaction: Story = {
       story.querySelector('[data-markdown-code-language-label="true"]'),
     ).toBeInTheDocument();
     await expect(story.querySelector('.hljs-keyword')).toBeInTheDocument();
+    await expect(
+      story.querySelector('[data-testid="markdown-code-scroll-area"]'),
+    ).toBeInTheDocument();
     const tableWrapper = story.querySelector<HTMLElement>('[data-markdown-node="table-wrapper"]');
     await expect(tableWrapper).toBeInTheDocument();
+    const tableScrollArea = story.querySelector<HTMLElement>(
+      '[data-testid="markdown-table-scroll-area"]',
+    );
+    await expect(tableScrollArea).toBeInTheDocument();
+    const tableViewport = tableScrollArea?.querySelector<HTMLElement>('[data-part="viewport"]');
+    await expect(tableViewport).toBeInTheDocument();
     await expect(story.querySelector('[data-markdown-node="table"]')).toBeInTheDocument();
-    await expect(tableWrapper?.scrollWidth ?? 0).toBeGreaterThan(tableWrapper?.clientWidth ?? 0);
+    await expect(tableViewport?.scrollWidth ?? 0).toBeGreaterThan(tableViewport?.clientWidth ?? 0);
     await expect(story.querySelector('[data-markdown-node="img"]')).toBeInTheDocument();
   },
 };

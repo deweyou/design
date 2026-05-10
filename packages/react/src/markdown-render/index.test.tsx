@@ -165,6 +165,48 @@ describe('MarkdownRender', () => {
     expect(plainMarkup).not.toContain('data-markdown-code-language-label="true"');
   });
 
+  it('wraps fenced code overflow with ScrollArea while preserving pre and code semantics', () => {
+    const markup = renderMarkdown({
+      value: ['```ts', 'const value = "x".repeat(200);', '```'].join('\n'),
+    });
+
+    expect(markup).toContain('data-testid="markdown-code-scroll-area"');
+    expect(markup).toContain('data-part="viewport"');
+    expect(markup).toContain('data-orientation="horizontal"');
+    expect(markup).toContain('data-orientation="vertical"');
+    expect(markup).toContain('data-markdown-node="pre"');
+    expect(markup).toContain('data-markdown-code="block"');
+
+    const preIndex = markup.indexOf('data-markdown-node="pre"');
+    const codeIndex = markup.indexOf('data-markdown-node="code"');
+
+    expect(preIndex).toBeGreaterThan(-1);
+    expect(codeIndex).toBeGreaterThan(preIndex);
+  });
+
+  it('wraps table overflow with ScrollArea while preserving the table wrapper and table semantics', () => {
+    const markup = renderMarkdown({
+      value: [
+        '| Name | Very long detail |',
+        '| --- | --- |',
+        '| alpha | beta '.repeat(20) + ' |',
+      ].join('\n'),
+    });
+
+    expect(markup).toContain('data-testid="markdown-table-scroll-area"');
+    expect(markup).toContain('data-part="viewport"');
+    expect(markup).toContain('data-orientation="horizontal"');
+    expect(markup).toContain('data-orientation="vertical"');
+    expect(markup).toContain('data-markdown-node="table-wrapper"');
+    expect(markup).toContain('data-markdown-node="table"');
+
+    const wrapperIndex = markup.indexOf('data-markdown-node="table-wrapper"');
+    const tableIndex = markup.indexOf('data-markdown-node="table"');
+
+    expect(wrapperIndex).toBeGreaterThan(-1);
+    expect(tableIndex).toBeGreaterThan(wrapperIndex);
+  });
+
   it('does not render raw HTML as live HTML', () => {
     const markup = renderMarkdown({
       value: '<script>alert("x")</script><span data-dangerous="true">HTML</span>',
