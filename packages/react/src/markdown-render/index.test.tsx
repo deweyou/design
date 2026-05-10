@@ -1,6 +1,8 @@
+// @vitest-environment jsdom
 import { createElement, type AnchorHTMLAttributes, type ComponentPropsWithoutRef } from 'react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { describe, expect, it } from 'vite-plus/test';
+import { afterEach, describe, expect, it, vi } from 'vite-plus/test';
 
 import { MarkdownRender, type MarkdownRenderComponents, type MarkdownRenderProps } from './index';
 
@@ -9,6 +11,10 @@ const renderMarkdown = (props: MarkdownRenderProps) => {
 };
 
 describe('MarkdownRender', () => {
+  afterEach(() => {
+    cleanup();
+  });
+
   it('renders CommonMark and GFM nodes with stable data attributes', () => {
     const markup = renderMarkdown({
       value: [
@@ -168,6 +174,67 @@ describe('MarkdownRender', () => {
     expect(markup).toContain('data-markdown-node="a"');
     expect(markup).toContain('id="custom-link"');
     expect(markup).toContain('data-tracking-id="docs-link"');
+  });
+
+  it('calls onLinkClick for default links with link context before consumers prevent default', () => {
+    const onLinkClick = vi.fn();
+    const defaultPreventedValues: boolean[] = [];
+
+    render(
+      <MarkdownRender
+        onLinkClick={(details) => {
+          defaultPreventedValues.push(details.event.defaultPrevented);
+          details.event.preventDefault();
+          onLinkClick(details);
+        }}
+        value={['[Docs](/docs)', '', '[Docs](/docs-again)'].join('\n')}
+      />,
+    );
+
+    const firstLink = screen.getAllByRole('link', { name: 'Docs' })[0];
+    const clickResult = fireEvent.click(firstLink);
+
+    expect(clickResult).toBe(false);
+    expect(defaultPreventedValues).toEqual([false]);
+    expect(onLinkClick).toHaveBeenCalledTimes(1);
+    expect(onLinkClick).toHaveBeenCalledWith(
+      expect.objectContaining({
+        href: '/docs',
+        index: 0,
+        text: 'Docs',
+      }),
+    );
+  });
+
+  it('lets onLinkClick prevent the default link click when needed', () => {
+    render(
+      <MarkdownRender
+        onLinkClick={({ event }) => {
+          event.preventDefault();
+        }}
+        value="[Docs](/docs)"
+      />,
+    );
+
+    expect(fireEvent.click(screen.getByRole('link', { name: 'Docs' }))).toBe(false);
+  });
+
+  it('calls onCopy from the markdown root with copied text context', () => {
+    const onCopy = vi.fn();
+
+    const { container } = render(<MarkdownRender onCopy={onCopy} value="Copy this **text**." />);
+
+    const root = container.querySelector('[data-markdown-root="true"]');
+
+    expect(root).not.toBeNull();
+    fireEvent.copy(root as Element);
+
+    expect(onCopy).toHaveBeenCalledTimes(1);
+    expect(onCopy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        text: 'Copy this text.',
+      }),
+    );
   });
 
   it('does not leak react-markdown node objects into rendered DOM attributes', () => {

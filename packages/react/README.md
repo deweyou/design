@@ -93,6 +93,16 @@ import { MarkdownRender } from '@deweyou-design/react/markdown-render';
 
 <MarkdownRender
   value={content}
+  onLinkClick={({ href, index, text }) => {
+    trackLinkClick({ href, index, text });
+  }}
+  onCopy={({ text }) => {
+    trackCopy(text);
+  }}
+/>;
+
+<MarkdownRender
+  value={content}
   resolveNodeAttributes={({ index, node, text }) =>
     node.startsWith('h') ? { id: `${node}-${slugify(text)}-${index}` } : undefined
   }
@@ -101,7 +111,7 @@ import { MarkdownRender } from '@deweyou-design/react/markdown-render';
 <MarkdownRender value={content} components={{ a: CustomLink, pre: CodeBlock }} />;
 ```
 
-Use `resolveNodeAttributes` to attach light DOM attributes such as heading anchors, `aria-*`, or `data-*` without replacing the rendered node. Its `index` is the zero-based occurrence count for the current Markdown node type, so repeated headings can still produce stable ids. Use `components` to replace Markdown nodes such as links or code blocks. Fenced code blocks with a language are syntax-highlighted by default and show a compact language tag. Tables and code blocks use default max-height guards with scrolling; override `--markdown-table-max-height` or `--markdown-code-max-height` from `className` when a surface needs a different limit. Use `[data-markdown-node]` selectors for small visual adjustments; keep MDX and executable content in a separate renderer.
+Use `onLinkClick` and `onCopy` for light interaction hooks without changing default browser behavior; call `event.preventDefault()` inside the callback when a surface needs to own navigation. Use `resolveNodeAttributes` to attach light DOM attributes such as heading anchors, `aria-*`, or `data-*` without replacing the rendered node. Its `index` is the zero-based occurrence count for the current Markdown node type, so repeated headings can still produce stable ids. Use `components` to replace Markdown nodes such as links or code blocks. Fenced code blocks with a language are syntax-highlighted by default and show a compact language tag. Tables and code blocks use default max-height guards with scrolling; override `--markdown-table-max-height` or `--markdown-code-max-height` from `className` when a surface needs a different limit. Use `[data-markdown-node]` selectors for small visual adjustments; keep MDX and executable content in a separate renderer.
 
 ## Popover
 

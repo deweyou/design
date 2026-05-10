@@ -57,6 +57,14 @@ const examplePopoverProps: import('../src').PopoverProps = {
 const exampleMarkdownRenderProps: import('../src').MarkdownRenderProps = {
   value: '# 标题\n\n- 事项',
   size: 'md',
+  onCopy: ({ text }) => {
+    void text;
+  },
+  onLinkClick: ({ href, index, text }) => {
+    void href;
+    void index;
+    void text;
+  },
   components: {
     a: ({ children, ...props }) => createElement('a', { ...props, target: '_blank' }, children),
   },

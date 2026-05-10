@@ -73,6 +73,8 @@ export {
   MarkdownRender,
   markdownRenderSizeOptions,
   type MarkdownRenderComponents,
+  type MarkdownRenderCopyDetails,
+  type MarkdownRenderLinkClickDetails,
   type MarkdownRenderNodeAttributes,
   type MarkdownRenderNodeAttributeValue,
   type MarkdownRenderNodeName,

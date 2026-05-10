@@ -1,9 +1,11 @@
 import {
   cloneElement,
+  type ClipboardEvent,
   createElement,
   type ComponentPropsWithoutRef,
   type CSSProperties,
   isValidElement,
+  type MouseEvent,
   type ReactNode,
 } from 'react';
 import classNames from 'classnames';
@@ -60,12 +62,24 @@ export type MarkdownRenderResolveNodeAttributes = (context: {
   text: string;
   index: number;
 }) => MarkdownRenderNodeAttributes | undefined;
+export type MarkdownRenderLinkClickDetails = {
+  event: MouseEvent<HTMLAnchorElement>;
+  href: string | undefined;
+  text: string;
+  index: number;
+};
+export type MarkdownRenderCopyDetails = {
+  event: ClipboardEvent<HTMLDivElement>;
+  text: string;
+};
 
 export type MarkdownRenderProps = {
   value: string;
   size?: MarkdownRenderSize;
   components?: MarkdownRenderComponents;
   resolveNodeAttributes?: MarkdownRenderResolveNodeAttributes;
+  onLinkClick?: (details: MarkdownRenderLinkClickDetails) => void;
+  onCopy?: (details: MarkdownRenderCopyDetails) => void;
   className?: string;
   style?: CSSProperties;
 };
@@ -256,9 +270,18 @@ const createMarkdownHeading6 =
     );
   };
 
-const createMarkdownLink =
-  (resolveMarkdownNodeProps: ResolveMarkdownNodeProps) =>
-  ({ children, href, rel, target, ...props }: ComponentPropsWithoutRef<'a'>) => {
+const createMarkdownLink = (
+  resolveMarkdownNodeProps: ResolveMarkdownNodeProps,
+  onLinkClick?: MarkdownRenderProps['onLinkClick'],
+) => {
+  let linkIndex = 0;
+
+  return ({ children, href, rel, target, ...props }: ComponentPropsWithoutRef<'a'>) => {
+    const index = linkIndex;
+
+    linkIndex += 1;
+
+    const text = getReactNodeText(children);
     const isExternal = typeof href === 'string' && /^https?:\/\//.test(href);
     const resolvedTarget = target ?? (isExternal ? '_blank' : undefined);
     const resolvedRel = rel ?? (isExternal ? 'noreferrer' : undefined);
@@ -269,6 +292,14 @@ const createMarkdownLink =
         {...nodeProps}
         className={classNames(styles.link, nodeProps.className)}
         href={href}
+        onClick={(event) => {
+          onLinkClick?.({
+            event,
+            href,
+            index,
+            text,
+          });
+        }}
         rel={resolvedRel}
         target={resolvedTarget}
       >
@@ -276,6 +307,7 @@ const createMarkdownLink =
       </a>
     );
   };
+};
 
 const createMarkdownImage =
   (resolveMarkdownNodeProps: ResolveMarkdownNodeProps) =>
@@ -484,8 +516,9 @@ const createMarkdownHr =
 
 const createDefaultComponents = (
   resolveMarkdownNodeProps: ResolveMarkdownNodeProps,
+  onLinkClick?: MarkdownRenderProps['onLinkClick'],
 ): MarkdownRenderComponents => ({
-  a: createMarkdownLink(resolveMarkdownNodeProps),
+  a: createMarkdownLink(resolveMarkdownNodeProps, onLinkClick),
   blockquote: createMarkdownBlockquote(resolveMarkdownNodeProps),
   code: createMarkdownCode(resolveMarkdownNodeProps),
   h1: createMarkdownHeading1(resolveMarkdownNodeProps),
@@ -566,13 +599,15 @@ const mergeMarkdownComponents = (
 export const MarkdownRender = ({
   className,
   components,
+  onCopy,
+  onLinkClick,
   resolveNodeAttributes,
   size = 'md',
   style,
   value,
 }: MarkdownRenderProps) => {
   const resolveMarkdownNodeProps = createMarkdownNodePropsResolver(resolveNodeAttributes);
-  const defaultComponents = createDefaultComponents(resolveMarkdownNodeProps);
+  const defaultComponents = createDefaultComponents(resolveMarkdownNodeProps, onLinkClick);
 
   return (
     <div
@@ -583,6 +618,12 @@ export const MarkdownRender = ({
       )}
       data-markdown-root="true"
       data-markdown-size={size}
+      onCopy={(event) => {
+        onCopy?.({
+          event,
+          text: event.currentTarget.textContent ?? '',
+        });
+      }}
       style={style}
     >
       <ReactMarkdown
