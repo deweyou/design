@@ -218,4 +218,5 @@ Toast
 - `Pagination`, `Breadcrumb`, `Nav`, and `Tabs` are navigation primitives. They should expose semantic markup first and visual variants second.
 - `ScrollArea` is a layout primitive. Keep viewport/scrollbar/thumb composition explicit.
 - Public component props should stay decoupled from Ark UI prop names unless the Ark term is already the common component vocabulary.
-- New components must include source, CSS module, colocated unit tests, Storybook `Interaction`, README/docs entry, and a subpath export.
+- New public components must include source, CSS module, colocated unit tests, Storybook `Interaction`, README entry, this component contract entry, root and subpath exports, and package/docs contract coverage.
+- New component designs with non-obvious trade-offs or future extension paths must be recorded in `docs/superpowers/specs/` and `docs/superpowers/plans/` before implementation continues.

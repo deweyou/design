@@ -5,6 +5,20 @@
 
 ---
 
+## 默认交付门禁
+
+新增或实质修改组件时，不需要额外提醒，开发者和 AI agent 必须默认交付：
+
+- colocated Vitest 单测：保护组件自身运行时行为。
+- Storybook `Interaction` e2e：保护用户可见路径。
+- contract test：当改动影响 package export、subpath、文档同步、样式治理或跨包边界时必须补齐。
+- README / 知识库同步：新增公开组件必须更新 `README.md` 和 `docs/design/components.md`；有新设计决策或后续演进方向时同步写入 `docs/superpowers/specs/` 和 `docs/superpowers/plans/`。
+- 验证命令：默认运行 `vp check`、`vp test`、相关 Storybook e2e；新增或修改 Storybook story 时运行 `vp run storybook#test`。
+
+如果某一项确实不适用，必须在 PR 描述或相关文档中写明原因。
+
+---
+
 ## 组件分类
 
 | 类型           | 定义                                                    | 示例                                          |
