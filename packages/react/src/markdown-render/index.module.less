@@ -105,19 +105,28 @@
   margin-block: 0.25rem;
 }
 
+.listItem:has(.taskMarker) {
+  list-style: none;
+}
+
 .listItem::marker {
   color: var(--ui-color-text-muted);
 }
 
 .taskMarker {
   align-items: center;
+  background: var(--ui-color-surface);
   block-size: 1rem;
   border: 1px solid var(--ui-color-border-strong);
   border-radius: var(--ui-radius-rect);
   display: inline-flex;
+  flex-shrink: 0;
   inline-size: 1rem;
   justify-content: center;
   margin-inline-end: 0.45rem;
+  transition:
+    background 140ms ease,
+    border-color 140ms ease;
   vertical-align: -0.16em;
 }
 
@@ -127,12 +136,12 @@
 }
 
 .taskMarkerIndicator {
-  block-size: 0.42rem;
+  block-size: 0.44rem;
   border-block-end: 0.12rem solid var(--ui-color-text-on-brand);
   border-inline-end: 0.12rem solid var(--ui-color-text-on-brand);
   display: none;
-  inline-size: 0.24rem;
-  transform: rotate(45deg) translate(-0.02rem, -0.03rem);
+  inline-size: 0.28rem;
+  transform: rotate(45deg) translate(-0.02rem, -0.04rem);
 }
 
 .taskMarker[data-checked='true'] .taskMarkerIndicator {

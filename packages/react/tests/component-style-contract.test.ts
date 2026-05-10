@@ -95,6 +95,10 @@ test('markdown render styles consume semantic typography and surface tokens', ()
   expect(stylesheet).toContain('--ui-font-body');
   expect(stylesheet).toContain('--ui-text-size-body');
   expect(stylesheet).toContain('var(--ui-radius-rect)');
+  expect(stylesheet).toContain('.listItem:has(.taskMarker)');
+  expect(stylesheet).toContain('list-style: none;');
+  expect(stylesheet).toContain('background: var(--ui-color-surface);');
+  expect(stylesheet).toContain('transition:');
   expect(stylesheet).not.toContain('--ui-color-palette-');
 });
 
