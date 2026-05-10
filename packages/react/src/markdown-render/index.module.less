@@ -5,11 +5,11 @@
   --markdown-code-attribute: var(--ui-color-warning-text);
   --markdown-code-keyword: var(--ui-color-brand-text);
   --markdown-code-literal: var(--ui-color-brand-bg);
+  --markdown-code-max-height: 22rem;
   --markdown-code-string: var(--ui-color-danger-text);
   --markdown-code-title: var(--ui-color-brand-bg-hover);
   --markdown-heading-gap: 1.35rem;
   --markdown-inline-code-background: color-mix(in srgb, var(--ui-color-text) 8%, transparent);
-  --markdown-list-max-height: 18rem;
   --markdown-muted-border: var(--ui-color-border);
   --markdown-table-max-height: 24rem;
 
@@ -100,17 +100,12 @@
 }
 
 .list {
-  max-block-size: var(--markdown-list-max-height);
   margin-block: var(--markdown-block-gap);
-  overflow-y: auto;
   padding-inline-start: 1.45rem;
-  scrollbar-width: thin;
 }
 
 .list .list {
-  max-block-size: none;
   margin-block: 0.35rem;
-  overflow: visible;
 }
 
 .listItem {
@@ -123,11 +118,12 @@
   flex-wrap: wrap;
   gap: 0.5rem;
   list-style: none;
+  margin-inline-start: -1.5rem;
 }
 
 .listItem:has(.taskMarker) > .list {
   flex-basis: 100%;
-  margin-inline-start: 1.5rem;
+  margin-inline-start: 1.95rem;
 }
 
 .listItem::marker {
@@ -188,7 +184,9 @@
   background: color-mix(in srgb, var(--ui-color-text) 6%, transparent);
   border: 1px solid var(--ui-color-border);
   border-radius: var(--ui-radius-rect);
+  box-sizing: border-box;
   margin-block: var(--markdown-block-gap);
+  max-block-size: var(--markdown-code-max-height);
   max-inline-size: 100%;
   overflow: auto;
   padding: 0.85rem 1rem;
@@ -236,11 +234,11 @@
     Consolas,
     monospace
   );
-  font-size: 0.72rem;
-  inset-block-start: 0.55rem;
-  inset-inline-end: 0.6rem;
+  font-size: 0.625rem;
+  inset-block-start: 0.45rem;
+  inset-inline-end: 0.5rem;
   line-height: 1;
-  padding: 0.22rem 0.4rem;
+  padding: 0.16rem 0.32rem;
   position: absolute;
   text-transform: uppercase;
 }
@@ -283,6 +281,7 @@
 }
 
 .tableScroller {
+  box-sizing: border-box;
   margin-block: var(--markdown-block-gap);
   max-block-size: var(--markdown-table-max-height);
   max-inline-size: 100%;
@@ -293,7 +292,7 @@
 .table {
   border-collapse: collapse;
   inline-size: 100%;
-  min-inline-size: 32rem;
+  min-inline-size: 72rem;
 }
 
 .table :where(th, td) {

@@ -155,7 +155,7 @@ Tabs
 <MarkdownRender value={content} components={{ a: CustomLink, pre: CodeBlock }} />
 ```
 
-`MarkdownRender` is the safe runtime Markdown path for CommonMark plus GFM content. Use `size` to adjust typography density, `components` to replace rendered nodes, and `className` with `[data-markdown-node]` selectors for light style overrides. Fenced code blocks with a language are syntax-highlighted by default and show a compact language tag. Tables and long lists use default max-height guards with scrolling; override `--markdown-table-max-height` or `--markdown-list-max-height` from the consumer surface when needed. MDX and executable content belong in a separate rendering boundary.
+`MarkdownRender` is the safe runtime Markdown path for CommonMark plus GFM content. Use `size` to adjust typography density, `components` to replace rendered nodes, and `className` with `[data-markdown-node]` selectors for light style overrides. Fenced code blocks with a language are syntax-highlighted by default and show a compact language tag. Tables and code blocks use default max-height guards with scrolling; override `--markdown-table-max-height` or `--markdown-code-max-height` from the consumer surface when needed. MDX and executable content belong in a separate rendering boundary.
 
 ### Navigation
 

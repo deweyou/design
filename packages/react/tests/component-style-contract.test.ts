@@ -101,10 +101,11 @@ test('markdown render styles consume semantic typography and surface tokens', ()
   expect(stylesheet).toContain('background: var(--ui-color-surface);');
   expect(stylesheet).toContain(':global(.hljs-keyword)');
   expect(stylesheet).toContain('--markdown-code-keyword');
-  expect(stylesheet).toContain('--markdown-list-max-height');
+  expect(stylesheet).toContain('--markdown-code-max-height');
   expect(stylesheet).toContain('--markdown-table-max-height');
   expect(stylesheet).toContain('position: sticky;');
   expect(stylesheet).toContain('inset-block-start: 0;');
+  expect(stylesheet).not.toContain('--markdown-list-max-height');
   expect(stylesheet).toContain('transition:');
   expect(stylesheet).not.toContain('--ui-color-palette-');
 });
