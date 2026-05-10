@@ -63,10 +63,14 @@
   }
 }
 
-.root:hover .scrollbar,
-.scrollbar[data-scrolling],
-.scrollbar[data-hover],
-.scrollbar[data-dragging] {
+.root:hover .scrollbar[data-orientation='vertical'][data-overflow-y],
+.root:hover .scrollbar[data-orientation='horizontal'][data-overflow-x],
+.scrollbar[data-orientation='vertical'][data-overflow-y][data-scrolling],
+.scrollbar[data-orientation='horizontal'][data-overflow-x][data-scrolling],
+.scrollbar[data-orientation='vertical'][data-overflow-y][data-hover],
+.scrollbar[data-orientation='horizontal'][data-overflow-x][data-hover],
+.scrollbar[data-orientation='vertical'][data-overflow-y][data-dragging],
+.scrollbar[data-orientation='horizontal'][data-overflow-x][data-dragging] {
   opacity: 1;
 }
 

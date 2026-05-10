@@ -6,6 +6,7 @@ import { expect, test } from 'vite-plus/test';
 const reactSourceRoot = resolve(import.meta.dirname, '../src');
 const buttonStylesPath = resolve(reactSourceRoot, 'button/index.module.less');
 const markdownRenderStylesPath = resolve(reactSourceRoot, 'markdown-render/index.module.less');
+const scrollAreaStylesPath = resolve(reactSourceRoot, 'scroll-area/index.module.less');
 const tabsStylesPath = resolve(reactSourceRoot, 'tabs/index.module.less');
 const textStylesPath = resolve(reactSourceRoot, 'text/index.module.less');
 
@@ -83,6 +84,18 @@ test('text styles preserve typography and truncation layout contracts', () => {
   expect(stylesheet).toContain('max-block-size');
   expect(stylesheet).not.toContain('border-radius');
   expect(stylesheet).not.toContain('--ui-color-palette-');
+});
+
+test('scroll area styles only reveal scrollbars for overflowing directions', () => {
+  const stylesheet = readFileSync(scrollAreaStylesPath, 'utf8');
+
+  expect(stylesheet).toContain(
+    ".root:hover .scrollbar[data-orientation='vertical'][data-overflow-y]",
+  );
+  expect(stylesheet).toContain(
+    ".root:hover .scrollbar[data-orientation='horizontal'][data-overflow-x]",
+  );
+  expect(stylesheet).not.toContain('.root:hover .scrollbar,\n.scrollbar[data-scrolling]');
 });
 
 test('markdown render styles consume semantic typography and surface tokens', () => {
