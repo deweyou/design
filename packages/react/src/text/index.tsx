@@ -10,9 +10,9 @@ export const textColorFamilyOptions = colorFamilyNames;
  * Typographic role the component renders into.
  * - 'plain' → <span> (inline, default)
  * - 'body' / 'caption' → <div> (block)
- * - 'h1'–'h5' → the corresponding native heading element
+ * - 'h1'–'h6' → the corresponding native heading element
  */
-export type TextVariant = 'plain' | 'body' | 'caption' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5';
+export type TextVariant = 'plain' | 'body' | 'caption' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 
 /**
  * A color family name from @deweyou-design/styles shared palette.
@@ -53,7 +53,10 @@ export type TextProps = HTMLAttributes<HTMLElement> & {
   [dataAttr: `data-${string}`]: string | number | boolean | undefined;
 };
 
-const variantElementMap: Record<TextVariant, 'div' | 'span' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5'> = {
+const variantElementMap: Record<
+  TextVariant,
+  'div' | 'span' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
+> = {
   plain: 'span',
   body: 'div',
   caption: 'div',
@@ -62,6 +65,7 @@ const variantElementMap: Record<TextVariant, 'div' | 'span' | 'h1' | 'h2' | 'h3'
   h3: 'h3',
   h4: 'h4',
   h5: 'h5',
+  h6: 'h6',
 };
 
 const variantClassMap: Record<TextVariant, string> = {
@@ -73,6 +77,7 @@ const variantClassMap: Record<TextVariant, string> = {
   h3: styles.h3,
   h4: styles.h4,
   h5: styles.h5,
+  h6: styles.h6,
 };
 
 const decorationClassMap = {

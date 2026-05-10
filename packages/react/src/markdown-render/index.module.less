@@ -1,0 +1,385 @@
+@import '@deweyou-design/styles/less/bridge';
+
+.root {
+  --markdown-block-gap: 0.85rem;
+  --markdown-code-attribute: var(--ui-color-warning-text);
+  --markdown-code-keyword: var(--ui-color-brand-text);
+  --markdown-code-literal: var(--ui-color-brand-bg);
+  --markdown-code-max-height: 22rem;
+  --markdown-code-string: var(--ui-color-danger-text);
+  --markdown-code-title: var(--ui-color-brand-bg-hover);
+  --markdown-heading-gap: 1.35rem;
+  --markdown-inline-code-background: color-mix(in srgb, var(--ui-color-text) 8%, transparent);
+  --markdown-muted-border: var(--ui-color-border);
+  --markdown-table-max-height: 24rem;
+
+  color: var(--ui-color-text);
+  box-sizing: border-box;
+  font-family: var(--ui-font-body);
+  inline-size: 100%;
+  max-inline-size: 100%;
+  min-inline-size: 0;
+  overflow-x: hidden;
+  overflow-wrap: anywhere;
+}
+
+.sizeSm {
+  --markdown-block-gap: 0.58rem;
+  --markdown-heading-gap: 1rem;
+}
+
+.sizeMd {
+  --markdown-block-gap: 0.85rem;
+  --markdown-heading-gap: 1.35rem;
+}
+
+.sizeLg {
+  --markdown-block-gap: 1.05rem;
+  --markdown-heading-gap: 1.65rem;
+}
+
+.root > :first-child,
+.root :where([data-markdown-node]):first-child {
+  margin-block-start: 0;
+}
+
+.root > :last-child,
+.root :where([data-markdown-node]):last-child {
+  margin-block-end: 0;
+}
+
+.paragraph {
+  color: var(--ui-color-text);
+  font-family: var(--ui-font-body);
+  font-size: var(--ui-text-size-body);
+  font-weight: var(--ui-font-weight-body);
+  line-height: var(--ui-text-line-height-body);
+  margin-block: var(--markdown-block-gap);
+  text-decoration-thickness: from-font;
+  text-underline-offset: 0.14em;
+}
+
+.root :where(strong, b) {
+  font-weight: var(--ui-font-weight-strong);
+}
+
+.root :where(del, s) {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0 54%;
+  background-repeat: repeat-x;
+  background-size: 100% 0.07em;
+  text-decoration-line: none;
+}
+
+.heading {
+  --markdown-heading-font-size: var(--ui-text-size-h3);
+  --markdown-heading-line-height: var(--ui-text-line-height-h3);
+
+  font-size: var(--markdown-heading-font-size);
+  line-height: var(--markdown-heading-line-height);
+  margin-block-start: var(--markdown-heading-gap);
+}
+
+.heading:where([data-markdown-node='h1']) {
+  --markdown-heading-font-size: 2rem;
+  --markdown-heading-line-height: 1.12;
+}
+
+.heading:where([data-markdown-node='h2']) {
+  --markdown-heading-font-size: 1.65rem;
+  --markdown-heading-line-height: 1.16;
+}
+
+.heading:where([data-markdown-node='h3']) {
+  --markdown-heading-font-size: 1.35rem;
+  --markdown-heading-line-height: 1.22;
+}
+
+.heading:where([data-markdown-node='h4']) {
+  --markdown-heading-font-size: 1.15rem;
+  --markdown-heading-line-height: 1.28;
+}
+
+.heading:where([data-markdown-node='h5']) {
+  --markdown-heading-font-size: 1rem;
+  --markdown-heading-line-height: 1.35;
+}
+
+.heading:where([data-markdown-node='h6']) {
+  --markdown-heading-font-size: 0.92rem;
+  --markdown-heading-line-height: 1.38;
+  color: var(--ui-color-text-muted);
+}
+
+.link {
+  color: var(--ui-color-brand-bg);
+  text-decoration-line: underline;
+  text-decoration-thickness: from-font;
+  text-underline-offset: 0.16em;
+}
+
+.link:hover {
+  color: var(--ui-color-brand-bg-hover);
+}
+
+.link:focus-visible {
+  .focus-ring-offset();
+}
+
+.image {
+  border-radius: var(--ui-radius-rect);
+  display: block;
+  height: auto;
+  margin-block: var(--markdown-block-gap);
+  max-inline-size: 100%;
+}
+
+.blockquote {
+  border-inline-start: 3px solid var(--ui-color-border-strong);
+  color: var(--ui-color-text-muted);
+  margin-block: var(--markdown-block-gap);
+  margin-inline: 0;
+  padding-block: 0.1rem;
+  padding-inline-start: 1rem;
+}
+
+.blockquote :where(.paragraph, .list, .listItem),
+.blockquote .listItem::marker {
+  color: inherit;
+}
+
+.list {
+  margin-block: var(--markdown-block-gap);
+  padding-inline-start: 1.45rem;
+}
+
+.list .list {
+  margin-block: 0.35rem;
+}
+
+.listItem {
+  margin-block: 0.25rem;
+}
+
+.listItem:has(.taskMarker) {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  margin-inline-start: -1.2rem;
+}
+
+.listItem:has(.taskMarker) > .list {
+  flex-basis: 100%;
+  margin-inline-start: 1.65rem;
+}
+
+.listItem::marker {
+  color: var(--ui-color-text-muted);
+}
+
+.taskMarker {
+  align-items: center;
+  background: var(--ui-color-surface);
+  block-size: 1rem;
+  border: 1px solid var(--ui-color-border-strong);
+  border-radius: var(--ui-radius-rect);
+  display: inline-flex;
+  flex-shrink: 0;
+  inline-size: 1rem;
+  justify-content: center;
+  transition:
+    background 140ms ease,
+    border-color 140ms ease;
+}
+
+.taskMarker[data-checked='true'] {
+  background: var(--ui-color-brand-bg);
+  border-color: var(--ui-color-brand-bg);
+}
+
+.taskMarkerIndicator {
+  align-items: center;
+  color: var(--ui-color-text-on-brand);
+  display: none;
+  font-size: 0.75rem;
+  justify-content: center;
+  line-height: 1;
+}
+
+.taskMarker[data-checked='true'] .taskMarkerIndicator {
+  display: inline-flex;
+}
+
+.taskMarkerIndicator svg {
+  display: block;
+  flex-shrink: 0;
+}
+
+.taskMarkerState {
+  block-size: 1px;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  inline-size: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+}
+
+.codeScrollArea {
+  background: color-mix(in srgb, var(--ui-color-text) 6%, transparent);
+  border: 1px solid var(--ui-color-border);
+  border-radius: var(--ui-radius-rect);
+  box-sizing: border-box;
+  margin-block: var(--markdown-block-gap);
+  max-block-size: var(--markdown-code-max-height);
+  max-inline-size: 100%;
+}
+
+.codeViewport {
+  max-block-size: var(--markdown-code-max-height);
+}
+
+.pre {
+  box-sizing: border-box;
+  inline-size: max-content;
+  margin: 0;
+  min-inline-size: 100%;
+  padding: 0.85rem 1rem;
+  padding-inline-end: 3rem;
+}
+
+.code,
+.inlineCode {
+  font-family: var(
+    --ui-font-code,
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace
+  );
+}
+
+.inlineCode {
+  background: var(--markdown-inline-code-background);
+  border-radius: var(--ui-radius-rect);
+  font-size: 0.92em;
+  padding: 0.08em 0.32em;
+}
+
+.code {
+  background: transparent;
+  font-size: 0.88rem;
+  line-height: 1.65;
+  white-space: pre;
+}
+
+.codeLanguage {
+  background: color-mix(in srgb, var(--ui-color-surface) 90%, transparent);
+  border: 1px solid var(--ui-color-border);
+  border-radius: var(--ui-radius-rect);
+  color: var(--ui-color-text-muted);
+  font-family: var(
+    --ui-font-code,
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace
+  );
+  font-size: 0.625rem;
+  inset-block-start: 0.45rem;
+  inset-inline-end: 0.5rem;
+  line-height: 1;
+  padding: 0.16rem 0.32rem;
+  position: absolute;
+  text-transform: uppercase;
+}
+
+.code :global(.hljs-keyword),
+.code :global(.hljs-selector-tag),
+.code :global(.hljs-built_in) {
+  color: var(--markdown-code-keyword);
+}
+
+.code :global(.hljs-string),
+.code :global(.hljs-regexp),
+.code :global(.hljs-template-variable) {
+  color: var(--markdown-code-string);
+}
+
+.code :global(.hljs-number),
+.code :global(.hljs-literal),
+.code :global(.hljs-symbol) {
+  color: var(--markdown-code-literal);
+}
+
+.code :global(.hljs-title),
+.code :global(.hljs-title.function_),
+.code :global(.hljs-title.class_) {
+  color: var(--markdown-code-title);
+}
+
+.code :global(.hljs-attr),
+.code :global(.hljs-attribute),
+.code :global(.hljs-property),
+.code :global(.hljs-variable) {
+  color: var(--markdown-code-attribute);
+}
+
+.code :global(.hljs-comment),
+.code :global(.hljs-quote) {
+  color: var(--ui-color-text-muted);
+  font-style: italic;
+}
+
+.tableScroller {
+  box-sizing: border-box;
+  inline-size: 100%;
+  margin-block: var(--markdown-block-gap);
+  max-inline-size: 100%;
+  min-inline-size: 0;
+}
+
+.tableScrollArea {
+  box-sizing: border-box;
+  inline-size: 100%;
+  max-block-size: var(--markdown-table-max-height);
+  max-inline-size: 100%;
+  min-inline-size: 0;
+}
+
+.tableViewport {
+  max-block-size: var(--markdown-table-max-height);
+}
+
+.table {
+  border-collapse: collapse;
+  inline-size: max-content;
+  min-inline-size: 100%;
+}
+
+.table :where(th, td) {
+  border: 1px solid var(--ui-color-border);
+  padding: 0.55rem 0.7rem;
+  text-align: start;
+  vertical-align: top;
+}
+
+.table :where(th) {
+  background: color-mix(in srgb, var(--ui-color-surface) 96%, var(--ui-color-text) 4%);
+  font-weight: var(--ui-font-weight-strong);
+  inset-block-start: 0;
+  position: sticky;
+  z-index: 1;
+}
+
+.separator {
+  margin-block: calc(var(--markdown-block-gap) * 1.4);
+}

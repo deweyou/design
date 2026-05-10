@@ -133,3 +133,11 @@ test('workspace publish flow writes dist package manifests instead of mutating s
   expect(stylesScript).not.toContain('writeFileSync');
   expect(iconsScript).toContain("resolve(packageRoot, 'dist')");
 });
+
+test('components package externalizes markdown runtime dependencies in published builds', () => {
+  const viteConfig = readFileSync(resolve(root, 'packages/react/vite.config.ts'), 'utf8');
+
+  expect(viteConfig).toContain("'react-markdown'");
+  expect(viteConfig).toContain("'rehype-highlight'");
+  expect(viteConfig).toContain("'remark-gfm'");
+});

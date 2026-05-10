@@ -20,7 +20,7 @@ Every public component supports root import and a documented subpath import. The
 
 Prefer subpath imports for better tree-shaking; use the root `@deweyou-design/react` import when consuming multiple components together.
 
-Core coverage: `Button`, `IconButton`, `Field`, `Input`, `Textarea`, `Select`, `Checkbox`, `RadioGroup`, `Switch`, `Dialog`, `Menu`, `Popover`, `Tooltip`, `Toast`, `Tabs`, `Pagination`, `Breadcrumb`, `Nav`, `NavOverlay`, `ScrollArea`, `Text`, `Badge`, `Card`, `Separator`, `Skeleton`, and `Spinner`.
+Core coverage: `Button`, `IconButton`, `Field`, `Input`, `Textarea`, `Select`, `Checkbox`, `RadioGroup`, `Switch`, `Dialog`, `Menu`, `Popover`, `Tooltip`, `Toast`, `Tabs`, `Pagination`, `Breadcrumb`, `Nav`, `NavOverlay`, `ScrollArea`, `MarkdownRender`, `Text`, `Badge`, `Card`, `Separator`, `Skeleton`, and `Spinner`.
 
 ## Button
 
@@ -79,6 +79,39 @@ import { Text } from '@deweyou-design/react/text';
   Highlighted and clamped.
 </Text>
 ```
+
+## MarkdownRender
+
+The shared CommonMark plus GFM rendering primitive for safe runtime Markdown strings.
+
+### Usage
+
+```tsx
+import { MarkdownRender } from '@deweyou-design/react/markdown-render';
+
+<MarkdownRender value={content} size="md" />;
+
+<MarkdownRender
+  value={content}
+  onLinkClick={({ href, index, text }) => {
+    trackLinkClick({ href, index, text });
+  }}
+  onCopy={({ text }) => {
+    trackCopy(text);
+  }}
+/>;
+
+<MarkdownRender
+  value={content}
+  resolveNodeAttributes={({ index, node, text }) =>
+    node.startsWith('h') ? { id: `${node}-${slugify(text)}-${index}` } : undefined
+  }
+/>;
+
+<MarkdownRender value={content} components={{ a: CustomLink, pre: CodeBlock }} />;
+```
+
+Use `onLinkClick` and `onCopy` for light interaction hooks without changing default browser behavior; call `event.preventDefault()` inside the callback when a surface needs to own navigation. Use `resolveNodeAttributes` to attach light DOM attributes such as heading anchors, `aria-*`, or `data-*` without replacing the rendered node. Its `index` is the zero-based occurrence count for the current Markdown node type, so repeated headings can still produce stable ids. Use `components` to replace Markdown nodes such as links or code blocks. Fenced code blocks with a language are syntax-highlighted by default and show a compact language tag. Tables and code blocks use default max-height guards with scrolling; override `--markdown-table-max-height` or `--markdown-code-max-height` from `className` when a surface needs a different limit. Use `[data-markdown-node]` selectors for small visual adjustments; keep MDX and executable content in a separate renderer.
 
 ## Popover
 

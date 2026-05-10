@@ -54,12 +54,29 @@ const examplePopoverProps: import('../src').PopoverProps = {
   trigger: ['click', 'focus'],
 };
 
+const exampleMarkdownRenderProps: import('../src').MarkdownRenderProps = {
+  value: '# 标题\n\n- 事项',
+  size: 'md',
+  onCopy: ({ text }) => {
+    void text;
+  },
+  onLinkClick: ({ href, index, text }) => {
+    void href;
+    void index;
+    void text;
+  },
+  components: {
+    a: ({ children, ...props }) => createElement('a', { ...props, target: '_blank' }, children),
+  },
+};
+
 void exampleButtonProps;
 void exampleIconButtonProps;
+void exampleMarkdownRenderProps;
 void examplePopoverProps;
 void exampleTextProps;
 
-test('components root entry exposes Button, IconButton, Popover, Text, Menu family, Tabs family, Phase 2 and Phase 3 components as the runtime public exports', () => {
+test('components root entry exposes Button, IconButton, Popover, Text, Menu family, Tabs family, Phase 2, Phase 3, and MarkdownRender components as the runtime public exports', () => {
   expect(Object.keys(components).sort()).toEqual([
     'Badge',
     'Breadcrumb',
@@ -71,6 +88,7 @@ test('components root entry exposes Button, IconButton, Popover, Text, Menu fami
     'Field',
     'IconButton',
     'Input',
+    'MarkdownRender',
     'Menu',
     'MenuCheckboxItem',
     'MenuContent',
@@ -103,13 +121,14 @@ test('components root entry exposes Button, IconButton, Popover, Text, Menu fami
     'Toaster',
     'Tooltip',
     'VirtualList',
+    'markdownRenderSizeOptions',
     'toast',
     'useFieldContext',
     'useFieldControlProps',
   ]);
 });
 
-test('components root entry renders Button, IconButton, Popover, and Text without any legacy contract object', () => {
+test('components root entry renders Button, IconButton, Popover, Text, and MarkdownRender without any legacy contract object', () => {
   const buttonMarkup = renderToStaticMarkup(
     createElement(components.Button, { href: '/publish' }, 'Publish'),
   );
@@ -130,6 +149,9 @@ test('components root entry renders Button, IconButton, Popover, and Text withou
   const textMarkup = renderToStaticMarkup(
     createElement(components.Text, { variant: 'body' }, '公开正文'),
   );
+  const markdownMarkup = renderToStaticMarkup(
+    createElement(components.MarkdownRender, { value: '# Public markdown' }),
+  );
 
   expect(buttonMarkup).toContain('data-content-mode="text-only"');
   expect(buttonMarkup.startsWith('<a')).toBe(true);
@@ -139,6 +161,9 @@ test('components root entry renders Button, IconButton, Popover, and Text withou
   expect(popoverMarkup).toContain('Open popover');
   expect(textMarkup.startsWith('<div')).toBe(true);
   expect(textMarkup).toContain('公开正文');
+  expect(markdownMarkup).toContain('data-markdown-root="true"');
+  expect(markdownMarkup).toContain('data-markdown-node="h1"');
+  expect(markdownMarkup).toContain('Public markdown');
   expect(components.Button.Icon).toBe(components.IconButton);
 });
 

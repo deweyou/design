@@ -70,6 +70,19 @@ export {
 export { Input, type InputProps, type InputSize } from './input/index.tsx';
 export { Textarea, type TextareaProps, type TextareaSize } from './textarea/index.tsx';
 export {
+  MarkdownRender,
+  markdownRenderSizeOptions,
+  type MarkdownRenderComponents,
+  type MarkdownRenderCopyDetails,
+  type MarkdownRenderLinkClickDetails,
+  type MarkdownRenderNodeAttributes,
+  type MarkdownRenderNodeAttributeValue,
+  type MarkdownRenderNodeName,
+  type MarkdownRenderProps,
+  type MarkdownRenderResolveNodeAttributes,
+  type MarkdownRenderSize,
+} from './markdown-render/index.tsx';
+export {
   Field,
   useFieldContext,
   useFieldControlProps,

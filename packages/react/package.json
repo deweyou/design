@@ -56,6 +56,11 @@
       "import": "./dist/input/index.js",
       "default": "./dist/input/index.js"
     },
+    "./markdown-render": {
+      "types": "./dist/markdown-render/index.d.ts",
+      "import": "./dist/markdown-render/index.js",
+      "default": "./dist/markdown-render/index.js"
+    },
     "./menu": {
       "types": "./dist/menu/index.d.ts",
       "import": "./dist/menu/index.js",
@@ -162,7 +167,10 @@
     "@deweyou-design/react-hooks": "workspace:*",
     "@deweyou-design/react-icons": "workspace:*",
     "@deweyou-design/styles": "workspace:*",
-    "classnames": "catalog:"
+    "classnames": "catalog:",
+    "react-markdown": "catalog:",
+    "rehype-highlight": "catalog:",
+    "remark-gfm": "catalog:"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "catalog:",
