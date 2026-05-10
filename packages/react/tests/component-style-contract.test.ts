@@ -5,6 +5,7 @@ import { expect, test } from 'vite-plus/test';
 
 const reactSourceRoot = resolve(import.meta.dirname, '../src');
 const buttonStylesPath = resolve(reactSourceRoot, 'button/index.module.less');
+const markdownRenderStylesPath = resolve(reactSourceRoot, 'markdown-render/index.module.less');
 const tabsStylesPath = resolve(reactSourceRoot, 'tabs/index.module.less');
 const textStylesPath = resolve(reactSourceRoot, 'text/index.module.less');
 
@@ -81,6 +82,19 @@ test('text styles preserve typography and truncation layout contracts', () => {
   expect(stylesheet).toContain('-webkit-box-orient');
   expect(stylesheet).toContain('max-block-size');
   expect(stylesheet).not.toContain('border-radius');
+  expect(stylesheet).not.toContain('--ui-color-palette-');
+});
+
+test('markdown render styles consume semantic typography and surface tokens', () => {
+  const stylesheet = readFileSync(markdownRenderStylesPath, 'utf8');
+
+  expect(stylesheet).toContain('@import');
+  expect(stylesheet).toContain('.focus-ring-offset()');
+  expect(stylesheet).toContain('--ui-color-text');
+  expect(stylesheet).toContain('--ui-color-border');
+  expect(stylesheet).toContain('--ui-font-body');
+  expect(stylesheet).toContain('--ui-text-size-body');
+  expect(stylesheet).toContain('var(--ui-radius-rect)');
   expect(stylesheet).not.toContain('--ui-color-palette-');
 });
 

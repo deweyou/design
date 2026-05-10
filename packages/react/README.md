@@ -20,7 +20,7 @@ Every public component supports root import and a documented subpath import. The
 
 Prefer subpath imports for better tree-shaking; use the root `@deweyou-design/react` import when consuming multiple components together.
 
-Core coverage: `Button`, `IconButton`, `Field`, `Input`, `Textarea`, `Select`, `Checkbox`, `RadioGroup`, `Switch`, `Dialog`, `Menu`, `Popover`, `Tooltip`, `Toast`, `Tabs`, `Pagination`, `Breadcrumb`, `Nav`, `NavOverlay`, `ScrollArea`, `Text`, `Badge`, `Card`, `Separator`, `Skeleton`, and `Spinner`.
+Core coverage: `Button`, `IconButton`, `Field`, `Input`, `Textarea`, `Select`, `Checkbox`, `RadioGroup`, `Switch`, `Dialog`, `Menu`, `Popover`, `Tooltip`, `Toast`, `Tabs`, `Pagination`, `Breadcrumb`, `Nav`, `NavOverlay`, `ScrollArea`, `MarkdownRender`, `Text`, `Badge`, `Card`, `Separator`, `Skeleton`, and `Spinner`.
 
 ## Button
 
@@ -79,6 +79,22 @@ import { Text } from '@deweyou-design/react/text';
   Highlighted and clamped.
 </Text>
 ```
+
+## MarkdownRender
+
+The shared CommonMark plus GFM rendering primitive for safe runtime Markdown strings.
+
+### Usage
+
+```tsx
+import { MarkdownRender } from '@deweyou-design/react/markdown-render';
+
+<MarkdownRender value={content} size="md" />;
+
+<MarkdownRender value={content} components={{ a: CustomLink, pre: CodeBlock }} />;
+```
+
+Use `components` to replace Markdown nodes such as links or code blocks. Use `className` and `[data-markdown-node]` selectors for small visual adjustments; keep MDX and executable content in a separate renderer.
 
 ## Popover
 
