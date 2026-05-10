@@ -41,7 +41,7 @@ test('body and caption render on div roots with their documented classes', () =>
 });
 
 test('heading variants render on native heading roots with distinct variant classes', () => {
-  const variants = ['h1', 'h2', 'h3', 'h4', 'h5'] as const;
+  const variants = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] as const;
 
   for (const variant of variants) {
     const surface = renderSurface({

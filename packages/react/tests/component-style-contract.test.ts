@@ -100,6 +100,9 @@ test('markdown render styles consume semantic typography and surface tokens', ()
   expect(stylesheet).toContain('.root :where(del, s)');
   expect(stylesheet).toContain('background-position: 0 54%;');
   expect(stylesheet).toContain('text-decoration-line: none;');
+  expect(stylesheet).toContain('--markdown-heading-font-size');
+  expect(stylesheet).toContain(".heading:where([data-markdown-node='h1'])");
+  expect(stylesheet).toContain(".heading:where([data-markdown-node='h6'])");
   expect(stylesheet).toContain('.blockquote :where(.paragraph, .list, .listItem)');
   expect(stylesheet).toContain('color: inherit;');
   expect(stylesheet).toContain('.listItem:has(.taskMarker)');

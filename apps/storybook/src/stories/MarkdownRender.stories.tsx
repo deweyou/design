@@ -28,6 +28,10 @@ const comprehensiveMarkdown = [
   '',
   'H5 is reserved for compact nested labels or dense documentation blocks.',
   '',
+  '###### H6 Fine Print Heading',
+  '',
+  'H6 can support small labels inside deeply nested documentation.',
+  '',
   '## Rendering Goals',
   '',
   '> The renderer should make common Markdown readable by default, while keeping extension points open for code blocks, custom links, and future rich preview surfaces.',
@@ -215,6 +219,9 @@ export const Interaction: Story = {
     await expect(canvas.getByRole('heading', { name: 'H3 Section Heading' })).toBeInTheDocument();
     await expect(canvas.getByRole('heading', { name: 'H4 Detail Heading' })).toBeInTheDocument();
     await expect(canvas.getByRole('heading', { name: 'H5 Compact Heading' })).toBeInTheDocument();
+    await expect(
+      canvas.getByRole('heading', { name: 'H6 Fine Print Heading' }),
+    ).toBeInTheDocument();
     await expect(canvas.getByText(/production markdown surface/)).toBeVisible();
     await expect(canvas.getByRole('link', { name: 'external links' })).toHaveAttribute(
       'target',

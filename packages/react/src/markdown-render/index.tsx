@@ -121,12 +121,13 @@ const MarkdownHeading5 = ({ children, ...props }: ComponentPropsWithoutRef<'h5'>
 );
 
 const MarkdownHeading6 = ({ children, ...props }: ComponentPropsWithoutRef<'h6'>) => (
-  <h6
-    {...withMarkdownNode(props, 'h6')}
-    className={classNames(styles.heading, styles.heading6, props.className)}
+  <Text
+    {...withTextMarkdownNode(props, 'h6')}
+    className={classNames(styles.heading, props.className)}
+    variant="h6"
   >
     {children}
-  </h6>
+  </Text>
 );
 
 const MarkdownLink = ({ children, href, rel, target, ...props }: ComponentPropsWithoutRef<'a'>) => {

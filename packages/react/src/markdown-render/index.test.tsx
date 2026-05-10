@@ -14,6 +14,8 @@ describe('MarkdownRender', () => {
       value: [
         '# Title',
         '',
+        '###### Fine print',
+        '',
         'Paragraph with **strong**, *emphasis*, ~~deleted~~, `inline`, and [link](https://example.com).',
         '',
         '> Quote',
@@ -35,6 +37,7 @@ describe('MarkdownRender', () => {
     expect(markup).toContain('data-markdown-root="true"');
     expect(markup).toContain('data-markdown-size="md"');
     expect(markup).toContain('data-markdown-node="h1"');
+    expect(markup).toContain('data-markdown-node="h6"');
     expect(markup).toContain('data-markdown-node="p"');
     expect(markup).toContain('data-markdown-node="a"');
     expect(markup).toContain('rel="noreferrer"');
