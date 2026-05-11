@@ -232,6 +232,16 @@ const ReviewSurface = () => {
   );
 };
 
+export const Preview: Story = {
+  render: (args) => (
+    <article style={{ ...storyStyles.card, width: 180 }}>
+      <SearchIcon {...args} data-testid="icon-preview" />
+      <strong>SearchIcon</strong>
+      <code style={storyStyles.meta}>controlled preview</code>
+    </article>
+  ),
+};
+
 export const Catalog: Story = {
   render: () => <CatalogGallery />,
 };
