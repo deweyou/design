@@ -17,9 +17,20 @@
       "import": "./dist/index.mjs",
       "default": "./dist/index.mjs"
     },
+    "./font-subset": {
+      "types": "./dist/font-subset/index.d.mts",
+      "import": "./dist/font-subset/index.mjs",
+      "default": "./dist/font-subset/index.mjs"
+    },
+    "./unplugin-font-subset": {
+      "types": "./dist/unplugin-font-subset/index.d.mts",
+      "import": "./dist/unplugin-font-subset/index.mjs",
+      "default": "./dist/unplugin-font-subset/index.mjs"
+    },
     "./package.json": "./package.json",
     "./color.css": "./dist/css/color.css",
     "./theme.css": "./dist/css/theme.css",
+    "./theme-with-fonts.css": "./dist/css/theme-with-fonts.css",
     "./theme-light.css": "./dist/css/theme-light.css",
     "./theme-dark.css": "./dist/css/theme-dark.css",
     "./reset.css": "./dist/css/reset.css",
@@ -36,6 +47,10 @@
     "build": "vp pack && node ./scripts/copy-assets.mjs",
     "dev": "vp pack --watch",
     "test": "vp test"
+  },
+  "dependencies": {
+    "subset-font": "catalog:",
+    "unplugin": "catalog:"
   },
   "devDependencies": {
     "less": "catalog:",
