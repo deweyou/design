@@ -4,7 +4,15 @@ import { join, resolve } from 'node:path';
 import { build } from 'vite';
 import { expect, test } from 'vite-plus/test';
 
+import { iconRegistry } from '../icon-registry';
+
 const fixtureDir = resolve(import.meta.dirname, '../../.tmp/tree-shaking');
+
+const toGeneratedModuleName = (exportName: string) =>
+  exportName
+    .replace(/Icon$/, '')
+    .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+    .toLowerCase();
 
 test('one-icon consumer bundle drops unrelated generated icon exports', async () => {
   await rm(fixtureDir, { force: true, recursive: true });
@@ -12,38 +20,46 @@ test('one-icon consumer bundle drops unrelated generated icon exports', async ()
 
   const entryPath = join(fixtureDir, 'entry.tsx');
   const outDir = join(fixtureDir, 'dist');
+  const unrelatedIcons = iconRegistry.filter(({ exportName }) => exportName !== 'SearchIcon');
 
-  await writeFile(
-    entryPath,
-    [
-      "import { SearchIcon } from '../../src/index';",
-      'export const render = () => SearchIcon({ "aria-label": "Search" });',
-    ].join('\n'),
-  );
+  try {
+    await writeFile(
+      entryPath,
+      [
+        "import { SearchIcon } from '../../src/index';",
+        'export const render = () => SearchIcon({ "aria-label": "Search" });',
+      ].join('\n'),
+    );
 
-  await build({
-    build: {
-      emptyOutDir: true,
-      lib: {
-        entry: entryPath,
-        formats: ['es'],
-      },
-      minify: false,
-      outDir,
-      rollupOptions: {
-        external: ['react', 'react/jsx-dev-runtime', 'react/jsx-runtime'],
-        output: {
-          entryFileNames: 'tree-shaking.mjs',
+    await build({
+      build: {
+        emptyOutDir: true,
+        lib: {
+          entry: entryPath,
+          formats: ['es'],
+        },
+        minify: false,
+        outDir,
+        rollupOptions: {
+          external: ['react', 'react/jsx-dev-runtime', 'react/jsx-runtime'],
+          output: {
+            entryFileNames: 'tree-shaking.mjs',
+          },
         },
       },
-    },
-    configFile: false,
-    logLevel: 'silent',
-  });
+      configFile: false,
+      logLevel: 'silent',
+    });
 
-  const bundle = await readFile(join(outDir, 'tree-shaking.mjs'), 'utf8');
+    const bundle = await readFile(join(outDir, 'tree-shaking.mjs'), 'utf8');
 
-  expect(bundle).toContain('SearchIcon');
-  expect(bundle).not.toContain('ChevronDownIcon');
-  expect(bundle).not.toContain('AlertTriangleIcon');
+    expect(bundle).toContain('SearchIcon');
+
+    for (const { exportName } of unrelatedIcons) {
+      expect(bundle).not.toContain(exportName);
+      expect(bundle).not.toContain(`generated/${toGeneratedModuleName(exportName)}.tsx`);
+    }
+  } finally {
+    await rm(fixtureDir, { force: true, recursive: true });
+  }
 });
