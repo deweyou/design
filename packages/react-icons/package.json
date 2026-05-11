@@ -20,15 +20,14 @@
     "dev": "vp pack --watch",
     "test": "vp test"
   },
-  "dependencies": {
-    "@tabler/icons-react": "^3"
-  },
   "devDependencies": {
     "@testing-library/react": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "react-dom": "catalog:",
+    "tdesign-icons-svg": "0.4.2",
     "typescript": "catalog:",
+    "vite": "catalog:",
     "vite-plus": "catalog:"
   },
   "peerDependencies": {
