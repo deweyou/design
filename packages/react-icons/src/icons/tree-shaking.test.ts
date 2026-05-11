@@ -26,7 +26,7 @@ test('one-icon consumer bundle drops unrelated generated icon exports', async ()
     await writeFile(
       entryPath,
       [
-        "import { SearchIcon } from '../../src/index';",
+        "import { SearchIcon } from '../../dist/index.mjs';",
         'export const render = () => SearchIcon({ "aria-label": "Search" });',
       ].join('\n'),
     );
