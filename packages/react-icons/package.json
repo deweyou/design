@@ -19,6 +19,7 @@
     "build": "node ./scripts/clean-dist.mjs && pnpm run generate-icons && vp pack && node ../infra/scripts/write-published-manifest.mjs .",
     "dev": "vp pack --watch",
     "generate-icons": "node ./scripts/generate-icons.mjs && vp fmt src/icons/generated",
+    "sync-tdesign-registry": "node ./scripts/sync-tdesign-registry.mjs && vp fmt src/icon-registry/icons.json",
     "test": "vp test"
   },
   "devDependencies": {

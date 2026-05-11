@@ -6,18 +6,21 @@ export const AlertCircleIcon = /* @__PURE__ */ createIcon('AlertCircleIcon', {
   viewBox: '0 0 24 24',
   body: (
     <>
-      <g>
+      <g id="deweyou-icon-tdesign-error-circle-error-circle">
         <path
+          id="deweyou-icon-tdesign-error-circle-fill1"
           fill="transparent"
           d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z"
         ></path>
         <path
+          id="deweyou-icon-tdesign-error-circle-stroke1"
           stroke="currentColor"
           d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z"
           strokeLinecap="square"
           strokeWidth="2"
         ></path>
         <path
+          id="deweyou-icon-tdesign-error-circle-stroke2"
           stroke="currentColor"
           d="M12 7.5V13M12 16.5H12.0039V16.5039H12V16.5Z"
           strokeLinecap="square"

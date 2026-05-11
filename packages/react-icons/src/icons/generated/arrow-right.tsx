@@ -6,8 +6,9 @@ export const ArrowRightIcon = /* @__PURE__ */ createIcon('ArrowRightIcon', {
   viewBox: '0 0 24 24',
   body: (
     <>
-      <g>
+      <g id="deweyou-icon-tdesign-arrow-right-arrow-right">
         <path
+          id="deweyou-icon-tdesign-arrow-right-stroke1"
           stroke="currentColor"
           d="M13 17.5L18.5 12L13 6.5M17.25 12L4.25 12"
           strokeLinecap="square"

@@ -6,16 +6,22 @@ export const HomeIcon = /* @__PURE__ */ createIcon('HomeIcon', {
   viewBox: '0 0 24 24',
   body: (
     <>
-      <g>
-        <path fill="transparent" d="M3 10L12 2.5L21 10V21H3V10Z"></path>
-        <path fill="transparent" d="M9 14H15V21H9V14Z"></path>
+      <g id="deweyou-icon-tdesign-home-home">
         <path
+          id="deweyou-icon-tdesign-home-fill1"
+          fill="transparent"
+          d="M3 10L12 2.5L21 10V21H3V10Z"
+        ></path>
+        <path id="deweyou-icon-tdesign-home-fill2" fill="transparent" d="M9 14H15V21H9V14Z"></path>
+        <path
+          id="deweyou-icon-tdesign-home-stroke2"
           stroke="currentColor"
           d="M9 14H15V21H9V14Z"
           strokeLinecap="square"
           strokeWidth="2"
         ></path>
         <path
+          id="deweyou-icon-tdesign-home-stroke1"
           stroke="currentColor"
           d="M3 10L12 2.5L21 10V21H3V10Z"
           strokeLinecap="square"

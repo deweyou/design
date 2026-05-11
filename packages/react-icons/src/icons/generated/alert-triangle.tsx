@@ -6,15 +6,21 @@ export const AlertTriangleIcon = /* @__PURE__ */ createIcon('AlertTriangleIcon',
   viewBox: '0 0 24 24',
   body: (
     <>
-      <g>
-        <path fill="transparent" d="M12.0003 3L22.2194 20.7H1.78125L12.0003 3Z"></path>
+      <g id="deweyou-icon-tdesign-error-triangle-error-triangle">
         <path
+          id="deweyou-icon-tdesign-error-triangle-fill1"
+          fill="transparent"
+          d="M12.0003 3L22.2194 20.7H1.78125L12.0003 3Z"
+        ></path>
+        <path
+          id="deweyou-icon-tdesign-error-triangle-stroke1"
           stroke="currentColor"
           d="M12.0003 3L22.2194 20.7H1.78125L12.0003 3Z"
           strokeLinecap="square"
           strokeWidth="2"
         ></path>
         <path
+          id="deweyou-icon-tdesign-error-triangle-stroke2"
           stroke="currentColor"
           d="M12 10.5V14M12 17.5H12.0039V17.5039H12V17.5Z"
           strokeLinecap="square"

@@ -6,14 +6,16 @@ export const DownloadIcon = /* @__PURE__ */ createIcon('DownloadIcon', {
   viewBox: '0 0 24 24',
   body: (
     <>
-      <g>
+      <g id="deweyou-icon-tdesign-download-download">
         <path
+          id="deweyou-icon-tdesign-download-stroke1"
           stroke="currentColor"
           d="M16.5 10.5L12 15L7.5 10.5M12 13.75V4"
           strokeLinecap="square"
           strokeWidth="2"
         ></path>
         <path
+          id="deweyou-icon-tdesign-download-stroke2"
           stroke="currentColor"
           d="M20.5 15V20H3.5V15"
           strokeLinecap="square"

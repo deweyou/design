@@ -6,8 +6,9 @@ export const PlusIcon = /* @__PURE__ */ createIcon('PlusIcon', {
   viewBox: '0 0 24 24',
   body: (
     <>
-      <g>
+      <g id="deweyou-icon-tdesign-plus-plus">
         <path
+          id="deweyou-icon-tdesign-plus-stroke1"
           stroke="currentColor"
           d="M12 7.5V12M12 12L12 16.5M12 12L16.5 12M12 12L7.5 12"
           strokeLinecap="square"

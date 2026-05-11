@@ -6,15 +6,17 @@ export const CopyIcon = /* @__PURE__ */ createIcon('CopyIcon', {
   viewBox: '0 0 24 24',
   body: (
     <>
-      <g>
-        <path fill="transparent" d="M10 10H21V21H10z"></path>
+      <g id="deweyou-icon-tdesign-copy-copy">
+        <path id="deweyou-icon-tdesign-copy-fill1" fill="transparent" d="M10 10H21V21H10z"></path>
         <path
+          id="deweyou-icon-tdesign-copy-stroke1"
           stroke="currentColor"
           d="M10 10H21V21H10V10Z"
           strokeLinecap="square"
           strokeWidth="2"
         ></path>
         <path
+          id="deweyou-icon-tdesign-copy-stroke2"
           stroke="currentColor"
           d="M14 6.5V3L3 3L3 14H6.5"
           strokeLinecap="square"

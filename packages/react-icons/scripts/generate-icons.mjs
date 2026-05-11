@@ -17,9 +17,8 @@ const tdesignSvgRoot = resolve(dirname(tdesignPackageJsonPath), 'src');
 const exportNamePattern = /^[A-Z][A-Za-z0-9]*Icon$/;
 const localSourcePathPattern = /^\.\/assets\/[a-z0-9-]+\.svg$/;
 const tdesignSourceKeyPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-const colorAttributePattern = /\s(fill|stroke)="(?!none|transparent|currentColor)[^"]*"/g;
+const colorAttributePattern = /\s(fill|stroke)="(?!none|transparent|currentColor|url\()[^"]*"/g;
 const ignoredSvgAttributePattern = /\s(?:width|height|xmlns|class)="[^"]*"/g;
-const unusedIdAttributePattern = /\sid=(?:"[^"]*"|'[^']*')/g;
 
 const readJson = async (path) => JSON.parse(await readFile(path, 'utf8'));
 
@@ -44,6 +43,22 @@ const toJsxAttributeName = (name) => {
   return name.replace(/-([a-z])/g, (_, char) => char.toUpperCase());
 };
 
+const toScopedIdPrefix = (sourceLabel) => {
+  return `deweyou-icon-${sourceLabel.replace(/[^a-zA-Z0-9_-]/g, '-')}-`;
+};
+
+const scopeSvgFragmentIds = (body, sourceLabel) => {
+  const idPrefix = toScopedIdPrefix(sourceLabel);
+
+  return body
+    .replace(/\sid=(["'])([^"']+)\1/g, (_match, _quote, id) => ` id="${idPrefix}${id}"`)
+    .replace(/url\(#([^)]+)\)/g, (_match, id) => `url(#${idPrefix}${id})`)
+    .replace(
+      /\s((?:xlink:)?href)=(["'])#([^"']+)\2/g,
+      (_match, attributeName, _quote, id) => ` ${attributeName}="#${idPrefix}${id}"`,
+    );
+};
+
 export const normalizeSvgBody = (svg, sourceLabel) => {
   const viewBoxMatch = svg.match(/\s(?:viewBox|view-box)="([^"]+)"/);
   const bodyMatch = svg.match(/<svg\b[^>]*>([\s\S]*?)<\/svg>/);
@@ -52,14 +67,10 @@ export const normalizeSvgBody = (svg, sourceLabel) => {
     throw new Error(`Unable to read SVG viewBox or body from ${sourceLabel}.`);
   }
 
-  const rawBody = bodyMatch[1].trim();
-  if (rawBody.includes('url(#')) {
-    throw new Error(`Fragment-referenced SVG ids are not supported yet for ${sourceLabel}.`);
-  }
+  const rawBody = scopeSvgFragmentIds(bodyMatch[1].trim(), sourceLabel);
 
   const body = rawBody
     .replace(ignoredSvgAttributePattern, '')
-    .replace(unusedIdAttributePattern, '')
     .replace(colorAttributePattern, (_, attributeName) => ` ${attributeName}="currentColor"`)
     .replace(/\s([a-zA-Z_:][-a-zA-Z0-9_:.]*)=/g, (_, attributeName) => {
       return ` ${toJsxAttributeName(attributeName)}=`;

@@ -6,8 +6,9 @@ export const ChevronDownIcon = /* @__PURE__ */ createIcon('ChevronDownIcon', {
   viewBox: '0 0 24 24',
   body: (
     <>
-      <g>
+      <g id="deweyou-icon-tdesign-chevron-down-chevron-down">
         <path
+          id="deweyou-icon-tdesign-chevron-down-stroke1"
           stroke="currentColor"
           d="M17.5 9.5L12 15L6.5 9.5"
           strokeLinecap="square"

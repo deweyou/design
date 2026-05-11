@@ -1,8 +1,8 @@
 # @deweyou-design/react-icons
 
-Curated React icon components for Deweyou Design. The package generates named `XxxIcon` components from a Deweyou-maintained registry. Default SVG glyphs are sourced from `tdesign-icons-svg`, and local SVG assets can supplement that source when Deweyou needs an icon that upstream does not provide.
+React icon components for Deweyou Design. The package generates named `XxxIcon` components from a Deweyou-maintained registry. Default SVG glyphs are sourced from `tdesign-icons-svg`, and local SVG assets can supplement that source when Deweyou needs an icon that upstream does not provide.
 
-The package does not mirror the full `tdesign-icons-svg` collection. Only registry-declared icons are generated, reviewed, tested, and supported.
+The current registry includes the full `tdesign-icons-svg` source set while still keeping Deweyou-owned public names, search metadata, and future local additions in one explicit list.
 
 ## Installation
 
@@ -75,6 +75,15 @@ pnpm --dir packages/react-icons run generate-icons
 ```
 
 Use `source: 'tdesign'` with a `sourceKey` for upstream glyphs. Use `source: 'local'` with a checked-in SVG under `src/icon-registry/assets/` when an icon is not available upstream.
+
+To resync the registry from the installed `tdesign-icons-svg` package, run:
+
+```bash
+pnpm --dir packages/react-icons run sync-tdesign-registry
+pnpm --dir packages/react-icons run generate-icons
+```
+
+`sourceKey` preserves the upstream SVG filename. `exportName` is Deweyou's public API and may be renamed for readability, for example `loading` maps to `LoadingIcon` and `menu` maps to `MenuIcon`.
 
 ## Source Attribution
 

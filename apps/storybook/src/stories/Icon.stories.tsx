@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import type { ComponentType } from 'react';
 import type { IconColor, IconProps, IconSize } from '@deweyou-design/react-icons';
 
-import { AlertCircleIcon, InfoIcon, Menu2Icon, SearchIcon } from '@deweyou-design/react-icons';
+import { AlertCircleIcon, InfoIcon, MenuIcon, SearchIcon } from '@deweyou-design/react-icons';
 import * as Icons from '@deweyou-design/react-icons';
 import { iconRegistry } from '../../../../packages/react-icons/src/icon-registry';
 
@@ -208,7 +208,7 @@ const AccessibilityGallery = () => {
   return (
     <div style={storyStyles.grid}>
       <article style={storyStyles.card}>
-        <Menu2Icon data-testid="decorative-icon" size="lg" />
+        <MenuIcon data-testid="decorative-icon" size="lg" />
         <strong>Decorative</strong>
         <span style={storyStyles.meta}>aria-hidden=true</span>
       </article>

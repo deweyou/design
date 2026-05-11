@@ -32,8 +32,9 @@ test('renders icon grid with all icons', () => {
 test('documents the TDesign source and Deweyou curated list', () => {
   renderPage();
 
-  expect(screen.getByText(/tdesign-icons-svg/i)).toBeInTheDocument();
+  expect(screen.getAllByText(/tdesign-icons-svg/i).length).toBeGreaterThan(0);
   expect(screen.getByText(/Deweyou curated/i)).toBeInTheDocument();
+  expect(screen.getByText(/full tdesign-icons-svg source set/i)).toBeInTheDocument();
 });
 
 test('documents direct imports while reserving namespace imports for the catalog', () => {

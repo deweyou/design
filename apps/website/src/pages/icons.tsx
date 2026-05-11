@@ -99,7 +99,7 @@ export const IconsPage = () => {
             list
           </Text>
           <Text className={styles.subtitle} variant="caption">
-            This catalog shows Deweyou-supported icons, not the full upstream icon set.
+            This catalog shows the full tdesign-icons-svg source set with Deweyou public names.
           </Text>
           <Text className={styles.subtitle} variant="caption">
             Click an icon to copy its direct named import. Application code should use direct named

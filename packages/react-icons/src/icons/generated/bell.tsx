@@ -6,16 +6,18 @@ export const BellIcon = /* @__PURE__ */ createIcon('BellIcon', {
   viewBox: '0 0 24 24',
   body: (
     <>
-      <g>
+      <g id="deweyou-icon-tdesign-notification-notification">
         <path
+          id="deweyou-icon-tdesign-notification-fill1"
           fill="transparent"
           d="M3 19H21V16L19 13V8C19 4.13401 15.866 1 12 1C8.13401 1 5 4.13401 5 8V13L3 16V19Z"
         ></path>
         <path
+          id="deweyou-icon-tdesign-notification-fill2"
           fill="transparent"
           d="M12 22.5C13.933 22.5 15.5 20.933 15.5 19H8.5C8.5 20.933 10.067 22.5 12 22.5Z"
         ></path>
-        <g>
+        <g id="deweyou-icon-tdesign-notification-stroke1">
           <path
             stroke="currentColor"
             d="M5 8V13L3 16V19H21V16L19 13V8C19 4.13401 15.866 1 12 1C8.13401 1 5 4.13401 5 8Z"

@@ -6,8 +6,9 @@ export const CheckIcon = /* @__PURE__ */ createIcon('CheckIcon', {
   viewBox: '0 0 24 24',
   body: (
     <>
-      <g>
+      <g id="deweyou-icon-tdesign-check-check">
         <path
+          id="deweyou-icon-tdesign-check-stroke1"
           stroke="currentColor"
           d="M19.5708 7.37842L10.3785 16.5708L5.42871 11.6211"
           strokeLinecap="square"

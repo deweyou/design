@@ -6,18 +6,21 @@ export const SearchIcon = /* @__PURE__ */ createIcon('SearchIcon', {
   viewBox: '0 0 24 24',
   body: (
     <>
-      <g>
+      <g id="deweyou-icon-tdesign-search-search">
         <path
+          id="deweyou-icon-tdesign-search-fill1"
           fill="transparent"
           d="M15.8033 15.8033C12.8744 18.7322 8.12563 18.7322 5.1967 15.8033C2.26777 12.8744 2.26777 8.12563 5.1967 5.1967C8.12563 2.26777 12.8744 2.26777 15.8033 5.1967C18.7322 8.12563 18.7322 12.8744 15.8033 15.8033Z"
         ></path>
         <path
+          id="deweyou-icon-tdesign-search-stroke2"
           stroke="currentColor"
           d="M15.8027 15.8037L21.106 21.107"
           strokeLinecap="square"
           strokeWidth="2"
         ></path>
         <path
+          id="deweyou-icon-tdesign-search-stroke1"
           stroke="currentColor"
           d="M15.8033 15.8033C12.8744 18.7322 8.12563 18.7322 5.1967 15.8033C2.26777 12.8744 2.26777 8.12563 5.1967 5.1967C8.12563 2.26777 12.8744 2.26777 15.8033 5.1967C18.7322 8.12563 18.7322 12.8744 15.8033 15.8033Z"
           strokeLinecap="square"

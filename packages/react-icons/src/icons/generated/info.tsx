@@ -6,18 +6,21 @@ export const InfoIcon = /* @__PURE__ */ createIcon('InfoIcon', {
   viewBox: '0 0 24 24',
   body: (
     <>
-      <g>
+      <g id="deweyou-icon-tdesign-info-circle-info-circle">
         <path
+          id="deweyou-icon-tdesign-info-circle-fill1"
           fill="transparent"
           d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12Z"
         ></path>
         <path
+          id="deweyou-icon-tdesign-info-circle-stroke1"
           stroke="currentColor"
           d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12Z"
           strokeLinecap="square"
           strokeWidth="2"
         ></path>
         <path
+          id="deweyou-icon-tdesign-info-circle-stroke2"
           stroke="currentColor"
           d="M12 16.5L12 11M12 7.5L11.9961 7.5L11.9961 7.49609L12 7.49609L12 7.5Z"
           strokeLinecap="square"

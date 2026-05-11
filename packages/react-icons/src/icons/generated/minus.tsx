@@ -6,8 +6,9 @@ export const MinusIcon = /* @__PURE__ */ createIcon('MinusIcon', {
   viewBox: '0 0 24 24',
   body: (
     <>
-      <g>
+      <g id="deweyou-icon-tdesign-minus-minus">
         <path
+          id="deweyou-icon-tdesign-minus-stroke1"
           stroke="currentColor"
           d="M16.502 12L7.50195 12"
           strokeLinecap="square"

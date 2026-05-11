@@ -6,14 +6,16 @@ export const UploadIcon = /* @__PURE__ */ createIcon('UploadIcon', {
   viewBox: '0 0 24 24',
   body: (
     <>
-      <g>
+      <g id="deweyou-icon-tdesign-upload-upload">
         <path
+          id="deweyou-icon-tdesign-upload-stroke1"
           stroke="currentColor"
           d="M16.5 8.5L12 4L7.5 8.5M12 5.25V15"
           strokeLinecap="square"
           strokeWidth="2"
         ></path>
         <path
+          id="deweyou-icon-tdesign-upload-stroke2"
           stroke="currentColor"
           d="M20.5 15V20H3.5V15"
           strokeLinecap="square"

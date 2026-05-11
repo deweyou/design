@@ -6,14 +6,16 @@ export const FilterIcon = /* @__PURE__ */ createIcon('FilterIcon', {
   viewBox: '0 0 24 24',
   body: (
     <>
-      <g>
+      <g id="deweyou-icon-tdesign-filter-filter">
         <path
+          id="deweyou-icon-tdesign-filter-fill1"
           fill="transparent"
           d="M19.5 4H4.5L10.5 12.5V20H13.5V12.5L19.5 4Z"
           fillRule="evenodd"
           clipRule="evenodd"
         ></path>
         <path
+          id="deweyou-icon-tdesign-filter-stroke1"
           stroke="currentColor"
           d="M19.5 4H4.5L10.5 12.5V20H13.5V12.5L19.5 4Z"
           fillRule="evenodd"

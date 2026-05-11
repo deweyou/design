@@ -6,24 +6,28 @@ export const SettingsIcon = /* @__PURE__ */ createIcon('SettingsIcon', {
   viewBox: '0 0 24 24',
   body: (
     <>
-      <g>
+      <g id="deweyou-icon-tdesign-setting-setting">
         <path
+          id="deweyou-icon-tdesign-setting-fill1"
           fill="transparent"
           d="M20.6604 7L12.0001 2L3.33984 7V17L12.0001 22L20.6604 17V7ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z"
           fillRule="evenodd"
           clipRule="evenodd"
         ></path>
         <path
+          id="deweyou-icon-tdesign-setting-fill2"
           fill="transparent"
           d="M16 12C16 14.2091 14.2091 16 12 16C9.79086 16 8 14.2091 8 12C8 9.79086 9.79086 8 12 8C14.2091 8 16 9.79086 16 12Z"
         ></path>
         <path
+          id="deweyou-icon-tdesign-setting-stroke1"
           stroke="currentColor"
           d="M12.0001 2L20.6604 7V17L12.0001 22L3.33984 17V7L12.0001 2Z"
           strokeLinecap="square"
           strokeWidth="2"
         ></path>
         <path
+          id="deweyou-icon-tdesign-setting-stroke2"
           stroke="currentColor"
           d="M16 12C16 14.2091 14.2091 16 12 16C9.79086 16 8 14.2091 8 12C8 9.79086 9.79086 8 12 8C14.2091 8 16 9.79086 16 12Z"
           strokeLinecap="square"
