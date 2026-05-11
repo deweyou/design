@@ -18,6 +18,8 @@ This redesign is about visual asset ownership and long-term maintainability. `td
 - Allow future local SVG assets when Deweyou needs an icon that `tdesign-icons-svg` does not provide.
 - Align icon `size` and `color` props with the existing design system semantics.
 - Preserve predictable accessibility defaults while allowing common SVG props such as `id`, `className`, `aria-label`, `onClick`, and `data-*`.
+- Keep the generated package tree-shakeable for consumers that import one or a few named icons.
+- Update both Storybook and the public website so the review surface and documentation match the new source model.
 
 ## Non-Goals
 
@@ -26,6 +28,7 @@ This redesign is about visual asset ownership and long-term maintainability. `td
 - Do not add subpath exports for every upstream icon.
 - Do not make `tdesign-icons-svg` a runtime dependency of consumers.
 - Do not introduce a broad icon color system outside the existing component color semantics.
+- Do not require applications to import a generated runtime registry or icon map for normal icon usage.
 
 ## Public API
 
@@ -45,6 +48,14 @@ The package exports:
 - `IconProps`, `IconSize`, and `IconColor` types.
 
 It does not export upstream `tdesign-icons-svg` keys, raw SVG data, a generic icon renderer, or upstream package APIs.
+
+Consumer documentation should prefer direct named imports:
+
+```tsx
+import { SearchIcon } from '@deweyou-design/react-icons';
+```
+
+Namespace imports such as `import * as Icons` are acceptable only for catalog or documentation surfaces that intentionally render every supported icon.
 
 ## Props Contract
 
@@ -175,6 +186,25 @@ packages/react-icons/
 
 Generated icon files should be committed to source so registry changes, upstream glyph changes, and local SVG additions produce reviewable diffs. The generated component layer should preserve tree-shaking through named exports and `sideEffects: false`. It should not require runtime access to `tdesign-icons-svg`.
 
+The generated output should avoid a public runtime icon map that references every icon. Normal consumption should be a direct named export path from the root package surface to the generated component. Implementation may use one generated index that re-exports per-icon modules, or another Vite+ compatible structure, as long as a consumer bundle that imports only `SearchIcon` can drop unrelated icon SVG bodies.
+
+Generated component definitions should be side-effect-free. If the generator emits factory calls, those calls should be tree-shaking friendly, for example by using pure top-level component definitions or `/* @__PURE__ */` annotations where the bundler benefits from them.
+
+## Build And Tree-Shaking
+
+The redesign should include a build review of `packages/react-icons/vite.config.ts`, `package.json`, and generated module shape.
+
+Build requirements:
+
+- Keep `package.json` `sideEffects: false` for `@deweyou-design/react-icons`.
+- Keep the public package export surface small: root export plus `./package.json`.
+- Ensure generated icon code is ESM and free of top-level side effects.
+- Ensure `tdesign-icons-svg` is not listed in published runtime `dependencies`.
+- Avoid generated code that eagerly builds an object containing every icon for the public entrypoint.
+- Prefer direct named re-exports that let downstream bundlers remove unused SVG bodies.
+
+Verification should include a tree-shaking contract fixture that imports one icon from `@deweyou-design/react-icons`, bundles it with the repo build toolchain, and asserts that at least one unrelated icon's generated SVG body or export name is absent from the output. The exact fixture can live under `packages/react-icons/src` or `packages/react-icons/tests`, but it should run with the normal package test suite.
+
 ## Wrapper Behavior
 
 `icon-wrapper` owns shared SVG behavior:
@@ -199,8 +229,40 @@ The wrapper should be generic enough for both `tdesign` and `local` source outpu
 - Generated components are committed or otherwise reviewable to support maintainability and iteration.
 - Local SVG assets may supplement the upstream source when needed.
 - Icon-only interactions should use an accessible interactive component such as `IconButton`.
+- Direct named imports are the recommended application usage for tree-shaking.
+- Namespace imports are reserved for catalog pages that intentionally render the full icon list.
 
 `docs/design/system.md` should continue to state that production components import icons from `@deweyou-design/react-icons`, and should be updated if the old Tabler-specific guidance remains.
+
+## Storybook
+
+`apps/storybook/src/stories/Icon.stories.tsx` should be updated with the new source model. Storybook is the internal review and state-validation surface, not the full public usage guide.
+
+The icon story should cover:
+
+- A curated catalog generated from the Deweyou registry.
+- Named size examples for `xs`, `sm`, `md`, `lg`, and `xl`.
+- Semantic color examples for `inherit`, `neutral`, `primary`, and `danger`.
+- Accessibility examples for decorative and labeled icons.
+- A local SVG example once the first local icon exists.
+- An `Interaction` story with assertions that at least one icon renders, named size/color examples are present, and labeled icons expose `role="img"`.
+
+Story text must remain English according to the app-level Storybook instructions.
+
+## Website
+
+`apps/website/src/pages/icons.tsx` should be synchronized with the new implementation and documentation language.
+
+The public website should:
+
+- Replace Tabler-specific wording with `tdesign-icons-svg` attribution.
+- Explain that the visible catalog is Deweyou-curated and not the full upstream icon set.
+- Keep the import-copy workflow for named `XxxIcon` exports.
+- Show `size` and `color` usage examples aligned to the design system.
+- Mention that namespace imports are used by the catalog page only because it intentionally renders every icon.
+- Keep reusable logic in packages; website should only consume `@deweyou-design/react-icons`.
+
+The website build should continue resolving the workspace source during local development and should not depend on any unpublished runtime registry API.
 
 ## Testing
 
@@ -215,6 +277,15 @@ The redesign should include focused tests for:
 - `id`, `className`, `onClick`, and `data-*` props pass through.
 - `size` maps named values and still accepts numeric or string overrides.
 - `color` maps only `inherit`, `neutral`, `primary`, and `danger`.
+- A tree-shaking contract proves unused generated icon SVG bodies are dropped from a one-icon consumer bundle.
+
+The implementation should also run:
+
+- `vp check`
+- `vp test`
+- `vp run storybook#test` when `Icon.stories.tsx` changes
+- `vp run website#build` or the relevant website verification command when the icon page changes
+- `vp run build -r` when package build behavior or published manifests change
 
 ## Migration
 
@@ -230,3 +301,4 @@ If a current public icon has no direct TDesign equivalent, the migration should 
 
 - The implementation plan must inspect the exact `tdesign-icons-svg` package export shape before writing the generator.
 - Icon size values may start as an internal `react-icons` map behind the public `xs` / `sm` / `md` / `lg` / `xl` API. If `@deweyou-design/styles` later gains icon-size CSS variables, the backing map can move without changing consumers.
+- The implementation plan must include a concrete tree-shaking verification step before changing icon generation.
