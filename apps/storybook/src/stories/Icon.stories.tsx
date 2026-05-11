@@ -164,7 +164,9 @@ const CatalogGallery = () => {
 
 const SizingGallery = () => {
   return (
-    <div style={{ ...storyStyles.grid, gridTemplateColumns: 'repeat(5, minmax(110px, 1fr))' }}>
+    <div
+      style={{ ...storyStyles.grid, gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))' }}
+    >
       {sizeExamples.map(({ description, label }) => (
         <article key={label} style={storyStyles.card}>
           <SearchIcon data-testid={`size-${label}`} size={label} />
@@ -249,7 +251,7 @@ export const Interaction: Story = {
     await expect(
       canvas.getByText('Curated catalog backed by tdesign-icons-svg and Deweyou local assets.'),
     ).toBeInTheDocument();
-    await expect(canvas.getByText('search')).toBeInTheDocument();
+    await expect(canvas.getByText('search', { selector: 'strong' })).toBeInTheDocument();
     await expect(canvas.getByText('xl')).toBeInTheDocument();
     await expect(canvas.getByText('primary')).toBeInTheDocument();
     await expect(canvas.getByRole('img', { name: 'Information' })).toBeInTheDocument();
