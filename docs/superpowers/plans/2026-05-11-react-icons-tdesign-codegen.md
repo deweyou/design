@@ -38,6 +38,7 @@
 ### Task 1: Install TDesign SVG Source And Verify Package Shape
 
 **Files:**
+
 - Modify: `packages/react-icons/package.json`
 - Modify: `pnpm-lock.yaml`
 
@@ -110,6 +111,7 @@ git commit -m "build(react-icons): add tdesign svg source"
 ### Task 2: Add The Curated Icon Registry
 
 **Files:**
+
 - Create: `packages/react-icons/src/icon-registry/icons.json`
 - Create: `packages/react-icons/src/icon-registry/index.ts`
 - Create: `packages/react-icons/src/icon-registry/assets/.gitkeep`
@@ -453,6 +455,7 @@ git commit -m "feat(react-icons): add curated icon registry"
 ### Task 3: Replace The Icon Wrapper Contract
 
 **Files:**
+
 - Modify: `packages/react-icons/src/icon-wrapper/index.tsx`
 - Modify: `packages/react-icons/src/icon-wrapper/index.test.tsx`
 - Modify: `packages/react-icons/src/index.ts`
@@ -698,6 +701,7 @@ git commit -m "feat(react-icons): define svg icon wrapper contract"
 ### Task 4: Build The SVG Generator
 
 **Files:**
+
 - Create: `packages/react-icons/scripts/generate-icons.mjs`
 - Modify: `packages/react-icons/package.json`
 - Create: `packages/react-icons/src/icons/generated/index.tsx`
@@ -901,6 +905,7 @@ git commit -m "feat(react-icons): generate icons from curated tdesign registry"
 ### Task 5: Add Tree-Shaking Contract Coverage
 
 **Files:**
+
 - Create: `packages/react-icons/src/icons/tree-shaking.test.ts`
 - Modify: `packages/react-icons/vite.config.ts`
 - Modify: `packages/react-icons/package.json`
@@ -1053,6 +1058,7 @@ git commit -m "test(react-icons): verify generated icon tree shaking"
 ### Task 6: Update Package Documentation And Governance
 
 **Files:**
+
 - Modify: `packages/react-icons/README.md`
 - Modify: `packages/react-icons/CLAUDE.md`
 - Modify: `docs/design/system.md`
@@ -1061,7 +1067,7 @@ git commit -m "test(react-icons): verify generated icon tree shaking"
 
 Replace `packages/react-icons/README.md` with:
 
-```md
+````md
 # @deweyou-design/react-icons
 
 Curated React icon components for Deweyou Design. The package generates named `XxxIcon` components from a Deweyou-maintained registry. Default SVG glyphs are sourced from `tdesign-icons-svg`, and local SVG assets can supplement that source when Deweyou needs an icon that upstream does not provide.
@@ -1073,6 +1079,7 @@ The package does not mirror the full `tdesign-icons-svg` collection. Only regist
 ```bash
 npm install @deweyou-design/react-icons
 ```
+````
 
 ## Usage
 
@@ -1090,15 +1097,15 @@ Namespace imports are reserved for catalog surfaces that intentionally render ev
 
 ## Props
 
-| Prop | Type | Description |
-| --- | --- | --- |
-| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| number \| string` | Icon size. Defaults to `md`. |
-| `color` | `'inherit' \| 'neutral' \| 'primary' \| 'danger'` | Design-system icon color. Defaults to `inherit`. |
-| `aria-label` | `string` | Accessible name. When set, renders with `role="img"`; when omitted, renders as decorative. |
-| `id` | `string` | Forwarded to the SVG root. |
-| `className` | `string` | Styling hook. |
-| `style` | `CSSProperties` | Inline style override. |
-| `onClick` | `MouseEventHandler<SVGSVGElement>` | Forwarded SVG event handler. Prefer buttons for interactive semantics. |
+| Prop         | Type                                                       | Description                                                                                |
+| ------------ | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `size`       | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| number \| string` | Icon size. Defaults to `md`.                                                               |
+| `color`      | `'inherit' \| 'neutral' \| 'primary' \| 'danger'`          | Design-system icon color. Defaults to `inherit`.                                           |
+| `aria-label` | `string`                                                   | Accessible name. When set, renders with `role="img"`; when omitted, renders as decorative. |
+| `id`         | `string`                                                   | Forwarded to the SVG root.                                                                 |
+| `className`  | `string`                                                   | Styling hook.                                                                              |
+| `style`      | `CSSProperties`                                            | Inline style override.                                                                     |
+| `onClick`    | `MouseEventHandler<SVGSVGElement>`                         | Forwarded SVG event handler. Prefer buttons for interactive semantics.                     |
 
 All standard SVG props except `children`, `dangerouslySetInnerHTML`, and raw `color` pass through to the SVG root.
 
@@ -1147,7 +1154,8 @@ Default icon glyphs are provided by `tdesign-icons-svg` under the MIT license. D
 ## License
 
 MIT
-```
+
+````
 
 - [ ] **Step 2: Update package instructions**
 
@@ -1164,7 +1172,7 @@ Replace the constraint list in `packages/react-icons/CLAUDE.md` with:
 - 图标默认颜色应通过 `currentColor` 继承外层 UI。
 - 生成文件必须由 `scripts/generate-icons.mjs` 产生，不要手写修改 generated 文件。
 - 单测应与源码单元同目录放置为 `index.test.ts` 或 `index.test.tsx`；tree-shaking contract 可作为 `tree-shaking.test.ts` 放在 `src/icons/`。
-```
+````
 
 - [ ] **Step 3: Update design-system guidance**
 
@@ -1194,6 +1202,7 @@ git commit -m "docs(react-icons): document tdesign codegen usage"
 ### Task 7: Update Storybook Icon Review Surface
 
 **Files:**
+
 - Modify: `apps/storybook/src/stories/Icon.stories.tsx`
 
 - [ ] **Step 1: Replace the icon story**
@@ -1331,7 +1340,12 @@ const SizingGallery = () => {
 };
 
 const ColorGallery = () => {
-  const colors = ['inherit', 'neutral', 'primary', 'danger'] as const satisfies readonly IconColor[];
+  const colors = [
+    'inherit',
+    'neutral',
+    'primary',
+    'danger',
+  ] as const satisfies readonly IconColor[];
   return (
     <div style={{ ...storyStyles.grid, gridTemplateColumns: 'repeat(4, minmax(130px, 1fr))' }}>
       {colors.map((color) => (
@@ -1428,6 +1442,7 @@ git commit -m "docs(storybook): update icon review surface"
 ### Task 8: Update Website Icon Page
 
 **Files:**
+
 - Modify: `apps/website/src/pages/icons.tsx`
 - Modify: `apps/website/src/pages/icons.test.tsx`
 
@@ -1539,6 +1554,7 @@ git commit -m "docs(website): update icon catalog guidance"
 ### Task 9: Validate Package Boundaries And Build Output
 
 **Files:**
+
 - Modify if needed: `packages/react/tests/workspace-boundaries.test.ts`
 - Modify if needed: `packages/react-icons/package.json`
 - Modify if needed: `packages/react-icons/vite.config.ts`
@@ -1642,6 +1658,7 @@ If `packages/react-icons/dist` is ignored and not tracked, commit only source an
 ### Task 10: Full Verification
 
 **Files:**
+
 - No planned edits.
 
 - [ ] **Step 1: Run repository check**
