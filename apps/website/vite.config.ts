@@ -6,6 +6,9 @@ const componentsEntry = fileURLToPath(
   new URL('../../packages/react/src/index.ts', import.meta.url),
 );
 const componentsSourceDir = fileURLToPath(new URL('../../packages/react/src', import.meta.url));
+const hooksEntry = fileURLToPath(
+  new URL('../../packages/react-hooks/src/index.ts', import.meta.url),
+);
 const iconsSourceDir = fileURLToPath(new URL('../../packages/react-icons/src', import.meta.url));
 const stylesEntry = fileURLToPath(new URL('../../packages/styles/src/index.ts', import.meta.url));
 const stylesCssDir = fileURLToPath(new URL('../../packages/styles/src/css', import.meta.url));
@@ -39,8 +42,16 @@ export default defineConfig({
         replacement: iconsSourceDir,
       },
       {
+        find: /^@deweyou-design\/react-hooks$/,
+        replacement: hooksEntry,
+      },
+      {
         find: /^@deweyou-design\/styles\/theme\.css$/,
         replacement: `${stylesCssDir}/theme.css`,
+      },
+      {
+        find: /^@deweyou-design\/styles\/theme-with-fonts\.css$/,
+        replacement: `${stylesCssDir}/theme-with-fonts.css`,
       },
       {
         find: /^@deweyou-design\/styles\/theme-light\.css$/,

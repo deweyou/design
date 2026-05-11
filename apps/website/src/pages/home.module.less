@@ -239,6 +239,90 @@
   text-align: right;
 }
 
+.fontFeatureGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.fontFeature {
+  border-right: 1px solid var(--website-line);
+  min-width: 0;
+  padding: 24px;
+
+  &:last-child {
+    border-right: 0;
+  }
+
+  strong {
+    color: var(--ui-color-text);
+    display: block;
+    font-family: var(--ui-font-display);
+    font-size: 1.25rem;
+    font-weight: var(--ui-font-weight-strong);
+    letter-spacing: 0;
+    line-height: 1.2;
+    margin-top: 10px;
+  }
+
+  p {
+    color: var(--ui-color-text-muted);
+    font-size: 0.875rem;
+    line-height: 1.7;
+    margin: 12px 0 18px;
+  }
+
+  code {
+    background: color-mix(in srgb, var(--ui-color-text) 4%, transparent);
+    border: 1px solid var(--website-line);
+    color: var(--ui-color-text);
+    display: block;
+    font-family: var(--ui-font-mono);
+    font-size: 10px;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+    padding: 8px 10px;
+
+    + code {
+      margin-top: 8px;
+    }
+  }
+}
+
+.fontFeatureLabel {
+  color: var(--ui-color-text-muted);
+  font-family: var(--ui-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.fontImportFlow {
+  align-items: center;
+  border-top: 1px solid var(--website-line);
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  padding: 18px 24px;
+
+  code {
+    background: color-mix(in srgb, var(--ui-color-brand-bg) 8%, transparent);
+    border: 1px solid var(--website-line);
+    color: var(--ui-color-text);
+    font-family: var(--ui-font-mono);
+    font-size: 10px;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+    padding: 8px 10px;
+  }
+
+  span {
+    color: var(--ui-color-text-muted);
+    font-family: var(--ui-font-mono);
+    font-size: 12px;
+  }
+}
+
 .tabContent {
   align-items: center;
   display: flex;
@@ -378,6 +462,24 @@
   }
 
   .typeMeta {
+    display: none;
+  }
+
+  .fontFeatureGrid,
+  .fontImportFlow {
+    grid-template-columns: 1fr;
+  }
+
+  .fontFeature {
+    border-bottom: 1px solid var(--website-line);
+    border-right: 0;
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  .fontImportFlow span {
     display: none;
   }
 

@@ -63,7 +63,7 @@ const IconsPreviewSection = () => {
   const navigate = useNavigate();
   return (
     <section className={styles.cell}>
-      <CellHead number="05" title="Icons" meta="Tabler · stroke 1.5 square / miter" />
+      <CellHead number="06" title="Icons" meta="Tabler · stroke 1.5 square / miter" />
       <div className={styles.cellBodyFlush}>
         <div className={styles.iconGrid}>
           {PREVIEW_ICONS.map(({ name, Icon }) => (
@@ -123,6 +123,7 @@ const DesignSection = () => (
   <>
     <ColorSubSection />
     <TypographySubSection />
+    <FontLoadingSubSection />
     <ComponentsSubSection />
   </>
 );
@@ -185,11 +186,57 @@ const TypographySubSection = () => (
   </section>
 );
 
+const FONT_LOADING_PATHS = [
+  {
+    label: 'Fallback',
+    title: 'No font assets',
+    command: '@deweyou-design/styles/theme.css',
+    body: '默认入口只定义 token 与平台回退栈，业务不为完整中文字库付首屏体积。',
+  },
+  {
+    label: 'Subset',
+    title: 'Build-time split',
+    command: 'fontSubset.vite',
+    extraCommand: 'virtual:deweyou-font-subset.css',
+    body: '业务传入 charset 或 include / exclude 扫描规则，构建期产出哈希化 woff2。',
+  },
+  {
+    label: 'Full',
+    title: 'Preview-safe bundle',
+    command: '@deweyou-design/styles/theme-with-fonts.css',
+    body: '原完整字体入口保留给原型、文档预览和不敏感的内部工具。',
+  },
+];
+
+const FontLoadingSubSection = () => (
+  <section className={styles.cell}>
+    <CellHead number="04" title="Font Loading" meta="fallback · subset · full font assets" />
+    <div className={styles.cellBodyFlush}>
+      <div className={styles.fontFeatureGrid}>
+        {FONT_LOADING_PATHS.map(({ body, command, extraCommand, label, title }) => (
+          <div key={label} className={styles.fontFeature}>
+            <span className={styles.fontFeatureLabel}>{label}</span>
+            <strong>{title}</strong>
+            <p>{body}</p>
+            <code>{command}</code>
+            {extraCommand ? <code>{extraCommand}</code> : null}
+          </div>
+        ))}
+      </div>
+      <div className={styles.fontImportFlow}>
+        <code>import '@deweyou-design/styles/theme.css';</code>
+        <span>+</span>
+        <code>import 'virtual:deweyou-font-subset.css';</code>
+      </div>
+    </div>
+  </section>
+);
+
 // ─── Components tabs ──────────────────────────────────────────────────────────
 
 const ComponentsSubSection = () => (
   <section className={styles.cell}>
-    <CellHead number="04" title="Components" meta="27 primitives stable" />
+    <CellHead number="05" title="Components" meta="27 primitives stable" />
     <div className={styles.cellBodyFlush}>
       <Tabs defaultValue="buttons" variant="line" color="neutral" size="sm">
         <TabList>

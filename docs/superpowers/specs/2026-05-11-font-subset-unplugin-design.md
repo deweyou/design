@@ -78,10 +78,8 @@ type DeweyouFontSubsetOptions = {
   };
   output?: {
     fontDir?: string;
-    cssFileName?: string;
     format?: 'woff2';
   };
-  inject?: boolean;
 };
 ```
 
@@ -91,9 +89,7 @@ Default behavior:
 - `weights`: `[400, 500, 600, 700]`
 - `safelist.builtin`: `true`
 - `output.fontDir`: `assets/fonts`
-- `output.cssFileName`: `deweyou-fonts.css`
 - `output.format`: `woff2`
-- `inject`: `false`
 
 At least one of `charset`, `scan.include`, or `safelist.chars/files` must provide non-built-in application characters. The plugin should fail with a clear error if no application character source is configured and only the built-in safelist would be emitted.
 
@@ -115,7 +111,7 @@ Generated subset CSS is consumed explicitly by default:
 import 'virtual:deweyou-font-subset.css';
 ```
 
-This keeps font asset loading visible in the application entry and works better for multi-entry apps, SSR, documentation apps, and micro-frontends. The plugin may also support `inject: true` for migration convenience, but explicit import is the documented default.
+This keeps font asset loading visible in the application entry and works better for multi-entry apps, SSR, documentation apps, and micro-frontends. Automatic injection is a follow-up option, not part of the first implementation.
 
 The generated CSS declares one `@font-face` per requested weight:
 
@@ -239,7 +235,7 @@ The first release should document three paths:
 
 - No font assets: import theme CSS only and use platform fallback.
 - Subset fonts: configure the plugin and import `virtual:deweyou-font-subset.css`.
-- Full fonts: import the existing full font CSS entry for prototypes, local previews, or internal tools that do not care about payload size.
+- Full fonts: import `@deweyou-design/styles/theme-with-fonts.css` for prototypes, local previews, or internal tools that do not care about payload size.
 
 ## Non-Goals
 
