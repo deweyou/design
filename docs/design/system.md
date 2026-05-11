@@ -43,7 +43,7 @@ Deweyou Design 是 Dewey Ou 的个人设计系统。它服务于博客、组件�
 Component Library · v1.0
 基于宋体字形节奏与温暖色系构建，27 个组件覆盖完整 UI 场景。深浅双主题，开箱即用。
 Design & Components
-Icons · Tabler Icons
+Icons · Deweyou registry
 查看全部图标 →
 ```
 
@@ -293,12 +293,12 @@ Dialog backdrop 使用低调遮罩，不使用 blur/glassmorphism。不要引入
 
 图标规则：
 
-- 基于 Tabler Icons 的 curated set。
-- 默认 `size="1em"`，stroke 1.5。
-- `strokeLinecap="square"`，`strokeLinejoin="miter"`，匹配宋体和直线条审美。
-- 只使用 outline 图标，不使用 filled glyph。
+- `@deweyou-design/react-icons` 由 Deweyou curated registry 驱动，默认 SVG 来源为 `tdesign-icons-svg`。
+- 应用代码优先使用命名导入，例如 `import { SearchIcon } from '@deweyou-design/react-icons'`，不要为了普通使用场景引入整个 icon namespace。
+- 图标支持 `xs` / `sm` / `md` / `lg` / `xl` 尺寸语义，默认 `md`。
+- 图标支持 `inherit` / `neutral` / `primary` / `danger` 颜色语义，默认 `inherit`。
+- icon-only action 必须使用 `IconButton`、`Button.Icon` 或带清晰 accessible name 的交互控件承载语义。
 - 不使用 emoji 或 Unicode 符号替代图标，`·` 分隔符除外。
-- 装饰性图标用 `aria-hidden`，有语义的图标提供 `aria-label` 或由可见文本描述。
 
 logo 是例外：`assets/logo.svg` / `logo-animated.svg` 的 mint 渐变只属于 Dewey Ou 字标。静态 logo 适合 header；动画 logo 只适合 hero、loading 或品牌展示时刻。
 
