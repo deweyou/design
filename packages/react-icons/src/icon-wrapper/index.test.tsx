@@ -1,13 +1,16 @@
 // @vitest-environment jsdom
+import { IconHome } from '@tabler/icons-react';
 import { fireEvent, render } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vite-plus/test';
 
-import { createIcon } from './index';
+import { createIcon, createTablerIcon } from './index';
 
 const TestIcon = createIcon('TestIcon', {
   viewBox: '0 0 24 24',
   body: <path d="M4 12h16" />,
 });
+
+const TestTablerIcon = createTablerIcon(IconHome);
 
 describe('createIcon', () => {
   it('renders without aria-label as decorative', () => {
@@ -85,5 +88,52 @@ describe('createIcon', () => {
 
     fireEvent.click(svg);
     expect(handleClick).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('createTablerIcon', () => {
+  it('renders without aria-label as decorative', () => {
+    const { container } = render(<TestTablerIcon />);
+    const svg = container.querySelector('svg');
+
+    expect(svg).toBeTruthy();
+    expect(svg?.getAttribute('aria-hidden')).toBe('true');
+    expect(svg?.getAttribute('role')).toBeNull();
+  });
+
+  it('renders with aria-label as a named image', () => {
+    const { container } = render(<TestTablerIcon aria-label="Home" />);
+    const svg = container.querySelector('svg');
+
+    expect(svg?.getAttribute('aria-hidden')).toBeNull();
+    expect(svg?.getAttribute('aria-label')).toBe('Home');
+    expect(svg?.getAttribute('role')).toBe('img');
+  });
+
+  it('maps semantic colors', () => {
+    const { container } = render(<TestTablerIcon color="primary" />);
+    const svg = container.querySelector('svg');
+
+    expect(svg?.getAttribute('stroke')).toBe('var(--ui-color-brand-text)');
+  });
+
+  it('maps named sizes and preserves custom numeric sizes', () => {
+    const { container, rerender } = render(<TestTablerIcon size="sm" />);
+    const svg = container.querySelector('svg');
+
+    expect(svg?.getAttribute('width')).toBe('16');
+    expect(svg?.getAttribute('height')).toBe('16');
+
+    rerender(<TestTablerIcon size={28} />);
+    expect(svg?.getAttribute('width')).toBe('28');
+    expect(svg?.getAttribute('height')).toBe('28');
+  });
+
+  it('applies square stroke caps and miter joins', () => {
+    const { container } = render(<TestTablerIcon />);
+    const svg = container.querySelector('svg');
+
+    expect(svg?.getAttribute('stroke-linecap')).toBe('square');
+    expect(svg?.getAttribute('stroke-linejoin')).toBe('miter');
   });
 });
