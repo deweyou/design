@@ -1,25 +1,26 @@
 import { useState } from 'react';
+import type { ComponentType } from 'react';
 
 import { Input, Text, toast } from '@deweyou-design/react';
 import * as Icons from '@deweyou-design/react-icons';
+import type { IconProps } from '@deweyou-design/react-icons';
 
 import styles from './icons.module.less';
 
 type IconEntry = {
   name: string;
-  Icon: React.ComponentType<{ size?: number; 'aria-hidden'?: boolean }>;
+  Icon: ComponentType<IconProps>;
 };
 
 // Build the full icon list from all exports ending with "Icon"
-const ALL_ICONS: IconEntry[] = (
-  Object.entries(Icons) as Array<[string, React.ComponentType<{ size?: number }>]>
-)
+const ALL_ICONS: IconEntry[] = (Object.entries(Icons) as Array<[string, ComponentType<IconProps>]>)
   .filter(([key]) => key.endsWith('Icon'))
   .map(([exportName, Icon]) => ({
-    // "AlertCircleIcon" → "alert-circle"
     name: exportName
       .replace(/Icon$/, '')
-      .replace(/([A-Z])/g, (m, l, i) => (i === 0 ? l.toLowerCase() : `-${l.toLowerCase()}`)),
+      .replace(/([A-Z])/g, (match, letter, index) =>
+        index === 0 ? letter.toLowerCase() : `-${letter.toLowerCase()}`,
+      ),
     Icon,
   }));
 
@@ -56,7 +57,20 @@ export const IconsPage = () => {
             Icons
           </Text>
           <Text className={styles.subtitle} variant="caption">
-            @deweyou-design/react-icons · 基于 Tabler Icons · 点击图标复制 import 语句
+            @deweyou-design/react-icons · default glyphs from tdesign-icons-svg · Deweyou curated
+            list
+          </Text>
+          <Text className={styles.subtitle} variant="caption">
+            This catalog shows Deweyou-supported icons, not the full upstream icon set.
+          </Text>
+          <Text className={styles.subtitle} variant="caption">
+            Click an icon to copy its direct named import. Application code should use direct named
+            imports. This catalog uses a namespace import because it intentionally renders every
+            supported icon.
+          </Text>
+          <Text className={styles.subtitle} variant="caption">
+            Examples: &lt;SearchIcon <code>size="sm"</code> /&gt; · &lt;SearchIcon{' '}
+            <code>color="primary"</code> /&gt;
           </Text>
           <div className={styles.searchWrapper}>
             <Input
@@ -82,7 +96,7 @@ export const IconsPage = () => {
                 onClick={() => copyImport(name)}
               >
                 <div className={styles.iconBox}>
-                  <Icon aria-hidden size={20} />
+                  <Icon aria-hidden size="md" />
                 </div>
                 <span className={styles.iconName}>{name}</span>
               </button>

@@ -25,6 +25,28 @@ test('renders icon grid with all icons', () => {
   expect(cells.length).toBeGreaterThanOrEqual(10);
 });
 
+test('documents the TDesign source and Deweyou curated list', () => {
+  renderPage();
+
+  expect(screen.getByText(/tdesign-icons-svg/i)).toBeInTheDocument();
+  expect(screen.getByText(/Deweyou curated/i)).toBeInTheDocument();
+});
+
+test('documents direct imports while reserving namespace imports for the catalog', () => {
+  renderPage();
+
+  expect(screen.getByText(/direct named imports/i)).toBeInTheDocument();
+  expect(screen.getByText(/namespace import/i)).toBeInTheDocument();
+  expect(screen.getByText(/every supported icon/i)).toBeInTheDocument();
+});
+
+test('renders named size and color examples', () => {
+  renderPage();
+
+  expect(screen.getByText('size="sm"')).toBeInTheDocument();
+  expect(screen.getByText('color="primary"')).toBeInTheDocument();
+});
+
 test('search filters the icon list', () => {
   renderPage();
   const input = screen.getByPlaceholderText('搜索图标...');
