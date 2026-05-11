@@ -46,7 +46,9 @@
 }
 
 .grid {
+  align-content: start;
   display: grid;
+  grid-auto-rows: minmax(96px, auto);
   grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
   min-width: 0;
 }
@@ -127,6 +129,7 @@
   }
 
   .grid {
+    grid-auto-rows: minmax(80px, auto);
     grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
   }
 }
