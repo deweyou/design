@@ -21,4 +21,13 @@ describe('normalizeSvgBody', () => {
       ),
     ).toThrow('Fragment-referenced SVG ids are not supported yet for test:fragment.');
   });
+
+  it('rejects unresolved clip-path fragment references', () => {
+    expect(() =>
+      normalizeSvgBody(
+        '<svg viewBox="0 0 24 24"><path clip-path="url(#clip0)" d="M4 12h16"/></svg>',
+        'test:clip-path',
+      ),
+    ).toThrow('Fragment-referenced SVG ids are not supported yet for test:clip-path.');
+  });
 });

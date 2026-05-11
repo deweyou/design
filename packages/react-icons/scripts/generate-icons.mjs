@@ -19,7 +19,6 @@ const tdesignSourceKeyPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const colorAttributePattern = /\s(fill|stroke)="(?!none|transparent|currentColor)[^"]*"/g;
 const ignoredSvgAttributePattern = /\s(?:width|height|xmlns|class)="[^"]*"/g;
 const unusedIdAttributePattern = /\sid=(?:"[^"]*"|'[^']*')/g;
-const unresolvedClipPathPattern = /\sclip-path="url\(#[-A-Za-z0-9_:.]+\)"/g;
 
 const readJson = async (path) => JSON.parse(await readFile(path, 'utf8'));
 
@@ -46,16 +45,11 @@ export const normalizeSvgBody = (svg, sourceLabel) => {
   }
 
   const rawBody = bodyMatch[1].trim();
-  const hasClipPathDefinition = /<clipPath\b/.test(rawBody);
-  const bodySource = hasClipPathDefinition
-    ? rawBody
-    : rawBody.replace(unresolvedClipPathPattern, '');
-
-  if (bodySource.includes('url(#')) {
+  if (rawBody.includes('url(#')) {
     throw new Error(`Fragment-referenced SVG ids are not supported yet for ${sourceLabel}.`);
   }
 
-  const body = bodySource
+  const body = rawBody
     .replace(ignoredSvgAttributePattern, '')
     .replace(unusedIdAttributePattern, '')
     .replace(colorAttributePattern, (_, attributeName) => ` ${attributeName}="currentColor"`)

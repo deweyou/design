@@ -99,8 +99,8 @@
   },
   {
     "exportName": "EyeIcon",
-    "source": "tdesign",
-    "sourceKey": "browse",
+    "source": "local",
+    "sourcePath": "./assets/eye.svg",
     "category": "action",
     "keywords": ["view", "visible"]
   },
