@@ -18,7 +18,7 @@
   "scripts": {
     "build": "node ./scripts/clean-dist.mjs && pnpm run generate-icons && vp pack && node ../infra/scripts/write-published-manifest.mjs .",
     "dev": "vp pack --watch",
-    "generate-icons": "node ./scripts/generate-icons.mjs && vp fmt src/icons/generated/index.tsx",
+    "generate-icons": "node ./scripts/generate-icons.mjs && vp fmt src/icons/generated",
     "test": "vp test"
   },
   "devDependencies": {
