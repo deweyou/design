@@ -23,7 +23,7 @@
 - Modify `packages/react-icons/src/icons/index.test.ts`: registry/public-surface contract tests.
 - Modify `packages/react-icons/src/index.ts`: export `IconProps`, `IconSize`, `IconColor`, and generated icons.
 - Create `packages/react-icons/src/icons/tree-shaking.test.ts`: one-icon consumer bundle contract.
-- Modify `packages/react-icons/package.json`: replace Tabler dependency with build-time `tdesign-icons-svg`, add `generate-icons` script, add `vite` for the tree-shaking test if needed.
+- Modify `packages/react-icons/package.json`: retain Tabler temporarily while current imports remain, add build-time `tdesign-icons-svg`, add `generate-icons` script, add `vite` for the tree-shaking test if needed, then remove Tabler after generated icons replace the imports.
 - Modify `packages/react-icons/vite.config.ts`: keep ESM entry behavior compatible with generated icons.
 - Modify `packages/react-icons/README.md`: TDesign attribution, curated-list rules, direct import guidance.
 - Modify `packages/react-icons/CLAUDE.md`: replace Tabler-specific constraints with TDesign codegen constraints.
@@ -57,13 +57,15 @@ packages/react-icons/package.json updates devDependencies.
 pnpm-lock.yaml records tdesign-icons-svg@0.4.2.
 ```
 
-- [ ] **Step 2: Remove the old Tabler runtime dependency**
+- [ ] **Step 2: Retain the old Tabler runtime dependency temporarily**
 
 Edit `packages/react-icons/package.json` so the dependency sections contain this shape:
 
 ```json
 {
-  "dependencies": {},
+  "dependencies": {
+    "@tabler/icons-react": "^3.44.0"
+  },
   "devDependencies": {
     "@testing-library/react": "catalog:",
     "@types/react": "catalog:",
@@ -80,7 +82,7 @@ Edit `packages/react-icons/package.json` so the dependency sections contain this
 }
 ```
 
-If `package.json` tooling removes the empty `dependencies` object, leave it absent. The required outcome is that `@tabler/icons-react` is gone and `tdesign-icons-svg` is not in runtime `dependencies`.
+The required interim outcome is that `@tabler/icons-react` remains as a runtime dependency until generated TDesign icons replace the current Tabler imports. `tdesign-icons-svg` must not be in runtime `dependencies`.
 
 - [ ] **Step 3: Probe the package filesystem layout**
 
@@ -876,7 +878,11 @@ Generated file exports AlertCircleIcon and SearchIcon.
 Generated file does not import @tabler/icons-react.
 ```
 
-- [ ] **Step 5: Run icon tests**
+- [ ] **Step 5: Remove the old Tabler runtime dependency**
+
+After generated icons replace the Tabler imports, edit `packages/react-icons/package.json` so `dependencies` no longer contains `@tabler/icons-react`. If `package.json` tooling removes the empty `dependencies` object, leave it absent.
+
+- [ ] **Step 6: Run icon tests**
 
 Run:
 
@@ -891,7 +897,7 @@ PASS packages/react-icons/src/icons/index.test.ts
 PASS packages/react-icons/src/icon-wrapper/index.test.tsx
 ```
 
-- [ ] **Step 6: Commit generator and generated icons**
+- [ ] **Step 7: Commit generator and generated icons**
 
 Run:
 

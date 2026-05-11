@@ -20,6 +20,9 @@
     "dev": "vp pack --watch",
     "test": "vp test"
   },
+  "dependencies": {
+    "@tabler/icons-react": "^3.44.0"
+  },
   "devDependencies": {
     "@testing-library/react": "catalog:",
     "@types/react": "catalog:",
