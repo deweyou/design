@@ -14,6 +14,14 @@ it('keeps the root public surface to types plus curated icons', () => {
   expect(Object.keys(publicSurface).sort()).toEqual(expectedIconNames);
 });
 
+it('exports createIcon-backed components with stable display names', () => {
+  for (const exportName of expectedIconNames) {
+    const Icon = icons[exportName as keyof typeof icons] as { displayName?: string };
+
+    expect(Icon.displayName).toBe(exportName);
+  }
+});
+
 it('keeps registry export names unique and named as icons', () => {
   const names = iconRegistry.map(({ exportName }) => exportName);
 

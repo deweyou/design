@@ -1,4 +1,3 @@
-import type { Icon as TablerIconType, IconProps as TablerIconProps } from '@tabler/icons-react';
 import type { ReactElement, SVGProps } from 'react';
 
 export type IconSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
@@ -16,6 +15,10 @@ export type IconProps = Omit<
 export type IconDefinition = {
   body: ReactElement | readonly ReactElement[];
   viewBox: string;
+};
+
+export type IconComponent = ((props: IconProps) => ReactElement) & {
+  displayName: string;
 };
 
 const iconSizeMap = {
@@ -49,10 +52,7 @@ const resolveColor = (color: IconProps['color']) => {
   return iconColorMap[color ?? 'inherit'];
 };
 
-export const createIcon = (
-  displayName: string,
-  definition: IconDefinition,
-): ((props: IconProps) => ReactElement) => {
+export const createIcon = (displayName: string, definition: IconDefinition): IconComponent => {
   const Icon = ({
     'aria-hidden': ariaHidden,
     'aria-label': ariaLabel,
@@ -85,38 +85,5 @@ export const createIcon = (
 
   Icon.displayName = displayName;
 
-  return Icon;
-};
-
-export const createTablerIcon = (
-  TablerIcon: TablerIconType,
-): ((props: IconProps) => ReactElement) => {
-  const WrappedIcon = ({
-    'aria-hidden': ariaHidden,
-    'aria-label': ariaLabel,
-    color,
-    role,
-    size,
-    stroke,
-    ...svgProps
-  }: IconProps): ReactElement => {
-    const resolvedAriaHidden = ariaHidden ?? (ariaLabel ? undefined : true);
-    const resolvedRole = role ?? (ariaLabel ? 'img' : undefined);
-
-    const tablerProps: TablerIconProps = {
-      ...svgProps,
-      'aria-hidden': resolvedAriaHidden,
-      'aria-label': ariaLabel,
-      color: resolveColor(color),
-      role: resolvedRole,
-      size: resolveSize(size),
-      stroke: stroke ?? 1.5,
-      strokeLinecap: 'square',
-      strokeLinejoin: 'miter',
-    };
-
-    return <TablerIcon {...tablerProps} />;
-  };
-
-  return WrappedIcon;
+  return Icon as IconComponent;
 };
