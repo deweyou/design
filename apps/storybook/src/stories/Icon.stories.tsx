@@ -1,27 +1,39 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import type { IconColor, IconSize } from '@deweyou-design/react-icons';
+import type { ComponentType } from 'react';
+import type { IconColor, IconProps, IconSize } from '@deweyou-design/react-icons';
 
-import {
-  AlertCircleIcon,
-  CheckIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  InfoIcon,
-  Menu2Icon,
-  SearchIcon,
-  XIcon,
-} from '@deweyou-design/react-icons';
+import { AlertCircleIcon, InfoIcon, Menu2Icon, SearchIcon } from '@deweyou-design/react-icons';
+import * as Icons from '@deweyou-design/react-icons';
+import { iconRegistry } from '../../../../packages/react-icons/src/icon-registry';
 
-const galleryItems = [
-  { name: 'alert-circle', Component: AlertCircleIcon },
-  { name: 'check', Component: CheckIcon },
-  { name: 'chevron-left', Component: ChevronLeftIcon },
-  { name: 'chevron-right', Component: ChevronRightIcon },
-  { name: 'x', Component: XIcon },
-  { name: 'info', Component: InfoIcon },
-  { name: 'menu-2', Component: Menu2Icon },
-  { name: 'search', Component: SearchIcon },
-] as const;
+type PublicIconExportName = Extract<keyof typeof Icons, `${string}Icon`>;
+
+const isPublicIconExportName = (exportName: string): exportName is PublicIconExportName => {
+  return exportName in Icons;
+};
+
+const getPublicIconComponent = (exportName: `${string}Icon`): ComponentType<IconProps> => {
+  if (!isPublicIconExportName(exportName)) {
+    throw new Error(`Icon registry export is missing from the public surface: ${exportName}`);
+  }
+
+  return Icons[exportName] as ComponentType<IconProps>;
+};
+
+const toCatalogName = (exportName: `${string}Icon`) => {
+  return exportName
+    .replace(/Icon$/, '')
+    .replace(/([a-z])([0-9])/g, '$1-$2')
+    .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+    .toLowerCase();
+};
+
+const galleryItems = iconRegistry.map(({ category, exportName }) => ({
+  category,
+  Component: getPublicIconComponent(exportName),
+  exportName,
+  name: toCatalogName(exportName),
+}));
 
 const sizeExamples = [
   { label: 'xs', description: 'compact controls' },
@@ -150,11 +162,11 @@ const CatalogGallery = () => {
         Curated catalog backed by tdesign-icons-svg and Deweyou local assets.
       </p>
       <div style={storyStyles.grid}>
-        {galleryItems.map(({ Component, name }) => (
-          <article key={name} style={storyStyles.card}>
+        {galleryItems.map(({ Component, category, exportName, name }) => (
+          <article data-testid="catalog-icon-card" key={exportName} style={storyStyles.card}>
             <Component size="lg" />
             <strong>{name}</strong>
-            <code style={storyStyles.meta}>{name}</code>
+            <code style={storyStyles.meta}>{category}</code>
           </article>
         ))}
       </div>
@@ -251,6 +263,7 @@ export const Interaction: Story = {
     await expect(
       canvas.getByText('Curated catalog backed by tdesign-icons-svg and Deweyou local assets.'),
     ).toBeInTheDocument();
+    await expect(canvas.getAllByTestId('catalog-icon-card')).toHaveLength(iconRegistry.length);
     await expect(canvas.getByText('search', { selector: 'strong' })).toBeInTheDocument();
     await expect(canvas.getByText('xl')).toBeInTheDocument();
     await expect(canvas.getByText('primary')).toBeInTheDocument();
