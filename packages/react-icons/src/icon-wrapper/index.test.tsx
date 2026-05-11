@@ -1,15 +1,17 @@
 // @vitest-environment jsdom
-import { render } from '@testing-library/react';
-import { IconHome } from '@tabler/icons-react';
-import { describe, expect, it } from 'vite-plus/test';
+import { fireEvent, render } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vite-plus/test';
 
-import { createTablerIcon } from './index';
+import { createIcon } from './index';
 
-const HomeIcon = createTablerIcon(IconHome);
+const TestIcon = createIcon('TestIcon', {
+  viewBox: '0 0 24 24',
+  body: <path d="M4 12h16" />,
+});
 
-describe('createTablerIcon', () => {
-  it('renders without aria-label as aria-hidden', () => {
-    const { container } = render(<HomeIcon />);
+describe('createIcon', () => {
+  it('renders without aria-label as decorative', () => {
+    const { container } = render(<TestIcon />);
     const svg = container.querySelector('svg');
 
     expect(svg).toBeTruthy();
@@ -17,29 +19,71 @@ describe('createTablerIcon', () => {
     expect(svg?.getAttribute('role')).toBeNull();
   });
 
-  it('renders with aria-label as role=img', () => {
-    const { container } = render(<HomeIcon aria-label="首页" />);
+  it('renders with aria-label as a named image', () => {
+    const { container } = render(<TestIcon aria-label="Search" />);
     const svg = container.querySelector('svg');
 
     expect(svg?.getAttribute('aria-hidden')).toBeNull();
-    expect(svg?.getAttribute('aria-label')).toBe('首页');
+    expect(svg?.getAttribute('aria-label')).toBe('Search');
     expect(svg?.getAttribute('role')).toBe('img');
   });
 
-  it('applies square stroke caps', () => {
-    const { container } = render(<HomeIcon />);
+  it('allows explicit aria-hidden and role overrides', () => {
+    const { container } = render(<TestIcon aria-hidden={false} role="presentation" />);
     const svg = container.querySelector('svg');
 
-    expect(svg?.getAttribute('stroke-width')).toBe('1.5');
-    expect(svg?.getAttribute('stroke-linecap')).toBe('square');
-    expect(svg?.getAttribute('stroke-linejoin')).toBe('miter');
+    expect(svg?.getAttribute('aria-hidden')).toBe('false');
+    expect(svg?.getAttribute('role')).toBe('presentation');
   });
 
-  it('forwards size prop', () => {
-    const { container } = render(<HomeIcon size={24} />);
+  it('maps named sizes and preserves custom size values', () => {
+    const { container, rerender } = render(<TestIcon size="sm" />);
     const svg = container.querySelector('svg');
 
-    expect(svg?.getAttribute('width')).toBe('24');
-    expect(svg?.getAttribute('height')).toBe('24');
+    expect(svg?.getAttribute('width')).toBe('16');
+    expect(svg?.getAttribute('height')).toBe('16');
+
+    rerender(<TestIcon size={28} />);
+    expect(svg?.getAttribute('width')).toBe('28');
+    expect(svg?.getAttribute('height')).toBe('28');
+
+    rerender(<TestIcon size="2rem" />);
+    expect(svg?.getAttribute('width')).toBe('2rem');
+    expect(svg?.getAttribute('height')).toBe('2rem');
+  });
+
+  it('maps semantic colors and defaults to currentColor', () => {
+    const { container, rerender } = render(<TestIcon />);
+    const svg = container.querySelector('svg');
+
+    expect(svg?.getAttribute('color')).toBe('currentColor');
+
+    rerender(<TestIcon color="primary" />);
+    expect(svg?.getAttribute('color')).toBe('var(--ui-color-brand-text)');
+
+    rerender(<TestIcon color="danger" />);
+    expect(svg?.getAttribute('color')).toBe('var(--ui-color-danger-text)');
+  });
+
+  it('passes through id, className, data attributes, style, and events', () => {
+    const handleClick = vi.fn();
+    const { container } = render(
+      <TestIcon
+        className="sample"
+        data-testid="icon"
+        id="sample-icon"
+        style={{ marginInlineStart: 4 }}
+        onClick={handleClick}
+      />,
+    );
+
+    const svg = container.querySelector('svg')!;
+    expect(svg.id).toBe('sample-icon');
+    expect(svg.classList.contains('sample')).toBe(true);
+    expect(svg.getAttribute('data-testid')).toBe('icon');
+    expect(svg.style.marginInlineStart).toBe('4px');
+
+    fireEvent.click(svg);
+    expect(handleClick).toHaveBeenCalledTimes(1);
   });
 });

@@ -6,6 +6,7 @@ import { afterEach, test } from 'vite-plus/test';
 
 import { expect } from '../test-setup';
 
+import { iconRegistry } from '../../../../packages/react-icons/src/icon-registry';
 import { IconsPage } from './icons';
 
 afterEach(() => {
@@ -22,7 +23,33 @@ const renderPage = () =>
 test('renders icon grid with all icons', () => {
   renderPage();
   const cells = screen.getAllByRole('button');
-  expect(cells.length).toBeGreaterThanOrEqual(10);
+  expect(cells).toHaveLength(iconRegistry.length);
+  expect(
+    screen.getByText(`${iconRegistry.length} / ${iconRegistry.length} icons`),
+  ).toBeInTheDocument();
+});
+
+test('documents the TDesign source and Deweyou curated list', () => {
+  renderPage();
+
+  expect(screen.getAllByText(/tdesign-icons-svg/i).length).toBeGreaterThan(0);
+  expect(screen.getByText(/Deweyou curated/i)).toBeInTheDocument();
+  expect(screen.getByText(/full tdesign-icons-svg source set/i)).toBeInTheDocument();
+});
+
+test('documents direct imports while reserving namespace imports for the catalog', () => {
+  renderPage();
+
+  expect(screen.getByText(/direct named imports/i)).toBeInTheDocument();
+  expect(screen.getByText(/namespace import/i)).toBeInTheDocument();
+  expect(screen.getByText(/every supported icon/i)).toBeInTheDocument();
+});
+
+test('renders named size and color examples', () => {
+  renderPage();
+
+  expect(screen.getByText('size="sm"')).toBeInTheDocument();
+  expect(screen.getByText('color="primary"')).toBeInTheDocument();
 });
 
 test('search filters the icon list', () => {

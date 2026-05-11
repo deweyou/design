@@ -33,12 +33,22 @@
   margin: 0 !important;
 }
 
+.count {
+  border-top: 1px solid var(--website-line);
+  color: var(--ui-color-text);
+  font-family: var(--ui-font-mono);
+  margin: 4px 0 0 !important;
+  padding-top: 12px;
+}
+
 .searchWrapper {
   margin-top: 12px;
 }
 
 .grid {
+  align-content: start;
   display: grid;
+  grid-auto-rows: minmax(96px, auto);
   grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
   min-width: 0;
 }
@@ -119,6 +129,7 @@
   }
 
   .grid {
+    grid-auto-rows: minmax(80px, auto);
     grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
   }
 }

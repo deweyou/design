@@ -1,26 +1,54 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import type { ComponentType } from 'react';
+import type { IconColor, IconProps, IconSize } from '@deweyou-design/react-icons';
 
-import {
-  AlertCircleIcon,
-  CheckIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  InfoIcon,
-  Menu2Icon,
-  SearchIcon,
-  XIcon,
-} from '@deweyou-design/react-icons';
+import { AlertCircleIcon, InfoIcon, MenuIcon, SearchIcon } from '@deweyou-design/react-icons';
+import * as Icons from '@deweyou-design/react-icons';
+import { iconRegistry } from '../../../../packages/react-icons/src/icon-registry';
 
-const galleryItems = [
-  { name: 'alert-circle', Component: AlertCircleIcon },
-  { name: 'check', Component: CheckIcon },
-  { name: 'chevron-left', Component: ChevronLeftIcon },
-  { name: 'chevron-right', Component: ChevronRightIcon },
-  { name: 'x', Component: XIcon },
-  { name: 'info', Component: InfoIcon },
-  { name: 'menu-2', Component: Menu2Icon },
-  { name: 'search', Component: SearchIcon },
-] as const;
+type PublicIconExportName = Extract<keyof typeof Icons, `${string}Icon`>;
+
+const isPublicIconExportName = (exportName: string): exportName is PublicIconExportName => {
+  return exportName in Icons;
+};
+
+const getPublicIconComponent = (exportName: `${string}Icon`): ComponentType<IconProps> => {
+  if (!isPublicIconExportName(exportName)) {
+    throw new Error(`Icon registry export is missing from the public surface: ${exportName}`);
+  }
+
+  return Icons[exportName] as ComponentType<IconProps>;
+};
+
+const toCatalogName = (exportName: `${string}Icon`) => {
+  return exportName
+    .replace(/Icon$/, '')
+    .replace(/([a-z])([0-9])/g, '$1-$2')
+    .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+    .toLowerCase();
+};
+
+const galleryItems = iconRegistry.map(({ category, exportName }) => ({
+  category,
+  Component: getPublicIconComponent(exportName),
+  exportName,
+  name: toCatalogName(exportName),
+}));
+
+const sizeExamples = [
+  { label: 'xs', description: 'compact controls' },
+  { label: 'sm', description: 'small controls' },
+  { label: 'md', description: 'default controls' },
+  { label: 'lg', description: 'large controls' },
+  { label: 'xl', description: 'empty states' },
+] as const satisfies readonly { label: IconSize; description: string }[];
+
+const colorExamples = [
+  { label: 'inherit', description: 'follow surrounding text' },
+  { label: 'neutral', description: 'default interface icon' },
+  { label: 'primary', description: 'brand emphasis' },
+  { label: 'danger', description: 'destructive or error state' },
+] as const satisfies readonly { label: IconColor; description: string }[];
 
 const storyStyles = {
   grid: {
@@ -33,17 +61,29 @@ const storyStyles = {
     alignItems: 'center',
     background: 'color-mix(in srgb, var(--ui-color-surface) 92%, white)',
     border: '1px solid var(--ui-color-border)',
-    borderRadius: '16px',
+    borderRadius: '8px',
     color: 'var(--ui-color-text)',
     display: 'grid',
     gap: '10px',
     justifyItems: 'center',
+    minWidth: 0,
     padding: '16px',
+  },
+  description: {
+    color: 'var(--ui-color-text-muted)',
+    fontSize: '0.82rem',
+    lineHeight: 1.4,
+    textAlign: 'center',
   },
   meta: {
     color: 'var(--ui-color-text-muted)',
     fontFamily: 'var(--ui-font-mono)',
     fontSize: '0.8rem',
+  },
+  shell: {
+    display: 'grid',
+    gap: '18px',
+    width: 'min(840px, 100%)',
   },
 } as const;
 
@@ -52,32 +92,37 @@ const meta = {
   component: SearchIcon,
   tags: ['autodocs'],
   args: {
-    size: 24,
+    size: 'md',
+    color: 'inherit',
   },
   argTypes: {
     size: {
-      description: 'Icon size. Accepts a number (px) or any CSS length string.',
-      control: { type: 'number' },
+      description:
+        'Icon size. Prefer named design-system sizes, with number and CSS length fallbacks for special cases.',
+      control: { type: 'select' },
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
       table: {
-        type: { summary: 'number | string' },
-        defaultValue: { summary: "'1em'" },
+        type: { summary: "'xs' | 'sm' | 'md' | 'lg' | 'xl' | number | string" },
+        defaultValue: { summary: "'md'" },
       },
     },
-    stroke: {
-      description: 'Stroke width. Defaults to 1.5.',
-      control: { type: 'number', min: 0.5, max: 3, step: 0.25 },
+    color: {
+      description:
+        'Semantic icon color. `inherit` keeps the icon aligned with the surrounding text color.',
+      control: { type: 'select' },
+      options: ['inherit', 'neutral', 'primary', 'danger'],
       table: {
-        type: { summary: 'number' },
-        defaultValue: { summary: '1.5' },
+        type: { summary: "'inherit' | 'neutral' | 'primary' | 'danger'" },
+        defaultValue: { summary: "'inherit'" },
       },
     },
     'aria-label': {
       description:
-        'Accessible label. When provided the icon renders with `role="img"` and `aria-label`. When omitted the icon is decorative (`aria-hidden="true"`).',
+        'Accessible label. When provided, the icon renders with `role="img"` and `aria-label`. When omitted, the icon is decorative.',
       control: { type: 'text' },
       table: {
         type: { summary: 'string | undefined' },
-        defaultValue: { summary: '—' },
+        defaultValue: { summary: '-' },
       },
     },
     className: {
@@ -85,14 +130,14 @@ const meta = {
       control: { type: 'text' },
       table: {
         type: { summary: 'string | undefined' },
-        defaultValue: { summary: '—' },
+        defaultValue: { summary: '-' },
       },
     },
     style: {
       control: false,
       table: {
         type: { summary: 'CSSProperties | undefined' },
-        defaultValue: { summary: '—' },
+        defaultValue: { summary: '-' },
       },
     },
   },
@@ -100,7 +145,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Named icon components wrapping Tabler Icons with square stroke caps and miter joins to match the rect-first design language. Import named exports directly from `@deweyou-design/react-icons`. All icons use `currentColor` and are rendered synchronously — no loading state or registry lookup.',
+          'Named icon components are generated from a Deweyou-curated registry backed by `tdesign-icons-svg` and local SVG assets. Import icons directly from `@deweyou-design/react-icons`; the registry defines the supported catalog while shared props keep size, color, and accessibility behavior consistent.',
       },
     },
   },
@@ -112,26 +157,47 @@ type Story = StoryObj<typeof meta>;
 
 const CatalogGallery = () => {
   return (
-    <div style={storyStyles.grid}>
-      {galleryItems.map(({ Component, name }) => (
-        <article key={name} style={storyStyles.card}>
-          <Component size={24} />
-          <strong>{name}</strong>
-          <code style={storyStyles.meta}>{name}</code>
+    <div style={storyStyles.shell}>
+      <p style={{ ...storyStyles.description, textAlign: 'left' }}>
+        Curated catalog backed by tdesign-icons-svg and Deweyou local assets.
+      </p>
+      <div style={storyStyles.grid}>
+        {galleryItems.map(({ Component, category, exportName, name }) => (
+          <article data-testid="catalog-icon-card" key={exportName} style={storyStyles.card}>
+            <Component size="lg" />
+            <strong>{name}</strong>
+            <code style={storyStyles.meta}>{category}</code>
+          </article>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const SizingGallery = () => {
+  return (
+    <div
+      style={{ ...storyStyles.grid, gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))' }}
+    >
+      {sizeExamples.map(({ description, label }) => (
+        <article key={label} style={storyStyles.card}>
+          <SearchIcon data-testid={`size-${label}`} size={label} />
+          <strong>{label}</strong>
+          <span style={storyStyles.description}>{description}</span>
         </article>
       ))}
     </div>
   );
 };
 
-const SizingGallery = () => {
-  const sizes = [12, 16, 20, 24, 32] as const;
+const ColorGallery = () => {
   return (
-    <div style={{ ...storyStyles.grid, gridTemplateColumns: 'repeat(5, minmax(110px, 1fr))' }}>
-      {sizes.map((size) => (
-        <article key={size} style={storyStyles.card}>
-          <SearchIcon size={size} />
-          <strong>{size}px</strong>
+    <div style={storyStyles.grid}>
+      {colorExamples.map(({ description, label }) => (
+        <article key={label} style={storyStyles.card}>
+          <AlertCircleIcon color={label} data-testid={`color-${label}`} size="lg" />
+          <strong>{label}</strong>
+          <span style={storyStyles.description}>{description}</span>
         </article>
       ))}
     </div>
@@ -142,17 +208,38 @@ const AccessibilityGallery = () => {
   return (
     <div style={storyStyles.grid}>
       <article style={storyStyles.card}>
-        <Menu2Icon size={24} />
-        <strong>Unlabeled</strong>
+        <MenuIcon data-testid="decorative-icon" size="lg" />
+        <strong>Decorative</strong>
         <span style={storyStyles.meta}>aria-hidden=true</span>
       </article>
       <article style={storyStyles.card}>
-        <InfoIcon aria-label="Information" size={24} />
+        <InfoIcon aria-label="Information" data-testid="labeled-icon" size="lg" />
         <strong>Labeled</strong>
-        <span style={storyStyles.meta}>aria-label=Information</span>
+        <span style={storyStyles.meta}>role=img</span>
       </article>
     </div>
   );
+};
+
+const ReviewSurface = () => {
+  return (
+    <div style={storyStyles.shell}>
+      <CatalogGallery />
+      <SizingGallery />
+      <ColorGallery />
+      <AccessibilityGallery />
+    </div>
+  );
+};
+
+export const Preview: Story = {
+  render: (args) => (
+    <article style={{ ...storyStyles.card, width: 180 }}>
+      <SearchIcon {...args} data-testid="icon-preview" />
+      <strong>SearchIcon</strong>
+      <code style={storyStyles.meta}>controlled preview</code>
+    </article>
+  ),
 };
 
 export const Catalog: Story = {
@@ -163,21 +250,33 @@ export const Sizes: Story = {
   render: () => <SizingGallery />,
 };
 
+export const Colors: Story = {
+  render: () => <ColorGallery />,
+};
+
 export const Accessibility: Story = {
   render: () => <AccessibilityGallery />,
 };
 
 // ---------------------------------------------------------------------------
-// Story: Interaction — smoke test (purely presentational, no interactive behavior)
+// Story: Interaction — play function tests
 // ---------------------------------------------------------------------------
 
-import { expect } from 'storybook/test';
+import { expect, within } from 'storybook/test';
 
 export const Interaction: Story = {
   name: 'Interaction',
-  render: () => <CatalogGallery />,
+  render: () => <ReviewSurface />,
   play: async ({ canvasElement }) => {
-    const svgs = canvasElement.querySelectorAll('svg');
-    await expect(svgs.length).toBeGreaterThan(0);
+    const canvas = within(canvasElement);
+
+    await expect(
+      canvas.getByText('Curated catalog backed by tdesign-icons-svg and Deweyou local assets.'),
+    ).toBeInTheDocument();
+    await expect(canvas.getAllByTestId('catalog-icon-card')).toHaveLength(iconRegistry.length);
+    await expect(canvas.getByText('search', { selector: 'strong' })).toBeInTheDocument();
+    await expect(canvas.getByText('xl')).toBeInTheDocument();
+    await expect(canvas.getByText('primary')).toBeInTheDocument();
+    await expect(canvas.getByRole('img', { name: 'Information' })).toBeInTheDocument();
   },
 };
