@@ -1,0 +1,212 @@
+[
+  {
+    "exportName": "AlertCircleIcon",
+    "source": "tdesign",
+    "sourceKey": "error-circle",
+    "category": "status",
+    "keywords": ["alert", "error", "circle"]
+  },
+  {
+    "exportName": "AlertTriangleIcon",
+    "source": "tdesign",
+    "sourceKey": "error-triangle",
+    "category": "status",
+    "keywords": ["alert", "warning", "triangle"]
+  },
+  {
+    "exportName": "ArrowLeftIcon",
+    "source": "tdesign",
+    "sourceKey": "arrow-left",
+    "category": "navigation",
+    "keywords": ["back", "previous"]
+  },
+  {
+    "exportName": "ArrowRightIcon",
+    "source": "tdesign",
+    "sourceKey": "arrow-right",
+    "category": "navigation",
+    "keywords": ["next", "forward"]
+  },
+  {
+    "exportName": "BellIcon",
+    "source": "tdesign",
+    "sourceKey": "notification",
+    "category": "feedback",
+    "keywords": ["bell", "notice"]
+  },
+  {
+    "exportName": "CheckIcon",
+    "source": "tdesign",
+    "sourceKey": "check",
+    "category": "status",
+    "keywords": ["done", "selected"]
+  },
+  {
+    "exportName": "ChevronDownIcon",
+    "source": "tdesign",
+    "sourceKey": "chevron-down",
+    "category": "navigation",
+    "keywords": ["expand", "down"]
+  },
+  {
+    "exportName": "ChevronLeftIcon",
+    "source": "tdesign",
+    "sourceKey": "chevron-left",
+    "category": "navigation",
+    "keywords": ["previous", "left"]
+  },
+  {
+    "exportName": "ChevronRightIcon",
+    "source": "tdesign",
+    "sourceKey": "chevron-right",
+    "category": "navigation",
+    "keywords": ["next", "right"]
+  },
+  {
+    "exportName": "ChevronUpIcon",
+    "source": "tdesign",
+    "sourceKey": "chevron-up",
+    "category": "navigation",
+    "keywords": ["collapse", "up"]
+  },
+  {
+    "exportName": "CopyIcon",
+    "source": "tdesign",
+    "sourceKey": "copy",
+    "category": "action",
+    "keywords": ["duplicate", "clipboard"]
+  },
+  {
+    "exportName": "DownloadIcon",
+    "source": "tdesign",
+    "sourceKey": "download",
+    "category": "action",
+    "keywords": ["save", "export"]
+  },
+  {
+    "exportName": "EditIcon",
+    "source": "tdesign",
+    "sourceKey": "edit",
+    "category": "action",
+    "keywords": ["compose", "pencil"]
+  },
+  {
+    "exportName": "ExternalLinkIcon",
+    "source": "tdesign",
+    "sourceKey": "jump",
+    "category": "action",
+    "keywords": ["external", "open"]
+  },
+  {
+    "exportName": "EyeIcon",
+    "source": "tdesign",
+    "sourceKey": "browse",
+    "category": "action",
+    "keywords": ["view", "visible"]
+  },
+  {
+    "exportName": "EyeOffIcon",
+    "source": "tdesign",
+    "sourceKey": "browse-off",
+    "category": "action",
+    "keywords": ["hide", "invisible"]
+  },
+  {
+    "exportName": "FilterIcon",
+    "source": "tdesign",
+    "sourceKey": "filter",
+    "category": "action",
+    "keywords": ["refine", "funnel"]
+  },
+  {
+    "exportName": "HomeIcon",
+    "source": "tdesign",
+    "sourceKey": "home",
+    "category": "navigation",
+    "keywords": ["house", "start"]
+  },
+  {
+    "exportName": "InfoIcon",
+    "source": "tdesign",
+    "sourceKey": "info-circle",
+    "category": "feedback",
+    "keywords": ["information", "help"]
+  },
+  {
+    "exportName": "Loader2Icon",
+    "source": "tdesign",
+    "sourceKey": "loading",
+    "category": "feedback",
+    "keywords": ["loading", "spinner"]
+  },
+  {
+    "exportName": "Menu2Icon",
+    "source": "tdesign",
+    "sourceKey": "menu",
+    "category": "navigation",
+    "keywords": ["navigation", "hamburger"]
+  },
+  {
+    "exportName": "MinusIcon",
+    "source": "tdesign",
+    "sourceKey": "minus",
+    "category": "action",
+    "keywords": ["remove", "collapse"]
+  },
+  {
+    "exportName": "PlusIcon",
+    "source": "tdesign",
+    "sourceKey": "plus",
+    "category": "action",
+    "keywords": ["add", "create"]
+  },
+  {
+    "exportName": "RefreshIcon",
+    "source": "tdesign",
+    "sourceKey": "refresh",
+    "category": "action",
+    "keywords": ["reload", "sync"]
+  },
+  {
+    "exportName": "SearchIcon",
+    "source": "tdesign",
+    "sourceKey": "search",
+    "category": "action",
+    "keywords": ["find", "lookup"]
+  },
+  {
+    "exportName": "SettingsIcon",
+    "source": "tdesign",
+    "sourceKey": "setting",
+    "category": "action",
+    "keywords": ["settings", "preferences"]
+  },
+  {
+    "exportName": "TrashIcon",
+    "source": "tdesign",
+    "sourceKey": "delete",
+    "category": "action",
+    "keywords": ["trash", "remove"]
+  },
+  {
+    "exportName": "UploadIcon",
+    "source": "tdesign",
+    "sourceKey": "upload",
+    "category": "action",
+    "keywords": ["import", "send"]
+  },
+  {
+    "exportName": "UserIcon",
+    "source": "tdesign",
+    "sourceKey": "user",
+    "category": "content",
+    "keywords": ["person", "account"]
+  },
+  {
+    "exportName": "XIcon",
+    "source": "tdesign",
+    "sourceKey": "close",
+    "category": "action",
+    "keywords": ["close", "dismiss"]
+  }
+]
