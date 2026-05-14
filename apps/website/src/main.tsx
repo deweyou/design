@@ -1,70 +1,57 @@
 import React from 'react';
+import { useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
-import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, Outlet, RouterProvider, useLocation } from 'react-router-dom';
 
-import { IconButton, Toaster } from '@deweyou-design/react';
+import { Toaster } from '@deweyou-design/react';
 import { useThemeMode } from '@deweyou-design/react-hooks';
 import '@deweyou-design/styles/theme.css';
 
 import { Navbar } from './components/navbar';
+import { ComponentsPage } from './pages/components';
 import { HomePage } from './pages/home';
 import { IconsPage } from './pages/icons';
 import './style.css';
 
-const SunIcon = () => (
-  <svg
-    aria-hidden="true"
-    fill="none"
-    height="1em"
-    stroke="currentColor"
-    strokeLinecap="square"
-    strokeLinejoin="miter"
-    strokeWidth="1.5"
-    viewBox="0 0 24 24"
-    width="1em"
-  >
-    <circle cx="12" cy="12" r="4" />
-    <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
-  </svg>
-);
-
-const MoonIcon = () => (
-  <svg
-    aria-hidden="true"
-    fill="none"
-    height="1em"
-    stroke="currentColor"
-    strokeLinecap="square"
-    strokeLinejoin="miter"
-    strokeWidth="1.5"
-    viewBox="0 0 24 24"
-    width="1em"
-  >
-    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-  </svg>
-);
-
 const Layout = () => {
   const { mode, toggleMode } = useThemeMode('light');
+  const location = useLocation();
+
+  useEffect(() => {
+    if (!location.hash) {
+      return;
+    }
+
+    const frame = window.requestAnimationFrame(() => {
+      let targetId: string;
+
+      try {
+        targetId = decodeURIComponent(location.hash.slice(1));
+      } catch {
+        return;
+      }
+
+      const target = document.getElementById(targetId);
+      const navigation = document.querySelector('nav[aria-label="Primary navigation"]');
+
+      if (!target) {
+        return;
+      }
+
+      const navigationHeight = navigation?.getBoundingClientRect().height ?? 0;
+      const targetTop = target.getBoundingClientRect().top + window.scrollY - navigationHeight;
+
+      window.scrollTo({ top: Math.max(0, targetTop) });
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [location.hash, location.pathname]);
 
   return (
     <>
-      <Navbar />
+      <Navbar mode={mode} onToggleMode={toggleMode} />
       <Outlet />
       <Toaster />
-      <IconButton
-        aria-label={mode === 'light' ? '切换深色模式' : '切换浅色模式'}
-        icon={mode === 'light' ? <MoonIcon /> : <SunIcon />}
-        shape="pill"
-        style={{
-          bottom: 28,
-          boxShadow: 'var(--ui-shadow-soft)',
-          position: 'fixed',
-          right: 28,
-        }}
-        variant="outlined"
-        onClick={toggleMode}
-      />
     </>
   );
 };
@@ -75,6 +62,7 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       { index: true, element: <HomePage /> },
+      { path: 'components', element: <ComponentsPage /> },
       { path: 'icons', element: <IconsPage /> },
     ],
   },

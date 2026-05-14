@@ -1,86 +1,86 @@
 .navbar {
   --website-line: color-mix(in srgb, var(--ui-color-text) 14%, transparent);
 
-  align-self: start;
-  background: var(--ui-color-canvas);
-  border-right: 1px solid var(--ui-color-text);
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
-  inset: 0 auto 0 0;
-  min-height: 100vh;
-  padding: 28px 24px;
+  align-items: center;
+  backdrop-filter: blur(18px);
+  background: color-mix(in srgb, var(--ui-color-canvas) 94%, transparent);
+  border-bottom: 1px solid var(--ui-color-text);
+  display: grid;
+  gap: 18px;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  inset: 0 0 auto;
+  min-height: 64px;
+  padding: 0 24px;
   position: fixed;
-  width: 200px;
   z-index: 20;
 }
 
 .mark {
+  align-items: baseline;
   color: var(--ui-color-text);
+  display: inline-flex;
+  flex-shrink: 0;
   font-family: var(--ui-font-display);
   font-size: 15px;
   font-weight: 700;
+  gap: 8px;
   letter-spacing: 0;
-  line-height: 1.2;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
 
   small {
     color: var(--ui-color-text-muted);
-    display: block;
     font-family: var(--ui-font-mono);
     font-size: 10px;
     font-weight: 400;
     letter-spacing: 0.08em;
-    line-height: 1.4;
-    margin-top: 4px;
+    line-height: 1;
+    text-transform: uppercase;
   }
 }
 
-.group {
+.links {
+  align-items: center;
   display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
+  gap: 4px;
+  justify-content: center;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
 
-.label {
-  color: var(--ui-color-text-muted);
-  font-family: var(--ui-font-mono);
-  font-size: 9px;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  line-height: 1;
-  margin-bottom: 8px;
-  text-transform: uppercase;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .link {
+  align-items: center;
   color: var(--ui-color-text-muted);
-  cursor: pointer;
-  display: flex;
+  display: inline-flex;
+  flex-shrink: 0;
   font-family: var(--ui-font-display);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 400;
-  justify-content: space-between;
-  line-height: 1.9;
-  min-width: 118px;
+  height: 32px;
+  line-height: 1;
+  padding: 0 10px;
   position: relative;
   text-decoration: none;
-  transition: color 140ms ease;
-
-  span {
-    color: var(--ui-color-text-muted);
-    font-family: var(--ui-font-mono);
-    font-size: 10px;
-    line-height: 1.9;
-  }
+  transition:
+    background 140ms ease,
+    color 140ms ease;
+  white-space: nowrap;
 
   &:hover {
+    background: color-mix(in srgb, var(--ui-color-text) 5%, transparent);
     color: var(--ui-color-text);
   }
 }
 
 .active {
   color: var(--ui-color-text);
-  font-weight: 500;
+  font-weight: 600;
 
   &::before {
     color: var(--ui-color-brand-text);
@@ -89,61 +89,53 @@
   }
 }
 
-.meta {
-  color: var(--ui-color-text-muted);
-  font-family: var(--ui-font-mono);
-  font-size: 9px;
-  letter-spacing: 0.06em;
-  line-height: 1.5;
-  margin-top: auto;
+.actions {
+  align-items: center;
+  display: inline-flex;
+  gap: 8px;
+  justify-content: flex-end;
 }
 
-@media (max-width: 900px) {
-  .navbar {
-    align-items: center;
-    border-bottom: 1px solid var(--ui-color-text);
-    border-right: 0;
-    flex-direction: row;
-    gap: 18px;
-    height: auto;
-    inset: 0 0 auto;
-    min-height: 56px;
-    overflow-x: auto;
-    padding: 10px 16px;
-    scrollbar-width: none;
-    width: auto;
+.modeLabel {
+  color: var(--ui-color-text-muted);
+  font-family: var(--ui-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
 
-    &::-webkit-scrollbar {
-      display: none;
-    }
+@media (max-width: 760px) {
+  .navbar {
+    gap: 10px;
+    grid-template-columns: 1fr auto;
+    min-height: 58px;
+    padding: 0 14px;
   }
 
   .mark {
     font-size: 13px;
-    line-height: 1.05;
-    min-width: 78px;
 
     small {
       display: none;
     }
   }
 
-  .group {
-    align-items: center;
-    flex-direction: row;
-    gap: 14px;
-  }
-
-  .label,
-  .meta,
-  .link span {
-    display: none;
+  .links {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-content: flex-start;
+    margin-inline: -14px;
+    padding: 0 14px 10px;
   }
 
   .link {
     font-size: 12px;
-    line-height: 1;
-    min-width: auto;
-    white-space: nowrap;
+    height: 28px;
+    padding: 0 8px;
+  }
+
+  .modeLabel {
+    display: none;
   }
 }

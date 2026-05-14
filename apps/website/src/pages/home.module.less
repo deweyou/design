@@ -4,8 +4,8 @@
 
   background: var(--ui-color-canvas);
   color: var(--ui-color-text);
-  margin-left: 200px;
   min-height: 100vh;
+  padding-top: 64px;
 }
 
 .heroCell {
@@ -305,11 +305,6 @@
 }
 
 @media (max-width: 900px) {
-  .page {
-    margin-left: 0;
-    padding-top: 56px;
-  }
-
   .heroCell {
     min-height: auto;
     padding: 44px 20px 40px;
@@ -395,5 +390,11 @@
 
   .iconCell:nth-child(4n) {
     border-right: 0;
+  }
+}
+
+@media (max-width: 760px) {
+  .page {
+    padding-top: 116px;
   }
 }

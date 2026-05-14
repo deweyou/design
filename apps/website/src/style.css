@@ -10,6 +10,13 @@ body {
   padding: 0;
 }
 
+html {
+  --website-nav-offset: 64px;
+
+  scroll-behavior: smooth;
+  scroll-padding-top: 64px;
+}
+
 body {
   background-color: var(--ui-color-canvas);
   color: var(--ui-color-text);
@@ -24,4 +31,12 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+@media (max-width: 760px) {
+  html {
+    --website-nav-offset: 116px;
+
+    scroll-padding-top: 116px;
+  }
 }
