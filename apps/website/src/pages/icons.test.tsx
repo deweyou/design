@@ -4,6 +4,8 @@ import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { afterEach, test, vi } from 'vite-plus/test';
 
+import * as Icons from '@deweyou-design/react-icons';
+
 import { expect } from '../test-setup';
 
 import { IconsPage } from './icons';
@@ -30,8 +32,11 @@ const renderPage = () =>
 
 test('renders icon grid with all icons', () => {
   renderPage();
+  const exportedIconCount = Object.keys(Icons).filter((key) => key.endsWith('Icon')).length;
   const cells = screen.getAllByRole('button');
-  expect(cells.length).toBeGreaterThanOrEqual(10);
+
+  expect(screen.getByText(/every @deweyou-design\/react-icons export/)).toBeInTheDocument();
+  expect(cells).toHaveLength(exportedIconCount);
   expect(screen.queryByText(/Tabler Icons/)).not.toBeInTheDocument();
 });
 

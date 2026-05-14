@@ -19,19 +19,11 @@ export const ComponentsPage = () => (
       </Text>
     </header>
 
-    <nav className={styles.categories} aria-label="Component categories">
-      {COMPONENT_CATEGORIES.map((category) => (
-        <a key={category.id} href={`#${category.id}`}>
-          {category.label}
-        </a>
-      ))}
-    </nav>
-
     {COMPONENT_CATEGORIES.map((category) => {
       const items = COMPONENT_CATALOG.filter((item) => item.category === category.id);
 
       return (
-        <section key={category.id} id={category.id} className={styles.section}>
+        <section key={category.id} className={styles.section}>
           <header className={styles.sectionHead}>
             <span>{String(items.length).padStart(2, '0')}</span>
             <h2>{category.label}</h2>

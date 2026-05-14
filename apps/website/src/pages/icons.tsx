@@ -56,8 +56,8 @@ export const IconsPage = () => {
         <p className={styles.eyebrow}>Icon Imports</p>
         <h1>Icons</h1>
         <Text className={styles.lead} variant="body">
-          Browse @deweyou-design/react-icons exports, filter by icon name, then click an icon to
-          copy the import snippet.
+          Browse every @deweyou-design/react-icons export in one catalog, filter by icon name, then
+          click an icon to copy the import snippet.
         </Text>
         <div className={styles.sample}>
           <code>import {'{ AlertCircleIcon }'} from '@deweyou-design/react-icons'</code>

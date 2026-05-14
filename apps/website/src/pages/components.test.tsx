@@ -45,12 +45,12 @@ test('renders a manual-style component catalog with every public component', () 
   expect(screen.getByRole('heading', { name: 'Components' })).toBeInTheDocument();
   expect(screen.getByText(/Storybook provides full controls/)).toBeInTheDocument();
 
-  const categoryNav = screen.getByRole('navigation', { name: 'Component categories' });
+  expect(
+    screen.queryByRole('navigation', { name: 'Component categories' }),
+  ).not.toBeInTheDocument();
+
   for (const category of COMPONENT_CATEGORIES) {
-    expect(within(categoryNav).getByRole('link', { name: category.label })).toHaveAttribute(
-      'href',
-      `#${category.id}`,
-    );
+    expect(screen.getByRole('heading', { name: category.label })).toBeInTheDocument();
   }
 
   for (const item of COMPONENT_CATALOG) {
