@@ -51,7 +51,7 @@ test('renders Overview as a design specification cover', () => {
   expect(screen.getByText(/font subset/)).toBeInTheDocument();
   expect(screen.getByText(/semantic colors.*neutral.*primary.*danger/)).toBeInTheDocument();
   expect(screen.getByRole('link', { name: 'Components' })).toBeInTheDocument();
-  expect(screen.getByRole('link', { name: 'Storybook' })).toBeInTheDocument();
+  expect(screen.getAllByRole('link', { name: 'Storybook' }).length).toBeGreaterThan(0);
   expect(screen.getByRole('link', { name: 'GitHub' })).toBeInTheDocument();
   expect(screen.getAllByText('01').length).toBeGreaterThan(0);
   expect(document.body.innerHTML).toContain('--ui-color-brand-bg-hover');

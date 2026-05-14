@@ -12,13 +12,20 @@ body {
 
 html {
   --website-nav-offset: 64px;
+  --website-canvas: #fbfaf7;
+  --website-surface: #fffefd;
 
   scroll-behavior: smooth;
   scroll-padding-top: 64px;
 }
 
+html[data-theme='dark'] {
+  --website-canvas: var(--ui-color-canvas);
+  --website-surface: var(--ui-color-surface);
+}
+
 body {
-  background-color: var(--ui-color-canvas);
+  background-color: var(--website-canvas, var(--ui-color-canvas));
   color: var(--ui-color-text);
   font-family: var(--ui-font-body);
   -webkit-font-smoothing: antialiased;

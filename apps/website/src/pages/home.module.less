@@ -2,7 +2,7 @@
   --website-line: color-mix(in srgb, var(--ui-color-text) 14%, transparent);
   --website-line-strong: var(--ui-color-text);
 
-  background: var(--ui-color-canvas);
+  background: var(--website-canvas, var(--ui-color-canvas));
   color: var(--ui-color-text);
   min-height: 100vh;
   padding-top: var(--website-nav-offset, 64px);
@@ -46,10 +46,13 @@
   margin-top: 30px;
 
   a {
+    align-items: center;
     border: 1px solid var(--website-line-strong);
     color: var(--ui-color-text);
+    display: inline-flex;
     font-family: var(--ui-font-display);
     font-size: 13px;
+    gap: 8px;
     padding: 10px 14px;
     text-decoration: none;
   }
@@ -88,23 +91,17 @@
 }
 
 .principleGrid,
-.semanticGrid,
-.startGrid {
+.semanticGrid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  padding: 24px;
 }
 
 .principleGrid article,
-.semanticGrid article,
-.startGrid code {
-  border-right: 1px solid var(--website-line);
+.semanticGrid article {
+  border: 1px solid var(--website-line);
   min-width: 0;
   padding: 28px 24px;
-
-  &:last-child,
-  &:nth-child(3n) {
-    border-right: 0;
-  }
 }
 
 .principleGrid h3,
@@ -157,11 +154,23 @@
   min-width: 0;
 }
 
+.startGrid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  padding: 24px;
+}
+
 .startGrid code {
+  background: color-mix(in srgb, var(--ui-color-text) 4%, transparent);
+  border: 1px solid var(--website-line);
+  color: var(--ui-color-text);
+  display: block;
   font-family: var(--ui-font-mono);
   font-size: 11px;
   line-height: 1.5;
   overflow-wrap: anywhere;
+  padding: 16px;
 }
 
 .startLinks {
@@ -170,10 +179,13 @@
   flex-wrap: wrap;
 
   a {
+    align-items: center;
     border-right: 1px solid var(--website-line);
     color: var(--ui-color-text);
+    display: inline-flex;
     font-family: var(--ui-font-display);
     font-size: 13px;
+    gap: 8px;
     padding: 14px 24px;
     text-decoration: none;
 
@@ -202,14 +214,8 @@
   }
 
   .principleGrid article,
-  .semanticGrid article,
-  .startGrid code {
-    border-bottom: 1px solid var(--website-line);
-    border-right: 0;
-
-    &:last-child {
-      border-bottom: 0;
-    }
+  .semanticGrid article {
+    border: 1px solid var(--website-line);
   }
 
   .startLinks {

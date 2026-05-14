@@ -1,6 +1,7 @@
 import React from 'react';
+import { useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
-import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, Outlet, RouterProvider, useLocation } from 'react-router-dom';
 
 import { Toaster } from '@deweyou-design/react';
 import { useThemeMode } from '@deweyou-design/react-hooks';
@@ -15,6 +16,11 @@ import './style.css';
 
 const Layout = () => {
   const { mode, toggleMode } = useThemeMode('light');
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({ left: 0, top: 0 });
+  }, [location.pathname]);
 
   return (
     <>

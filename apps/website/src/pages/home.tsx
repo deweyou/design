@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { Text } from '@deweyou-design/react';
+import { ArrowRightIcon, ExternalLinkIcon, LogoGithubIcon } from '@deweyou-design/react-icons';
 import { Link } from 'react-router-dom';
 
 import styles from './home.module.less';
@@ -41,13 +42,17 @@ export const HomePage = () => (
         limited to neutral, primary, and danger.
       </Text>
       <div className={styles.coverActions}>
-        <Link to="/components">浏览组件 →</Link>
+        <Link to="/components">
+          <span>浏览组件</span>
+          <ArrowRightIcon aria-hidden size="xs" />
+        </Link>
         <a
           href="https://design-storybook-deweyous-projects.vercel.app"
           rel="noopener noreferrer"
           target="_blank"
         >
-          Storybook ↗
+          <span>Storybook</span>
+          <ExternalLinkIcon aria-hidden size="xs" />
         </a>
       </div>
     </section>
@@ -60,16 +65,21 @@ export const HomePage = () => (
           <code>import {'{ Button, Input }'} from '@deweyou-design/react';</code>
         </div>
         <nav className={styles.startLinks} aria-label="Get started resources">
-          <Link to="/components">Components</Link>
+          <Link to="/components">
+            <span>Components</span>
+            <ArrowRightIcon aria-hidden size="xs" />
+          </Link>
           <a
             href="https://design-storybook-deweyous-projects.vercel.app"
             rel="noopener noreferrer"
             target="_blank"
           >
-            Storybook
+            <span>Storybook</span>
+            <ExternalLinkIcon aria-hidden size="xs" />
           </a>
           <a href="https://github.com/deweyou/design" rel="noopener noreferrer" target="_blank">
-            GitHub
+            <span>GitHub</span>
+            <LogoGithubIcon aria-hidden size="xs" />
           </a>
         </nav>
       </div>

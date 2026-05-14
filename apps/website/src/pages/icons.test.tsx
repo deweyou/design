@@ -6,6 +6,7 @@ import { afterEach, test, vi } from 'vite-plus/test';
 
 import * as Icons from '@deweyou-design/react-icons';
 
+import { iconRegistry } from '../../../../packages/react-icons/src/icon-registry';
 import { expect } from '../test-setup';
 
 import { IconsPage } from './icons';
@@ -35,8 +36,10 @@ test('renders icon grid with all icons', () => {
   const exportedIconCount = Object.keys(Icons).filter((key) => key.endsWith('Icon')).length;
   const cells = screen.getAllByRole('button');
 
-  expect(screen.getByText(/every @deweyou-design\/react-icons export/)).toBeInTheDocument();
+  expect(screen.getByText(/full TDesign registry/)).toBeInTheDocument();
   expect(cells).toHaveLength(exportedIconCount);
+  expect(cells).toHaveLength(iconRegistry.length);
+  expect(iconRegistry.length).toBeGreaterThan(2000);
   expect(screen.queryByText(/Tabler Icons/)).not.toBeInTheDocument();
 });
 

@@ -1,7 +1,7 @@
 {
   "name": "@deweyou-design/react-icons",
   "version": "0.0.6",
-  "description": "React icon components for Deweyou UI — thin wrapper over @tabler/icons-react.",
+  "description": "React icon components for Deweyou UI generated from curated TDesign SVG sources.",
   "files": [
     "dist"
   ],
@@ -16,19 +16,20 @@
     "directory": "dist"
   },
   "scripts": {
-    "build": "node ./scripts/clean-dist.mjs && vp pack && node ../infra/scripts/write-published-manifest.mjs .",
+    "build": "node ./scripts/clean-dist.mjs && pnpm run generate-icons && vp pack && node ../infra/scripts/write-published-manifest.mjs .",
     "dev": "vp pack --watch",
+    "generate-icons": "node ./scripts/generate-icons.mjs && vp fmt src/icons/generated",
+    "sync-tdesign-registry": "node ./scripts/sync-tdesign-registry.mjs && vp fmt src/icon-registry/icons.json",
     "test": "vp test"
-  },
-  "dependencies": {
-    "@tabler/icons-react": "^3"
   },
   "devDependencies": {
     "@testing-library/react": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "react-dom": "catalog:",
+    "tdesign-icons-svg": "0.4.2",
     "typescript": "catalog:",
+    "vite": "catalog:",
     "vite-plus": "catalog:"
   },
   "peerDependencies": {

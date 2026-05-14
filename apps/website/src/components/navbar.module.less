@@ -3,7 +3,7 @@
 
   align-items: center;
   backdrop-filter: blur(18px);
-  background: color-mix(in srgb, var(--ui-color-canvas) 94%, transparent);
+  background: color-mix(in srgb, var(--website-canvas, var(--ui-color-canvas)) 94%, transparent);
   border-bottom: 1px solid var(--ui-color-text);
   display: grid;
   gap: 18px;
@@ -16,28 +16,18 @@
 }
 
 .mark {
-  align-items: baseline;
+  align-items: center;
   color: var(--ui-color-text);
   display: inline-flex;
   flex-shrink: 0;
   font-family: var(--ui-font-display);
   font-size: 15px;
   font-weight: 700;
-  gap: 8px;
+  gap: 0;
   letter-spacing: 0;
   line-height: 1;
   text-decoration: none;
   white-space: nowrap;
-
-  small {
-    color: var(--ui-color-text-muted);
-    font-family: var(--ui-font-mono);
-    font-size: 10px;
-    font-weight: 400;
-    letter-spacing: 0.08em;
-    line-height: 1;
-    text-transform: uppercase;
-  }
 }
 
 .links {
@@ -59,6 +49,7 @@
   color: var(--ui-color-text-muted);
   display: inline-flex;
   flex-shrink: 0;
+  gap: 6px;
   font-family: var(--ui-font-display);
   font-size: 13px;
   font-weight: 400;
@@ -81,12 +72,11 @@
 .active {
   color: var(--ui-color-text);
   font-weight: 600;
+}
 
-  &::before {
-    color: var(--ui-color-brand-text);
-    content: '▸';
-    margin-right: 4px;
-  }
+.activeIcon {
+  color: var(--ui-color-brand-text);
+  flex-shrink: 0;
 }
 
 .actions {
@@ -94,15 +84,6 @@
   display: inline-flex;
   gap: 8px;
   justify-content: flex-end;
-}
-
-.modeLabel {
-  color: var(--ui-color-text-muted);
-  font-family: var(--ui-font-mono);
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  line-height: 1;
-  text-transform: uppercase;
 }
 
 @media (max-width: 760px) {
@@ -115,10 +96,6 @@
 
   .mark {
     font-size: 13px;
-
-    small {
-      display: none;
-    }
   }
 
   .links {
@@ -133,9 +110,5 @@
     font-size: 12px;
     height: 28px;
     padding: 0 8px;
-  }
-
-  .modeLabel {
-    display: none;
   }
 }

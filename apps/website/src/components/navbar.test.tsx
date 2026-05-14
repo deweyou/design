@@ -25,9 +25,11 @@ test('renders the compact top navigation without a Theme destination', () => {
   expect(screen.getByText('Overview')).toBeInTheDocument();
   expect(screen.getByText('Components')).toBeInTheDocument();
   expect(screen.getByText('Icons')).toBeInTheDocument();
-  expect(screen.getByText('Storybook ↗')).toBeInTheDocument();
-  expect(screen.getByText('GitHub ↗')).toBeInTheDocument();
+  expect(screen.getByText('Storybook')).toBeInTheDocument();
+  expect(screen.getByText('GitHub')).toBeInTheDocument();
   expect(screen.queryByText('Theme')).not.toBeInTheDocument();
+  expect(screen.queryByText('v1.0')).not.toBeInTheDocument();
+  expect(screen.queryByText('light')).not.toBeInTheDocument();
   expect(screen.getByRole('button', { name: '切换深色模式' })).toBeInTheDocument();
 });
 

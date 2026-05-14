@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { useRef, useState } from 'react';
 
 import { Button, IconButton } from '@deweyou-design/react/button';
-import { Menu2Icon, PlusIcon, SearchIcon } from '@deweyou-design/react-icons';
+import { MenuIcon, PlusIcon, SearchIcon } from '@deweyou-design/react-icons';
 
 const colorOptions = ['neutral', 'primary', 'danger'] as const;
 const sizeOptions = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
@@ -387,7 +387,7 @@ const LoadingGallery = () => {
             loading
             variant="outlined"
           />
-          <Button.Icon aria-label="Syncing menu state" icon={<Menu2Icon />} loading />
+          <Button.Icon aria-label="Syncing menu state" icon={<MenuIcon />} loading />
         </div>
         <span style={storyStyles.meta}>
           Icon-only entries replace the original icon with the spinner and still require an
@@ -489,7 +489,7 @@ const BoundaryGallery = () => {
           <Button disabled variant="outlined">
             Review
           </Button>
-          <IconButton aria-label="Open menu" disabled icon={<Menu2Icon />} variant="ghost" />
+          <IconButton aria-label="Open menu" disabled icon={<MenuIcon />} variant="ghost" />
         </div>
       </article>
       <article style={storyStyles.card}>
@@ -538,7 +538,7 @@ const BoundaryGallery = () => {
           </Button>
           <Button variant="link">
             Read migration
-            <Menu2Icon />
+            <MenuIcon />
           </Button>
         </div>
         <span style={storyStyles.meta}>

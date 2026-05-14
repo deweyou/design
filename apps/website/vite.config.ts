@@ -11,7 +11,9 @@ const componentsEntry = fileURLToPath(
 );
 const websiteSourceDir = fileURLToPath(new URL('./src', import.meta.url));
 const componentsSourceDir = fileURLToPath(new URL('../../packages/react/src', import.meta.url));
-const iconsSourceDir = fileURLToPath(new URL('../../packages/react-icons/src', import.meta.url));
+const iconsEntry = fileURLToPath(
+  new URL('../../packages/react-icons/src/index.ts', import.meta.url),
+);
 const stylesEntry = fileURLToPath(new URL('../../packages/styles/src/index.ts', import.meta.url));
 const stylesCssDir = fileURLToPath(new URL('../../packages/styles/src/css', import.meta.url));
 const stylesFontDir = fileURLToPath(
@@ -299,7 +301,7 @@ export default defineConfig({
       },
       {
         find: '@deweyou-design/react-icons',
-        replacement: iconsSourceDir,
+        replacement: iconsEntry,
       },
       {
         find: /^@deweyou-design\/styles\/theme\.css$/,

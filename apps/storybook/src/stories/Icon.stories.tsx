@@ -6,7 +6,7 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
   InfoIcon,
-  Menu2Icon,
+  MenuIcon,
   SearchIcon,
   XIcon,
 } from '@deweyou-design/react-icons';
@@ -18,7 +18,7 @@ const galleryItems = [
   { name: 'chevron-right', Component: ChevronRightIcon },
   { name: 'x', Component: XIcon },
   { name: 'info', Component: InfoIcon },
-  { name: 'menu-2', Component: Menu2Icon },
+  { name: 'menu', Component: MenuIcon },
   { name: 'search', Component: SearchIcon },
 ] as const;
 
@@ -142,7 +142,7 @@ const AccessibilityGallery = () => {
   return (
     <div style={storyStyles.grid}>
       <article style={storyStyles.card}>
-        <Menu2Icon size={24} />
+        <MenuIcon size={24} />
         <strong>Unlabeled</strong>
         <span style={storyStyles.meta}>aria-hidden=true</span>
       </article>
