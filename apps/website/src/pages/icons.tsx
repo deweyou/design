@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type ComponentType } from 'react';
 
 import { Input, Text, toast } from '@deweyou-design/react';
 import * as Icons from '@deweyou-design/react-icons';
@@ -7,12 +7,12 @@ import styles from './icons.module.less';
 
 type IconEntry = {
   name: string;
-  Icon: React.ComponentType<{ size?: number; 'aria-hidden'?: boolean }>;
+  Icon: ComponentType<{ size?: number; 'aria-hidden'?: boolean }>;
 };
 
 // Build the full icon list from all exports ending with "Icon"
 const ALL_ICONS: IconEntry[] = (
-  Object.entries(Icons) as Array<[string, React.ComponentType<{ size?: number }>]>
+  Object.entries(Icons) as Array<[string, ComponentType<{ size?: number }>]>
 )
   .filter(([key]) => key.endsWith('Icon'))
   .map(([exportName, Icon]) => ({
@@ -47,48 +47,60 @@ export const IconsPage = () => {
   const filtered = query.trim()
     ? ALL_ICONS.filter(({ name }) => name.includes(query.trim().toLowerCase()))
     : ALL_ICONS;
+  const iconCount = ALL_ICONS.length;
+  const resultCount = filtered.length;
 
   return (
     <main className={styles.page}>
-      <div className={styles.container}>
-        <div className={styles.header}>
-          <Text className={styles.title} variant="h3">
-            Icons
-          </Text>
-          <Text className={styles.subtitle} variant="caption">
-            @deweyou-design/react-icons · 基于 Tabler Icons · 点击图标复制 import 语句
-          </Text>
-          <div className={styles.searchWrapper}>
-            <Input
-              placeholder="搜索图标..."
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-            />
-          </div>
+      <header className={styles.hero}>
+        <p className={styles.eyebrow}>Icon Imports</p>
+        <h1>Icons</h1>
+        <Text className={styles.lead} variant="body">
+          Browse @deweyou-design/react-icons exports, filter by icon name, then click an icon to
+          copy the import snippet.
+        </Text>
+        <div className={styles.sample}>
+          <code>import {'{ AlertCircleIcon }'} from '@deweyou-design/react-icons'</code>
         </div>
+      </header>
 
-        <div className={styles.grid}>
-          {filtered.length === 0 ? (
-            <div className={styles.empty}>
-              <Text variant="caption">没有匹配「{query}」的图标</Text>
-            </div>
-          ) : (
-            filtered.map(({ name, Icon }) => (
-              <button
-                key={name}
-                aria-label={`复制 ${name} 图标的 import 语句`}
-                className={styles.iconCell}
-                type="button"
-                onClick={() => copyImport(name)}
-              >
-                <div className={styles.iconBox}>
-                  <Icon aria-hidden size={20} />
-                </div>
-                <span className={styles.iconName}>{name}</span>
-              </button>
-            ))
-          )}
+      <section className={styles.toolbar} aria-label="Icon search and summary">
+        <div className={styles.searchWrapper}>
+          <Input
+            id="icons-search"
+            label="Search icons"
+            placeholder="搜索图标..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
         </div>
+        <div className={styles.stats} aria-live="polite">
+          <span>{resultCount}</span>
+          <Text variant="caption">shown of {iconCount} icons</Text>
+        </div>
+      </section>
+
+      <div className={styles.grid} aria-label="Icon list">
+        {filtered.length === 0 ? (
+          <div className={styles.empty}>
+            <Text variant="caption">没有匹配「{query}」的图标</Text>
+          </div>
+        ) : (
+          filtered.map(({ name, Icon }) => (
+            <button
+              key={name}
+              aria-label={`复制 ${name} 图标的 import 语句`}
+              className={styles.iconCell}
+              type="button"
+              onClick={() => copyImport(name)}
+            >
+              <div className={styles.iconBox}>
+                <Icon aria-hidden size={22} />
+              </div>
+              <span className={styles.iconName}>{name}</span>
+            </button>
+          ))
+        )}
       </div>
     </main>
   );

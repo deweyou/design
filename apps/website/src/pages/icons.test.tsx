@@ -2,14 +2,23 @@
 
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { afterEach, test } from 'vite-plus/test';
+import { afterEach, test, vi } from 'vite-plus/test';
 
 import { expect } from '../test-setup';
 
 import { IconsPage } from './icons';
 
+const originalClipboardDescriptor = Object.getOwnPropertyDescriptor(navigator, 'clipboard');
+
 afterEach(() => {
   cleanup();
+  vi.restoreAllMocks();
+
+  if (originalClipboardDescriptor) {
+    Object.defineProperty(navigator, 'clipboard', originalClipboardDescriptor);
+  } else {
+    Reflect.deleteProperty(navigator, 'clipboard');
+  }
 });
 
 const renderPage = () =>
@@ -23,6 +32,7 @@ test('renders icon grid with all icons', () => {
   renderPage();
   const cells = screen.getAllByRole('button');
   expect(cells.length).toBeGreaterThanOrEqual(10);
+  expect(screen.queryByText(/Tabler Icons/)).not.toBeInTheDocument();
 });
 
 test('search filters the icon list', () => {
@@ -44,4 +54,19 @@ test('shows empty state when search has no results', () => {
   const input = screen.getByPlaceholderText('搜索图标...');
   fireEvent.change(input, { target: { value: 'zzznomatch' } });
   expect(screen.getByText(/没有匹配/)).toBeInTheDocument();
+});
+
+test('copies an import snippet when clicking an icon', () => {
+  const writeText = vi.fn().mockResolvedValue(undefined);
+  Object.defineProperty(navigator, 'clipboard', {
+    configurable: true,
+    value: { writeText },
+  });
+
+  renderPage();
+  fireEvent.click(screen.getByRole('button', { name: '复制 alert-circle 图标的 import 语句' }));
+
+  expect(writeText).toHaveBeenCalledWith(
+    "import { AlertCircleIcon } from '@deweyou-design/react-icons'",
+  );
 });
