@@ -42,19 +42,18 @@ test('renders Overview as a design specification cover', () => {
   );
 
   expect(screen.getByRole('heading', { name: 'Deweyou Design' })).toBeInTheDocument();
+  expect(screen.getByText('Get Started')).toBeInTheDocument();
   expect(screen.getByText('Principles')).toBeInTheDocument();
   expect(screen.getByText('Color Semantics')).toBeInTheDocument();
   expect(screen.getByText('Typography')).toBeInTheDocument();
-  expect(screen.getByText('Shape & Interaction')).toBeInTheDocument();
-  expect(screen.getByText('Component Evidence')).toBeInTheDocument();
-  expect(screen.getByText('Get Started')).toBeInTheDocument();
+  expect(screen.queryByText('Shape & Interaction')).not.toBeInTheDocument();
+  expect(screen.queryByText('Component Evidence')).not.toBeInTheDocument();
   expect(screen.getByText(/font subset/)).toBeInTheDocument();
   expect(screen.getByText(/semantic colors.*neutral.*primary.*danger/)).toBeInTheDocument();
-  expect(screen.getByText('hover')).toBeInTheDocument();
-  expect(screen.getAllByText('disabled').length).toBeGreaterThan(0);
   expect(screen.getByRole('link', { name: 'Components' })).toBeInTheDocument();
   expect(screen.getByRole('link', { name: 'Storybook' })).toBeInTheDocument();
   expect(screen.getByRole('link', { name: 'GitHub' })).toBeInTheDocument();
+  expect(screen.getAllByText('01').length).toBeGreaterThan(0);
   expect(document.body.innerHTML).toContain('--ui-color-brand-bg-hover');
   expect(document.body.innerHTML).toContain('--ui-color-danger-bg-hover');
   expect(document.body.innerHTML).not.toContain('--ui-text-background-');
