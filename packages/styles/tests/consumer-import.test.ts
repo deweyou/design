@@ -14,12 +14,23 @@ test('consumer setup keeps the global style import explicit', () => {
   const lessBridge = readFileSync(resolve(root, 'packages/styles/src/less/bridge.less'), 'utf8');
 
   expect(websiteMain).toContain("import '@deweyou-design/styles/theme.css';");
+  expect(websiteMain).toContain("import 'virtual:deweyou-website-fonts.css';");
   expect(storybookPreview).toContain("import '@deweyou-design/styles/theme.css';");
   expect(lessBridge).toContain('@brand-bg');
   expect(lessBridge).toContain('@danger-bg');
   expect(lessBridge).toContain('@brand-text');
   expect(websiteMain).not.toContain('@deweyou-design/react/style.css');
   expect(storybookPreview).not.toContain('@deweyou-design/react/style.css');
+});
+
+test('website owns the Source Han Serif subset generation', () => {
+  const websiteViteConfig = readFileSync(resolve(root, 'apps/website/vite.config.ts'), 'utf8');
+
+  expect(websiteViteConfig).toContain("'subset-font'");
+  expect(websiteViteConfig).toContain('virtual:deweyou-website-fonts.css');
+  expect(websiteViteConfig).toContain('Source Han Serif CN Web');
+  expect(websiteViteConfig).toContain('SourceHanSerifCN-Regular.otf');
+  expect(websiteViteConfig).toContain('font-display: swap');
 });
 
 test('subpath component stories do not require an extra component stylesheet import', () => {

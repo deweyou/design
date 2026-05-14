@@ -10,16 +10,17 @@ npm install @deweyou-design/styles
 
 ## CSS Entry Points
 
-| Import                                   | Description                                            |
-| ---------------------------------------- | ------------------------------------------------------ |
-| `@deweyou-design/styles/theme.css`       | Default consumer entry — reset, base, and theme layers |
-| `@deweyou-design/styles/theme-light.css` | Light theme only                                       |
-| `@deweyou-design/styles/theme-dark.css`  | Dark theme only                                        |
-| `@deweyou-design/styles/color.css`       | Raw color palette — theme-invariant tokens             |
-| `@deweyou-design/styles/reset.css`       | Reset layer only                                       |
-| `@deweyou-design/styles/base.css`        | Base typography and element defaults                   |
+| Import                                        | Description                          |
+| --------------------------------------------- | ------------------------------------ |
+| `@deweyou-design/styles/theme.css`            | Reset, base, and theme layers        |
+| `@deweyou-design/styles/theme-with-fonts.css` | Theme layers plus full webfont faces |
+| `@deweyou-design/styles/theme-light.css`      | Light theme only                     |
+| `@deweyou-design/styles/theme-dark.css`       | Dark theme only                      |
+| `@deweyou-design/styles/color.css`            | Raw color palette                    |
+| `@deweyou-design/styles/reset.css`            | Reset layer only                     |
+| `@deweyou-design/styles/base.css`             | Base typography and element defaults |
 
-Import `theme.css` once at your app root:
+Import `theme.css` once at your app root. If your app needs the packaged full webfont files, opt in with `theme-with-fonts.css` instead:
 
 ```ts
 import '@deweyou-design/styles/theme.css';
@@ -67,8 +68,9 @@ Plus `baseMonochrome`: `black` and `white`.
 
 ## Typography Contract
 
-- `--ui-font-body` and `--ui-font-display` default to a vendored Source Han Serif CN stack, falling back to `Songti SC` / `STSong` on macOS and `SimSun` on Windows.
+- `--ui-font-body` and `--ui-font-display` default to a Source Han Serif CN stack, falling back to `Songti SC` / `STSong` on macOS and `SimSun` on Windows.
 - `--ui-font-mono` is the explicit exception for code and fixed-width content.
+- The default `theme.css` keeps font loading explicit; use `theme-with-fonts.css` or your own subset font CSS when webfont files are required.
 - Bundled webfont files are covered by the SIL Open Font License 1.1.
 
 ## Governance Rules

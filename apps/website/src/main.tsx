@@ -6,6 +6,7 @@ import { createBrowserRouter, Outlet, RouterProvider, useLocation } from 'react-
 import { Toaster } from '@deweyou-design/react';
 import { useThemeMode } from '@deweyou-design/react-hooks';
 import '@deweyou-design/styles/theme.css';
+import 'virtual:deweyou-website-fonts.css';
 
 import { Navbar } from './components/navbar';
 import { ComponentsPage } from './pages/components';

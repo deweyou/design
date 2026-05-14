@@ -26,10 +26,13 @@ test('theme outputs define light, dark, and default entrypoints', () => {
   const dark = readFileSync(resolve(cssDir, 'theme-dark.css'), 'utf8');
   const base = readFileSync(resolve(cssDir, 'base.css'), 'utf8');
   const fonts = readFileSync(resolve(cssDir, 'fonts.css'), 'utf8');
+  const themeWithFonts = readFileSync(resolve(cssDir, 'theme-with-fonts.css'), 'utf8');
 
   expect(theme).toContain("@import './reset.css';");
-  expect(theme).toContain("@import './fonts.css';");
+  expect(theme).not.toContain("@import './fonts.css';");
   expect(theme).toContain("@import './base.css';");
+  expect(themeWithFonts).toContain("@import './fonts.css';");
+  expect(themeWithFonts).toContain("@import './theme.css';");
   expect(color).toContain('--ui-color-black');
   expect(color).toContain('--ui-color-palette-red-50');
   expect(color).toContain('--ui-color-palette-olive-950');
@@ -200,6 +203,7 @@ test('styles publish manifest drops workspace-only metadata and rewrites dist-ro
       types: './index.d.mts',
     },
     './theme.css': './css/theme.css',
+    './theme-with-fonts.css': './css/theme-with-fonts.css',
     './less/bridge.less': './less/bridge.less',
   });
 });

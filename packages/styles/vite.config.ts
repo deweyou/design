@@ -9,6 +9,7 @@ const stylesPublicExports = {
   },
   './color.css': './dist/css/color.css',
   './theme.css': './dist/css/theme.css',
+  './theme-with-fonts.css': './dist/css/theme-with-fonts.css',
   './theme-light.css': './dist/css/theme-light.css',
   './theme-dark.css': './dist/css/theme-dark.css',
   './reset.css': './dist/css/reset.css',
