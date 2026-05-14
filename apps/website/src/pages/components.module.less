@@ -1,0 +1,224 @@
+.page {
+  --website-line: color-mix(in srgb, var(--ui-color-text) 14%, transparent);
+  --website-line-strong: var(--ui-color-text);
+
+  background: var(--ui-color-canvas);
+  color: var(--ui-color-text);
+  min-height: 100vh;
+  padding-top: var(--website-nav-offset, 64px);
+}
+
+.hero {
+  border-bottom: 1px solid var(--website-line-strong);
+  padding: 56px 48px 48px;
+}
+
+.eyebrow {
+  color: var(--ui-color-brand-text);
+  font-family: var(--ui-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  margin: 0 0 18px;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  font-family: var(--ui-font-display);
+  font-size: clamp(3rem, 7vw, 5rem);
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 0.98;
+  margin: 0;
+}
+
+.lead {
+  font-size: 1.05rem !important;
+  line-height: 1.65 !important;
+  margin: 22px 0 0 !important;
+  max-width: 720px;
+}
+
+.categories {
+  border-bottom: 1px solid var(--website-line-strong);
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  padding: 12px 24px;
+
+  a {
+    color: var(--ui-color-text-muted);
+    flex-shrink: 0;
+    font-family: var(--ui-font-display);
+    font-size: 13px;
+    padding: 10px 12px;
+    text-decoration: none;
+
+    &:hover {
+      background: color-mix(in srgb, var(--ui-color-text) 5%, transparent);
+      color: var(--ui-color-text);
+    }
+  }
+}
+
+.section {
+  border-bottom: 1px solid var(--website-line-strong);
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr);
+}
+
+.sectionHead {
+  border-right: 1px solid var(--website-line);
+  padding: 24px 20px;
+
+  span {
+    color: var(--ui-color-text-muted);
+    display: block;
+    font-family: var(--ui-font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    margin-bottom: 12px;
+  }
+
+  h2 {
+    font-family: var(--ui-font-display);
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    margin: 0;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.card {
+  border-bottom: 1px solid var(--website-line);
+  border-right: 1px solid var(--website-line);
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+  padding: 24px;
+
+  &:nth-child(3n) {
+    border-right: 0;
+  }
+
+  p {
+    color: var(--ui-color-text-muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  code {
+    background: color-mix(in srgb, var(--ui-color-text) 4%, transparent);
+    border: 1px solid var(--website-line);
+    color: var(--ui-color-text);
+    font-family: var(--ui-font-mono);
+    font-size: 11px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+    padding: 10px;
+  }
+}
+
+.cardHeader {
+  align-items: baseline;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+
+  h3 {
+    font-family: var(--ui-font-display);
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    margin: 0;
+  }
+
+  span {
+    color: var(--ui-color-text-muted);
+    font-family: var(--ui-font-mono);
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+}
+
+.dimensions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+
+  span {
+    border: 1px solid var(--website-line);
+    color: var(--ui-color-text-muted);
+    font-family: var(--ui-font-mono);
+    font-size: 10px;
+    line-height: 1;
+    padding: 6px 8px;
+  }
+}
+
+.preview {
+  align-items: center;
+  background: color-mix(in srgb, var(--ui-color-text) 3%, transparent);
+  border: 1px solid var(--website-line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  min-height: 96px;
+  overflow: hidden;
+  padding: 14px;
+}
+
+.storyLink {
+  color: var(--ui-color-brand-text);
+  font-family: var(--ui-font-display);
+  font-size: 13px;
+  text-decoration: none;
+}
+
+@media (max-width: 1100px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .card:nth-child(3n) {
+    border-right: 1px solid var(--website-line);
+  }
+
+  .card:nth-child(2n) {
+    border-right: 0;
+  }
+}
+
+@media (max-width: 760px) {
+  .page {
+    padding-top: var(--website-nav-offset-mobile, 116px);
+  }
+
+  .hero {
+    padding: 40px 24px 36px;
+  }
+
+  .section,
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sectionHead {
+    border-bottom: 1px solid var(--website-line);
+    border-right: 0;
+    padding: 18px 24px;
+  }
+
+  .card,
+  .card:nth-child(2n),
+  .card:nth-child(3n) {
+    border-right: 0;
+  }
+}
