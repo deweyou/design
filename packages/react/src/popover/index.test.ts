@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 
-import { act } from 'react';
+import { act, StrictMode } from 'react';
 import { createElement } from 'react';
 import { createRoot } from 'react-dom/client';
 import { afterEach, beforeEach, expect, test, vi } from 'vite-plus/test';
@@ -283,6 +283,44 @@ test('popover keeps documented defaults and forwards root props to the reference
   expect(trigger.getAttribute('title')).toBe('trigger passthrough');
   expect(trigger.className).toContain('consumer-trigger');
   expect(trigger.getAttribute('style')).toContain('inline-size: 14rem');
+});
+
+test('popover does not focus the trigger on initial closed mount in StrictMode', async () => {
+  const before = document.createElement('button');
+  const host = document.createElement('div');
+  const root = createRoot(host);
+
+  before.type = 'button';
+  before.textContent = 'Before';
+  document.body.append(before, host);
+  before.focus();
+
+  await act(async () => {
+    root.render(
+      createElement(
+        StrictMode,
+        null,
+        createElement(
+          Popover,
+          {
+            content: createElement('span', null, '内容'),
+          },
+          createElement('button', { type: 'button' }, '打开浮层'),
+        ),
+      ),
+    );
+  });
+  await flushFloatingWork();
+
+  unmounts.push(async () => {
+    await act(async () => {
+      root.unmount();
+    });
+    host.remove();
+    before.remove();
+  });
+
+  expect(document.activeElement).toBe(before);
 });
 
 test('popover opens on click by default, keeps internal clicks open, and closes on outside press', async () => {

@@ -175,6 +175,39 @@ const TabsContext = createContext<TabsContextValue>({
   tabs: [],
 });
 
+const scrollTabIntoListView = (
+  list: HTMLElement,
+  activeTab: HTMLElement,
+  orientation: TabsOrientation,
+) => {
+  const isHorizontal = orientation !== 'vertical';
+  const tabStart = isHorizontal ? activeTab.offsetLeft : activeTab.offsetTop;
+  const tabSize = isHorizontal ? activeTab.offsetWidth : activeTab.offsetHeight;
+  const viewStart = isHorizontal ? list.scrollLeft : list.scrollTop;
+  const viewSize = isHorizontal ? list.clientWidth : list.clientHeight;
+  const tabEnd = tabStart + tabSize;
+  const viewEnd = viewStart + viewSize;
+
+  if (tabStart < viewStart) {
+    if (isHorizontal) {
+      list.scrollLeft = tabStart;
+    } else {
+      list.scrollTop = tabStart;
+    }
+    return;
+  }
+
+  if (tabEnd > viewEnd) {
+    const nextScroll = tabEnd - viewSize;
+
+    if (isHorizontal) {
+      list.scrollLeft = nextScroll;
+    } else {
+      list.scrollTop = nextScroll;
+    }
+  }
+};
+
 // ─── Tabs (root) ──────────────────────────────────────────────────────────────
 
 export const Tabs = ({
@@ -336,13 +369,17 @@ export const TabList = ({ className, style, children }: TabListProps) => {
   useEffect(() => {
     if (!currentValue || overflowMode !== 'scroll') return;
     const id = window.setTimeout(() => {
-      const activeEl = listRef.current?.querySelector<HTMLElement>(
+      const list = listRef.current;
+      const activeEl = list?.querySelector<HTMLElement>(
         `[data-value="${CSS.escape(currentValue)}"]`,
       );
-      activeEl?.scrollIntoView?.({ block: 'nearest', inline: 'nearest' });
+
+      if (!list || !activeEl) return;
+
+      scrollTabIntoListView(list, activeEl, orientation);
     }, 16);
     return () => window.clearTimeout(id);
-  }, [currentValue, overflowMode]);
+  }, [currentValue, orientation, overflowMode]);
 
   // ── custom indicator: position under active tab (works for menu tabs too) ────
   const updateIndicator = useCallback(() => {

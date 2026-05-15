@@ -356,6 +356,58 @@ describe('Tabs — 边界状态', () => {
     expect(root?.getAttribute('data-size')).toBe('lg');
   });
 
+  it('scroll 模式只调整 tablist 内部滚动，不滚动页面', () => {
+    vi.useFakeTimers();
+    const scrollIntoView = vi.fn();
+    const originalScrollIntoView = Object.getOwnPropertyDescriptor(
+      HTMLElement.prototype,
+      'scrollIntoView',
+    );
+    Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {
+      configurable: true,
+      value: scrollIntoView,
+    });
+
+    try {
+      render(
+        <Tabs defaultValue="t2">
+          <TabList>
+            <TabTrigger value="t1">T1</TabTrigger>
+            <TabTrigger value="t2">T2</TabTrigger>
+          </TabList>
+          <TabContent value="t1">内容一</TabContent>
+          <TabContent value="t2">内容二</TabContent>
+        </Tabs>,
+      );
+
+      const tabList = screen.getByRole('tablist');
+      const activeTab = screen.getByRole('tab', { name: 'T2' });
+
+      Object.defineProperties(tabList, {
+        clientWidth: { configurable: true, value: 100 },
+        scrollLeft: { configurable: true, value: 0, writable: true },
+      });
+      Object.defineProperties(activeTab, {
+        offsetLeft: { configurable: true, value: 140 },
+        offsetWidth: { configurable: true, value: 40 },
+      });
+
+      act(() => {
+        vi.advanceTimersByTime(20);
+      });
+
+      expect(scrollIntoView).not.toHaveBeenCalled();
+      expect(tabList.scrollLeft).toBe(80);
+    } finally {
+      if (originalScrollIntoView) {
+        Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', originalScrollIntoView);
+      } else {
+        Reflect.deleteProperty(HTMLElement.prototype, 'scrollIntoView');
+      }
+      vi.useRealTimers();
+    }
+  });
+
   it('vertical 方向切换后 indicator 更新且 data-orientation 正确', async () => {
     const onValueChange = vi.fn();
     render(
