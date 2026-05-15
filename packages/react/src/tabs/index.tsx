@@ -124,6 +124,8 @@ export type TabListProps = {
 export type TabTriggerProps = {
   /** Unique identifier that matches a TabContent value. */
   value: string;
+  /** Render the trigger through its only child while preserving Tabs behavior. */
+  asChild?: boolean;
   disabled?: boolean;
   /** When provided, renders as a dropdown menu tab instead of a plain trigger. */
   menuItems?: TabMenuItemDef[];
@@ -625,6 +627,7 @@ export const TabList = ({ className, style, children }: TabListProps) => {
 // ─── TabTrigger ───────────────────────────────────────────────────────────────
 
 export const TabTrigger = ({
+  asChild = false,
   value,
   disabled = false,
   menuItems,
@@ -692,13 +695,14 @@ export const TabTrigger = ({
   // ── Standard tab ─────────────────────────────────────────────────────────────
   return (
     <ArkTabs.Trigger
+      asChild={asChild}
       className={classNames(styles.trigger, className)}
       data-value={value}
       disabled={disabled}
       style={style}
       value={value}
     >
-      <span className={styles.triggerLabel}>{children}</span>
+      {asChild ? children : <span className={styles.triggerLabel}>{children}</span>}
     </ArkTabs.Trigger>
   );
 };

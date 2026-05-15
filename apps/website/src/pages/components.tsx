@@ -1,4 +1,5 @@
-import { Text } from '@deweyou-design/react';
+import { Button, Text } from '@deweyou-design/react';
+import { ExternalLinkIcon } from '@deweyou-design/react-icons';
 
 import {
   COMPONENT_CATEGORIES,
@@ -59,13 +60,16 @@ const ComponentCard = ({ item }: ComponentCardProps) => (
     <div className={styles.preview} role="group" aria-label={`${item.name} preview`}>
       {item.preview}
     </div>
-    <a
+    <Button
+      aria-label={`${item.name} Storybook`}
       href={getStorybookUrl(item.storyId)}
-      target="_blank"
-      rel="noopener noreferrer"
       className={styles.storyLink}
+      icon={<ExternalLinkIcon aria-hidden size="xs" />}
+      rel="noopener noreferrer"
+      target="_blank"
+      variant="link"
     >
-      {item.name} Storybook ↗
-    </a>
+      {item.name} Storybook
+    </Button>
   </article>
 );

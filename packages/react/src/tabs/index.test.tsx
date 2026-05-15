@@ -125,6 +125,31 @@ describe('Tabs — 基础切换', () => {
       );
     });
   });
+
+  it('TabTrigger supports asChild link triggers for route-backed tabs', async () => {
+    render(
+      <Tabs hideContent value="docs">
+        <TabList>
+          <TabTrigger asChild value="docs">
+            <a href="/docs">Docs</a>
+          </TabTrigger>
+          <TabTrigger asChild value="components">
+            <a href="/components">Components</a>
+          </TabTrigger>
+        </TabList>
+      </Tabs>,
+    );
+
+    const docsTab = screen.getByRole('tab', { name: 'Docs' });
+    const componentsTab = screen.getByRole('tab', { name: 'Components' });
+
+    expect(docsTab.tagName).toBe('A');
+    expect(docsTab.getAttribute('href')).toBe('/docs');
+    await waitFor(() => {
+      expect(docsTab.getAttribute('aria-selected')).toBe('true');
+      expect(componentsTab.getAttribute('aria-selected')).toBe('false');
+    });
+  });
 });
 
 // ─── T007: variant 渲染 ───────────────────────────────────────────────────────

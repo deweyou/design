@@ -83,6 +83,7 @@ test('button renders an anchor root when href is provided and forwards click han
     onClickCapture: () => {
       captureCount += 1;
     },
+    rel: 'noopener noreferrer',
     target: '_blank',
     type: 'reset',
     variant: 'outlined',
@@ -93,6 +94,7 @@ test('button renders an anchor root when href is provided and forwards click han
   expect(surface.props.href).toBe('/docs/button');
   expect(typeof surface.props.onClick).toBe('function');
   expect(typeof surface.props.onClickCapture).toBe('function');
+  expect(surface.props.rel).toBe('noopener noreferrer');
   expect(surface.props.target).toBe('_blank');
   expect(surface.props.type).toBeUndefined();
 

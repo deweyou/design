@@ -65,7 +65,7 @@ test('renders a manual-style component catalog with every public component', () 
     }
 
     expect(within(card).getByRole('group', { name: `${item.name} preview` })).toBeInTheDocument();
-    const storyLink = within(card).getByRole('link', { name: `${item.name} Storybook ↗` });
+    const storyLink = within(card).getByRole('link', { name: `${item.name} Storybook` });
     expect(storyLink).toHaveAttribute('target', '_blank');
     expect(storyLink).toHaveAttribute('rel', 'noopener noreferrer');
   }

@@ -33,7 +33,7 @@
 .links {
   align-items: center;
   display: flex;
-  gap: 4px;
+  gap: 12px;
   justify-content: center;
   min-width: 0;
   overflow-x: auto;
@@ -44,39 +44,48 @@
   }
 }
 
-.link {
-  align-items: center;
+.routeTabs {
+  flex: none;
+  min-width: 0;
+}
+
+.routeTabList {
+  :global([role='tablist']) {
+    border-bottom: 0;
+    gap: 4px;
+  }
+}
+
+.routeTab {
   color: var(--ui-color-text-muted);
-  display: inline-flex;
   flex-shrink: 0;
-  gap: 6px;
   font-family: var(--ui-font-display);
   font-size: 13px;
-  font-weight: 400;
   height: 32px;
-  line-height: 1;
   padding: 0 10px;
-  position: relative;
   text-decoration: none;
-  transition:
-    background 140ms ease,
-    color 140ms ease;
-  white-space: nowrap;
 
-  &:hover {
-    background: color-mix(in srgb, var(--ui-color-text) 5%, transparent);
+  &[data-selected] {
     color: var(--ui-color-text);
   }
 }
 
-.active {
-  color: var(--ui-color-text);
-  font-weight: 600;
-}
+.navLinkButton {
+  --button-font-size: 13px;
+  --button-link-text-color: var(--ui-color-text-muted);
 
-.activeIcon {
-  color: var(--ui-color-brand-text);
+  color: var(--ui-color-text-muted);
   flex-shrink: 0;
+  font-family: var(--ui-font-display);
+  font-weight: 400;
+  height: 32px;
+  padding-inline: 0;
+
+  &:hover {
+    --button-link-text-color: var(--ui-color-text);
+
+    color: var(--ui-color-text);
+  }
 }
 
 .actions {
@@ -84,6 +93,14 @@
   display: inline-flex;
   gap: 8px;
   justify-content: flex-end;
+}
+
+.themeButton {
+  --button-ghost-text-color: var(--ui-color-text-muted);
+
+  &:hover {
+    --button-ghost-text-color: var(--ui-color-text);
+  }
 }
 
 @media (max-width: 760px) {
@@ -106,9 +123,13 @@
     padding: 0 14px 10px;
   }
 
-  .link {
+  .routeTab {
     font-size: 12px;
     height: 28px;
     padding: 0 8px;
+  }
+
+  .navLinkButton {
+    --button-font-size: 12px;
   }
 }

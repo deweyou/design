@@ -114,6 +114,10 @@ type SharedButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
    */
   href?: string;
   /**
+   * Anchor relationship attribute used when href renders Button as a link.
+   */
+  rel?: AnchorDomProps['rel'];
+  /**
    * The documented button type alias. When provided, it wins over native `type`.
    */
   htmlType?: ButtonHTMLAttributes<HTMLButtonElement>['type'];

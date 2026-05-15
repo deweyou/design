@@ -146,6 +146,19 @@ Tabs
 ```
 
 `Tabs` can be controlled with `value` / `onValueChange` or uncontrolled with `defaultValue`.
+Use `hideContent` for route-backed tab bars where panels are owned by the router. `TabTrigger`
+supports `asChild` so route links can keep their native link behavior while inheriting the tab
+indicator, selected state, overflow behavior, and keyboard semantics.
+
+```tsx
+<Tabs activationMode="manual" hideContent value={pathname}>
+  <TabList>
+    <TabTrigger asChild value="/components">
+      <Link to="/components">Components</Link>
+    </TabTrigger>
+  </TabList>
+</Tabs>
+```
 
 ### MarkdownRender
 
