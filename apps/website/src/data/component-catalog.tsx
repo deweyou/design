@@ -1,0 +1,446 @@
+import type { ReactNode } from 'react';
+
+import {
+  Badge,
+  Breadcrumb,
+  Button,
+  Card,
+  Checkbox,
+  Field,
+  IconButton,
+  Input,
+  MarkdownRender,
+  Menu,
+  MenuContent,
+  MenuItem,
+  MenuTrigger,
+  Nav,
+  Pagination,
+  Popover,
+  RadioGroup,
+  ScrollArea,
+  Select,
+  Separator,
+  Skeleton,
+  Spinner,
+  Switch,
+  TabContent,
+  TabList,
+  Tabs,
+  TabTrigger,
+  Text,
+  Textarea,
+  Tooltip,
+  VirtualList,
+  toast,
+} from '@deweyou-design/react';
+import { SettingsIcon } from '@deweyou-design/react-icons';
+
+const STORYBOOK_URL = 'https://design-storybook-deweyous-projects.vercel.app';
+
+export const COMPONENT_CATEGORIES = [
+  { id: 'actions', label: 'Actions' },
+  { id: 'forms', label: 'Forms' },
+  { id: 'overlays', label: 'Overlays' },
+  { id: 'navigation', label: 'Navigation' },
+  { id: 'feedback', label: 'Feedback' },
+  { id: 'content', label: 'Content' },
+  { id: 'data', label: 'Data' },
+] as const;
+
+export type ComponentCategoryId = (typeof COMPONENT_CATEGORIES)[number]['id'];
+
+export type ComponentCatalogItem = {
+  category: ComponentCategoryId;
+  description: string;
+  dimensions: string[];
+  importSnippet: string;
+  name: string;
+  preview: ReactNode;
+  storyId: string;
+};
+
+export const getStorybookUrl = (storyId: string) => `${STORYBOOK_URL}/?path=/story/${storyId}`;
+
+const buttonPreview = (
+  <>
+    <Button color="primary" size="sm" variant="filled">
+      Primary
+    </Button>
+    <Button color="neutral" size="sm" variant="outlined">
+      Outline
+    </Button>
+  </>
+);
+
+export const COMPONENT_CATALOG: ComponentCatalogItem[] = [
+  {
+    name: 'Badge',
+    category: 'feedback',
+    description: 'Compact status and metadata label for low-density surfaces.',
+    importSnippet: "import { Badge } from '@deweyou-design/react';",
+    dimensions: ['variant', 'color', 'shape'],
+    storyId: 'components-badge--default',
+    preview: <Badge color="primary">Stable</Badge>,
+  },
+  {
+    name: 'Breadcrumb',
+    category: 'navigation',
+    description: 'Hierarchy trail for document and application navigation.',
+    importSnippet: "import { Breadcrumb } from '@deweyou-design/react';",
+    dimensions: ['root', 'item', 'current'],
+    storyId: 'components-breadcrumb--default',
+    preview: (
+      <Breadcrumb.Root>
+        <Breadcrumb.List>
+          <Breadcrumb.Item>
+            <Breadcrumb.Link href="#">Docs</Breadcrumb.Link>
+          </Breadcrumb.Item>
+          <Breadcrumb.Separator />
+          <Breadcrumb.Item>
+            <Breadcrumb.Current>Components</Breadcrumb.Current>
+          </Breadcrumb.Item>
+        </Breadcrumb.List>
+      </Breadcrumb.Root>
+    ),
+  },
+  {
+    name: 'Button',
+    category: 'actions',
+    description: 'Primary command surface with semantic variants and stable sizing.',
+    importSnippet: "import { Button } from '@deweyou-design/react';",
+    dimensions: ['variant', 'color', 'size', 'shape'],
+    storyId: 'components-button--variants',
+    preview: buttonPreview,
+  },
+  {
+    name: 'IconButton',
+    category: 'actions',
+    description: 'Icon-only command that keeps accessible names explicit.',
+    importSnippet: "import { IconButton } from '@deweyou-design/react';",
+    dimensions: ['variant', 'color', 'size', 'shape'],
+    storyId: 'components-button--variants',
+    preview: (
+      <IconButton aria-label="Settings" icon={<SettingsIcon />} size="sm" variant="outlined" />
+    ),
+  },
+  {
+    name: 'Card',
+    category: 'content',
+    description: 'Border-led content container for small grouped surfaces.',
+    importSnippet: "import { Card } from '@deweyou-design/react';",
+    dimensions: ['padding', 'shape'],
+    storyId: 'components-card--default',
+    preview: <Card padding="sm">Card surface</Card>,
+  },
+  {
+    name: 'Checkbox',
+    category: 'forms',
+    description: 'Binary choice control with checked, unchecked, and disabled states.',
+    importSnippet: "import { Checkbox } from '@deweyou-design/react';",
+    dimensions: ['checked', 'disabled', 'invalid'],
+    storyId: 'components-checkbox--default',
+    preview: <Checkbox defaultChecked>Accept</Checkbox>,
+  },
+  {
+    name: 'Dialog',
+    category: 'overlays',
+    description: 'Modal decision surface for focused confirmation and details.',
+    importSnippet: "import { Dialog } from '@deweyou-design/react';",
+    dimensions: ['root', 'trigger', 'content'],
+    storyId: 'components-dialog--default',
+    preview: (
+      <Button size="sm" variant="outlined">
+        Open dialog
+      </Button>
+    ),
+  },
+  {
+    name: 'Field',
+    category: 'forms',
+    description: 'Label, description, and validation wiring for form controls.',
+    importSnippet: "import { Field } from '@deweyou-design/react';",
+    dimensions: ['label', 'description', 'error'],
+    storyId: 'components-field--default',
+    preview: (
+      <Field.Root id="catalog-field" hasDescription>
+        <Field.Label>Name</Field.Label>
+        <Field.Control>
+          <input aria-label="Name" />
+        </Field.Control>
+        <Field.Description>Short field hint</Field.Description>
+      </Field.Root>
+    ),
+  },
+  {
+    name: 'Input',
+    category: 'forms',
+    description: 'Single-line text input with Deweyou field styling.',
+    importSnippet: "import { Input } from '@deweyou-design/react';",
+    dimensions: ['size', 'disabled', 'invalid'],
+    storyId: 'components-input--default',
+    preview: <Input placeholder="Search..." size="sm" />,
+  },
+  {
+    name: 'MarkdownRender',
+    category: 'content',
+    description: 'Safe CommonMark and GFM rendering surface for product content.',
+    importSnippet: "import { MarkdownRender } from '@deweyou-design/react';",
+    dimensions: ['size', 'components', 'callbacks'],
+    storyId: 'components-markdownrender--default',
+    preview: <MarkdownRender size="sm" value={'### Markdown\nCompact rendering.'} />,
+  },
+  {
+    name: 'Menu',
+    category: 'overlays',
+    description: 'Command menu and selection surface for grouped actions.',
+    importSnippet: "import { Menu, MenuTrigger, MenuContent } from '@deweyou-design/react';",
+    dimensions: ['size', 'placement', 'selection'],
+    storyId: 'components-menu--basic',
+    preview: (
+      <Menu>
+        <MenuTrigger>
+          <Button size="sm" variant="outlined">
+            Menu
+          </Button>
+        </MenuTrigger>
+        <MenuContent>
+          <MenuItem value="copy">Copy</MenuItem>
+        </MenuContent>
+      </Menu>
+    ),
+  },
+  {
+    name: 'ContextMenu',
+    category: 'overlays',
+    description: 'Right-click command surface built on the menu contract.',
+    importSnippet: "import { ContextMenu } from '@deweyou-design/react';",
+    dimensions: ['trigger', 'content', 'selection'],
+    storyId: 'components-menu--context-menu-story',
+    preview: (
+      <Button size="sm" variant="outlined">
+        Context menu
+      </Button>
+    ),
+  },
+  {
+    name: 'Nav',
+    category: 'navigation',
+    description: 'Visible navigation landmark for page and app destinations.',
+    importSnippet: "import { Nav } from '@deweyou-design/react';",
+    dimensions: ['orientation', 'size', 'active'],
+    storyId: 'components-nav--default',
+    preview: (
+      <Nav.Root>
+        <Nav.Link href="#" active>
+          Overview
+        </Nav.Link>
+      </Nav.Root>
+    ),
+  },
+  {
+    name: 'NavOverlay',
+    category: 'navigation',
+    description: 'Responsive overlay navigation pattern for compact screens.',
+    importSnippet: "import { NavOverlay } from '@deweyou-design/react';",
+    dimensions: ['trigger', 'content', 'close'],
+    storyId: 'components-navoverlay--default',
+    preview: (
+      <Button size="sm" variant="outlined">
+        Open nav
+      </Button>
+    ),
+  },
+  {
+    name: 'Pagination',
+    category: 'navigation',
+    description: 'Paged navigation for lists and document sets.',
+    importSnippet: "import { Pagination } from '@deweyou-design/react';",
+    dimensions: ['page', 'count', 'link'],
+    storyId: 'components-pagination--default',
+    preview: <Pagination count={50} page={2} />,
+  },
+  {
+    name: 'Popover',
+    category: 'overlays',
+    description: 'Anchored floating content for lightweight contextual details.',
+    importSnippet: "import { Popover } from '@deweyou-design/react';",
+    dimensions: ['placement', 'trigger', 'shape'],
+    storyId: 'components-popover--review-matrix',
+    preview: (
+      <Popover content="Popover content">
+        <Button size="sm" variant="outlined">
+          Popover
+        </Button>
+      </Popover>
+    ),
+  },
+  {
+    name: 'RadioGroup',
+    category: 'forms',
+    description: 'Single-choice option group with accessible roving interaction.',
+    importSnippet: "import { RadioGroup } from '@deweyou-design/react';",
+    dimensions: ['value', 'orientation', 'disabled'],
+    storyId: 'components-radiogroup--default',
+    preview: (
+      <RadioGroup.Root defaultValue="a">
+        <RadioGroup.Item value="a">A</RadioGroup.Item>
+      </RadioGroup.Root>
+    ),
+  },
+  {
+    name: 'ScrollArea',
+    category: 'data',
+    description: 'Styled scroll container that keeps overflow surfaces consistent.',
+    importSnippet: "import { ScrollArea } from '@deweyou-design/react';",
+    dimensions: ['viewport', 'scrollbar', 'size'],
+    storyId: 'components-scrollarea--default',
+    preview: (
+      <ScrollArea.Root style={{ height: 56 }}>
+        <ScrollArea.Viewport>Scrollable content</ScrollArea.Viewport>
+      </ScrollArea.Root>
+    ),
+  },
+  {
+    name: 'Select',
+    category: 'forms',
+    description: 'Listbox selection field with trigger, content, and item primitives.',
+    importSnippet: "import { Select } from '@deweyou-design/react';",
+    dimensions: ['value', 'placeholder', 'disabled'],
+    storyId: 'components-select--default',
+    preview: (
+      <Select.Root placeholder="Choose">
+        <Select.Trigger />
+        <Select.Content>
+          <Select.Item value="a" label="Option A" />
+        </Select.Content>
+      </Select.Root>
+    ),
+  },
+  {
+    name: 'Separator',
+    category: 'content',
+    description: 'Semantic dividing line for content and controls.',
+    importSnippet: "import { Separator } from '@deweyou-design/react';",
+    dimensions: ['orientation', 'decorative'],
+    storyId: 'components-separator--default',
+    preview: <Separator />,
+  },
+  {
+    name: 'Skeleton',
+    category: 'feedback',
+    description: 'Low-noise loading affordance for content that has not resolved.',
+    importSnippet: "import { Skeleton } from '@deweyou-design/react';",
+    dimensions: ['shape', 'width', 'height'],
+    storyId: 'components-skeleton--default',
+    preview: <Skeleton style={{ height: 24, width: 120 }} />,
+  },
+  {
+    name: 'Spinner',
+    category: 'feedback',
+    description: 'Small progress indicator for command and inline loading states.',
+    importSnippet: "import { Spinner } from '@deweyou-design/react';",
+    dimensions: ['size', 'color'],
+    storyId: 'components-spinner--default',
+    preview: <Spinner size="sm" />,
+  },
+  {
+    name: 'Switch',
+    category: 'forms',
+    description: 'Immediate on/off setting control.',
+    importSnippet: "import { Switch } from '@deweyou-design/react';",
+    dimensions: ['checked', 'disabled', 'controlled'],
+    storyId: 'components-switch--default',
+    preview: <Switch defaultChecked>On</Switch>,
+  },
+  {
+    name: 'Tabs',
+    category: 'navigation',
+    description: 'Section switcher with line, color, size, and overflow support.',
+    importSnippet: "import { Tabs, TabList, TabTrigger, TabContent } from '@deweyou-design/react';",
+    dimensions: ['variant', 'color', 'size', 'overflow'],
+    storyId: 'components-tabs--basic',
+    preview: (
+      <Tabs defaultValue="a" size="sm">
+        <TabList>
+          <TabTrigger value="a">One</TabTrigger>
+        </TabList>
+        <TabContent value="a">Panel</TabContent>
+      </Tabs>
+    ),
+  },
+  {
+    name: 'Text',
+    category: 'content',
+    description: 'Typography primitive for Deweyou heading, body, and caption rhythm.',
+    importSnippet: "import { Text } from '@deweyou-design/react';",
+    dimensions: ['variant', 'as', 'className'],
+    storyId: 'components-typography--text-contract',
+    preview: <Text variant="h5">Serif text</Text>,
+  },
+  {
+    name: 'Textarea',
+    category: 'forms',
+    description: 'Multi-line text input with the same field rhythm as Input.',
+    importSnippet: "import { Textarea } from '@deweyou-design/react';",
+    dimensions: ['size', 'disabled', 'invalid'],
+    storyId: 'components-textarea--default',
+    preview: <Textarea placeholder="Write..." size="sm" />,
+  },
+  {
+    name: 'toast',
+    category: 'feedback',
+    description: 'Imperative feedback API for transient messages.',
+    importSnippet: "import { toast } from '@deweyou-design/react';",
+    dimensions: ['variant', 'position', 'description'],
+    storyId: 'components-toast--default',
+    preview: (
+      <Button size="sm" variant="outlined" onClick={() => toast.create({ title: 'Saved' })}>
+        Toast
+      </Button>
+    ),
+  },
+  {
+    name: 'Toaster',
+    category: 'feedback',
+    description: 'Toast viewport renderer used once near the application root.',
+    importSnippet: "import { Toaster } from '@deweyou-design/react';",
+    dimensions: ['position', 'limit', 'duration'],
+    storyId: 'components-toast--default',
+    preview: <Badge>Viewport</Badge>,
+  },
+  {
+    name: 'Tooltip',
+    category: 'overlays',
+    description: 'Small hover/focus label for controls that need extra naming.',
+    importSnippet: "import { Tooltip } from '@deweyou-design/react';",
+    dimensions: ['placement', 'size', 'delay'],
+    storyId: 'components-tooltip--default',
+    preview: (
+      <Tooltip.Root>
+        <Tooltip.Trigger>
+          <Button size="sm" variant="outlined">
+            Hover
+          </Button>
+        </Tooltip.Trigger>
+        <Tooltip.Content>Tooltip</Tooltip.Content>
+      </Tooltip.Root>
+    ),
+  },
+  {
+    name: 'VirtualList',
+    category: 'data',
+    description: 'Windowed list renderer for large one-dimensional collections.',
+    importSnippet: "import { VirtualList } from '@deweyou-design/react';",
+    dimensions: ['count', 'height', 'estimateSize'],
+    storyId: 'components-virtuallist--default',
+    preview: (
+      <VirtualList
+        count={3}
+        height={64}
+        estimateSize={() => 28}
+        renderItem={({ index }) => <div>Row {index + 1}</div>}
+      />
+    ),
+  },
+];

@@ -191,6 +191,9 @@ importers:
       jsdom:
         specifier: 'catalog:'
         version: 29.0.1
+      subset-font:
+        specifier: 'catalog:'
+        version: 2.5.0
       typescript:
         specifier: 'catalog:'
         version: 5.9.3

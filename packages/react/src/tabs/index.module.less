@@ -365,85 +365,26 @@
   flex-shrink: 0;
   display: flex;
   align-items: center;
-  border-bottom: 1px solid var(--ui-color-border);
   padding: 0 0.125rem;
 }
 
 .listOuter[data-orientation='vertical'] .moreButtonWrapper {
-  border-bottom: none;
-  border-right: 1px solid var(--ui-color-border);
   padding: 0.125rem 0;
   align-items: flex-start;
 }
 
 .root[data-variant='bg'] .moreButtonWrapper {
-  border-bottom: none;
-  border-right: none;
+  border: none;
 }
 
 .moreButton {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  border: none;
-  background: transparent;
-  color: var(--ui-color-text);
-  cursor: pointer;
-  font-family: inherit;
-  font-size: var(--ui-text-size-caption);
-  font-weight: var(--ui-font-weight-body);
-  padding: 0.4rem 0.625rem;
-  border-radius: var(--ui-radius-float);
-  white-space: nowrap;
-  transition:
-    background 140ms ease,
-    color 140ms ease;
-  outline: none;
-  flex-shrink: 0;
-}
-
-.moreButton:hover {
-  background: color-mix(in srgb, currentColor 8%, transparent);
-}
-
-.moreButton:focus-visible {
-  .focus-ring-offset();
-}
-
-// When the active tab is in the overflow list
-.moreButton[data-has-active-overflow='true'] {
-  color: var(--ui-color-brand-bg);
-  font-weight: var(--ui-font-weight-emphasis);
-}
-
-.root[data-color='neutral'] .moreButton[data-has-active-overflow='true'] {
-  color: var(--ui-color-text);
-}
-
-// Line variant: underline indicator on the More button wrapper when active
-.root[data-variant='line'] .moreButtonWrapper[data-has-active-overflow='true'] {
-  box-shadow: inset 0 -2px 0 var(--ui-color-brand-bg);
-}
-
-.root[data-variant='line'][data-color='neutral']
-  .moreButtonWrapper[data-has-active-overflow='true'] {
-  box-shadow: inset 0 -2px 0 var(--ui-color-text);
-}
-
-// Vertical line variant: left-side indicator
-.root[data-orientation='vertical'][data-variant='line']
-  .moreButtonWrapper[data-has-active-overflow='true'] {
-  box-shadow: inset 2px 0 0 var(--ui-color-brand-bg);
-}
-
-.root[data-orientation='vertical'][data-variant='line'][data-color='neutral']
-  .moreButtonWrapper[data-has-active-overflow='true'] {
-  box-shadow: inset 2px 0 0 var(--ui-color-text);
+  gap: 0.125rem;
 }
 
 .moreButtonArrow {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   font-size: 0.875em;
   opacity: 0.7;
 }

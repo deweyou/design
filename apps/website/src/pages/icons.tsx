@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import type { ComponentType } from 'react';
+import { useState, type ComponentType } from 'react';
 
 import { Input, Text, toast } from '@deweyou-design/react';
 import * as Icons from '@deweyou-design/react-icons';
@@ -11,17 +10,16 @@ import styles from './icons.module.less';
 type PublicIconExportName = Extract<keyof typeof Icons, `${string}Icon`>;
 
 type IconEntry = {
-  Icon: ComponentType<IconProps>;
   category: string;
   exportName: PublicIconExportName;
   keywords: readonly string[];
   name: string;
+  Icon: ComponentType<IconProps>;
   sourceName: string;
 };
 
-const isPublicIconExportName = (exportName: string): exportName is PublicIconExportName => {
-  return exportName in Icons;
-};
+const isPublicIconExportName = (exportName: string): exportName is PublicIconExportName =>
+  exportName in Icons;
 
 const getPublicIconComponent = (exportName: `${string}Icon`): ComponentType<IconProps> => {
   if (!isPublicIconExportName(exportName)) {
@@ -31,47 +29,67 @@ const getPublicIconComponent = (exportName: `${string}Icon`): ComponentType<Icon
   return Icons[exportName] as ComponentType<IconProps>;
 };
 
-const toIconName = (exportName: `${string}Icon`) => {
-  return exportName
+const toIconName = (exportName: `${string}Icon`) =>
+  exportName
     .replace(/Icon$/, '')
     .replace(/([a-z])([0-9])/g, '$1-$2')
     .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
     .toLowerCase();
-};
 
 const ALL_ICONS: IconEntry[] = iconRegistry.map((entry) => {
   const { exportName } = entry;
-  const sourceName = entry.source === 'tdesign' ? entry.sourceKey : entry.sourcePath;
+  const publicExportName = isPublicIconExportName(exportName) ? exportName : undefined;
 
-  if (!isPublicIconExportName(exportName)) {
+  if (!publicExportName) {
     throw new Error(`Icon registry export is missing from the public surface: ${exportName}`);
   }
 
   return {
-    Icon: getPublicIconComponent(exportName),
+    Icon: getPublicIconComponent(publicExportName),
     category: entry.category,
-    exportName,
+    exportName: publicExportName,
     keywords: entry.keywords,
-    name: toIconName(exportName),
-    sourceName,
+    name: toIconName(publicExportName),
+    sourceName: entry.source === 'tdesign' ? entry.sourceKey : entry.sourcePath,
   };
 });
 
-const copyImport = (displayName: string) => {
-  // Reconstruct the PascalCase export name from the kebab display name
-  const exportName =
-    displayName
-      .split('-')
-      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-      .join('') + 'Icon';
+const copyTextWithFallback = async (text: string) => {
+  if (navigator.clipboard?.writeText) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return;
+    } catch {
+      // Fall through to the legacy copy path for embedded browsers or denied permissions.
+    }
+  }
 
-  navigator.clipboard
-    .writeText(`import { ${exportName} } from '@deweyou-design/react-icons'`)
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.setAttribute('readonly', '');
+  textarea.style.left = '-9999px';
+  textarea.style.position = 'fixed';
+  textarea.style.top = '0';
+  document.body.append(textarea);
+  textarea.select();
+
+  try {
+    const didCopy = document.execCommand?.('copy') ?? false;
+    if (!didCopy) {
+      throw new Error('Fallback copy command failed.');
+    }
+  } finally {
+    textarea.remove();
+  }
+};
+
+const copyImport = (exportName: PublicIconExportName) => {
+  copyTextWithFallback(`import { ${exportName} } from '@deweyou-design/react-icons'`)
     .then(() => {
-      toast.create({ title: '已复制', description: exportName });
+      toast.create({ title: 'Copied', description: exportName });
     })
     .catch(() => {
-      toast.create({ title: '复制失败' });
+      toast.create({ title: 'Copy failed' });
     });
 };
 
@@ -86,64 +104,60 @@ export const IconsPage = () => {
         ),
       )
     : ALL_ICONS;
+  const iconCount = ALL_ICONS.length;
+  const resultCount = filtered.length;
 
   return (
     <main className={styles.page}>
-      <div className={styles.container}>
-        <div className={styles.header}>
-          <Text className={styles.title} variant="h3">
-            Icons
-          </Text>
-          <Text className={styles.subtitle} variant="caption">
-            @deweyou-design/react-icons · default glyphs from tdesign-icons-svg · Deweyou curated
-            list
-          </Text>
-          <Text className={styles.subtitle} variant="caption">
-            This catalog shows the full tdesign-icons-svg source set with Deweyou public names.
-          </Text>
-          <Text className={styles.subtitle} variant="caption">
-            Click an icon to copy its direct named import. Application code should use direct named
-            imports. This catalog uses a namespace import because it intentionally renders every
-            supported icon.
-          </Text>
-          <Text className={styles.subtitle} variant="caption">
-            Examples: &lt;SearchIcon <code>size="sm"</code> /&gt; · &lt;SearchIcon{' '}
-            <code>color="primary"</code> /&gt;
-          </Text>
-          <Text className={styles.count} variant="caption">
-            {filtered.length} / {ALL_ICONS.length} icons
-          </Text>
-          <div className={styles.searchWrapper}>
-            <Input
-              placeholder="搜索图标..."
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-            />
-          </div>
+      <header className={styles.hero}>
+        <p className={styles.eyebrow}>Icon Imports</p>
+        <h1>Icons</h1>
+        <Text className={styles.lead} variant="body">
+          Browse every @deweyou-design/react-icons export from the full TDesign registry, filter by
+          name, category, or keyword, then click an icon to copy the import snippet.
+        </Text>
+        <div className={styles.sample}>
+          <code>import {'{ AlertCircleIcon }'} from '@deweyou-design/react-icons'</code>
         </div>
+      </header>
 
-        <div className={styles.grid}>
-          {filtered.length === 0 ? (
-            <div className={styles.empty}>
-              <Text variant="caption">没有匹配「{query}」的图标</Text>
-            </div>
-          ) : (
-            filtered.map(({ name, Icon }) => (
-              <button
-                key={name}
-                aria-label={`复制 ${name} 图标的 import 语句`}
-                className={styles.iconCell}
-                type="button"
-                onClick={() => copyImport(name)}
-              >
-                <div className={styles.iconBox}>
-                  <Icon aria-hidden size="md" />
-                </div>
-                <span className={styles.iconName}>{name}</span>
-              </button>
-            ))
-          )}
+      <section className={styles.toolbar} aria-label="Icon search and summary">
+        <div className={styles.searchWrapper}>
+          <Input
+            id="icons-search"
+            label="Search icons"
+            placeholder="Search icons..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
         </div>
+        <div className={styles.stats} aria-live="polite">
+          <span>{resultCount}</span>
+          <Text variant="caption">shown of {iconCount} icons</Text>
+        </div>
+      </section>
+
+      <div className={styles.grid} aria-label="Icon list">
+        {filtered.length === 0 ? (
+          <div className={styles.empty}>
+            <Text variant="caption">No icons match "{query}"</Text>
+          </div>
+        ) : (
+          filtered.map(({ exportName, name, Icon }) => (
+            <button
+              key={name}
+              aria-label={`Copy the import statement for ${name}`}
+              className={styles.iconCell}
+              type="button"
+              onClick={() => copyImport(exportName)}
+            >
+              <div className={styles.iconBox}>
+                <Icon aria-hidden size="md" />
+              </div>
+              <span className={styles.iconName}>{name}</span>
+            </button>
+          ))
+        )}
       </div>
     </main>
   );

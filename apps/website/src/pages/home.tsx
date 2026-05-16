@@ -1,360 +1,173 @@
-import {
-  Badge,
-  Button,
-  Checkbox,
-  Input,
-  Menu,
-  MenuContent,
-  MenuItem,
-  MenuTrigger,
-  Popover,
-  Select,
-  Spinner,
-  Switch,
-  TabContent,
-  TabList,
-  TabTrigger,
-  Tabs,
-  Text,
-  toast,
-} from '@deweyou-design/react';
-import * as Icons from '@deweyou-design/react-icons';
+import type { MouseEvent, ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import { Button, Text } from '@deweyou-design/react';
+import { ArrowRightIcon, ExternalLinkIcon, LogoGithubIcon } from '@deweyou-design/react-icons';
 
 import styles from './home.module.less';
 
-// 20 representative icons for the landing preview
-const PREVIEW_ICONS: Array<{ name: string; Icon: React.ComponentType<{ size?: number }> }> = [
-  { name: 'plus', Icon: Icons.PlusIcon },
-  { name: 'x', Icon: Icons.XIcon },
-  { name: 'check', Icon: Icons.CheckIcon },
-  { name: 'search', Icon: Icons.SearchIcon },
-  { name: 'edit', Icon: Icons.EditIcon },
-  { name: 'trash', Icon: Icons.TrashIcon },
-  { name: 'settings', Icon: Icons.SettingsIcon },
-  { name: 'bell', Icon: Icons.BellIcon },
-  { name: 'home', Icon: Icons.HomeIcon },
-  { name: 'user', Icon: Icons.UserIcon },
-  { name: 'download', Icon: Icons.DownloadIcon },
-  { name: 'upload', Icon: Icons.UploadIcon },
-  { name: 'refresh', Icon: Icons.RefreshIcon },
-  { name: 'filter', Icon: Icons.FilterIcon },
-  { name: 'copy', Icon: Icons.CopyIcon },
-  { name: 'eye', Icon: Icons.EyeIcon },
-  { name: 'eye-off', Icon: Icons.EyeOffIcon },
-  { name: 'arrow-left', Icon: Icons.ArrowLeftIcon },
-  { name: 'arrow-right', Icon: Icons.ArrowRightIcon },
-  { name: 'external-link', Icon: Icons.ExternalLinkIcon },
-];
+const PRINCIPLES = [
+  ['Serif Identity', 'Serif type is the interface signature across body and display text.'],
+  ['Semantic Color', 'Components expose neutral, primary, and danger before decorative palettes.'],
+  ['Line Before Shadow', 'Borders and spacing carry structure; shadow is reserved for elevation.'],
+  [
+    'Typographic Precision',
+    'The system reads through glyphs, line height, spacing, and restrained green.',
+  ],
+] as const;
 
-export const HomePage = () => (
-  <main className={styles.page}>
-    <HeroSection />
-    <DesignSection />
-    <IconsPreviewSection />
-    <footer className={styles.footer}>
-      <span>MIT · 2026</span>
-      <span>§ FIN</span>
-    </footer>
-  </main>
-);
+const SEMANTIC_COLORS = [
+  ['neutral', 'text, border, surface'],
+  ['primary', 'brand action, focus, selected'],
+  ['danger', 'destructive action, error'],
+] as const;
 
-const IconsPreviewSection = () => {
+const SEMANTIC_SWATCHES = {
+  danger: [
+    'var(--ui-color-danger-bg-hover)',
+    'var(--ui-color-danger-bg)',
+    'var(--ui-color-danger-text)',
+  ],
+  neutral: ['var(--ui-color-surface)', 'var(--ui-color-border)', 'var(--ui-color-text)'],
+  primary: [
+    'var(--ui-color-brand-bg-hover)',
+    'var(--ui-color-brand-bg)',
+    'var(--ui-color-brand-text)',
+  ],
+} as const;
+
+export const HomePage = () => {
   const navigate = useNavigate();
+
+  const handleComponentsClick = (event: MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+    navigate('/components');
+  };
+
   return (
-    <section className={styles.cell}>
-      <CellHead number="06" title="Icons" meta="Tabler · stroke 1.5 square / miter" />
-      <div className={styles.cellBodyFlush}>
-        <div className={styles.iconGrid}>
-          {PREVIEW_ICONS.map(({ name, Icon }) => (
-            <div key={name} className={styles.iconCell}>
-              <Icon size={18} />
-              <span className={styles.iconName}>{name}</span>
-            </div>
-          ))}
-        </div>
-        <div className={styles.iconViewAll}>
-          <Button variant="link" onClick={() => navigate('/icons')}>
-            查看全部图标 →
+    <main className={styles.page}>
+      <section className={styles.cover}>
+        <p className={styles.eyebrow}>Component Library · Design Manual</p>
+        <h1>Deweyou Design</h1>
+        <Text className={styles.lead} variant="body">
+          A serif-led React component library with crisp lines, quiet light and dark themes, and a
+          small semantic color model limited to neutral, primary, and danger.
+        </Text>
+        <div className={styles.coverActions}>
+          <Button
+            href="/components"
+            icon={<ArrowRightIcon aria-hidden size="xs" />}
+            variant="outlined"
+            onClick={handleComponentsClick}
+          >
+            Browse components
+          </Button>
+          <Button
+            href="https://design-storybook-deweyous-projects.vercel.app"
+            icon={<ExternalLinkIcon aria-hidden size="xs" />}
+            rel="noopener noreferrer"
+            size="md"
+            target="_blank"
+            variant="outlined"
+          >
+            Storybook
           </Button>
         </div>
-      </div>
-    </section>
+      </section>
+
+      <SpecSection meta="install · import · links" number="01" title="Get Started">
+        <div className={styles.startBody}>
+          <div className={styles.startGrid}>
+            <code>npm i @deweyou-design/react @deweyou-design/styles</code>
+            <code>import '@deweyou-design/styles/theme.css';</code>
+            <code>import {'{ Button, Input }'} from '@deweyou-design/react';</code>
+          </div>
+          <nav className={styles.startLinks} aria-label="Get started resources">
+            <Button
+              href="/components"
+              icon={<ArrowRightIcon aria-hidden size="xs" />}
+              variant="link"
+              onClick={handleComponentsClick}
+            >
+              Components
+            </Button>
+            <Button
+              href="https://design-storybook-deweyous-projects.vercel.app"
+              icon={<ExternalLinkIcon aria-hidden size="xs" />}
+              rel="noopener noreferrer"
+              target="_blank"
+              variant="link"
+            >
+              Storybook
+            </Button>
+            <Button
+              href="https://github.com/deweyou/design"
+              icon={<LogoGithubIcon aria-hidden size="xs" />}
+              rel="noopener noreferrer"
+              target="_blank"
+              variant="link"
+            >
+              GitHub
+            </Button>
+          </nav>
+        </div>
+      </SpecSection>
+
+      <SpecSection meta="identity · semantics · restraint" number="02" title="Principles">
+        <div className={styles.principleGrid}>
+          {PRINCIPLES.map(([title, body]) => (
+            <article key={title}>
+              <h3>{title}</h3>
+              <p>{body}</p>
+            </article>
+          ))}
+        </div>
+      </SpecSection>
+
+      <SpecSection meta="neutral · primary · danger" number="03" title="Color Semantics">
+        <div className={styles.semanticGrid}>
+          {SEMANTIC_COLORS.map(([name, usage]) => (
+            <article key={name}>
+              <div className={styles.semanticSwatches}>
+                {SEMANTIC_SWATCHES[name].map((backgroundColor) => (
+                  <span key={backgroundColor} style={{ backgroundColor }} />
+                ))}
+              </div>
+              <h3>{name}</h3>
+              <p>{usage}</p>
+            </article>
+          ))}
+        </div>
+      </SpecSection>
+
+      <SpecSection meta="source han serif cn · subset loading" number="04" title="Typography">
+        <div className={styles.typeSpec}>
+          <Text variant="h1">Design System</Text>
+          <Text variant="h3">Serif is interface identity, not decoration.</Text>
+          <Text variant="body">
+            Website uses a font subset path so the design language stays faithful without loading
+            full original font files on first paint.
+          </Text>
+        </div>
+      </SpecSection>
+    </main>
   );
 };
 
-// ─── Hero ─────────────────────────────────────────────────────────────────────
+type SpecSectionProps = {
+  children: ReactNode;
+  meta: string;
+  number: string;
+  title: string;
+};
 
-const HeroSection = () => (
-  <section className={styles.heroCell}>
-    <div className={styles.heroGrid} />
-    <div className={styles.heroInner}>
-      <p className={styles.heroEyebrow}>Component Library · v1.0</p>
-      <Text variant="h1" className={styles.heroTitle}>
-        Architecture for <span>serif</span> interfaces.
-      </Text>
-      <Text variant="body" className={styles.heroDesc}>
-        二十七个组件，以宋体字形节奏与温暖色系构建，深浅双主题，开箱即用。专为中文优先的产品而设计。
-      </Text>
-      <div className={styles.heroActions}>
-        <code className={styles.installCmd}>$ npm i @deweyou-design/react</code>
-        <Button
-          color="neutral"
-          href="https://design-storybook-deweyous-projects.vercel.app"
-          target="_blank"
-          variant="filled"
-        >
-          查看 Storybook →
-        </Button>
-      </div>
-      <div className={styles.stats}>
-        <Stat value="27" label="Components" />
-        <Stat value="30" label="Icons" />
-        <Stat value="26" label="Color Families" />
-        <Stat value="02" label="Themes" />
-      </div>
-    </div>
+const SpecSection = ({ children, meta, number, title }: SpecSectionProps) => (
+  <section className={styles.section}>
+    <header className={styles.sectionHead}>
+      <span>{number}</span>
+      <h2>{title}</h2>
+      <p>{meta}</p>
+    </header>
+    <div className={styles.sectionBody}>{children}</div>
   </section>
-);
-
-// ─── Design & Components ──────────────────────────────────────────────────────
-
-const DesignSection = () => (
-  <>
-    <ColorSubSection />
-    <TypographySubSection />
-    <FontLoadingSubSection />
-    <ComponentsSubSection />
-  </>
-);
-
-// Color swatches — emerald (brand), red (danger), stone (neutral)
-const COLOR_ROWS: Array<{ family: string; steps: number[] }> = [
-  { family: 'emerald', steps: [950, 900, 800, 700, 600, 500, 400, 300, 200] },
-  { family: 'red', steps: [950, 900, 800, 700, 600, 500, 400, 300, 200] },
-  { family: 'stone', steps: [950, 900, 800, 700, 600, 500, 400, 300, 200] },
-];
-
-const ColorSubSection = () => (
-  <section className={styles.cell}>
-    <CellHead number="02" title="Palette" meta="3 semantic roles 9 tonal steps each" />
-    <div className={styles.cellBodyFlush}>
-      <div className={styles.palette}>
-        {COLOR_ROWS.flatMap(({ family, steps }) =>
-          steps.map((step) => (
-            <div
-              key={`${family}-${step}`}
-              className={styles.colorSwatch}
-              style={{ backgroundColor: `var(--ui-color-palette-${family}-${step})` }}
-            >
-              {step === 950 ? <strong>{family}</strong> : null}
-              <span>{step}</span>
-            </div>
-          )),
-        )}
-      </div>
-    </div>
-  </section>
-);
-
-const TYPE_SPECIMENS = [
-  { label: 'H1', sample: 'Design 设计', variant: 'h1' as const },
-  { label: 'H2', sample: '组件库 · 深浅双主题', variant: 'h2' as const },
-  { label: 'H3', sample: '简约 · 线条感 · 中文优先', variant: 'h3' as const },
-  {
-    label: 'Body',
-    sample: '基于宋体字形节奏与温暖色系构建，覆盖完整 UI 场景。',
-    variant: 'body' as const,
-  },
-  { label: 'Caption', sample: '辅助信息层级 · 用于标注与说明文字', variant: 'caption' as const },
-];
-
-const TypographySubSection = () => (
-  <section className={styles.cell}>
-    <CellHead number="03" title="Type" meta="Source Han Serif CN 5 levels · 4 weights" />
-    <div className={styles.cellBodyFlush}>
-      <div className={styles.typeRows}>
-        {TYPE_SPECIMENS.map(({ label, sample, variant }) => (
-          <div key={label} className={styles.typeRow}>
-            <span className={styles.typeLabel}>{label}</span>
-            <Text variant={variant}>{sample}</Text>
-            <span className={styles.typeMeta}>{variant}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-);
-
-const FONT_LOADING_PATHS = [
-  {
-    label: 'Fallback',
-    title: 'No font assets',
-    command: '@deweyou-design/styles/theme.css',
-    body: '默认入口只定义 token 与平台回退栈，业务不为完整中文字库付首屏体积。',
-  },
-  {
-    label: 'Subset',
-    title: 'Build-time split',
-    command: 'fontSubset.vite',
-    extraCommand: 'virtual:deweyou-font-subset.css',
-    body: '业务传入 charset 或 include / exclude 扫描规则，构建期产出哈希化 woff2。',
-  },
-  {
-    label: 'Full',
-    title: 'Preview-safe bundle',
-    command: '@deweyou-design/styles/theme-with-fonts.css',
-    body: '原完整字体入口保留给原型、文档预览和不敏感的内部工具。',
-  },
-];
-
-const FontLoadingSubSection = () => (
-  <section className={styles.cell}>
-    <CellHead number="04" title="Font Loading" meta="fallback · subset · full font assets" />
-    <div className={styles.cellBodyFlush}>
-      <div className={styles.fontFeatureGrid}>
-        {FONT_LOADING_PATHS.map(({ body, command, extraCommand, label, title }) => (
-          <div key={label} className={styles.fontFeature}>
-            <span className={styles.fontFeatureLabel}>{label}</span>
-            <strong>{title}</strong>
-            <p>{body}</p>
-            <code>{command}</code>
-            {extraCommand ? <code>{extraCommand}</code> : null}
-          </div>
-        ))}
-      </div>
-      <div className={styles.fontImportFlow}>
-        <code>import '@deweyou-design/styles/theme.css';</code>
-        <span>+</span>
-        <code>import 'virtual:deweyou-font-subset.css';</code>
-      </div>
-    </div>
-  </section>
-);
-
-// ─── Components tabs ──────────────────────────────────────────────────────────
-
-const ComponentsSubSection = () => (
-  <section className={styles.cell}>
-    <CellHead number="05" title="Components" meta="27 primitives stable" />
-    <div className={styles.cellBodyFlush}>
-      <Tabs defaultValue="buttons" variant="line" color="neutral" size="sm">
-        <TabList>
-          <TabTrigger value="buttons">按钮 / 操作</TabTrigger>
-          <TabTrigger value="form">表单输入</TabTrigger>
-          <TabTrigger value="overlay">浮层 / 菜单</TabTrigger>
-          <TabTrigger value="feedback">反馈 / 徽标</TabTrigger>
-        </TabList>
-
-        <TabContent value="buttons">
-          <div className={styles.tabContent}>
-            <Button color="neutral" variant="filled">
-              Neutral
-            </Button>
-            <Button color="primary" variant="filled">
-              Primary
-            </Button>
-            <Button color="danger" variant="filled">
-              Danger
-            </Button>
-            <div className={styles.tabDivider} />
-            <Button color="neutral" variant="outlined">
-              Outlined
-            </Button>
-            <Button color="neutral" variant="ghost">
-              Ghost
-            </Button>
-          </div>
-        </TabContent>
-
-        <TabContent value="form">
-          <div className={styles.tabContent}>
-            <Input placeholder="普通输入框" style={{ width: 160 }} />
-            <div className={styles.tabDivider} />
-            <div style={{ width: 160 }}>
-              <Select.Root placeholder="请选择">
-                <Select.Trigger />
-                <Select.Content>
-                  <Select.Item value="a" label="选项 A" />
-                  <Select.Item value="b" label="选项 B" />
-                  <Select.Item value="c" label="选项 C" />
-                </Select.Content>
-              </Select.Root>
-            </div>
-            <div className={styles.tabDivider} />
-            <Switch defaultChecked>开启</Switch>
-            <Switch>关闭</Switch>
-            <div className={styles.tabDivider} />
-            <Checkbox defaultChecked>已勾选</Checkbox>
-            <Checkbox>未勾选</Checkbox>
-          </div>
-        </TabContent>
-
-        <TabContent value="overlay">
-          <div className={styles.tabContent}>
-            <Popover content={<span style={{ fontSize: 13 }}>这是一个 Popover 内容</span>}>
-              <Button color="neutral" variant="outlined">
-                打开 Popover
-              </Button>
-            </Popover>
-            <div className={styles.tabDivider} />
-            <Menu>
-              <MenuTrigger>
-                <Button color="neutral" variant="outlined">
-                  打开菜单
-                </Button>
-              </MenuTrigger>
-              <MenuContent>
-                <MenuItem value="edit">编辑</MenuItem>
-                <MenuItem value="copy">复制</MenuItem>
-                <MenuItem value="delete">删除</MenuItem>
-              </MenuContent>
-            </Menu>
-          </div>
-        </TabContent>
-
-        <TabContent value="feedback">
-          <div className={styles.tabContent}>
-            <Badge color="neutral">中性</Badge>
-            <Badge color="primary" variant="soft">
-              成功
-            </Badge>
-            <Badge color="primary" variant="solid">
-              主要
-            </Badge>
-            <Badge color="danger" variant="outline">
-              危险
-            </Badge>
-            <div className={styles.tabDivider} />
-            <Spinner />
-            <div className={styles.tabDivider} />
-            <Button
-              color="primary"
-              variant="filled"
-              onClick={() =>
-                toast.create({ title: '操作成功', description: '内容已保存', variant: 'success' })
-              }
-            >
-              触发 Toast
-            </Button>
-          </div>
-        </TabContent>
-      </Tabs>
-    </div>
-  </section>
-);
-
-const CellHead = ({ meta, number, title }: { meta: string; number: string; title: string }) => (
-  <div className={styles.cellHead}>
-    <span className={styles.cellNumber}>§ {number}</span>
-    <span className={styles.cellTitle}>{title}</span>
-    <span className={styles.cellMeta}>{meta}</span>
-  </div>
-);
-
-const Stat = ({ label, value }: { label: string; value: string }) => (
-  <div className={styles.stat}>
-    <div className={styles.statValue}>{value}</div>
-    <div className={styles.statLabel}>{label}</div>
-  </div>
 );

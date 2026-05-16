@@ -327,6 +327,7 @@ export const Popover = ({
   const contentRef = useRef<HTMLDivElement | null>(null);
   const dismissReasonRef = useRef<PopoverVisibilityChangeReason | null>(null);
   const hasMountedRef = useRef(false);
+  const hasOpenedRef = useRef(open);
 
   openRef.current = open;
 
@@ -356,7 +357,9 @@ export const Popover = ({
   }, []);
 
   useEffect(() => {
-    if (!open) {
+    if (open) {
+      hasOpenedRef.current = true;
+    } else {
       openedFromFocusRef.current = false;
     }
   }, [open]);
@@ -368,6 +371,10 @@ export const Popover = ({
     }
 
     if (open) {
+      return;
+    }
+
+    if (!hasOpenedRef.current) {
       return;
     }
 
