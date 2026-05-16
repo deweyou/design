@@ -5,6 +5,17 @@ import { MemoryRouter, useLocation } from 'react-router-dom';
 import { afterAll, afterEach, beforeAll, test, vi } from 'vite-plus/test';
 
 import { expect } from '../test-setup';
+
+vi.mock('@deweyou-design/react-icons', () => ({
+  ExternalLinkIcon: () => <span aria-hidden data-testid="mock-external-link-icon" />,
+  LogoGithubIcon: () => <span aria-hidden data-testid="mock-github-icon" />,
+  MenuApplicationIcon: () => <span aria-hidden data-testid="mock-menu-icon" />,
+  MenuIcon: () => <span aria-hidden data-testid="mock-nav-menu-icon" />,
+  MoonIcon: () => <span aria-hidden data-testid="mock-moon-icon" />,
+  SunnyIcon: () => <span aria-hidden data-testid="mock-sunny-icon" />,
+  XIcon: () => <span aria-hidden data-testid="mock-x-icon" />,
+}));
+
 import { Navbar } from './navbar';
 
 class ResizeObserverStub {

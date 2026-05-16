@@ -20,6 +20,11 @@ export const Default: Story = {
       <Field.Description>Field connects label, description, and control ids.</Field.Description>
     </Field.Root>
   ),
+};
+
+export const Interaction: Story = {
+  name: 'Interaction',
+  render: Default.render,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const input = canvas.getByLabelText('Name');

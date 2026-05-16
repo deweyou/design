@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 
 import { Button, NavOverlay } from '@deweyou-design/react';
 
@@ -22,6 +23,20 @@ export const Default: Story = {
       </NavOverlay.Content>
     </NavOverlay.Root>
   ),
+};
+
+export const Interaction: Story = {
+  name: 'Interaction',
+  render: Default.render,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Open navigation' }));
+
+    const dialog = await waitFor(() => within(document.body).getByRole('dialog'));
+    await expect(within(dialog).getByRole('link', { name: 'Overview' })).toBeInTheDocument();
+    await expect(within(dialog).getByRole('button', { name: 'Close navigation' })).toBeVisible();
+  },
 };
 
 export const LongList: Story = {

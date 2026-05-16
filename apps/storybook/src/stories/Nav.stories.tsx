@@ -76,6 +76,12 @@ export const ResponsiveLongList: Story = {
       value="section-1"
     />
   ),
+};
+
+export const Interaction: Story = {
+  name: 'Interaction',
+  parameters: ResponsiveLongList.parameters,
+  render: ResponsiveLongList.render,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
