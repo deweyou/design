@@ -30,11 +30,11 @@ test('button typography and height scale follows the design-system size ladder',
   expect(stylesheet).toContain('--button-font-size: 1rem;');
   expect(stylesheet).toContain('--button-font-size: 1.0625rem;');
   expect(stylesheet).toContain('--button-font-size: 1.125rem;');
-  expect(stylesheet).toContain('--button-height: 1.5rem;');
-  expect(stylesheet).toContain('--button-height: 2rem;');
-  expect(stylesheet).toContain('--button-height: 2.5rem;');
-  expect(stylesheet).toContain('--button-height: 3rem;');
-  expect(stylesheet).toContain('--button-height: 3.5rem;');
+  expect(stylesheet).toContain('--button-height: var(--ui-control-height-xs);');
+  expect(stylesheet).toContain('--button-height: var(--ui-control-height-sm);');
+  expect(stylesheet).toContain('--button-height: var(--ui-control-height-md);');
+  expect(stylesheet).toContain('--button-height: var(--ui-control-height-lg);');
+  expect(stylesheet).toContain('--button-height: var(--ui-control-height-xl);');
 });
 
 test('icon buttons use the dedicated square-size mode', () => {

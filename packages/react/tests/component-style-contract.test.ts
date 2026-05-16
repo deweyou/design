@@ -5,10 +5,20 @@ import { expect, test } from 'vite-plus/test';
 
 const reactSourceRoot = resolve(import.meta.dirname, '../src');
 const buttonStylesPath = resolve(reactSourceRoot, 'button/index.module.less');
+const checkboxStylesPath = resolve(reactSourceRoot, 'checkbox/index.module.less');
+const menuStylesPath = resolve(reactSourceRoot, 'menu/index.module.less');
 const markdownRenderStylesPath = resolve(reactSourceRoot, 'markdown-render/index.module.less');
+const paginationStylesPath = resolve(reactSourceRoot, 'pagination/index.module.less');
+const radioGroupStylesPath = resolve(reactSourceRoot, 'radio-group/index.module.less');
 const scrollAreaStylesPath = resolve(reactSourceRoot, 'scroll-area/index.module.less');
+const selectStylesPath = resolve(reactSourceRoot, 'select/index.module.less');
+const skeletonStylesPath = resolve(reactSourceRoot, 'skeleton/index.module.less');
+const spinnerStylesPath = resolve(reactSourceRoot, 'spinner/index.module.less');
+const switchStylesPath = resolve(reactSourceRoot, 'switch/index.module.less');
 const tabsStylesPath = resolve(reactSourceRoot, 'tabs/index.module.less');
 const textStylesPath = resolve(reactSourceRoot, 'text/index.module.less');
+const toastStylesPath = resolve(reactSourceRoot, 'toast/index.module.less');
+const tooltipStylesPath = resolve(reactSourceRoot, 'tooltip/index.module.less');
 
 const collectLessModules = (directory: string): string[] => {
   const entries = readdirSync(directory, { withFileTypes: true });
@@ -68,6 +78,51 @@ test('button styles keep visual feedback contracts out of component unit tests',
   expect(stylesheet).toContain('.loadingIndicator');
   expect(stylesheet).toContain('@keyframes button-loading-spin');
   expect(stylesheet).toContain('cursor: default;');
+});
+
+test('interactive component styles consume shared control and touch target tokens', () => {
+  const buttonStylesheet = readFileSync(buttonStylesPath, 'utf8');
+  const checkboxStylesheet = readFileSync(checkboxStylesPath, 'utf8');
+  const paginationStylesheet = readFileSync(paginationStylesPath, 'utf8');
+  const radioGroupStylesheet = readFileSync(radioGroupStylesPath, 'utf8');
+  const selectStylesheet = readFileSync(selectStylesPath, 'utf8');
+  const switchStylesheet = readFileSync(switchStylesPath, 'utf8');
+  const toastStylesheet = readFileSync(toastStylesPath, 'utf8');
+
+  expect(buttonStylesheet).toContain('--button-height: var(--ui-control-height-xs);');
+  expect(buttonStylesheet).toContain('--button-height: var(--ui-control-height-sm);');
+  expect(buttonStylesheet).toContain('--button-height: var(--ui-control-height-md);');
+  expect(buttonStylesheet).toContain('--button-height: var(--ui-control-height-lg);');
+  expect(buttonStylesheet).toContain('--button-height: var(--ui-control-height-xl);');
+  expect(paginationStylesheet).toContain('min-inline-size: var(--ui-touch-target-min);');
+  expect(paginationStylesheet).toContain('min-block-size: var(--ui-touch-target-min);');
+  expect(selectStylesheet).toContain('min-block-size: var(--ui-control-height-sm);');
+  expect(checkboxStylesheet).toContain('min-block-size: var(--ui-touch-target-min);');
+  expect(radioGroupStylesheet).toContain('min-block-size: var(--ui-touch-target-min);');
+  expect(switchStylesheet).toContain('min-block-size: var(--ui-touch-target-min);');
+  expect(toastStylesheet).toContain('inline-size: var(--ui-touch-target-min);');
+  expect(toastStylesheet).toContain('block-size: var(--ui-touch-target-min);');
+});
+
+test('overlay and motion styles use shared z-index and motion tokens', () => {
+  const menuStylesheet = readFileSync(menuStylesPath, 'utf8');
+  const selectStylesheet = readFileSync(selectStylesPath, 'utf8');
+  const skeletonStylesheet = readFileSync(skeletonStylesPath, 'utf8');
+  const spinnerStylesheet = readFileSync(spinnerStylesPath, 'utf8');
+  const toastStylesheet = readFileSync(toastStylesPath, 'utf8');
+  const tooltipStylesheet = readFileSync(tooltipStylesPath, 'utf8');
+
+  expect(menuStylesheet).toContain('@menu-z-index: var(--ui-z-dropdown);');
+  expect(menuStylesheet).not.toContain("[data-part='trigger']:focus-visible");
+  expect(menuStylesheet).toContain('var(--ui-motion-duration-base)');
+  expect(menuStylesheet).toContain('var(--ui-motion-ease-standard)');
+  expect(selectStylesheet).toContain('z-index: var(--ui-z-dropdown);');
+  expect(selectStylesheet).toContain('var(--ui-motion-duration-base)');
+  expect(tooltipStylesheet).toContain('z-index: var(--ui-z-tooltip);');
+  expect(tooltipStylesheet).toContain('@media (prefers-reduced-motion: reduce)');
+  expect(toastStylesheet).toContain('var(--ui-motion-duration-slow)');
+  expect(skeletonStylesheet).toContain('@media (prefers-reduced-motion: reduce)');
+  expect(spinnerStylesheet).toContain('@media (prefers-reduced-motion: reduce)');
 });
 
 test('text styles preserve typography and truncation layout contracts', () => {

@@ -20,6 +20,7 @@
   cursor: pointer;
   display: inline-flex;
   gap: 0.5rem;
+  min-block-size: var(--ui-touch-target-min);
   user-select: none;
 }
 
@@ -39,8 +40,8 @@
   justify-content: center;
   position: relative;
   transition:
-    background 140ms ease,
-    border-color 140ms ease;
+    background var(--ui-motion-duration-fast) var(--ui-motion-ease-exit),
+    border-color var(--ui-motion-duration-fast) var(--ui-motion-ease-exit);
   width: 1rem;
 }
 

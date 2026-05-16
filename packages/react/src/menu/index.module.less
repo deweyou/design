@@ -4,7 +4,7 @@
 // Local design variables
 // ---------------------------------------------------------------------------
 
-@menu-z-index: 1080;
+@menu-z-index: var(--ui-z-dropdown);
 @menu-min-width: 10rem;
 @menu-max-width: min(20rem, calc(100vw - 32px));
 @menu-padding-block: 0.25rem;
@@ -31,28 +31,28 @@
 
 // Enter animation (default: top/bottom)
 .content[data-state='open'] {
-  animation: menuEnter 160ms cubic-bezier(0.22, 1, 0.36, 1);
+  animation: menuEnter var(--ui-motion-duration-base) var(--ui-motion-ease-standard);
 }
 
 // Exit animation
 .content[data-state='closed'] {
-  animation: menuExit 160ms ease forwards;
+  animation: menuExit var(--ui-motion-duration-base) var(--ui-motion-ease-exit) forwards;
 }
 
 // Submenu: enters from the right side
 .content[data-placement^='right'][data-state='open'] {
-  animation: menuEnterRight 160ms cubic-bezier(0.22, 1, 0.36, 1);
+  animation: menuEnterRight var(--ui-motion-duration-base) var(--ui-motion-ease-standard);
 }
 .content[data-placement^='right'][data-state='closed'] {
-  animation: menuExitRight 160ms ease forwards;
+  animation: menuExitRight var(--ui-motion-duration-base) var(--ui-motion-ease-exit) forwards;
 }
 
 // Submenu: enters from the left side
 .content[data-placement^='left'][data-state='open'] {
-  animation: menuEnterLeft 160ms cubic-bezier(0.22, 1, 0.36, 1);
+  animation: menuEnterLeft var(--ui-motion-duration-base) var(--ui-motion-ease-standard);
 }
 .content[data-placement^='left'][data-state='closed'] {
-  animation: menuExitLeft 160ms ease forwards;
+  animation: menuExitLeft var(--ui-motion-duration-base) var(--ui-motion-ease-exit) forwards;
 }
 
 // ---------------------------------------------------------------------------
@@ -130,13 +130,13 @@
   .content[data-state='open'],
   .content[data-placement^='right'][data-state='open'],
   .content[data-placement^='left'][data-state='open'] {
-    animation: menuEnterReduced 160ms ease;
+    animation: menuEnterReduced var(--ui-motion-duration-base) var(--ui-motion-ease-exit);
   }
 
   .content[data-state='closed'],
   .content[data-placement^='right'][data-state='closed'],
   .content[data-placement^='left'][data-state='closed'] {
-    animation: menuExitReduced 160ms ease forwards;
+    animation: menuExitReduced var(--ui-motion-duration-base) var(--ui-motion-ease-exit) forwards;
   }
 }
 
@@ -172,8 +172,8 @@
   margin-inline: 0.25rem;
   outline: none;
   transition:
-    background 140ms ease,
-    color 140ms ease;
+    background var(--ui-motion-duration-fast) var(--ui-motion-ease-exit),
+    color var(--ui-motion-duration-fast) var(--ui-motion-ease-exit);
   user-select: none;
 }
 
@@ -315,26 +315,12 @@
   flex-shrink: 0;
   margin-inline-start: auto;
   opacity: 0.55;
-  transition: opacity 140ms ease;
+  transition: opacity var(--ui-motion-duration-fast) var(--ui-motion-ease-exit);
 }
 
 .triggerItem[data-highlighted] .triggerItemArrow {
   opacity: 0.85;
 }
-
-// ---------------------------------------------------------------------------
-// Trigger button — suppress focus ring (opening the menu is visual feedback enough).
-// Specificity 0,3,0 beats Button's .root:focus-visible at 0,2,0.
-// ---------------------------------------------------------------------------
-
-:global([data-scope='menu'][data-part='trigger']:focus-visible) {
-  outline: none;
-  box-shadow: none;
-}
-
-// ---------------------------------------------------------------------------
-// ContextMenu trigger area
-// ---------------------------------------------------------------------------
 
 .contextTrigger {
   // block display allows the right-click zone to fill its container

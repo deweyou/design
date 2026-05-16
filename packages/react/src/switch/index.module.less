@@ -11,6 +11,7 @@
   cursor: pointer;
   display: inline-flex;
   gap: 0.5rem;
+  min-block-size: var(--ui-touch-target-min);
   user-select: none;
 }
 
@@ -27,7 +28,7 @@
   height: @switch-track-height;
   padding: @switch-thumb-offset;
   position: relative;
-  transition: background 140ms ease;
+  transition: background var(--ui-motion-duration-fast) var(--ui-motion-ease-exit);
   width: @switch-track-width;
 }
 
@@ -45,7 +46,7 @@
   flex-shrink: 0;
   height: @switch-thumb-size;
   transform: translateX(0);
-  transition: transform 140ms ease;
+  transition: transform var(--ui-motion-duration-fast) var(--ui-motion-ease-exit);
   width: @switch-thumb-size;
 }
 
