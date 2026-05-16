@@ -61,7 +61,7 @@
     flex-shrink: 0;
     font-family: var(--ui-font-display);
     font-size: 13px;
-    min-height: 32px;
+    min-block-size: var(--ui-touch-target-min);
     padding: 0 10px;
     text-decoration: none;
 
@@ -93,6 +93,9 @@
 
 .actionButton {
   --button-ghost-text-color: var(--ui-color-text-muted);
+
+  block-size: var(--ui-touch-target-min);
+  inline-size: var(--ui-touch-target-min);
 
   &:hover {
     --button-ghost-text-color: var(--ui-color-text);

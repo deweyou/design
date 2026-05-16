@@ -199,7 +199,7 @@ export const COMPONENT_CATALOG: ComponentCatalogItem[] = [
       <Field.Root id="catalog-field" hasDescription>
         <Field.Label>Name</Field.Label>
         <Field.Control>
-          <input aria-label="Name" />
+          <Input placeholder="Deweyou" size="sm" />
         </Field.Control>
         <Field.Description>Short field hint</Field.Description>
       </Field.Root>

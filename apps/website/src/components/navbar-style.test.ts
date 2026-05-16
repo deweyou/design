@@ -14,6 +14,12 @@ test('mobile navbar uses compact single-row spacing', () => {
   expect(mobileNavbarRule).toContain('padding: 10px 14px');
 });
 
+test('navbar controls use the shared touch target floor', () => {
+  expect(navbarStyles).toContain('min-block-size: var(--ui-touch-target-min);');
+  expect(navbarStyles).toContain('inline-size: var(--ui-touch-target-min);');
+  expect(navbarStyles).toContain('block-size: var(--ui-touch-target-min);');
+});
+
 test('mobile document offset matches the compact navbar height', () => {
   const mobileGlobalRule =
     globalStyles.match(/@media \(max-width: 760px\) \{[\s\S]*?\n\}/)?.[0] ?? '';
