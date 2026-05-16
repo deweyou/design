@@ -6,6 +6,7 @@ import { expect, test } from 'vite-plus/test';
 const reactSourceRoot = resolve(import.meta.dirname, '../src');
 const buttonStylesPath = resolve(reactSourceRoot, 'button/index.module.less');
 const checkboxStylesPath = resolve(reactSourceRoot, 'checkbox/index.module.less');
+const inputStylesPath = resolve(reactSourceRoot, 'input/index.module.less');
 const menuStylesPath = resolve(reactSourceRoot, 'menu/index.module.less');
 const markdownRenderStylesPath = resolve(reactSourceRoot, 'markdown-render/index.module.less');
 const paginationStylesPath = resolve(reactSourceRoot, 'pagination/index.module.less');
@@ -83,6 +84,7 @@ test('button styles keep visual feedback contracts out of component unit tests',
 test('interactive component styles consume shared control and touch target tokens', () => {
   const buttonStylesheet = readFileSync(buttonStylesPath, 'utf8');
   const checkboxStylesheet = readFileSync(checkboxStylesPath, 'utf8');
+  const inputStylesheet = readFileSync(inputStylesPath, 'utf8');
   const paginationStylesheet = readFileSync(paginationStylesPath, 'utf8');
   const radioGroupStylesheet = readFileSync(radioGroupStylesPath, 'utf8');
   const selectStylesheet = readFileSync(selectStylesPath, 'utf8');
@@ -96,6 +98,9 @@ test('interactive component styles consume shared control and touch target token
   expect(buttonStylesheet).toContain('--button-height: var(--ui-control-height-xl);');
   expect(paginationStylesheet).toContain('min-inline-size: var(--ui-touch-target-min);');
   expect(paginationStylesheet).toContain('min-block-size: var(--ui-touch-target-min);');
+  expect(inputStylesheet).toContain('min-block-size: var(--ui-control-height-sm);');
+  expect(inputStylesheet).toContain('min-block-size: var(--ui-control-height-md);');
+  expect(inputStylesheet).toContain('min-block-size: var(--ui-control-height-lg);');
   expect(selectStylesheet).toContain('min-block-size: var(--ui-control-height-sm);');
   expect(checkboxStylesheet).toContain('min-block-size: var(--ui-touch-target-min);');
   expect(radioGroupStylesheet).toContain('min-block-size: var(--ui-touch-target-min);');
