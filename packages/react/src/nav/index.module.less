@@ -126,7 +126,8 @@
   flex-direction: column;
   gap: var(--ui-space-xl);
   overflow: hidden;
-  padding: 72px var(--ui-space-lg) 96px;
+  padding-block: 72px 0;
+  padding-inline: var(--ui-space-lg);
 }
 
 .responsiveOverlayList {
@@ -134,7 +135,8 @@
   gap: 8px;
   min-height: 0;
   overflow-y: auto;
-  padding-bottom: var(--ui-space-lg);
+  padding-block-end: calc(var(--ui-space-xl) + 72px);
+  scroll-padding-block-end: calc(var(--ui-space-xl) + 72px);
   scrollbar-width: none;
 
   &::-webkit-scrollbar {
@@ -146,12 +148,14 @@
   font-family: var(--ui-font-display);
   font-size: 1.375rem;
   justify-content: flex-start;
-  min-height: 48px;
+  min-block-size: var(--ui-control-height-lg);
   padding: 10px 12px;
 }
 
 .responsiveOverlayCloseButton {
+  block-size: var(--ui-touch-target-min);
   bottom: max(var(--ui-space-lg), env(safe-area-inset-bottom));
+  inline-size: var(--ui-touch-target-min);
   left: 50%;
   position: fixed;
   right: auto;
