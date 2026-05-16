@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, type MouseEvent } from 'react';
 
-import { Button, Input, Text } from '@deweyou-design/react';
+import { Input, Text } from '@deweyou-design/react';
 import { ExternalLinkIcon } from '@deweyou-design/react-icons';
 
 import {
@@ -103,16 +103,36 @@ const ComponentCard = ({ item }: ComponentCardProps) => (
     <div className={styles.preview} role="group" aria-label={`${item.name} preview`}>
       {item.preview}
     </div>
-    <Button
+    <a
       aria-label={`${item.name} Storybook`}
-      href={getStorybookUrl(item.storyId)}
       className={styles.storyLink}
-      icon={<ExternalLinkIcon aria-hidden size="xs" />}
+      href={getStorybookUrl(item.storyId)}
       rel="noopener noreferrer"
       target="_blank"
-      variant="link"
+      onClick={handleStorybookClick(getStorybookUrl(item.storyId))}
     >
+      <ExternalLinkIcon aria-hidden size="xs" />
       {item.name} Storybook
-    </Button>
+    </a>
   </article>
 );
+
+const handleStorybookClick = (url: string) => (event: MouseEvent<HTMLAnchorElement>) => {
+  if (
+    event.defaultPrevented ||
+    event.button > 0 ||
+    event.metaKey ||
+    event.altKey ||
+    event.ctrlKey ||
+    event.shiftKey
+  ) {
+    return;
+  }
+
+  event.preventDefault();
+  const storybookWindow = window.open(url, '_blank', 'noopener,noreferrer');
+
+  if (!storybookWindow) {
+    window.location.href = url;
+  }
+};

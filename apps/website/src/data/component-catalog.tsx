@@ -6,6 +6,7 @@ import {
   Button,
   Card,
   Checkbox,
+  Dialog,
   Field,
   IconButton,
   Input,
@@ -36,6 +37,8 @@ import {
 } from '@deweyou-design/react';
 import { SettingsIcon } from '@deweyou-design/react-icons';
 
+import styles from '../pages/components.module.less';
+
 const STORYBOOK_URL = 'https://design-storybook-deweyous-projects.vercel.app';
 
 export const COMPONENT_CATEGORIES = [
@@ -60,7 +63,11 @@ export type ComponentCatalogItem = {
   storyId: string;
 };
 
-export const getStorybookUrl = (storyId: string) => `${STORYBOOK_URL}/?path=/story/${storyId}`;
+export const getStorybookUrl = (storyId: string) => {
+  const componentStoryRoot = storyId.split('--')[0];
+
+  return `${STORYBOOK_URL}/?path=/docs/${componentStoryRoot}--overview`;
+};
 
 const buttonPreview = (
   <>
@@ -150,9 +157,35 @@ export const COMPONENT_CATALOG: ComponentCatalogItem[] = [
     dimensions: ['root', 'trigger', 'content'],
     storyId: 'components-dialog--default',
     preview: (
-      <Button size="sm" variant="outlined">
-        Open dialog
-      </Button>
+      <Dialog.Root>
+        <Dialog.Trigger>
+          <Button size="sm" variant="outlined">
+            Open dialog
+          </Button>
+        </Dialog.Trigger>
+        <Dialog.Content className={styles.previewDialog}>
+          <Dialog.Title>Catalog dialog</Dialog.Title>
+          <Dialog.Description>
+            Review a focused message without leaving the component catalog.
+          </Dialog.Description>
+          <div className={styles.previewDialogBody}>
+            <span>Status</span>
+            <strong>Ready for review</strong>
+          </div>
+          <div className={styles.previewDialogActions}>
+            <Dialog.CloseTrigger>
+              <Button size="sm" variant="outlined">
+                Close
+              </Button>
+            </Dialog.CloseTrigger>
+            <Dialog.CloseTrigger>
+              <Button color="primary" size="sm" variant="filled">
+                Confirm
+              </Button>
+            </Dialog.CloseTrigger>
+          </div>
+        </Dialog.Content>
+      </Dialog.Root>
     ),
   },
   {

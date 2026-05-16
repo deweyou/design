@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 
-import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
-import { afterAll, afterEach, beforeAll, test } from 'vite-plus/test';
+import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
+import { afterAll, afterEach, beforeAll, test, vi } from 'vite-plus/test';
 
 import { COMPONENT_CATEGORIES, COMPONENT_CATALOG } from '../data/component-catalog';
 import { expect } from '../test-setup';
@@ -31,6 +31,7 @@ beforeAll(() => {
 });
 
 afterEach(() => {
+  vi.restoreAllMocks();
   cleanup();
 });
 
@@ -82,6 +83,33 @@ test('search filters component cards and summary count', () => {
   expect(screen.getByRole('article', { name: 'Button' })).toBeInTheDocument();
   expect(screen.getByRole('article', { name: 'IconButton' })).toBeInTheDocument();
   expect(screen.queryByRole('article', { name: 'Card' })).not.toBeInTheDocument();
+});
+
+test('component storybook links open the generated story URL', () => {
+  const open = vi.spyOn(window, 'open').mockImplementation(() => ({}) as Window);
+  render(<ComponentsPage />);
+
+  fireEvent.click(screen.getByRole('link', { name: 'Button Storybook' }));
+
+  expect(open).toHaveBeenCalledWith(
+    'https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-button--overview',
+    '_blank',
+    'noopener,noreferrer',
+  );
+});
+
+test('dialog preview opens an interactive dialog', async () => {
+  render(<ComponentsPage />);
+
+  const card = screen.getByRole('article', { name: 'Dialog' });
+  fireEvent.click(within(card).getByRole('button', { name: 'Open dialog' }));
+
+  await waitFor(() => {
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+  });
+  expect(screen.getByRole('heading', { name: 'Catalog dialog' })).toBeInTheDocument();
+  expect(screen.getByText('Ready for review')).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: 'Confirm' })).toBeInTheDocument();
 });
 
 test('shows empty state when component search has no results', () => {

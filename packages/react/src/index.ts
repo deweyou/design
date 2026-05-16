@@ -172,6 +172,10 @@ export {
   type NavRootProps,
   type NavLinkProps,
   type NavOrientation,
+  type NavResponsiveBreakpoint,
+  type NavResponsiveItem,
+  type NavResponsiveProps,
+  type NavResponsiveSelectDetails,
   type NavSize,
 } from './nav/index.tsx';
 export {

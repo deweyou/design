@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Nav } from '@deweyou-design/react';
+import { IconButton, Nav } from '@deweyou-design/react';
+import { MenuApplicationIcon } from '@deweyou-design/react-icons';
 
 const meta: Meta = {
   title: 'Components/Nav',
@@ -8,6 +9,19 @@ const meta: Meta = {
 
 export default meta;
 type Story = StoryObj;
+
+const responsiveItems = [
+  { href: '#overview', label: 'Overview', value: 'overview' },
+  { href: '#components', label: 'Components', value: 'components' },
+  { href: '#icons', label: 'Icons', value: 'icons' },
+  { external: true, href: 'https://storybook.js.org', label: 'Storybook', value: 'storybook' },
+] as const;
+
+const longResponsiveItems = Array.from({ length: 32 }, (_, index) => ({
+  href: `#section-${index + 1}`,
+  label: `Section ${index + 1}`,
+  value: `section-${index + 1}`,
+}));
 
 export const Default: Story = {
   render: () => (
@@ -18,5 +32,46 @@ export const Default: Story = {
       <Nav.Link href="#">Components</Nav.Link>
       <Nav.Link href="#">Icons</Nav.Link>
     </Nav.Root>
+  ),
+};
+
+export const Responsive: Story = {
+  render: () => (
+    <Nav.Responsive
+      aria-label="Responsive navigation"
+      collapseTrigger={
+        <IconButton
+          aria-label="Open navigation"
+          icon={<MenuApplicationIcon />}
+          size="sm"
+          variant="ghost"
+        />
+      }
+      items={responsiveItems}
+      value="components"
+    />
+  ),
+};
+
+export const ResponsiveLongList: Story = {
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
+  },
+  render: () => (
+    <Nav.Responsive
+      aria-label="Long responsive navigation"
+      collapseTrigger={
+        <IconButton
+          aria-label="Open navigation"
+          icon={<MenuApplicationIcon />}
+          size="sm"
+          variant="ghost"
+        />
+      }
+      items={longResponsiveItems}
+      value="section-1"
+    />
   ),
 };
