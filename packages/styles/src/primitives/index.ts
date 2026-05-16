@@ -182,6 +182,21 @@ export const internalPrimitives = {
     lg: '1.5rem',
     xl: '2.5rem',
   },
+  control: {
+    heightXs: '2rem',
+    heightSm: '2.5rem',
+    heightMd: '2.75rem',
+    heightLg: '3rem',
+    heightXl: '3.5rem',
+    touchTargetMin: '2.75rem',
+  },
+  motion: {
+    durationFast: '140ms',
+    durationBase: '160ms',
+    durationSlow: '260ms',
+    easeStandard: 'cubic-bezier(0.22, 1, 0.36, 1)',
+    easeExit: 'ease',
+  },
   shadow: {
     soft: '0 18px 40px rgba(24, 33, 29, 0.12)',
     softDark: '0 18px 40px rgba(0, 0, 0, 0.34)',
@@ -238,7 +253,8 @@ export const internalPrimitives = {
     heading5LineHeight: '1.32',
   },
   zIndex: {
-    tooltip: '1000',
+    dropdown: '1080',
+    tooltip: '1090',
     popover: '1100',
     dialog: '1200',
     toast: '1300',

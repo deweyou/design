@@ -154,11 +154,32 @@ test('exposes spacing tokens in lightTheme', () => {
   expect(lightTheme['--ui-space-xl']).toBe('2.5rem');
 });
 
+test('exposes shared control and touch target tokens', () => {
+  expect(lightTheme['--ui-control-height-xs']).toBe('2rem');
+  expect(lightTheme['--ui-control-height-sm']).toBe('2.5rem');
+  expect(lightTheme['--ui-control-height-md']).toBe('2.75rem');
+  expect(lightTheme['--ui-control-height-lg']).toBe('3rem');
+  expect(lightTheme['--ui-control-height-xl']).toBe('3.5rem');
+  expect(lightTheme['--ui-touch-target-min']).toBe('2.75rem');
+  expect(darkTheme['--ui-touch-target-min']).toBe('2.75rem');
+});
+
+test('exposes shared motion tokens', () => {
+  expect(lightTheme['--ui-motion-duration-fast']).toBe('140ms');
+  expect(lightTheme['--ui-motion-duration-base']).toBe('160ms');
+  expect(lightTheme['--ui-motion-duration-slow']).toBe('260ms');
+  expect(lightTheme['--ui-motion-ease-standard']).toBe('cubic-bezier(0.22, 1, 0.36, 1)');
+  expect(lightTheme['--ui-motion-ease-exit']).toBe('ease');
+  expect(darkTheme['--ui-motion-duration-base']).toBe('160ms');
+});
+
 test('exposes z-index tokens in lightTheme', () => {
-  expect(lightTheme['--ui-z-tooltip']).toBe('1000');
+  expect(lightTheme['--ui-z-dropdown']).toBe('1080');
+  expect(lightTheme['--ui-z-tooltip']).toBe('1090');
   expect(lightTheme['--ui-z-popover']).toBe('1100');
   expect(lightTheme['--ui-z-dialog']).toBe('1200');
   expect(lightTheme['--ui-z-toast']).toBe('1300');
+  expect(darkTheme['--ui-z-dropdown']).toBe('1080');
 });
 
 test('exposes shadow scale tokens with correct light and dark values', () => {

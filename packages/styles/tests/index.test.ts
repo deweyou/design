@@ -24,6 +24,10 @@ test('styles package exposes the documented semantic and foundational color toke
   expect(publicCssVars).toContain('--ui-color-palette-olive-950');
   expect(publicCssVars).toContain('--ui-text-color-emerald');
   expect(publicCssVars).toContain('--ui-text-background-mist');
+  expect(publicCssVars).toContain('--ui-control-height-sm');
+  expect(publicCssVars).toContain('--ui-touch-target-min');
+  expect(publicCssVars).toContain('--ui-motion-duration-base');
+  expect(publicCssVars).toContain('--ui-z-dropdown');
 });
 
 test('styles package exposes the shared palette foundation while keeping text aliases stable', () => {
