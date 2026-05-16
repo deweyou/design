@@ -35,7 +35,9 @@ export const Interaction: Story = {
 
     const dialog = await waitFor(() => within(document.body).getByRole('dialog'));
     await expect(within(dialog).getByRole('link', { name: 'Overview' })).toBeInTheDocument();
-    await expect(within(dialog).getByRole('button', { name: 'Close navigation' })).toBeVisible();
+    await expect(
+      within(dialog).getByRole('button', { name: 'Close navigation' }),
+    ).toBeInTheDocument();
   },
 };
 

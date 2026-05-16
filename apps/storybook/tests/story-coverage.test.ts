@@ -16,7 +16,7 @@ test('Nav and Field stories include interaction play functions', () => {
   expect(fieldStory).toContain('play: async');
   expect(fieldStory).toContain('within(canvasElement)');
   expect(navStory).toContain('play: async');
-  expect(navStory).toContain('Open navigation');
+  expect(navStory).toContain('Responsive navigation');
 });
 
 test('preview can render full viewport stories outside the centered layout frame', () => {
