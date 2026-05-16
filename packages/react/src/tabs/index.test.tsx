@@ -62,6 +62,51 @@ const BasicTabs = ({
   </Tabs>
 );
 
+const mockCollapseLayout = ({
+  containerWidth,
+  parentWidth,
+  tabWidth,
+}: {
+  containerWidth: number;
+  parentWidth?: number;
+  tabWidth: number;
+}) => {
+  const clientWidthSpy = vi
+    .spyOn(HTMLElement.prototype, 'clientWidth', 'get')
+    .mockImplementation(function (this: HTMLElement) {
+      if (
+        this.getAttribute('data-testid') === 'tabs-container' ||
+        (this.getAttribute('data-scope') === 'tabs' && this.getAttribute('data-part') === 'root')
+      ) {
+        return parentWidth ?? containerWidth;
+      }
+
+      return containerWidth;
+    });
+  const rectSpy = vi
+    .spyOn(HTMLElement.prototype, 'getBoundingClientRect')
+    .mockImplementation(function (this: HTMLElement) {
+      const width = this.getAttribute('role') === 'tab' ? tabWidth : 0;
+
+      return {
+        bottom: 0,
+        height: 0,
+        left: 0,
+        right: width,
+        toJSON: () => ({}),
+        top: 0,
+        width,
+        x: 0,
+        y: 0,
+      };
+    });
+
+  return () => {
+    clientWidthSpy.mockRestore();
+    rectSpy.mockRestore();
+  };
+};
+
 // ─── T006: 基础切换逻辑 ────────────────────────────────────────────────────────
 
 describe('Tabs — 基础切换', () => {
@@ -126,15 +171,15 @@ describe('Tabs — 基础切换', () => {
     });
   });
 
-  it('TabTrigger supports asChild link triggers for route-backed tabs', async () => {
+  it('TabTrigger exposes click events for route-backed controlled tabs', async () => {
+    const handleClick = vi.fn();
+
     render(
       <Tabs hideContent value="docs">
         <TabList>
-          <TabTrigger asChild value="docs">
-            <a href="/docs">Docs</a>
-          </TabTrigger>
-          <TabTrigger asChild value="components">
-            <a href="/components">Components</a>
+          <TabTrigger value="docs">Docs</TabTrigger>
+          <TabTrigger onClick={handleClick} value="components">
+            Components
           </TabTrigger>
         </TabList>
       </Tabs>,
@@ -143,12 +188,14 @@ describe('Tabs — 基础切换', () => {
     const docsTab = screen.getByRole('tab', { name: 'Docs' });
     const componentsTab = screen.getByRole('tab', { name: 'Components' });
 
-    expect(docsTab.tagName).toBe('A');
-    expect(docsTab.getAttribute('href')).toBe('/docs');
     await waitFor(() => {
       expect(docsTab.getAttribute('aria-selected')).toBe('true');
       expect(componentsTab.getAttribute('aria-selected')).toBe('false');
     });
+
+    fireEvent.click(componentsTab);
+
+    expect(handleClick).toHaveBeenCalledTimes(1);
   });
 });
 
@@ -323,7 +370,9 @@ describe('TabList — scroll 模式边缘状态', () => {
 // ─── T028: collapse 模式更多按钮 ─────────────────────────────────────────────
 
 describe('TabList — collapse 模式', () => {
-  it('collapse 模式在 jsdom 零宽布局下检测到溢出并显示 More 按钮', () => {
+  it('does not collapse when the full tab set fits the measured width exactly', () => {
+    const restoreLayout = mockCollapseLayout({ containerWidth: 128, tabWidth: 60 });
+
     render(
       <Tabs defaultValue="t1" overflowMode="collapse">
         <TabList>
@@ -334,9 +383,76 @@ describe('TabList — collapse 模式', () => {
         <TabContent value="t2">Content 2</TabContent>
       </Tabs>,
     );
-    // In jsdom all element dimensions are 0, so containerSize=0 and any tabs
-    // with a subsequent sibling are considered overflow. The More button renders.
+
+    expect(screen.queryByText('More')).toBeNull();
+    restoreLayout();
+  });
+
+  it('can expand again after a previous collapsed state shrinks the list itself', () => {
+    const restoreLayout = mockCollapseLayout({
+      containerWidth: 88,
+      parentWidth: 128,
+      tabWidth: 60,
+    });
+
+    render(
+      <div data-testid="tabs-container">
+        <Tabs defaultValue="t1" overflowMode="collapse">
+          <TabList>
+            <TabTrigger value="t1">T1</TabTrigger>
+            <TabTrigger value="t2">T2</TabTrigger>
+          </TabList>
+          <TabContent value="t1">Content 1</TabContent>
+          <TabContent value="t2">Content 2</TabContent>
+        </Tabs>
+      </div>,
+    );
+
+    expect(screen.queryByText('More')).toBeNull();
+    restoreLayout();
+  });
+
+  it('shows More when the measured width cannot fit all tabs', () => {
+    const restoreLayout = mockCollapseLayout({ containerWidth: 100, tabWidth: 60 });
+
+    render(
+      <Tabs defaultValue="t1" overflowMode="collapse">
+        <TabList>
+          <TabTrigger value="t1">T1</TabTrigger>
+          <TabTrigger value="t2">T2</TabTrigger>
+        </TabList>
+        <TabContent value="t1">Content 1</TabContent>
+        <TabContent value="t2">Content 2</TabContent>
+      </Tabs>,
+    );
+
     expect(screen.queryByText('More')).not.toBeNull();
+    restoreLayout();
+  });
+
+  it('selecting a collapsed tab can invoke its custom select action', async () => {
+    const handleSelect = vi.fn();
+    const restoreLayout = mockCollapseLayout({ containerWidth: 100, tabWidth: 60 });
+    const user = userEvent.setup();
+
+    render(
+      <Tabs defaultValue="t1" overflowMode="collapse">
+        <TabList>
+          <TabTrigger value="t1">T1</TabTrigger>
+          <TabTrigger value="t2" onSelect={handleSelect}>
+            T2
+          </TabTrigger>
+        </TabList>
+        <TabContent value="t1">Content 1</TabContent>
+        <TabContent value="t2">Content 2</TabContent>
+      </Tabs>,
+    );
+
+    await user.click(screen.getByText('More'));
+    await user.click(screen.getByRole('menuitem', { name: 'T2' }));
+
+    expect(handleSelect).toHaveBeenCalledTimes(1);
+    restoreLayout();
   });
 });
 

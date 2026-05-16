@@ -1,14 +1,19 @@
-import type { ReactNode } from 'react';
+import type { MouseEvent, ReactNode } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import { Button, Text } from '@deweyou-design/react';
 import { ArrowRightIcon, ExternalLinkIcon, LogoGithubIcon } from '@deweyou-design/react-icons';
 
 import styles from './home.module.less';
 
 const PRINCIPLES = [
-  ['Serif Identity', '宋体是品牌身份，body 和 display 都保持 serif rhythm。'],
-  ['Semantic Color', '组件只暴露 neutral、primary、danger，让语义少于装饰。'],
-  ['Line Before Shadow', '边框和留白建立结构，阴影只表达浮层抬升。'],
-  ['Typographic Precision', '系统辨识度来自字形、行高、留白和克制的绿色。'],
+  ['Serif Identity', 'Serif type is the interface signature across body and display text.'],
+  ['Semantic Color', 'Components expose neutral, primary, and danger before decorative palettes.'],
+  ['Line Before Shadow', 'Borders and spacing carry structure; shadow is reserved for elevation.'],
+  [
+    'Typographic Precision',
+    'The system reads through glyphs, line height, spacing, and restrained green.',
+  ],
 ] as const;
 
 const SEMANTIC_COLORS = [
@@ -31,108 +36,123 @@ const SEMANTIC_SWATCHES = {
   ],
 } as const;
 
-export const HomePage = () => (
-  <main className={styles.page}>
-    <section className={styles.cover}>
-      <p className={styles.eyebrow}>Component Library · Design Manual</p>
-      <h1>Deweyou Design</h1>
-      <Text className={styles.lead} variant="body">
-        中文优先、宋体字形、干净线条、暖白与暖黑主题构成的 React 组件库； semantic colors stay
-        limited to neutral, primary, and danger.
-      </Text>
-      <div className={styles.coverActions}>
-        <Button
-          href="/components"
-          icon={<ArrowRightIcon aria-hidden size="xs" />}
-          variant="outlined"
-        >
-          浏览组件
-        </Button>
-        <Button
-          href="https://design-storybook-deweyous-projects.vercel.app"
-          icon={<ExternalLinkIcon aria-hidden size="xs" />}
-          rel="noopener noreferrer"
-          size="md"
-          target="_blank"
-          variant="outlined"
-        >
-          Storybook
-        </Button>
-      </div>
-    </section>
+export const HomePage = () => {
+  const navigate = useNavigate();
 
-    <SpecSection meta="install · import · links" number="01" title="Get Started">
-      <div className={styles.startBody}>
-        <div className={styles.startGrid}>
-          <code>npm i @deweyou-design/react @deweyou-design/styles</code>
-          <code>import '@deweyou-design/styles/theme.css';</code>
-          <code>import {'{ Button, Input }'} from '@deweyou-design/react';</code>
-        </div>
-        <nav className={styles.startLinks} aria-label="Get started resources">
-          <Button href="/components" icon={<ArrowRightIcon aria-hidden size="xs" />} variant="link">
-            Components
+  const handleComponentsClick = (event: MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+    navigate('/components');
+  };
+
+  return (
+    <main className={styles.page}>
+      <section className={styles.cover}>
+        <p className={styles.eyebrow}>Component Library · Design Manual</p>
+        <h1>Deweyou Design</h1>
+        <Text className={styles.lead} variant="body">
+          A serif-led React component library with crisp lines, quiet light and dark themes, and a
+          small semantic color model limited to neutral, primary, and danger.
+        </Text>
+        <div className={styles.coverActions}>
+          <Button
+            href="/components"
+            icon={<ArrowRightIcon aria-hidden size="xs" />}
+            variant="outlined"
+            onClick={handleComponentsClick}
+          >
+            Browse components
           </Button>
           <Button
             href="https://design-storybook-deweyous-projects.vercel.app"
             icon={<ExternalLinkIcon aria-hidden size="xs" />}
             rel="noopener noreferrer"
+            size="md"
             target="_blank"
-            variant="link"
+            variant="outlined"
           >
             Storybook
           </Button>
-          <Button
-            href="https://github.com/deweyou/design"
-            icon={<LogoGithubIcon aria-hidden size="xs" />}
-            rel="noopener noreferrer"
-            target="_blank"
-            variant="link"
-          >
-            GitHub
-          </Button>
-        </nav>
-      </div>
-    </SpecSection>
+        </div>
+      </section>
 
-    <SpecSection meta="identity · semantics · restraint" number="02" title="Principles">
-      <div className={styles.principleGrid}>
-        {PRINCIPLES.map(([title, body]) => (
-          <article key={title}>
-            <h3>{title}</h3>
-            <p>{body}</p>
-          </article>
-        ))}
-      </div>
-    </SpecSection>
+      <SpecSection meta="install · import · links" number="01" title="Get Started">
+        <div className={styles.startBody}>
+          <div className={styles.startGrid}>
+            <code>npm i @deweyou-design/react @deweyou-design/styles</code>
+            <code>import '@deweyou-design/styles/theme.css';</code>
+            <code>import {'{ Button, Input }'} from '@deweyou-design/react';</code>
+          </div>
+          <nav className={styles.startLinks} aria-label="Get started resources">
+            <Button
+              href="/components"
+              icon={<ArrowRightIcon aria-hidden size="xs" />}
+              variant="link"
+              onClick={handleComponentsClick}
+            >
+              Components
+            </Button>
+            <Button
+              href="https://design-storybook-deweyous-projects.vercel.app"
+              icon={<ExternalLinkIcon aria-hidden size="xs" />}
+              rel="noopener noreferrer"
+              target="_blank"
+              variant="link"
+            >
+              Storybook
+            </Button>
+            <Button
+              href="https://github.com/deweyou/design"
+              icon={<LogoGithubIcon aria-hidden size="xs" />}
+              rel="noopener noreferrer"
+              target="_blank"
+              variant="link"
+            >
+              GitHub
+            </Button>
+          </nav>
+        </div>
+      </SpecSection>
 
-    <SpecSection meta="neutral · primary · danger" number="03" title="Color Semantics">
-      <div className={styles.semanticGrid}>
-        {SEMANTIC_COLORS.map(([name, usage]) => (
-          <article key={name}>
-            <div className={styles.semanticSwatches}>
-              {SEMANTIC_SWATCHES[name].map((backgroundColor) => (
-                <span key={backgroundColor} style={{ backgroundColor }} />
-              ))}
-            </div>
-            <h3>{name}</h3>
-            <p>{usage}</p>
-          </article>
-        ))}
-      </div>
-    </SpecSection>
+      <SpecSection meta="identity · semantics · restraint" number="02" title="Principles">
+        <div className={styles.principleGrid}>
+          {PRINCIPLES.map(([title, body]) => (
+            <article key={title}>
+              <h3>{title}</h3>
+              <p>{body}</p>
+            </article>
+          ))}
+        </div>
+      </SpecSection>
 
-    <SpecSection meta="source han serif cn · subset loading" number="04" title="Typography">
-      <div className={styles.typeSpec}>
-        <Text variant="h1">Design 设计</Text>
-        <Text variant="h3">宋体是界面身份，不是装饰。</Text>
-        <Text variant="body">
-          Website uses a font subset path so the design language stays faithful without loading full
-          original font files on first paint.
-        </Text>
-      </div>
-    </SpecSection>
-  </main>
-);
+      <SpecSection meta="neutral · primary · danger" number="03" title="Color Semantics">
+        <div className={styles.semanticGrid}>
+          {SEMANTIC_COLORS.map(([name, usage]) => (
+            <article key={name}>
+              <div className={styles.semanticSwatches}>
+                {SEMANTIC_SWATCHES[name].map((backgroundColor) => (
+                  <span key={backgroundColor} style={{ backgroundColor }} />
+                ))}
+              </div>
+              <h3>{name}</h3>
+              <p>{usage}</p>
+            </article>
+          ))}
+        </div>
+      </SpecSection>
+
+      <SpecSection meta="source han serif cn · subset loading" number="04" title="Typography">
+        <div className={styles.typeSpec}>
+          <Text variant="h1">Design System</Text>
+          <Text variant="h3">Serif is interface identity, not decoration.</Text>
+          <Text variant="body">
+            Website uses a font subset path so the design language stays faithful without loading
+            full original font files on first paint.
+          </Text>
+        </div>
+      </SpecSection>
+    </main>
+  );
+};
 
 type SpecSectionProps = {
   children: ReactNode;

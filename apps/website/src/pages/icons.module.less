@@ -4,8 +4,10 @@
 
   background: var(--website-canvas, var(--ui-color-canvas));
   color: var(--ui-color-text);
+  margin-inline: auto;
   min-height: 100vh;
   padding-top: var(--website-nav-offset, 64px);
+  width: var(--website-frame-width, 100%);
 }
 
 .hero {
@@ -110,12 +112,13 @@
   border-right: 1px solid var(--website-line);
   color: var(--ui-color-text);
   cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  justify-content: center;
+  display: grid;
+  gap: 12px;
+  grid-template-rows: 34px 34px;
+  justify-content: stretch;
   min-width: 0;
-  padding: 12px;
+  place-content: center;
+  padding: 16px 12px 14px;
   transition:
     background 140ms ease,
     color 140ms ease;
@@ -140,15 +143,23 @@
   display: flex;
   height: 28px;
   justify-content: center;
+  justify-self: center;
+  margin-top: 3px;
   width: 28px;
 }
 
 .iconName {
+  align-items: center;
   color: var(--ui-color-text-muted);
+  display: -webkit-box;
   font-family: var(--ui-font-mono);
   font-size: 10px;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   line-height: 1.35;
   max-width: 100%;
+  min-height: 27px;
+  overflow: hidden;
   overflow-wrap: anywhere;
   text-align: center;
 }

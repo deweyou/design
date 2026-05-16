@@ -146,15 +146,20 @@ Tabs
 ```
 
 `Tabs` can be controlled with `value` / `onValueChange` or uncontrolled with `defaultValue`.
-Use `hideContent` for route-backed tab bars where panels are owned by the router. `TabTrigger`
-supports `asChild` so route links can keep their native link behavior while inheriting the tab
-indicator, selected state, overflow behavior, and keyboard semantics.
+Use `hideContent` for route-backed tab bars where panels are owned by the router. In that pattern,
+keep `Tabs` controlled by the current route and handle visible-tab navigation through `TabTrigger`
+`onClick`. When `overflowMode="collapse"` is used, mirror the same action in `onSelect` so selecting
+an item from the overflow menu follows the same route or command.
 
 ```tsx
-<Tabs activationMode="manual" hideContent value={pathname}>
+<Tabs activationMode="manual" hideContent overflowMode="collapse" value={pathname}>
   <TabList>
-    <TabTrigger asChild value="/components">
-      <Link to="/components">Components</Link>
+    <TabTrigger
+      value="/components"
+      onClick={() => navigate('/components')}
+      onSelect={() => navigate('/components')}
+    >
+      Components
     </TabTrigger>
   </TabList>
 </Tabs>

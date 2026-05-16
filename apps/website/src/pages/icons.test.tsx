@@ -45,7 +45,7 @@ test('renders icon grid with all icons', () => {
 
 test('search filters the icon list', () => {
   renderPage();
-  const input = screen.getByPlaceholderText('搜索图标...');
+  const input = screen.getByPlaceholderText('Search icons...');
   const allCells = screen.getAllByRole('button');
 
   fireEvent.change(input, { target: { value: 'arrow' } });
@@ -59,9 +59,9 @@ test('search filters the icon list', () => {
 
 test('shows empty state when search has no results', () => {
   renderPage();
-  const input = screen.getByPlaceholderText('搜索图标...');
+  const input = screen.getByPlaceholderText('Search icons...');
   fireEvent.change(input, { target: { value: 'zzznomatch' } });
-  expect(screen.getByText(/没有匹配/)).toBeInTheDocument();
+  expect(screen.getByText(/No icons match/)).toBeInTheDocument();
 });
 
 test('copies an import snippet when clicking an icon', () => {
@@ -72,9 +72,27 @@ test('copies an import snippet when clicking an icon', () => {
   });
 
   renderPage();
-  fireEvent.click(screen.getByRole('button', { name: '复制 alert-circle 图标的 import 语句' }));
+  fireEvent.click(
+    screen.getByRole('button', { name: 'Copy the import statement for alert-circle' }),
+  );
 
   expect(writeText).toHaveBeenCalledWith(
     "import { AlertCircleIcon } from '@deweyou-design/react-icons'",
   );
+});
+
+test('falls back to document copy when clipboard api is unavailable', () => {
+  Reflect.deleteProperty(navigator, 'clipboard');
+  const execCommand = vi.fn().mockReturnValue(true);
+  Object.defineProperty(document, 'execCommand', {
+    configurable: true,
+    value: execCommand,
+  });
+
+  renderPage();
+  fireEvent.click(
+    screen.getByRole('button', { name: 'Copy the import statement for alert-circle' }),
+  );
+
+  expect(execCommand).toHaveBeenCalledWith('copy');
 });

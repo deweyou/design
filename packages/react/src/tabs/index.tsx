@@ -6,6 +6,7 @@ import {
   useRef,
   useState,
   type CSSProperties,
+  type MouseEventHandler,
   type ReactNode,
 } from 'react';
 import {
@@ -75,6 +76,7 @@ export type TabRegistration = {
   value: string;
   label: ReactNode;
   disabled?: boolean;
+  onSelect?: () => void;
   /** Sub-items for menu-tab triggers — carried through to the collapse overflow menu. */
   menuItems?: TabMenuItemDef[];
 };
@@ -124,11 +126,12 @@ export type TabListProps = {
 export type TabTriggerProps = {
   /** Unique identifier that matches a TabContent value. */
   value: string;
-  /** Render the trigger through its only child while preserving Tabs behavior. */
-  asChild?: boolean;
   disabled?: boolean;
   /** When provided, renders as a dropdown menu tab instead of a plain trigger. */
   menuItems?: TabMenuItemDef[];
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+  /** Callback fired when this trigger is selected from a collapsed overflow menu. */
+  onSelect?: () => void;
   className?: string;
   style?: CSSProperties;
   children: ReactNode;
@@ -461,9 +464,31 @@ export const TabList = ({ className, style, children }: TabListProps) => {
 
     const measure = () => {
       const isHoriz = orientation !== 'vertical';
-      const containerSize = isHoriz ? outer.clientWidth : outer.clientHeight;
+      const outerSize = isHoriz ? outer.clientWidth : outer.clientHeight;
+      const parent = outer.parentElement;
+      const parentSize = parent ? (isHoriz ? parent.clientWidth : parent.clientHeight) : 0;
+      const containerSize = Math.max(outerSize, parentSize);
       // Use role="tab" selector — Ark adds this to ArkTabs.Trigger; our menu buttons also use it.
       const triggerEls = Array.from(list.querySelectorAll<HTMLElement>(TAB_ROLE_SELECTOR));
+      const tabSizes = triggerEls.map((el) => {
+        const bcr = el.getBoundingClientRect();
+        const live = isHoriz ? bcr.width : bcr.height;
+
+        // Cache the natural size while the tab is visible; use the cache when it's hidden
+        // (display:none → getBCR returns 0, which would corrupt the measurement).
+        if (live > 0) el.dataset.naturalSize = String(live);
+
+        return live > 0 ? live : parseFloat(el.dataset.naturalSize ?? '0');
+      });
+      const totalTabsSize =
+        tabSizes.reduce((total, size) => total + size, 0) +
+        Math.max(0, tabSizes.length - 1) * TAB_GAP;
+
+      if (totalTabsSize <= containerSize) {
+        setOverflowFrom(Infinity);
+        return;
+      }
+
       // Use actual rendered More button size when available and non-zero (zero = jsdom / unmeasured).
       const moreRaw = moreRef.current
         ? isHoriz
@@ -474,24 +499,17 @@ export const TabList = ({ className, style, children }: TabListProps) => {
       let used = 0;
       let firstOverflow = triggerEls.length;
 
-      for (let i = 0; i < triggerEls.length; i++) {
-        const el = triggerEls[i];
-        const bcr = el.getBoundingClientRect();
-        const live = isHoriz ? bcr.width : bcr.height;
-        // Cache the natural size while the tab is visible; use the cache when it's hidden
-        // (display:none → getBCR returns 0, which would corrupt the measurement).
-        if (live > 0) el.dataset.naturalSize = String(live);
-        const sz = live > 0 ? live : parseFloat(el.dataset.naturalSize ?? '0');
-        used += sz + TAB_GAP;
+      for (let i = 0; i < tabSizes.length; i++) {
+        used += tabSizes[i] + TAB_GAP;
         // `used - TAB_GAP` = actual extent of tabs 0..i (CSS gap is between items, not trailing).
         // If that extent + the More button exceeds the container, tab i must overflow.
-        if (used - TAB_GAP + moreSize > containerSize && i < triggerEls.length - 1) {
+        if (used - TAB_GAP + moreSize > containerSize && i < tabSizes.length - 1) {
           firstOverflow = i;
           break;
         }
       }
 
-      setOverflowFrom(firstOverflow < triggerEls.length ? firstOverflow : Infinity);
+      setOverflowFrom(firstOverflow < tabSizes.length ? firstOverflow : Infinity);
     };
 
     const obs = new ResizeObserver(measure);
@@ -530,6 +548,11 @@ export const TabList = ({ className, style, children }: TabListProps) => {
     (t) => t.value === currentValue || t.menuItems?.some((item) => item.value === currentValue),
   );
   const menuPlacement = orientation === 'vertical' ? 'right-start' : 'bottom-start';
+  const selectOverflowTab = (value: string) => {
+    const tab = tabs.find((item) => item.value === value);
+    tab?.onSelect?.();
+    onTabMenuSelect(value);
+  };
 
   return (
     <div
@@ -562,18 +585,19 @@ export const TabList = ({ className, style, children }: TabListProps) => {
           data-orientation={orientation}
         >
           <Menu
-            onSelect={({ value: v }) => onTabMenuSelect(v)}
+            onSelect={({ value: v }) => selectOverflowTab(v)}
             placement={menuPlacement as 'bottom-start' | 'right-start'}
           >
             <MenuTrigger>
               <button
-                className={styles.moreButton}
+                className={classNames(styles.trigger, styles.moreButton)}
                 data-has-active-overflow={String(hasActiveOverflow)}
+                data-part="overflow-trigger"
                 type="button"
               >
-                More
+                <span className={styles.triggerLabel}>More</span>
                 <span aria-hidden className={styles.moreButtonArrow}>
-                  <ChevronDownIcon />
+                  <ChevronDownIcon size="xs" />
                 </span>
               </button>
             </MenuTrigger>
@@ -627,10 +651,11 @@ export const TabList = ({ className, style, children }: TabListProps) => {
 // ─── TabTrigger ───────────────────────────────────────────────────────────────
 
 export const TabTrigger = ({
-  asChild = false,
   value,
   disabled = false,
   menuItems,
+  onClick,
+  onSelect,
   className,
   style,
   children,
@@ -640,9 +665,9 @@ export const TabTrigger = ({
 
   // Register this tab so the collapse overflow menu can display its label and sub-items.
   useEffect(() => {
-    registerTab({ disabled, label: children, menuItems, value });
+    registerTab({ disabled, label: children, menuItems, onSelect, value });
     return () => unregisterTab(value);
-    // children and menuItems are intentionally excluded — they are set once on mount
+    // children, menuItems, and onSelect are intentionally excluded — registrations are set once on mount
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, disabled, registerTab, unregisterTab]);
 
@@ -666,6 +691,7 @@ export const TabTrigger = ({
             data-has-menu="true"
             data-selected={isMenuActive ? '' : undefined}
             disabled={disabled}
+            onClick={onClick}
             role="tab"
             style={style}
             type="button"
@@ -695,14 +721,14 @@ export const TabTrigger = ({
   // ── Standard tab ─────────────────────────────────────────────────────────────
   return (
     <ArkTabs.Trigger
-      asChild={asChild}
       className={classNames(styles.trigger, className)}
       data-value={value}
       disabled={disabled}
+      onClick={onClick}
       style={style}
       value={value}
     >
-      {asChild ? children : <span className={styles.triggerLabel}>{children}</span>}
+      <span className={styles.triggerLabel}>{children}</span>
     </ArkTabs.Trigger>
   );
 };

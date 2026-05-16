@@ -54,14 +54,42 @@ const ALL_ICONS: IconEntry[] = iconRegistry.map((entry) => {
   };
 });
 
+const copyTextWithFallback = async (text: string) => {
+  if (navigator.clipboard?.writeText) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return;
+    } catch {
+      // Fall through to the legacy copy path for embedded browsers or denied permissions.
+    }
+  }
+
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.setAttribute('readonly', '');
+  textarea.style.left = '-9999px';
+  textarea.style.position = 'fixed';
+  textarea.style.top = '0';
+  document.body.append(textarea);
+  textarea.select();
+
+  try {
+    const didCopy = document.execCommand?.('copy') ?? false;
+    if (!didCopy) {
+      throw new Error('Fallback copy command failed.');
+    }
+  } finally {
+    textarea.remove();
+  }
+};
+
 const copyImport = (exportName: PublicIconExportName) => {
-  navigator.clipboard
-    .writeText(`import { ${exportName} } from '@deweyou-design/react-icons'`)
+  copyTextWithFallback(`import { ${exportName} } from '@deweyou-design/react-icons'`)
     .then(() => {
-      toast.create({ title: '已复制', description: exportName });
+      toast.create({ title: 'Copied', description: exportName });
     })
     .catch(() => {
-      toast.create({ title: '复制失败' });
+      toast.create({ title: 'Copy failed' });
     });
 };
 
@@ -98,7 +126,7 @@ export const IconsPage = () => {
           <Input
             id="icons-search"
             label="Search icons"
-            placeholder="搜索图标..."
+            placeholder="Search icons..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
@@ -112,13 +140,13 @@ export const IconsPage = () => {
       <div className={styles.grid} aria-label="Icon list">
         {filtered.length === 0 ? (
           <div className={styles.empty}>
-            <Text variant="caption">没有匹配「{query}」的图标</Text>
+            <Text variant="caption">No icons match "{query}"</Text>
           </div>
         ) : (
           filtered.map(({ exportName, name, Icon }) => (
             <button
               key={name}
-              aria-label={`复制 ${name} 图标的 import 语句`}
+              aria-label={`Copy the import statement for ${name}`}
               className={styles.iconCell}
               type="button"
               onClick={() => copyImport(exportName)}

@@ -12,8 +12,9 @@ body {
 
 html {
   --website-nav-offset: 64px;
-  --website-canvas: #fbfaf7;
-  --website-surface: #fffefd;
+  --website-canvas: #ffffff;
+  --website-frame-width: 100%;
+  --website-surface: #ffffff;
 
   scroll-behavior: smooth;
   scroll-padding-top: 64px;
@@ -38,6 +39,18 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+@media (min-width: 1720px) {
+  html {
+    --website-frame-width: min(calc(100% - 96px), 1680px);
+  }
+}
+
+@media (min-width: 1880px) {
+  html {
+    --website-frame-width: min(calc(100% - 160px), 1680px);
+  }
 }
 
 @media (max-width: 760px) {

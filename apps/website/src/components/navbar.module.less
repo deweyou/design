@@ -4,14 +4,15 @@
   align-items: center;
   backdrop-filter: blur(18px);
   background: color-mix(in srgb, var(--website-canvas, var(--ui-color-canvas)) 94%, transparent);
-  border-bottom: 1px solid var(--ui-color-text);
   display: grid;
   gap: 18px;
   grid-template-columns: auto minmax(0, 1fr) auto;
-  inset: 0 0 auto;
+  inset: 0 auto auto 50%;
   min-height: 64px;
   padding: 0 24px;
   position: fixed;
+  transform: translateX(-50%);
+  width: var(--website-frame-width, 100%);
   z-index: 20;
 }
 
@@ -33,7 +34,6 @@
 .links {
   align-items: center;
   display: flex;
-  gap: 12px;
   justify-content: center;
   min-width: 0;
   overflow-x: auto;
@@ -45,14 +45,26 @@
 }
 
 .routeTabs {
-  flex: none;
+  flex: 1 1 auto;
+  max-width: 100%;
   min-width: 0;
+  width: 100%;
 }
 
 .routeTabList {
+  justify-content: center;
+
   :global([role='tablist']) {
     border-bottom: 0;
     gap: 4px;
+  }
+
+  :global([data-part='overflow-trigger']) {
+    color: var(--ui-color-text-muted);
+    font-family: var(--ui-font-display);
+    font-size: 13px;
+    height: 32px;
+    padding: 0 10px;
   }
 }
 
@@ -70,21 +82,13 @@
   }
 }
 
-.navLinkButton {
-  --button-font-size: 13px;
-  --button-link-text-color: var(--ui-color-text-muted);
+.routeTabContent {
+  align-items: center;
+  display: inline-flex;
+  gap: 5px;
 
-  color: var(--ui-color-text-muted);
-  flex-shrink: 0;
-  font-family: var(--ui-font-display);
-  font-weight: 400;
-  height: 32px;
-  padding-inline: 0;
-
-  &:hover {
-    --button-link-text-color: var(--ui-color-text);
-
-    color: var(--ui-color-text);
+  svg {
+    flex: none;
   }
 }
 
@@ -123,13 +127,13 @@
     padding: 0 14px 10px;
   }
 
+  .routeTabList {
+    justify-content: flex-start;
+  }
+
   .routeTab {
     font-size: 12px;
     height: 28px;
     padding: 0 8px;
-  }
-
-  .navLinkButton {
-    --button-font-size: 12px;
   }
 }

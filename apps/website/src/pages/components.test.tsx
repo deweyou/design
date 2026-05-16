@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 
-import { cleanup, render, screen, within } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
 import { afterAll, afterEach, beforeAll, test } from 'vite-plus/test';
 
 import { COMPONENT_CATEGORIES, COMPONENT_CATALOG } from '../data/component-catalog';
@@ -69,4 +69,28 @@ test('renders a manual-style component catalog with every public component', () 
     expect(storyLink).toHaveAttribute('target', '_blank');
     expect(storyLink).toHaveAttribute('rel', 'noopener noreferrer');
   }
+});
+
+test('search filters component cards and summary count', () => {
+  render(<ComponentsPage />);
+
+  fireEvent.change(screen.getByPlaceholderText('Search components...'), {
+    target: { value: 'button' },
+  });
+
+  expect(screen.getByText(`shown of ${COMPONENT_CATALOG.length} components`)).toBeInTheDocument();
+  expect(screen.getByRole('article', { name: 'Button' })).toBeInTheDocument();
+  expect(screen.getByRole('article', { name: 'IconButton' })).toBeInTheDocument();
+  expect(screen.queryByRole('article', { name: 'Card' })).not.toBeInTheDocument();
+});
+
+test('shows empty state when component search has no results', () => {
+  render(<ComponentsPage />);
+
+  fireEvent.change(screen.getByPlaceholderText('Search components...'), {
+    target: { value: 'zzznomatch' },
+  });
+
+  expect(screen.getByText(/No components match/)).toBeInTheDocument();
+  expect(screen.queryByRole('article')).not.toBeInTheDocument();
 });

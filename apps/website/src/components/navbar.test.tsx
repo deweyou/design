@@ -1,8 +1,8 @@
 // @vitest-environment jsdom
 
-import { cleanup, render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
-import { afterAll, afterEach, beforeAll, test } from 'vite-plus/test';
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { MemoryRouter, useLocation } from 'react-router-dom';
+import { afterAll, afterEach, beforeAll, test, vi } from 'vite-plus/test';
 
 import { expect } from '../test-setup';
 import { Navbar } from './navbar';
@@ -23,6 +23,7 @@ beforeAll(() => {
 });
 
 afterEach(() => {
+  vi.restoreAllMocks();
   cleanup();
 });
 
@@ -41,6 +42,22 @@ const renderNavbar = (initialPath = '/') =>
     </MemoryRouter>,
   );
 
+const getTabByValue = (container: HTMLElement, value: string) => {
+  const tab = container.querySelector<HTMLElement>(`[role="tab"][data-value="${value}"]`);
+
+  if (!tab) {
+    throw new Error(`Expected tab with value "${value}" to exist.`);
+  }
+
+  return tab;
+};
+
+const LocationProbe = () => {
+  const location = useLocation();
+
+  return <output aria-label="current path">{location.pathname}</output>;
+};
+
 test('renders the compact top navigation without a Theme destination', () => {
   renderNavbar();
 
@@ -53,20 +70,58 @@ test('renders the compact top navigation without a Theme destination', () => {
   expect(screen.queryByText('Theme')).not.toBeInTheDocument();
   expect(screen.queryByText('v1.0')).not.toBeInTheDocument();
   expect(screen.queryByText('light')).not.toBeInTheDocument();
-  expect(screen.getByRole('button', { name: '切换深色模式' })).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: 'Switch to dark mode' })).toBeInTheDocument();
+  expect(screen.getAllByRole('tab', { hidden: true })).toHaveLength(5);
+  expect(screen.getByRole('button', { name: 'More' })).toBeInTheDocument();
 });
 
 test('marks Overview active on the home route', () => {
-  renderNavbar('/');
-  expect(screen.getByRole('tab', { name: 'Overview' })).toHaveAttribute('aria-selected', 'true');
+  const { container } = renderNavbar('/');
+  expect(getTabByValue(container, '/')).toHaveAttribute('aria-selected', 'true');
 });
 
 test('marks Components active on /components', () => {
-  renderNavbar('/components');
-  expect(screen.getByRole('tab', { name: 'Components' })).toHaveAttribute('aria-selected', 'true');
+  const { container } = renderNavbar('/components');
+  expect(getTabByValue(container, '/components')).toHaveAttribute('aria-selected', 'true');
 });
 
 test('marks Icons active on /icons', () => {
-  renderNavbar('/icons');
-  expect(screen.getByRole('tab', { name: 'Icons' })).toHaveAttribute('aria-selected', 'true');
+  const { container } = renderNavbar('/icons');
+  expect(getTabByValue(container, '/icons')).toHaveAttribute('aria-selected', 'true');
+});
+
+test('route tabs preserve React Router client navigation', async () => {
+  const { container } = render(
+    <MemoryRouter initialEntries={['/']}>
+      <Navbar mode="light" onToggleMode={() => undefined} />
+      <LocationProbe />
+    </MemoryRouter>,
+  );
+
+  fireEvent.click(getTabByValue(container, '/components'));
+
+  return waitFor(() => {
+    expect(screen.getByLabelText('current path')).toHaveTextContent('/components');
+  });
+});
+
+test('external nav items are tabs and open in new tabs', () => {
+  const open = vi.spyOn(window, 'open').mockImplementation(() => null);
+  const { container } = renderNavbar();
+
+  fireEvent.click(getTabByValue(container, 'storybook'));
+  fireEvent.click(getTabByValue(container, 'github'));
+
+  expect(open).toHaveBeenNthCalledWith(
+    1,
+    'https://design-storybook-deweyous-projects.vercel.app',
+    '_blank',
+    'noopener,noreferrer',
+  );
+  expect(open).toHaveBeenNthCalledWith(
+    2,
+    'https://github.com/deweyou/design',
+    '_blank',
+    'noopener,noreferrer',
+  );
 });

@@ -49,7 +49,7 @@ test('renders Overview as a design specification cover', () => {
   expect(screen.queryByText('Shape & Interaction')).not.toBeInTheDocument();
   expect(screen.queryByText('Component Evidence')).not.toBeInTheDocument();
   expect(screen.getByText(/font subset/)).toBeInTheDocument();
-  expect(screen.getByText(/semantic colors.*neutral.*primary.*danger/)).toBeInTheDocument();
+  expect(screen.getByText(/semantic color model.*neutral.*primary.*danger/)).toBeInTheDocument();
   expect(screen.getByRole('link', { name: 'Components' })).toBeInTheDocument();
   expect(screen.getAllByRole('link', { name: 'Storybook' }).length).toBeGreaterThan(0);
   expect(screen.getByRole('link', { name: 'GitHub' })).toBeInTheDocument();
