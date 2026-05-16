@@ -44,52 +44,44 @@
   }
 }
 
-.routeTabs {
+.routeNav {
   flex: 1 1 auto;
+  justify-content: center;
   max-width: 100%;
   min-width: 0;
   width: 100%;
 }
 
-.routeTabList {
+.routeNavList {
+  gap: 4px;
   justify-content: center;
 
-  :global([role='tablist']) {
-    border-bottom: 0;
-    gap: 4px;
-  }
-
-  :global([data-part='overflow-trigger']) {
+  :global(a) {
     color: var(--ui-color-text-muted);
+    flex-shrink: 0;
     font-family: var(--ui-font-display);
     font-size: 13px;
-    height: 32px;
+    min-height: 32px;
     padding: 0 10px;
+    text-decoration: none;
+
+    &:hover,
+    &[data-active] {
+      color: var(--ui-color-text);
+    }
   }
 }
 
-.routeTab {
-  color: var(--ui-color-text-muted);
-  flex-shrink: 0;
-  font-family: var(--ui-font-display);
-  font-size: 13px;
-  height: 32px;
-  padding: 0 10px;
-  text-decoration: none;
-
-  &[data-selected] {
-    color: var(--ui-color-text);
-  }
-}
-
-.routeTabContent {
-  align-items: center;
-  display: inline-flex;
-  gap: 5px;
-
+.routeNavList {
   svg {
     flex: none;
   }
+}
+
+.routeNavLabel {
+  align-items: center;
+  display: inline-flex;
+  gap: 5px;
 }
 
 .actions {
@@ -99,7 +91,7 @@
   justify-content: flex-end;
 }
 
-.themeButton {
+.actionButton {
   --button-ghost-text-color: var(--ui-color-text-muted);
 
   &:hover {
@@ -109,10 +101,10 @@
 
 @media (max-width: 760px) {
   .navbar {
-    gap: 10px;
-    grid-template-columns: 1fr auto;
-    min-height: 58px;
-    padding: 0 14px;
+    column-gap: 10px;
+    grid-template-columns: 1fr auto auto;
+    min-height: auto;
+    padding: 10px 14px;
   }
 
   .mark {
@@ -120,20 +112,12 @@
   }
 
   .links {
-    grid-column: 1 / -1;
-    grid-row: 2;
-    justify-content: flex-start;
-    margin-inline: -14px;
-    padding: 0 14px 10px;
+    grid-column: 2;
+    justify-content: flex-end;
+    overflow: visible;
   }
 
-  .routeTabList {
-    justify-content: flex-start;
-  }
-
-  .routeTab {
-    font-size: 12px;
-    height: 28px;
-    padding: 0 8px;
+  .actions {
+    grid-column: 3;
   }
 }

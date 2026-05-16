@@ -39,11 +39,12 @@ type NavResponsiveProps = {
   value?: string;
   'aria-label'?: string;
   collapseLabel?: string;
+  collapseTrigger?: ReactNode;
   breakpoint?: 'sm' | 'md' | 'lg';
   size?: NavSize;
   className?: string;
   listClassName?: string;
-  menuClassName?: string;
+  overlayClassName?: string;
   onSelect?: (details: NavResponsiveSelectDetails) => void;
 };
 ```
@@ -52,23 +53,26 @@ Default behavior:
 
 - `value` marks the active item when `active` is not provided per item.
 - Desktop renders the items through `Nav.Root` and `Nav.Link`.
-- Mobile renders an `IconButton` trigger and a `Menu` list with the same items.
+- Mobile renders an `IconButton` trigger and a fullscreen overlay with the same items.
 - `collapseLabel` defaults to a neutral accessible label such as `Open navigation`.
+- `collapseTrigger` lets consumers replace the whole collapsed trigger control. When omitted, the component renders the default `IconButton`.
 - `external` applies the usual external-link defaults when the consumer does not provide `target` or `rel`.
 
 ## Behavior
 
 `Nav.Responsive` should remain navigation-oriented. It does not own routed state, panels, or page content. Consumers pass `href` for normal navigation and may pass `onSelect` for custom behavior.
 
-On desktop, items are visible inline and preserve the current `Nav` appearance. On mobile, only the trigger is visible; selecting an item from the menu invokes item-level `onSelect` first, then root `onSelect`, and normal anchor behavior remains available for `href` items.
+On desktop, items are visible inline and preserve the current `Nav` appearance. On mobile, only the trigger is visible; selecting an item from the overlay invokes item-level `onSelect` first, then root `onSelect`, and normal anchor behavior remains available for `href` items.
 
-Disabled items are visible but not interactive. Active items receive `aria-current="page"` for link rendering and a selected indicator in the mobile menu.
+Disabled items are visible but not interactive. Active items receive `aria-current="page"` in both desktop and overlay link rendering.
 
 ## Accessibility
 
 The desktop branch is still a `nav` landmark with a consumer-provided `aria-label`.
 
-The mobile branch uses the existing `Menu` component for focus management, keyboard navigation, dismissal, and positioning. The trigger must be an `IconButton` with an accessible label. Menu items preserve active state visually and semantically where the underlying primitive supports it.
+The mobile branch uses the existing `NavOverlay` component for focus management, dismissal, and fullscreen presentation. The default trigger is an `IconButton` with an accessible label. Overlay links preserve active state visually and semantically.
+
+When `collapseTrigger` is provided, the consumer owns the trigger control and its accessible name. `Nav.Responsive` still wires that control to the overlay through `NavOverlay.Trigger`.
 
 ## Website Migration
 
@@ -90,7 +94,7 @@ Package-level tests:
 - `Nav.Responsive` renders all items inline by default.
 - `value` and per-item `active` produce active state.
 - external items receive safe link defaults.
-- mobile branch exposes an icon button trigger and menu items.
+- mobile branch exposes an icon button trigger and overlay links.
 - disabled items do not call selection callbacks.
 
 Website tests:
@@ -110,7 +114,7 @@ Verification:
 - Changing `Tabs` behavior or naming.
 - Replacing `NavOverlay`.
 - Redesigning the full documentation navigation system.
-- Moving GitHub or theme actions into the responsive menu.
+- Moving GitHub or theme actions into the responsive overlay.
 
 ## Self Review
 

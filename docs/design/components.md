@@ -197,7 +197,8 @@ an item from the overflow menu follows the same route or command.
 ```text
 Nav
 ├── Nav.Root
-└── Nav.Link
+├── Nav.Link
+└── Nav.Responsive
 
 NavOverlay
 ├── NavOverlay.Root
@@ -207,6 +208,7 @@ NavOverlay
 ```
 
 Use `Nav` for visible navigation landmarks. Use `NavOverlay` for responsive fullscreen navigation.
+Use `Nav.Responsive` when the same navigation destinations should render inline on wide screens and collapse into a fullscreen overlay on small screens. Keep route or section destinations inside `Nav.Responsive`; keep global actions such as theme toggles, GitHub links, and account controls outside the nav as adjacent `IconButton` actions. Do not use `Tabs` for this pattern unless the component also owns tab panels and tab activation semantics.
 
 ### Virtualized Content
 

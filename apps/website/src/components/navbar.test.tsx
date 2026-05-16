@@ -42,16 +42,6 @@ const renderNavbar = (initialPath = '/') =>
     </MemoryRouter>,
   );
 
-const getTabByValue = (container: HTMLElement, value: string) => {
-  const tab = container.querySelector<HTMLElement>(`[role="tab"][data-value="${value}"]`);
-
-  if (!tab) {
-    throw new Error(`Expected tab with value "${value}" to exist.`);
-  }
-
-  return tab;
-};
-
 const LocationProbe = () => {
   const location = useLocation();
 
@@ -66,62 +56,59 @@ test('renders the compact top navigation without a Theme destination', () => {
   expect(screen.getByText('Components')).toBeInTheDocument();
   expect(screen.getByText('Icons')).toBeInTheDocument();
   expect(screen.getByText('Storybook')).toBeInTheDocument();
-  expect(screen.getByText('GitHub')).toBeInTheDocument();
+  expect(screen.queryByRole('tab', { name: 'GitHub', hidden: true })).not.toBeInTheDocument();
   expect(screen.queryByText('Theme')).not.toBeInTheDocument();
   expect(screen.queryByText('v1.0')).not.toBeInTheDocument();
   expect(screen.queryByText('light')).not.toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'GitHub' })).toBeInTheDocument();
   expect(screen.getByRole('button', { name: 'Switch to dark mode' })).toBeInTheDocument();
-  expect(screen.getAllByRole('tab', { hidden: true })).toHaveLength(5);
-  expect(screen.getByRole('button', { name: 'More' })).toBeInTheDocument();
+  expect(screen.queryAllByRole('tab', { hidden: true })).toHaveLength(0);
+  expect(screen.getByRole('button', { name: 'Open navigation' })).toHaveClass(/actionButton/);
 });
 
 test('marks Overview active on the home route', () => {
-  const { container } = renderNavbar('/');
-  expect(getTabByValue(container, '/')).toHaveAttribute('aria-selected', 'true');
+  renderNavbar('/');
+  expect(screen.getByRole('link', { name: 'Overview' })).toHaveAttribute('aria-current', 'page');
 });
 
 test('marks Components active on /components', () => {
-  const { container } = renderNavbar('/components');
-  expect(getTabByValue(container, '/components')).toHaveAttribute('aria-selected', 'true');
+  renderNavbar('/components');
+  expect(screen.getByRole('link', { name: 'Components' })).toHaveAttribute('aria-current', 'page');
 });
 
 test('marks Icons active on /icons', () => {
-  const { container } = renderNavbar('/icons');
-  expect(getTabByValue(container, '/icons')).toHaveAttribute('aria-selected', 'true');
+  renderNavbar('/icons');
+  expect(screen.getByRole('link', { name: 'Icons' })).toHaveAttribute('aria-current', 'page');
 });
 
-test('route tabs preserve React Router client navigation', async () => {
-  const { container } = render(
+test('route links preserve React Router client navigation', async () => {
+  render(
     <MemoryRouter initialEntries={['/']}>
       <Navbar mode="light" onToggleMode={() => undefined} />
       <LocationProbe />
     </MemoryRouter>,
   );
 
-  fireEvent.click(getTabByValue(container, '/components'));
+  fireEvent.click(screen.getByRole('link', { name: 'Components' }));
 
   return waitFor(() => {
     expect(screen.getByLabelText('current path')).toHaveTextContent('/components');
   });
 });
 
-test('external nav items are tabs and open in new tabs', () => {
-  const open = vi.spyOn(window, 'open').mockImplementation(() => null);
-  const { container } = renderNavbar();
+test('storybook remains a nav link and GitHub moves to the action icon link', () => {
+  renderNavbar();
 
-  fireEvent.click(getTabByValue(container, 'storybook'));
-  fireEvent.click(getTabByValue(container, 'github'));
+  const storybookLink = screen.getByRole('link', { name: 'Storybook' });
+  const githubLink = screen.getByRole('link', { name: 'GitHub' });
 
-  expect(open).toHaveBeenNthCalledWith(
-    1,
+  expect(storybookLink).toHaveAttribute(
+    'href',
     'https://design-storybook-deweyous-projects.vercel.app',
-    '_blank',
-    'noopener,noreferrer',
   );
-  expect(open).toHaveBeenNthCalledWith(
-    2,
-    'https://github.com/deweyou/design',
-    '_blank',
-    'noopener,noreferrer',
-  );
+  expect(storybookLink).toHaveAttribute('target', '_blank');
+  expect(storybookLink).toHaveAttribute('rel', 'noopener noreferrer');
+  expect(githubLink).toHaveAttribute('href', 'https://github.com/deweyou/design');
+  expect(githubLink).toHaveAttribute('target', '_blank');
+  expect(githubLink).toHaveAttribute('rel', 'noopener noreferrer');
 });

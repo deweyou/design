@@ -1,13 +1,18 @@
 import {
   createContext,
+  useState,
   useContext,
   type AnchorHTMLAttributes,
   type CSSProperties,
   type HTMLAttributes,
+  type MouseEvent,
   type ReactNode,
 } from 'react';
+import { MenuIcon } from '@deweyou-design/react-icons';
 import classNames from 'classnames';
 
+import { IconButton } from '../button/index.tsx';
+import { NavOverlay } from '../nav-overlay/index.tsx';
 import styles from './index.module.less';
 
 // ── Context ───────────────────────────────────────────────────────────────
@@ -105,9 +110,199 @@ const NavLink = ({ active, icon, children, className, style, ...props }: NavLink
   );
 };
 
+// ── Nav.Responsive ────────────────────────────────────────────────────────
+
+export type NavResponsiveSelectDetails = {
+  value: string;
+  item: NavResponsiveItem;
+  event?: MouseEvent<HTMLElement>;
+};
+
+export type NavResponsiveItem = {
+  value: string;
+  label: ReactNode;
+  href?: string;
+  icon?: ReactNode;
+  active?: boolean;
+  disabled?: boolean;
+  external?: boolean;
+  target?: AnchorHTMLAttributes<HTMLAnchorElement>['target'];
+  rel?: AnchorHTMLAttributes<HTMLAnchorElement>['rel'];
+  onSelect?: (details: NavResponsiveSelectDetails) => void;
+};
+
+export type NavResponsiveBreakpoint = 'sm' | 'md' | 'lg';
+
+export type NavResponsiveProps = {
+  items: readonly NavResponsiveItem[];
+  value?: string;
+  'aria-label'?: string;
+  collapseLabel?: string;
+  collapseTrigger?: ReactNode;
+  breakpoint?: NavResponsiveBreakpoint;
+  size?: NavSize;
+  className?: string;
+  listClassName?: string;
+  overlayClassName?: string;
+  onSelect?: (details: NavResponsiveSelectDetails) => void;
+};
+
+const breakpointClassMap: Record<NavResponsiveBreakpoint, string> = {
+  sm: styles.responsiveBreakpointSm,
+  md: styles.responsiveBreakpointMd,
+  lg: styles.responsiveBreakpointLg,
+};
+
+const isItemActive = (item: NavResponsiveItem, value: string | undefined) =>
+  item.active ?? item.value === value;
+
+const getTarget = (item: NavResponsiveItem) =>
+  item.target ?? (item.external ? '_blank' : undefined);
+
+const getRel = (item: NavResponsiveItem) =>
+  item.rel ?? (item.external ? 'noopener noreferrer' : undefined);
+
+const createSelectDetails = (
+  item: NavResponsiveItem,
+  event?: MouseEvent<HTMLElement>,
+): NavResponsiveSelectDetails => ({
+  event,
+  item,
+  value: item.value,
+});
+
+const shouldIgnoreLinkClick = (event: MouseEvent<HTMLElement>) =>
+  event.defaultPrevented ||
+  event.button > 0 ||
+  event.metaKey ||
+  event.altKey ||
+  event.ctrlKey ||
+  event.shiftKey;
+
+const NavResponsive = ({
+  items,
+  value,
+  'aria-label': ariaLabel = 'navigation',
+  collapseLabel = 'Open navigation',
+  collapseTrigger,
+  breakpoint = 'sm',
+  size = 'md',
+  className,
+  listClassName,
+  overlayClassName,
+  onSelect,
+}: NavResponsiveProps) => {
+  const [overlayOpen, setOverlayOpen] = useState(false);
+
+  const handleSelect = (item: NavResponsiveItem, event?: MouseEvent<HTMLElement>) => {
+    const details = createSelectDetails(item, event);
+
+    item.onSelect?.(details);
+    onSelect?.(details);
+  };
+
+  const handleLinkClick = (item: NavResponsiveItem) => (event: MouseEvent<HTMLAnchorElement>) => {
+    if (item.disabled) {
+      event.preventDefault();
+      return;
+    }
+
+    if (shouldIgnoreLinkClick(event)) {
+      return;
+    }
+
+    handleSelect(item, event);
+  };
+
+  const handleOverlayLinkClick =
+    (item: NavResponsiveItem) => (event: MouseEvent<HTMLAnchorElement>) => {
+      const shouldCloseOverlay = !item.disabled && !shouldIgnoreLinkClick(event);
+
+      handleLinkClick(item)(event);
+
+      if (shouldCloseOverlay) {
+        setOverlayOpen(false);
+      }
+    };
+
+  return (
+    <div className={classNames(styles.responsive, breakpointClassMap[breakpoint], className)}>
+      <NavRoot
+        aria-label={ariaLabel}
+        className={classNames(styles.responsiveList, listClassName)}
+        size={size}
+      >
+        {items.map((item) => (
+          <NavLink
+            key={item.value}
+            active={isItemActive(item, value)}
+            aria-disabled={item.disabled || undefined}
+            className={item.disabled ? styles.linkDisabled : undefined}
+            href={item.disabled ? undefined : item.href}
+            icon={item.icon}
+            rel={getRel(item)}
+            tabIndex={item.disabled ? -1 : undefined}
+            target={getTarget(item)}
+            onClick={handleLinkClick(item)}
+          >
+            {item.label}
+          </NavLink>
+        ))}
+      </NavRoot>
+
+      <div className={styles.responsiveOverlay}>
+        <NavOverlay.Root open={overlayOpen} onOpenChange={setOverlayOpen}>
+          <NavOverlay.Trigger>
+            {collapseTrigger ?? (
+              <IconButton
+                aria-label={collapseLabel}
+                icon={<MenuIcon />}
+                size="sm"
+                variant="ghost"
+              />
+            )}
+          </NavOverlay.Trigger>
+          <NavOverlay.Content
+            className={classNames(styles.responsiveOverlayContent, overlayClassName)}
+          >
+            <NavOverlay.CloseButton className={styles.responsiveOverlayCloseButton} />
+            <NavRoot
+              aria-label={ariaLabel}
+              className={styles.responsiveOverlayList}
+              orientation="vertical"
+              size={size}
+            >
+              {items.map((item) => (
+                <NavLink
+                  key={item.value}
+                  active={isItemActive(item, value)}
+                  aria-disabled={item.disabled || undefined}
+                  className={classNames(
+                    styles.responsiveOverlayLink,
+                    item.disabled && styles.linkDisabled,
+                  )}
+                  href={item.disabled ? undefined : item.href}
+                  icon={item.icon}
+                  rel={getRel(item)}
+                  tabIndex={item.disabled ? -1 : undefined}
+                  target={getTarget(item)}
+                  onClick={handleOverlayLinkClick(item)}
+                >
+                  {item.label}
+                </NavLink>
+              ))}
+            </NavRoot>
+          </NavOverlay.Content>
+        </NavOverlay.Root>
+      </div>
+    </div>
+  );
+};
+
 // ── Compound export ───────────────────────────────────────────────────────
 
 export const Nav = {
   Root: NavRoot,
   Link: NavLink,
+  Responsive: NavResponsive,
 };

@@ -32,7 +32,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-#app {
+#root {
   min-height: 100vh;
 }
 
@@ -55,8 +55,8 @@ a {
 
 @media (max-width: 760px) {
   html {
-    --website-nav-offset: 116px;
+    --website-nav-offset: 64px;
 
-    scroll-padding-top: 116px;
+    scroll-padding-top: 64px;
   }
 }

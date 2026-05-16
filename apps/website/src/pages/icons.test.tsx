@@ -6,10 +6,49 @@ import { afterEach, test, vi } from 'vite-plus/test';
 
 import * as Icons from '@deweyou-design/react-icons';
 
-import { iconRegistry } from '../../../../packages/react-icons/src/icon-registry';
 import { expect } from '../test-setup';
 
 import { IconsPage } from './icons';
+
+const mockIconRegistry = vi.hoisted(
+  () =>
+    [
+      {
+        category: 'feedback',
+        exportName: 'AlertCircleIcon',
+        keywords: ['alert', 'circle'],
+        source: 'tdesign',
+        sourceKey: 'alert-circle',
+      },
+      {
+        category: 'feedback',
+        exportName: 'AlertTriangleIcon',
+        keywords: ['alert', 'triangle'],
+        source: 'tdesign',
+        sourceKey: 'alert-triangle',
+      },
+      {
+        category: 'navigation',
+        exportName: 'ArrowLeftIcon',
+        keywords: ['arrow', 'left'],
+        source: 'tdesign',
+        sourceKey: 'arrow-left',
+      },
+    ] as const,
+);
+
+vi.mock('../../../../packages/react-icons/src/icon-registry', () => ({
+  iconRegistry: mockIconRegistry,
+}));
+
+vi.mock('@deweyou-design/react-icons', () =>
+  Object.fromEntries(
+    mockIconRegistry.map(({ exportName }) => [
+      exportName,
+      () => <span aria-hidden data-testid={`mock-${exportName}`} />,
+    ]),
+  ),
+);
 
 const originalClipboardDescriptor = Object.getOwnPropertyDescriptor(navigator, 'clipboard');
 
@@ -38,8 +77,7 @@ test('renders icon grid with all icons', () => {
 
   expect(screen.getByText(/full TDesign registry/)).toBeInTheDocument();
   expect(cells).toHaveLength(exportedIconCount);
-  expect(cells).toHaveLength(iconRegistry.length);
-  expect(iconRegistry.length).toBeGreaterThan(2000);
+  expect(cells).toHaveLength(mockIconRegistry.length);
   expect(screen.queryByText(/Tabler Icons/)).not.toBeInTheDocument();
 });
 

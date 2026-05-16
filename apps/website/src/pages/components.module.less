@@ -195,10 +195,51 @@
 }
 
 .storyLink {
+  align-items: center;
   color: var(--ui-color-brand-text);
+  display: inline-flex;
   font-family: var(--ui-font-display);
   font-size: 13px;
+  gap: 6px;
   text-decoration: none;
+}
+
+.previewDialog {
+  display: grid;
+  gap: 18px;
+  max-width: min(420px, calc(100vw - 32px));
+  padding: 28px;
+}
+
+.previewDialogBody {
+  background: color-mix(in srgb, var(--ui-color-text) 4%, transparent);
+  border: 1px solid var(--website-line);
+  display: grid;
+  gap: 6px;
+  padding: 14px;
+
+  span {
+    color: var(--ui-color-text-muted);
+    font-family: var(--ui-font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  strong {
+    color: var(--ui-color-text);
+    font-family: var(--ui-font-display);
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+}
+
+.previewDialogActions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
 }
 
 .empty {

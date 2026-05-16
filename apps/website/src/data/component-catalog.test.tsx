@@ -49,6 +49,13 @@ test('catalog entries have categories, import snippets, dimensions, previews, an
     expect(item.dimensions.length).toBeGreaterThan(0);
     expect(item.storyId).toMatch(/^components-/);
     expect(item.preview).toBeDefined();
-    expect(getStorybookUrl(item.storyId)).toContain(`path=/story/${item.storyId}`);
+    expect(getStorybookUrl(item.storyId)).toContain('path=/docs/components-');
+    expect(getStorybookUrl(item.storyId)).toContain('--overview');
   }
+});
+
+test('storybook links target the component docs overview on the deployed storybook', () => {
+  expect(getStorybookUrl('components-breadcrumb--default')).toBe(
+    'https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-breadcrumb--overview',
+  );
 });
