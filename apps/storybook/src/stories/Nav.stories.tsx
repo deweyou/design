@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 
 import { IconButton, Nav } from '@deweyou-design/react';
 import { MenuApplicationIcon } from '@deweyou-design/react-icons';
@@ -55,6 +56,7 @@ export const Responsive: Story = {
 
 export const ResponsiveLongList: Story = {
   parameters: {
+    fullViewport: true,
     viewport: {
       defaultViewport: 'mobile1',
     },
@@ -74,4 +76,13 @@ export const ResponsiveLongList: Story = {
       value="section-1"
     />
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Open navigation' }));
+
+    const dialog = await waitFor(() => within(document.body).getByRole('dialog'));
+    await expect(within(dialog).getByRole('link', { name: 'Section 32' })).toBeInTheDocument();
+    await expect(within(dialog).getByRole('button', { name: 'Close navigation' })).toBeVisible();
+  },
 };

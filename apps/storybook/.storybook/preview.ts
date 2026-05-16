@@ -27,6 +27,7 @@ const preview: Preview = {
   decorators: [
     (Story, context) => {
       const themeMode = context.globals.themeMode === 'dark' ? 'dark' : 'light';
+      const fullViewport = context.parameters.fullViewport === true;
 
       return createElement(
         'div',
@@ -35,8 +36,8 @@ const preview: Preview = {
           style: {
             background: storybookThemeBackgrounds[themeMode],
             colorScheme: themeMode,
-            minHeight: 'auto',
-            padding: '24px',
+            minHeight: fullViewport ? '100vh' : 'auto',
+            padding: fullViewport ? 0 : '24px',
             width: '100%',
           },
         },
@@ -45,7 +46,7 @@ const preview: Preview = {
     },
   ],
   parameters: {
-    layout: 'centered',
+    layout: 'fullscreen',
     controls: {
       expanded: true,
       sort: 'requiredFirst',
