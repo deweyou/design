@@ -11,6 +11,9 @@ const componentsEntry = fileURLToPath(
 );
 const websiteSourceDir = fileURLToPath(new URL('./src', import.meta.url));
 const componentsSourceDir = fileURLToPath(new URL('../../packages/react/src', import.meta.url));
+const hooksEntry = fileURLToPath(
+  new URL('../../packages/react-hooks/src/index.ts', import.meta.url),
+);
 const iconsEntry = fileURLToPath(
   new URL('../../packages/react-icons/src/index.ts', import.meta.url),
 );
@@ -34,9 +37,9 @@ const resolvedWebsiteFontsVirtualId = `\0${websiteFontsVirtualId}`;
 const websiteFontsDevPrefix = '/@deweyou-website-fonts';
 const websiteFontFamily = 'Source Han Serif CN Web';
 const websiteFontFallbackCorpus = `
-Deweyou Design 中文优先 宋体字形 干净线条 暖白 暖黑 主题 组件 图标 首页 浏览组件 搜索图标 没有匹配 复制 设计 语义 色彩 排版 状态 文档 故事书
+Deweyou Design Component Library Design Manual Overview Components Icons Storybook GitHub Browse Search Copy Copied Import Typography Principles Color Semantics neutral primary danger serif identity line shadow spacing light dark theme
 abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789
-.,:;!?'"()[]{}<>/@#$%^&*-_+=|\\~\`，。！？；：“”‘’（）【】《》、·
+.,:;!?'"()[]{}<>/@#$%^&*-_+=|\\~\`
 `;
 
 type WebsiteFontSource = {
@@ -304,8 +307,16 @@ export default defineConfig({
         replacement: iconsEntry,
       },
       {
+        find: /^@deweyou-design\/react-hooks$/,
+        replacement: hooksEntry,
+      },
+      {
         find: /^@deweyou-design\/styles\/theme\.css$/,
         replacement: `${stylesCssDir}/theme.css`,
+      },
+      {
+        find: /^@deweyou-design\/styles\/theme-with-fonts\.css$/,
+        replacement: `${stylesCssDir}/theme-with-fonts.css`,
       },
       {
         find: /^@deweyou-design\/styles\/theme-light\.css$/,

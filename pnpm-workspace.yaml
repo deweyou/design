@@ -26,6 +26,7 @@ catalog:
   storybook: 10.3.3
   subset-font: ^2.5.0
   typescript: ^5
+  unplugin: ^3.0.0
   vite: npm:@voidzero-dev/vite-plus-core@latest
   vite-plus: ^0.1.11
   vitest: npm:@voidzero-dev/vite-plus-test@latest

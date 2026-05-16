@@ -22,18 +22,18 @@ const fontsDir = resolve(import.meta.dirname, '../src/assets/fonts');
 test('theme outputs define light, dark, and default entrypoints', () => {
   const color = readFileSync(resolve(cssDir, 'color.css'), 'utf8');
   const theme = readFileSync(resolve(cssDir, 'theme.css'), 'utf8');
+  const themeWithFonts = readFileSync(resolve(cssDir, 'theme-with-fonts.css'), 'utf8');
   const light = readFileSync(resolve(cssDir, 'theme-light.css'), 'utf8');
   const dark = readFileSync(resolve(cssDir, 'theme-dark.css'), 'utf8');
   const base = readFileSync(resolve(cssDir, 'base.css'), 'utf8');
   const fonts = readFileSync(resolve(cssDir, 'fonts.css'), 'utf8');
-  const themeWithFonts = readFileSync(resolve(cssDir, 'theme-with-fonts.css'), 'utf8');
 
   expect(theme).toContain("@import './reset.css';");
   expect(theme).not.toContain("@import './fonts.css';");
   expect(theme).toContain("@import './base.css';");
+  expect(color).toContain('--ui-color-black');
   expect(themeWithFonts).toContain("@import './fonts.css';");
   expect(themeWithFonts).toContain("@import './theme.css';");
-  expect(color).toContain('--ui-color-black');
   expect(color).toContain('--ui-color-palette-red-50');
   expect(color).toContain('--ui-color-palette-olive-950');
   expect(light).toContain("@import './color.css';");
@@ -183,7 +183,9 @@ test('styles publish manifest drops workspace-only metadata and rewrites dist-ro
   const publishedManifest = createPublishedPackageManifest({
     catalogVersions: {
       less: '^4.4.1',
+      'subset-font': '^2.5.0',
       typescript: '^5',
+      unplugin: '^3.0.0',
       'vite-plus': '^0.1.11',
     },
     manifest: sourceManifest,
@@ -202,8 +204,18 @@ test('styles publish manifest drops workspace-only metadata and rewrites dist-ro
       import: './index.mjs',
       types: './index.d.mts',
     },
+    './font-subset': {
+      default: './font-subset/index.mjs',
+      import: './font-subset/index.mjs',
+      types: './font-subset/index.d.mts',
+    },
     './theme.css': './css/theme.css',
     './theme-with-fonts.css': './css/theme-with-fonts.css',
+    './unplugin-font-subset': {
+      default: './unplugin-font-subset/index.mjs',
+      import: './unplugin-font-subset/index.mjs',
+      types: './unplugin-font-subset/index.d.mts',
+    },
     './less/bridge.less': './less/bridge.less',
   });
 });

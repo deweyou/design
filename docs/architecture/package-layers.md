@@ -8,7 +8,7 @@ These packages are published to npm and consumed externally.
 | ----------------------------- | ----------------------- | ----------------------------------------------------- |
 | `@deweyou-design/react`       | `packages/react/`       | React component library — primary consumer entrypoint |
 | `@deweyou-design/react-hooks` | `packages/react-hooks/` | Reusable React hooks, independent of components       |
-| `@deweyou-design/react-icons` | `packages/react-icons/` | Curated Tabler-backed React icon components           |
+| `@deweyou-design/react-icons` | `packages/react-icons/` | Curated generated React icon components               |
 | `@deweyou-design/styles`      | `packages/styles/`      | Design tokens, theme CSS, Less bridge                 |
 | `@deweyou-design/utils`       | `packages/utils/`       | Runtime utilities for external consumers              |
 
@@ -37,7 +37,7 @@ Key scripts in `packages/infra/scripts/`:
 apps/*            → @deweyou-design/* (workspace:*)
 @deweyou-design/react   → @deweyou-design/react-hooks, @deweyou-design/react-icons, @deweyou-design/styles
 @deweyou-design/react-hooks → @deweyou-design/utils (optional, runtime)
-@deweyou-design/react-icons → @tabler/icons-react
+@deweyou-design/react-icons → (generated icons; tdesign-icons-svg is build-only)
 @deweyou-design/styles  → (no deps)
 @deweyou-design/utils   → (no deps)
 @deweyou-ui/infra       → (build-only, never in published deps)

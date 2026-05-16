@@ -24,6 +24,7 @@ test('cross-package boundary coverage stays in top-level tests', () => {
     readFileSync(resolve(root, 'packages/react-icons/package.json'), 'utf8'),
   ) as {
     dependencies?: Record<string, string>;
+    devDependencies: Record<string, string>;
     peerDependencies?: Record<string, string>;
     publishConfig?: { directory?: string };
   };
@@ -54,10 +55,12 @@ test('cross-package boundary coverage stays in top-level tests', () => {
   expect(hooksPackage.peerDependencies).toMatchObject({
     react: 'catalog:',
   });
-  expect(iconsPackage.dependencies).toMatchObject({
-    '@tabler/icons-react': '^3',
-  });
+  expect(iconsPackage.dependencies ?? {}).not.toHaveProperty('@tabler/icons-react');
   expect(iconsPackage.dependencies ?? {}).not.toHaveProperty('tdesign-icons-svg');
+  expect(iconsPackage.devDependencies).toMatchObject({
+    'tdesign-icons-svg': '0.4.2',
+    vite: 'catalog:',
+  });
   expect(iconsPackage.peerDependencies).toMatchObject({
     react: 'catalog:',
   });

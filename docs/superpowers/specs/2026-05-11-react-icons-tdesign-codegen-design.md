@@ -78,24 +78,24 @@ export type IconProps = Omit<
 
 `size` uses design-system naming by default:
 
-| Size | Intended use |
-| --- | --- |
-| `xs` | Dense inline affordances |
-| `sm` | Compact controls and metadata |
-| `md` | Default component icon size |
-| `lg` | Prominent controls |
+| Size | Intended use                          |
+| ---- | ------------------------------------- |
+| `xs` | Dense inline affordances              |
+| `sm` | Compact controls and metadata         |
+| `md` | Default component icon size           |
+| `lg` | Prominent controls                    |
 | `xl` | Empty states or larger visual moments |
 
 The implementation may initially map these sizes inside `react-icons`, then later move the backing values to `@deweyou-design/styles` CSS variables without changing the public API.
 
 `color` follows existing component semantics:
 
-| Color | Mapping |
-| --- | --- |
-| `inherit` | `currentColor` |
-| `neutral` | `var(--ui-color-text)` |
-| `primary` | `var(--ui-color-brand-text)` |
-| `danger` | `var(--ui-color-danger-text)` |
+| Color     | Mapping                       |
+| --------- | ----------------------------- |
+| `inherit` | `currentColor`                |
+| `neutral` | `var(--ui-color-text)`        |
+| `primary` | `var(--ui-color-brand-text)`  |
+| `danger`  | `var(--ui-color-danger-text)` |
 
 The default is `inherit`, so icons continue to follow surrounding text unless a semantic color is requested.
 

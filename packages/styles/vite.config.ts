@@ -14,6 +14,16 @@ const stylesPublicExports = {
   './theme-dark.css': './dist/css/theme-dark.css',
   './reset.css': './dist/css/reset.css',
   './base.css': './dist/css/base.css',
+  './font-subset': {
+    types: './dist/font-subset/index.d.mts',
+    import: './dist/font-subset/index.mjs',
+    default: './dist/font-subset/index.mjs',
+  },
+  './unplugin-font-subset': {
+    types: './dist/unplugin-font-subset/index.d.mts',
+    import: './dist/unplugin-font-subset/index.mjs',
+    default: './dist/unplugin-font-subset/index.mjs',
+  },
   './less/bridge': './dist/less/bridge.less',
   './less/bridge.less': './dist/less/bridge.less',
   './less/mixins': './dist/less/mixins.less',
@@ -21,6 +31,11 @@ const stylesPublicExports = {
 };
 
 const defaultPackConfig = definePackConfig({
+  entry: {
+    index: './src/index.ts',
+    'font-subset/index': './src/font-subset/index.ts',
+    'unplugin-font-subset/index': './src/unplugin-font-subset/index.ts',
+  },
   exports: {
     customExports: stylesPublicExports,
   },

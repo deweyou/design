@@ -16,6 +16,8 @@ test('consumer setup keeps the global style import explicit', () => {
   expect(websiteMain).toContain("import '@deweyou-design/styles/theme.css';");
   expect(websiteMain).toContain("import 'virtual:deweyou-website-fonts.css';");
   expect(storybookPreview).toContain("import '@deweyou-design/styles/theme.css';");
+  expect(websiteMain).not.toContain('theme-with-fonts.css');
+  expect(storybookPreview).not.toContain('theme-with-fonts.css');
   expect(lessBridge).toContain('@brand-bg');
   expect(lessBridge).toContain('@danger-bg');
   expect(lessBridge).toContain('@brand-text');

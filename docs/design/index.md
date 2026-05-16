@@ -14,7 +14,7 @@
 - 三个常规语义色：neutral、primary、danger；warning 只作为反馈类支持角色。
 - 暖白/暖黑画布承载内容，避免纯白、渐变和装饰背景。
 - 边框优先于阴影；卡片默认无 shadow，浮层才表达抬升。
-- 图标统一收敛到 `@deweyou-design/react-icons`，stroke 1.5、square cap、miter join。
+- 图标统一收敛到 `@deweyou-design/react-icons`：Deweyou curated registry backed by `tdesign-icons-svg`，使用直接命名导入、语义化 size/color，icon-only action 交给 `IconButton` 等具备 accessible name 的控件；详见 [system.md#图标](system.md#图标)。
 - 文案简体中文优先，技术性、克制、无 emoji，`·` 是系统内的签名分隔符。
 
 ## 修改设计相关代码时
