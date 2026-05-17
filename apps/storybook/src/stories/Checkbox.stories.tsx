@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 
+import { Button } from '@deweyou-design/react/button';
 import { Checkbox } from '@deweyou-design/react/checkbox';
 
 const meta: Meta<typeof Checkbox> = {
@@ -65,9 +66,9 @@ export const Variants: StoryObj = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
       <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-        <Checkbox />
-        <Checkbox defaultChecked />
-        <Checkbox indeterminate />
+        <Checkbox aria-label="Unchecked compact checkbox" />
+        <Checkbox aria-label="Checked compact checkbox" defaultChecked />
+        <Checkbox aria-label="Indeterminate compact checkbox" indeterminate />
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
         <Checkbox>Unchecked with label</Checkbox>
@@ -99,9 +100,13 @@ const ControlledDemo = () => {
       <Checkbox checked={checked} onCheckedChange={setChecked}>
         Controlled: {checked ? 'ON' : 'OFF'}
       </Checkbox>
-      <button onClick={() => setChecked((v) => !v)} style={{ alignSelf: 'flex-start' }}>
+      <Button
+        onClick={() => setChecked((v) => !v)}
+        style={{ alignSelf: 'flex-start' }}
+        variant="outlined"
+      >
         Toggle externally
-      </button>
+      </Button>
     </div>
   );
 };

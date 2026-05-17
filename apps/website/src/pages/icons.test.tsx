@@ -83,7 +83,7 @@ test('renders icon grid with all icons', () => {
 
 test('search filters the icon list', () => {
   renderPage();
-  const input = screen.getByPlaceholderText('Search icons...');
+  const input = screen.getByPlaceholderText('Search icons…');
   const allCells = screen.getAllByRole('button');
 
   fireEvent.change(input, { target: { value: 'arrow' } });
@@ -97,7 +97,7 @@ test('search filters the icon list', () => {
 
 test('shows empty state when search has no results', () => {
   renderPage();
-  const input = screen.getByPlaceholderText('Search icons...');
+  const input = screen.getByPlaceholderText('Search icons…');
   fireEvent.change(input, { target: { value: 'zzznomatch' } });
   expect(screen.getByText(/No icons match/)).toBeInTheDocument();
 });

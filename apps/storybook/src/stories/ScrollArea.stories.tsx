@@ -203,7 +203,7 @@ export const States: StoryObj = {
             fontSize: '0.875rem',
             padding: '12px',
             whiteSpace: 'pre-line',
-            width: '500px',
+            width: 'min(31.25rem, 100%)',
           }}
         >
           {longText}

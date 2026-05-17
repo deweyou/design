@@ -59,7 +59,7 @@ export const Default: StoryObj = {
       style={{
         border: '1px solid var(--ui-color-border)',
         borderRadius: 'var(--ui-radius-float)',
-        width: 420,
+        width: 'min(26.25rem, 100%)',
       }}
     />
   ),
@@ -70,15 +70,23 @@ export const AnchorNavigation: StoryObj = {
     const listRef = useRef<VirtualListRef>(null);
 
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 12, width: 420 }}>
-        <div style={{ display: 'flex', gap: 8 }}>
-          <Button onClick={() => listRef.current?.scrollToIndex(0)} size="sm" variant="outlined">
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 12,
+          maxWidth: '100%',
+          width: 'min(26.25rem, 100%)',
+        }}
+      >
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+          <Button onClick={() => listRef.current?.scrollToIndex(0)} variant="outlined">
             Top
           </Button>
-          <Button onClick={() => listRef.current?.scrollToIndex(250)} size="sm" variant="outlined">
+          <Button onClick={() => listRef.current?.scrollToIndex(250)} variant="outlined">
             Section 251
           </Button>
-          <Button onClick={() => listRef.current?.scrollToIndex(900)} size="sm" variant="outlined">
+          <Button onClick={() => listRef.current?.scrollToIndex(900)} variant="outlined">
             Section 901
           </Button>
         </div>

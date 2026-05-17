@@ -34,7 +34,7 @@ describe('Field', () => {
     expect(markup).toContain('aria-required="true"');
   });
 
-  it('uses error text as the aria description when invalid', () => {
+  it('combines description and error text when invalid', () => {
     const markup = renderField({
       error: 'Email is required.',
       hint: 'Use a work email.',
@@ -44,7 +44,7 @@ describe('Field', () => {
     expect(markup).toContain('id="email-error"');
     expect(markup).toContain('role="alert"');
     expect(markup).toContain('aria-invalid="true"');
-    expect(markup).toContain('aria-describedby="email-error"');
+    expect(markup).toContain('aria-describedby="email-description email-error"');
   });
 
   it('passes disabled state to the wrapped control', () => {

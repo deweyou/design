@@ -4,12 +4,20 @@ import { resolve } from 'node:path';
 import { expect, test } from 'vite-plus/test';
 
 const reactSourceRoot = resolve(import.meta.dirname, '../src');
+const stylesSourceRoot = resolve(import.meta.dirname, '../../styles/src');
 const buttonStylesPath = resolve(reactSourceRoot, 'button/index.module.less');
+const cardStylesPath = resolve(reactSourceRoot, 'card/index.module.less');
+const codeBlockStylesPath = resolve(reactSourceRoot, 'code-block/index.module.less');
+const checkboxMarkStylesPath = resolve(reactSourceRoot, 'checkbox-mark/index.module.less');
 const checkboxStylesPath = resolve(reactSourceRoot, 'checkbox/index.module.less');
+const dialogStylesPath = resolve(reactSourceRoot, 'dialog/index.module.less');
 const inputStylesPath = resolve(reactSourceRoot, 'input/index.module.less');
 const menuStylesPath = resolve(reactSourceRoot, 'menu/index.module.less');
 const markdownRenderStylesPath = resolve(reactSourceRoot, 'markdown-render/index.module.less');
+const navStylesPath = resolve(reactSourceRoot, 'nav/index.module.less');
+const navOverlayStylesPath = resolve(reactSourceRoot, 'nav-overlay/index.module.less');
 const paginationStylesPath = resolve(reactSourceRoot, 'pagination/index.module.less');
+const popoverStylesPath = resolve(reactSourceRoot, 'popover/index.module.less');
 const radioGroupStylesPath = resolve(reactSourceRoot, 'radio-group/index.module.less');
 const scrollAreaStylesPath = resolve(reactSourceRoot, 'scroll-area/index.module.less');
 const selectStylesPath = resolve(reactSourceRoot, 'select/index.module.less');
@@ -17,9 +25,12 @@ const skeletonStylesPath = resolve(reactSourceRoot, 'skeleton/index.module.less'
 const spinnerStylesPath = resolve(reactSourceRoot, 'spinner/index.module.less');
 const switchStylesPath = resolve(reactSourceRoot, 'switch/index.module.less');
 const tabsStylesPath = resolve(reactSourceRoot, 'tabs/index.module.less');
+const textareaStylesPath = resolve(reactSourceRoot, 'textarea/index.module.less');
 const textStylesPath = resolve(reactSourceRoot, 'text/index.module.less');
 const toastStylesPath = resolve(reactSourceRoot, 'toast/index.module.less');
 const tooltipStylesPath = resolve(reactSourceRoot, 'tooltip/index.module.less');
+const bridgeStylesPath = resolve(stylesSourceRoot, 'less/bridge.less');
+const legacyMixinsStylesPath = resolve(stylesSourceRoot, 'less/mixins.less');
 
 const collectLessModules = (directory: string): string[] => {
   const entries = readdirSync(directory, { withFileTypes: true });
@@ -51,6 +62,8 @@ test('component styles avoid hardcoded color literals and retired color tokens',
 
     expect(stylesheet, lessModule).not.toMatch(/#[0-9a-fA-F]{3,8}\b/);
     expect(stylesheet, lessModule).not.toContain('--ui-color-link');
+    expect(stylesheet, lessModule).not.toMatch(/\b(?:140|160|260)ms\s+ease\b/);
+    expect(stylesheet, lessModule).not.toMatch(/\bz-index:\s*10[0-9]{2}\b/);
   }
 });
 
@@ -63,7 +76,7 @@ test('button styles keep visual feedback contracts out of component unit tests',
   expect(stylesheet).toContain('--ui-color-danger-bg');
   expect(stylesheet).toContain('--ui-color-danger-text');
   expect(stylesheet).toContain('--ui-color-text-on-danger');
-  expect(stylesheet).toContain('font: 600 var(--button-font-size) / 1.25 var(--ui-font-body);');
+  expect(stylesheet).toContain('font: 600 var(--button-font-size) / 1.25 var(--ui-font-control);');
   expect(stylesheet).toContain('padding-block-end: 0.08em;');
   expect(stylesheet).toContain('margin-block-end: -0.08em;');
   expect(stylesheet).toContain('.linkUnderlineDecoration');
@@ -101,7 +114,7 @@ test('interactive component styles consume shared control and touch target token
   expect(inputStylesheet).toContain('min-block-size: var(--ui-control-height-sm);');
   expect(inputStylesheet).toContain('min-block-size: var(--ui-control-height-md);');
   expect(inputStylesheet).toContain('min-block-size: var(--ui-control-height-lg);');
-  expect(selectStylesheet).toContain('min-block-size: var(--ui-control-height-sm);');
+  expect(selectStylesheet).toContain('min-block-size: var(--ui-touch-target-min);');
   expect(checkboxStylesheet).toContain('min-block-size: var(--ui-touch-target-min);');
   expect(radioGroupStylesheet).toContain('min-block-size: var(--ui-touch-target-min);');
   expect(switchStylesheet).toContain('min-block-size: var(--ui-touch-target-min);');
@@ -110,19 +123,35 @@ test('interactive component styles consume shared control and touch target token
 });
 
 test('overlay and motion styles use shared z-index and motion tokens', () => {
+  const dialogStylesheet = readFileSync(dialogStylesPath, 'utf8');
   const menuStylesheet = readFileSync(menuStylesPath, 'utf8');
+  const navOverlayStylesheet = readFileSync(navOverlayStylesPath, 'utf8');
+  const popoverStylesheet = readFileSync(popoverStylesPath, 'utf8');
   const selectStylesheet = readFileSync(selectStylesPath, 'utf8');
   const skeletonStylesheet = readFileSync(skeletonStylesPath, 'utf8');
   const spinnerStylesheet = readFileSync(spinnerStylesPath, 'utf8');
+  const textareaStylesheet = readFileSync(textareaStylesPath, 'utf8');
   const toastStylesheet = readFileSync(toastStylesPath, 'utf8');
   const tooltipStylesheet = readFileSync(tooltipStylesPath, 'utf8');
 
+  expect(dialogStylesheet).toContain('var(--ui-motion-duration-base)');
+  expect(dialogStylesheet).toContain('var(--ui-motion-ease-standard)');
+  expect(dialogStylesheet).toContain('z-index: var(--ui-z-dialog);');
+  expect(dialogStylesheet).not.toContain('z-index: 1090');
+  expect(dialogStylesheet).not.toContain('z-index: 1091');
   expect(menuStylesheet).toContain('@menu-z-index: var(--ui-z-dropdown);');
   expect(menuStylesheet).not.toContain("[data-part='trigger']:focus-visible");
   expect(menuStylesheet).toContain('var(--ui-motion-duration-base)');
   expect(menuStylesheet).toContain('var(--ui-motion-ease-standard)');
+  expect(navOverlayStylesheet).toContain('env(safe-area-inset-bottom)');
+  expect(navOverlayStylesheet).toContain('overscroll-behavior: contain');
+  expect(popoverStylesheet).toContain('--popover-z-index: var(--ui-z-popover);');
+  expect(popoverStylesheet).toContain('var(--ui-motion-duration-base)');
+  expect(popoverStylesheet).toContain('var(--ui-motion-ease-standard)');
   expect(selectStylesheet).toContain('z-index: var(--ui-z-dropdown);');
   expect(selectStylesheet).toContain('var(--ui-motion-duration-base)');
+  expect(textareaStylesheet).toContain('var(--ui-motion-duration-fast)');
+  expect(textareaStylesheet).not.toContain('140ms ease');
   expect(tooltipStylesheet).toContain('z-index: var(--ui-z-tooltip);');
   expect(tooltipStylesheet).toContain('@media (prefers-reduced-motion: reduce)');
   expect(toastStylesheet).toContain('var(--ui-motion-duration-slow)');
@@ -130,11 +159,64 @@ test('overlay and motion styles use shared z-index and motion tokens', () => {
   expect(spinnerStylesheet).toContain('@media (prefers-reduced-motion: reduce)');
 });
 
+test('interactive surfaces expose hover and focus-visible affordances', () => {
+  const cardStylesheet = readFileSync(cardStylesPath, 'utf8');
+  const checkboxMarkStylesheet = readFileSync(checkboxMarkStylesPath, 'utf8');
+  const checkboxStylesheet = readFileSync(checkboxStylesPath, 'utf8');
+  const navStylesheet = readFileSync(navStylesPath, 'utf8');
+  const paginationStylesheet = readFileSync(paginationStylesPath, 'utf8');
+  const radioGroupStylesheet = readFileSync(radioGroupStylesPath, 'utf8');
+  const scrollAreaStylesheet = readFileSync(scrollAreaStylesPath, 'utf8');
+
+  expect(cardStylesheet).toContain('.root:where(a)');
+  expect(cardStylesheet).toContain('&:focus-visible');
+  expect(checkboxStylesheet).toContain('.root:hover:not([data-disabled]) [data-ui-checkbox-mark]');
+  expect(checkboxMarkStylesheet).toContain(".mark[data-state='checked']");
+  expect(checkboxMarkStylesheet).toContain(".mark[data-state='indeterminate']");
+  expect(checkboxMarkStylesheet).toContain(":not([data-readonly='true'])");
+  expect(radioGroupStylesheet).toContain('.item:hover:not([data-disabled]) .control');
+  expect(navStylesheet).not.toContain('background var(--ui-motion-duration-fast)');
+  expect(navStylesheet).not.toContain('background: color-mix(in srgb, var(--ui-color-text) 8%');
+  expect(paginationStylesheet).toContain('&:hover:not([data-disabled]):not([data-selected])');
+  expect(paginationStylesheet).toContain('&:focus-visible');
+  expect(scrollAreaStylesheet).toContain('&:focus-visible');
+});
+
+test('focus mixins keep visible keyboard focus without native outline styling', () => {
+  const bridgeStylesheet = readFileSync(bridgeStylesPath, 'utf8');
+  const legacyMixinsStylesheet = readFileSync(legacyMixinsStylesPath, 'utf8');
+
+  expect(bridgeStylesheet).toContain(
+    'color-mix(in srgb, var(--ui-color-focus-ring) 24%, transparent)',
+  );
+  expect(bridgeStylesheet).toContain(
+    'color-mix(in srgb, var(--ui-color-focus-ring) 18%, transparent)',
+  );
+  expect(bridgeStylesheet).toContain('outline: none;');
+  expect(bridgeStylesheet).not.toContain('0 0 0 4px var(--ui-color-focus-ring)');
+  expect(legacyMixinsStylesheet).not.toContain('outline: 2px solid var(--ui-color-focus-ring);');
+  expect(legacyMixinsStylesheet).toContain('box-shadow: 0 0 0 3px');
+});
+
+test('responsive styles use the shared compact breakpoint standard', () => {
+  const bridgeStylesheet = readFileSync(bridgeStylesPath, 'utf8');
+  const lessModules = collectLessModules(reactSourceRoot);
+
+  expect(bridgeStylesheet).toContain('@ui-breakpoint-compact: 30rem;');
+
+  for (const lessModule of lessModules) {
+    const stylesheet = readFileSync(lessModule, 'utf8');
+
+    expect(stylesheet, lessModule).not.toMatch(/@media\s*\([^)]*(?:480|500|520)px/);
+  }
+});
+
 test('text styles preserve typography and truncation layout contracts', () => {
   const stylesheet = readFileSync(textStylesPath, 'utf8');
 
   expect(stylesheet).toContain('--ui-color-text');
-  expect(stylesheet).toContain('--ui-font-body');
+  expect(stylesheet).toContain('--ui-font-content');
+  expect(stylesheet).toContain('--ui-font-display');
   expect(stylesheet).toContain('--ui-text-size-body');
   expect(stylesheet).toContain('--text-color-current');
   expect(stylesheet).toContain('--text-background-current');
@@ -160,12 +242,14 @@ test('scroll area styles only reveal scrollbars for overflowing directions', () 
 
 test('markdown render styles consume semantic typography and surface tokens', () => {
   const stylesheet = readFileSync(markdownRenderStylesPath, 'utf8');
+  const codeBlockStylesheet = readFileSync(codeBlockStylesPath, 'utf8');
+  const checkboxMarkStylesheet = readFileSync(checkboxMarkStylesPath, 'utf8');
 
   expect(stylesheet).toContain('@import');
   expect(stylesheet).toContain('.focus-ring-offset()');
   expect(stylesheet).toContain('--ui-color-text');
   expect(stylesheet).toContain('--ui-color-border');
-  expect(stylesheet).toContain('--ui-font-body');
+  expect(stylesheet).toContain('--ui-font-content');
   expect(stylesheet).toContain('--ui-text-size-body');
   expect(stylesheet).toContain('var(--ui-radius-rect)');
   expect(stylesheet).toContain('.root :where(strong, b)');
@@ -182,10 +266,14 @@ test('markdown render styles consume semantic typography and surface tokens', ()
   expect(stylesheet).toContain('margin-inline-start: -1.2rem;');
   expect(stylesheet).toContain('flex-wrap: wrap;');
   expect(stylesheet).toContain('list-style: none;');
-  expect(stylesheet).toContain('background: var(--ui-color-surface);');
-  expect(stylesheet).toContain(':global(.hljs-keyword)');
+  expect(stylesheet).toContain('margin-block-start: 0.12em;');
+  expect(stylesheet).not.toContain('.taskMarkerIndicator');
+  expect(codeBlockStylesheet).toContain(':global(.hljs-keyword)');
   expect(stylesheet).toContain('--markdown-code-keyword');
+  expect(stylesheet).toContain('--code-block-keyword: var(--markdown-code-keyword);');
+  expect(codeBlockStylesheet).toContain('--code-block-keyword');
   expect(stylesheet).toContain('--markdown-code-max-height');
+  expect(stylesheet).toContain('--code-block-max-height: var(--markdown-code-max-height);');
   expect(stylesheet).toContain('--markdown-table-max-height');
   expect(stylesheet).toContain('overflow-x: hidden;');
   expect(stylesheet).toContain('inline-size: 100%;');
@@ -195,7 +283,7 @@ test('markdown render styles consume semantic typography and surface tokens', ()
   expect(stylesheet).toContain('position: sticky;');
   expect(stylesheet).toContain('inset-block-start: 0;');
   expect(stylesheet).not.toContain('--markdown-list-max-height');
-  expect(stylesheet).toContain('transition:');
+  expect(checkboxMarkStylesheet).toContain('transition:');
   expect(stylesheet).not.toContain('--ui-color-palette-');
 });
 

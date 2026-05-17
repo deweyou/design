@@ -32,29 +32,44 @@ test('theme outputs define light, dark, and default entrypoints', () => {
   expect(theme).not.toContain("@import './fonts.css';");
   expect(theme).toContain("@import './base.css';");
   expect(color).toContain('--ui-color-black');
+  expect(color).toContain('--ui-color-white-canvas: #fafafa;');
+  expect(color).toContain('--ui-color-white-surface: #ffffff;');
+  expect(color).toContain('--ui-color-white-surface-raised: #ffffff;');
+  expect(color).not.toContain('--ui-color-warm-white');
   expect(themeWithFonts).toContain("@import './fonts.css';");
   expect(themeWithFonts).toContain("@import './theme.css';");
   expect(color).toContain('--ui-color-palette-red-50');
   expect(color).toContain('--ui-color-palette-olive-950');
   expect(light).toContain("@import './color.css';");
+  expect(light).toContain('--ui-color-canvas: var(--ui-color-white-canvas);');
+  expect(light).toContain('--ui-color-surface: var(--ui-color-white-surface);');
+  expect(light).toContain('--ui-color-surface-raised: var(--ui-color-white-surface-raised);');
   expect(light).toContain('--ui-color-brand-bg');
   expect(light).toContain('var(--ui-color-palette-emerald-900)');
   expect(light).toContain('--ui-font-body');
+  expect(light).toContain('--ui-font-control');
+  expect(light).toContain('--ui-font-content');
+  expect(light).toContain('--ui-font-sans');
+  expect(light).toContain('--ui-font-serif');
   expect(light).toContain('--ui-font-weight-title');
   expect(light).toContain('--ui-text-size-h1');
   expect(light).toContain('--ui-text-line-height-caption');
+  expect(light).toContain('Source Han Sans SC Web');
   expect(light).toContain('Songti SC');
   expect(light).toContain('SimSun');
   expect(dark).toContain("@import './color.css';");
   expect(dark).toContain('[data-theme');
   expect(dark).toContain('--ui-text-size-h5');
   expect(base).toContain('font-family: var(--ui-font-body);');
+  expect(base).toContain('font-family: var(--ui-font-control);');
+  expect(base).toContain('font-family: var(--ui-font-content);');
   expect(base).toContain('font-family: var(--ui-font-mono);');
   expect(base).toContain('.typography-tier-title');
   expect(base).toContain('.typography-tier-strong');
   expect(base).toContain('.typography-scale-caption');
   expect(base).toContain('.typography-scale-h1');
   expect(fonts).toContain("font-family: 'Source Han Serif CN Web';");
+  expect(fonts).toContain("font-family: 'Source Han Sans SC Web';");
   expect(fonts).toContain('font-display: swap;');
 });
 
@@ -122,7 +137,8 @@ test('semantic theme colors trace back to the shared palette foundation or monoc
   expect(sharedColorTheme['--ui-color-white']).toBe(baseMonochrome.white);
   expect(sharedColorTheme['--ui-color-text-on-brand']).toBe('var(--ui-color-white)');
   expect(sharedColorTheme['--ui-color-text-on-danger']).toBe('var(--ui-color-white)');
-  expect(lightTheme['--ui-color-canvas']).toBe('#fefcf8');
+  expect(lightTheme['--ui-color-canvas']).toBe('#fafafa');
+  expect(lightTheme['--ui-color-surface']).toBe('#ffffff');
   expect(darkTheme['--ui-color-canvas']).toBe('var(--ui-color-palette-stone-950)');
   expect(lightTheme['--ui-color-brand-bg']).toBe('var(--ui-color-palette-emerald-900)');
   expect(lightTheme['--ui-color-danger-bg']).toBe('var(--ui-color-palette-red-700)');
@@ -130,13 +146,20 @@ test('semantic theme colors trace back to the shared palette foundation or monoc
   expect(darkTheme['--ui-color-danger-bg']).toBe('var(--ui-color-palette-red-500)');
 });
 
-test('fonts asset directory contains the vendored Source Han Serif CN files', () => {
+test('fonts asset directory contains the vendored Source Han Serif CN and Source Han Sans SC files', () => {
   const license = readFileSync(resolve(fontsDir, 'LICENSE.txt'), 'utf8');
   const fontFileNames = [
     'SourceHanSerifCN-Regular.otf',
     'SourceHanSerifCN-Medium.otf',
     'SourceHanSerifCN-SemiBold.otf',
     'SourceHanSerifCN-Bold.otf',
+    'SourceHanSansSC-ExtraLight.otf',
+    'SourceHanSansSC-Light.otf',
+    'SourceHanSansSC-Normal.otf',
+    'SourceHanSansSC-Regular.otf',
+    'SourceHanSansSC-Medium.otf',
+    'SourceHanSansSC-Bold.otf',
+    'SourceHanSansSC-Heavy.otf',
   ];
 
   expect(license).toContain('SIL OPEN FONT LICENSE');

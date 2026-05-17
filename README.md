@@ -26,6 +26,24 @@ npm install @deweyou-design/react-icons
 import '@deweyou-design/styles/theme.css';
 ```
 
+生产站点如需使用字体 subset，可在 Vite 中启用 `fontSubset`：
+
+```ts
+import { fontSubset } from '@deweyou-design/styles/unplugin-font-subset';
+
+export default {
+  plugins: [
+    fontSubset.vite({
+      scan: { include: ['src/**/*.{ts,tsx,md,mdx}'] },
+      inject: true,
+      fullFonts: 'idle',
+    }),
+  ],
+};
+```
+
+`inject: true` 会自动注入 subset 字体 CSS；`fullFonts: 'idle'` 会在页面空闲后异步加载带版本号稳定 URL 的全量字体，方便重复访问命中浏览器缓存。
+
 **2. 使用组件**
 
 ```tsx

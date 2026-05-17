@@ -41,6 +41,11 @@
       "import": "./dist/checkbox/index.js",
       "default": "./dist/checkbox/index.js"
     },
+    "./code-block": {
+      "types": "./dist/code-block/index.d.ts",
+      "import": "./dist/code-block/index.js",
+      "default": "./dist/code-block/index.js"
+    },
     "./dialog": {
       "types": "./dist/dialog/index.d.ts",
       "import": "./dist/dialog/index.js",
@@ -168,6 +173,7 @@
     "@deweyou-design/react-icons": "workspace:*",
     "@deweyou-design/styles": "workspace:*",
     "classnames": "catalog:",
+    "highlight.js": "catalog:",
     "react-markdown": "catalog:",
     "rehype-highlight": "catalog:",
     "remark-gfm": "catalog:"

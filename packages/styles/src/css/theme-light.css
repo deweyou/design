@@ -2,9 +2,9 @@
 
 :root,
 [data-theme='light'] {
-  --ui-color-canvas: var(--ui-color-warm-white-1);
-  --ui-color-surface: var(--ui-color-warm-white-2);
-  --ui-color-surface-raised: var(--ui-color-warm-white-3);
+  --ui-color-canvas: var(--ui-color-white-canvas);
+  --ui-color-surface: var(--ui-color-white-surface);
+  --ui-color-surface-raised: var(--ui-color-white-surface-raised);
   --ui-color-text: var(--ui-color-palette-stone-950);
   --ui-color-text-muted: var(--ui-color-palette-stone-500);
   --ui-color-text-disabled: var(--ui-color-palette-stone-400);
@@ -31,7 +31,17 @@
   --ui-radius-float: 4px;
   --ui-radius-pill: 999px;
   --ui-shadow-soft: 0 18px 40px rgba(24, 33, 29, 0.12);
-  --ui-font-body: 'Source Han Serif CN Web', 'Songti SC', 'STSong', 'SimSun', 'NSimSun', serif;
+  --ui-font-sans:
+    'Source Han Sans SC Web', 'PingFang SC', 'Heiti SC', 'Microsoft YaHei', 'Noto Sans CJK SC',
+    sans-serif;
+  --ui-font-serif: 'Source Han Serif CN Web', 'Songti SC', 'STSong', 'SimSun', 'NSimSun', serif;
+  --ui-font-body:
+    'Source Han Sans SC Web', 'PingFang SC', 'Heiti SC', 'Microsoft YaHei', 'Noto Sans CJK SC',
+    sans-serif;
+  --ui-font-control:
+    'Source Han Sans SC Web', 'PingFang SC', 'Heiti SC', 'Microsoft YaHei', 'Noto Sans CJK SC',
+    sans-serif;
+  --ui-font-content: 'Source Han Serif CN Web', 'Songti SC', 'STSong', 'SimSun', 'NSimSun', serif;
   --ui-font-display: 'Source Han Serif CN Web', 'Songti SC', 'STSong', 'SimSun', 'NSimSun', serif;
   --ui-font-mono: 'IBM Plex Mono', 'SFMono-Regular', monospace;
   --ui-font-weight-body: 400;

@@ -89,7 +89,7 @@ export const publicThemeTokens = [
   {
     name: 'surfaceRaised',
     cssVar: '--ui-color-surface-raised',
-    defaultThemeValue: internalPrimitives.color.warmSurfaceRaised,
+    defaultThemeValue: internalPrimitives.color.whiteSurfaceRaised,
   },
   {
     name: 'brandText',
@@ -217,6 +217,11 @@ export const publicThemeTokens = [
     defaultThemeValue: internalPrimitives.control.touchTargetMin,
   },
   {
+    name: 'breakpointCompact',
+    cssVar: '--ui-breakpoint-compact',
+    defaultThemeValue: internalPrimitives.breakpoint.compact,
+  },
+  {
     name: 'motionDurationFast',
     cssVar: '--ui-motion-duration-fast',
     defaultThemeValue: internalPrimitives.motion.durationFast,
@@ -315,6 +320,7 @@ export const semanticTokens = {
   controlHeightLg: '--ui-control-height-lg',
   controlHeightXl: '--ui-control-height-xl',
   touchTargetMin: '--ui-touch-target-min',
+  breakpointCompact: '--ui-breakpoint-compact',
   motionDurationFast: '--ui-motion-duration-fast',
   motionDurationBase: '--ui-motion-duration-base',
   motionDurationSlow: '--ui-motion-duration-slow',

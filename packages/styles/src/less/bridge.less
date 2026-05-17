@@ -12,17 +12,16 @@
 @focus-ring: var(--ui-color-focus-ring);
 @brand-text: var(--ui-color-brand-text);
 @surface-raised: var(--ui-color-surface-raised);
+@ui-breakpoint-compact: 30rem;
 
-// 焦点环 mixin — 使用 box-shadow 替代 outline，获得更柔和且兼容 border-radius 的焦点效果
+// 焦点样式使用柔和 shadow 替代原生 outline，保持键盘可见性且兼容圆角。
 .focus-ring() {
-  box-shadow: 0 0 0 2px var(--ui-color-focus-ring);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ui-color-focus-ring) 24%, transparent);
   outline: none;
 }
 
-// 带 offset 的焦点环（用于需要视觉间距的场景，如 button、checkbox）
+// 带 offset 的焦点样式（用于 button、checkbox 等需要和边框拉开层级的控件）。
 .focus-ring-offset() {
-  box-shadow:
-    0 0 0 2px var(--ui-color-surface),
-    0 0 0 4px var(--ui-color-focus-ring);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ui-color-focus-ring) 18%, transparent);
   outline: none;
 }

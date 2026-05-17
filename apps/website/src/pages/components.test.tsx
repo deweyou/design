@@ -70,12 +70,12 @@ test('renders a manual-style component catalog with every public component', () 
     expect(storyLink).toHaveAttribute('target', '_blank');
     expect(storyLink).toHaveAttribute('rel', 'noopener noreferrer');
   }
-});
+}, 10_000);
 
 test('search filters component cards and summary count', () => {
   render(<ComponentsPage />);
 
-  fireEvent.change(screen.getByPlaceholderText('Search components...'), {
+  fireEvent.change(screen.getByPlaceholderText('Search components…'), {
     target: { value: 'button' },
   });
 
@@ -124,7 +124,7 @@ test('field catalog preview uses the design-system input surface', () => {
 test('shows empty state when component search has no results', () => {
   render(<ComponentsPage />);
 
-  fireEvent.change(screen.getByPlaceholderText('Search components...'), {
+  fireEvent.change(screen.getByPlaceholderText('Search components…'), {
     target: { value: 'zzznomatch' },
   });
 

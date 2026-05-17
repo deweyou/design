@@ -146,9 +146,26 @@ describe('Select — field semantics', () => {
 
     const trigger = screen.getByRole('combobox');
     expect(screen.getByText('Fruit').getAttribute('for')).toBe('fruit');
+    expect(screen.getByText('Fruit').getAttribute('id')).toBe('fruit-label');
     expect(trigger.getAttribute('id')).toBe('fruit');
+    expect(trigger.getAttribute('aria-labelledby')).toBe('fruit-label');
     expect(trigger.getAttribute('aria-describedby')).toBe('fruit-description');
     expect(screen.getByText('Pick one fruit.').getAttribute('id')).toBe('fruit-description');
+  });
+
+  it('passes form name to the hidden select control', () => {
+    render(
+      <Select.Root name="fruit" placeholder="Pick a fruit">
+        <Select.Trigger />
+        <Select.Content>
+          {options.map((o) => (
+            <Select.Item key={o.value} value={o.value} label={o.label} />
+          ))}
+        </Select.Content>
+      </Select.Root>,
+    );
+
+    expect(document.querySelector('select[name="fruit"]')).toBeDefined();
   });
 
   it('marks trigger invalid and prefers error text over hint', () => {
@@ -171,7 +188,7 @@ describe('Select — field semantics', () => {
 
     const trigger = screen.getByRole('combobox');
     expect(trigger.getAttribute('aria-invalid')).toBe('true');
-    expect(trigger.getAttribute('aria-describedby')).toBe('fruit-error');
+    expect(trigger.getAttribute('aria-describedby')).toBe('fruit-description fruit-error');
     expect(screen.getByText('Fruit is required.').getAttribute('role')).toBe('alert');
   });
 });

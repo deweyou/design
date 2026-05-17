@@ -99,7 +99,10 @@ const FieldRoot = ({
   const controlId = id ?? createFieldId(reactId);
   const descriptionId = `${controlId}-description`;
   const errorId = `${controlId}-error`;
-  const describedBy = invalid && hasError ? errorId : hasDescription ? descriptionId : undefined;
+  const describedBy = mergeIds(
+    hasDescription ? descriptionId : undefined,
+    hasError ? errorId : undefined,
+  );
 
   return (
     <FieldContext.Provider

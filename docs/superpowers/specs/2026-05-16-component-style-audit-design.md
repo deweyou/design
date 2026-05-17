@@ -113,13 +113,66 @@ Storybook's global preview decorator uses `layout: 'centered'` and a padded wrap
 
 Decision direction: add a separate full-viewport story parameter/decorator for responsive and overlay stories, then use that mode for visual QA and interaction tests.
 
+### 12. Focus visuals are accessible but too outline-like
+
+Follow-up review on 2026-05-17 using Web Interface Guidelines and a mobile-app interaction lens found that the current shared focus mixins technically preserve keyboard focus, but the `2px + 4px` shadow treatment reads like a heavy outline on most controls.
+
+Decision direction: do not remove keyboard focus feedback. Keep `:focus-visible`, but use subtler bg/border/shadow treatment, and avoid reintroducing native outline mixins that future components could accidentally consume.
+
+### 13. Overlay surfaces suppress outline without their own focus-visible state
+
+`Dialog`, `NavOverlay`, `Menu`, and `Select` panels set `outline: none`. The trigger and item paths are covered, but focusable surfaces should also provide a replacement when Ark moves focus to the content node.
+
+Decision direction: add panel/content-level `:focus-visible` treatment that is quiet on mouse open but visible for keyboard focus.
+
+### 14. Remaining typography and mobile polish gaps
+
+The website search placeholders and component preview placeholders still used ASCII `...` instead of `…`. `Textarea` also missed the shared motion-token migration from the first repair pass. `NavOverlay` reserves close-button space, but the bottom inset should include `env(safe-area-inset-bottom)` for mobile app-style gesture areas.
+
+Decision direction: align placeholders, migrate `Textarea` transitions to shared motion tokens, and include safe-area inset in overlay scroll padding.
+
+### 15. Responsive rules need one shared standard
+
+Follow-up review after the outline discussion found a process risk: mobile special-cases can easily drift if one component uses `480px`, another uses `500px`, and another uses a JavaScript `isMobile` check.
+
+Decision direction: component internals should not infer device category from `window.innerWidth`. Use CSS/container/capability rules first. Narrow viewport rules must use the shared Less variable `@ui-breakpoint-compact: 30rem`; input-method behavior should use capability queries such as `(pointer: coarse)` and `(hover: none)`.
+
+### 16. Web/a11y semantics issues beyond focus styling
+
+The WIG pass found label/name gaps and semantic splits:
+
+- `RadioGroup` needs accessible group naming and form `name`/`form` support.
+- `Select` stories need visible labels, and the component needs form `name`/`form` support.
+- `Checkbox` and `Switch` support label-less composition but need explicit `aria-label` / `aria-labelledby` pathways.
+- `Switch` should not rely on a custom clickable visual track as the semantic switch.
+- `Field` should keep both helper and error text in `aria-describedby`.
+- `ScrollArea` viewport suppresses outline and needs its own `:focus-visible` replacement.
+
+Decision direction: expose accessible-name props where label-less composition is valid, keep visual-only tracks decorative, and make helper/error relationships cumulative instead of mutually exclusive.
+
+### 17. Mobile app pass found touch, safe-area, and overflow gaps
+
+The mobile pass found that Menu, Select, and Tabs defaults still had sub-44px targets; Storybook examples for Tabs, Pagination, VirtualList, and ScrollArea used desktop-fixed widths; `NavOverlay`, `Dialog`, and `Toast` needed more complete safe-area treatment; and reduced-motion loading still rotated indefinitely.
+
+Decision direction: make user-facing defaults 44px, make stories container-relative, add safe-area-aware overlay constraints, and stop infinite rotation under `prefers-reduced-motion: reduce`.
+
+### 18. Deferred larger semantic redesign
+
+Tabs menu-trigger semantics remain a larger pattern decision: a menu entry rendered as `role="tab"` with `aria-haspopup="menu"` does not fully match native tab semantics. This needs a focused API/design pass rather than a small style repair.
+
+Decision direction: record as follow-up and avoid expanding the pattern further until the design is settled.
+
 ## Next Audit Pass
 
 Run Storybook and website locally, inspect desktop/mobile/reduced-motion-adjacent behavior, and add visual findings here or in a follow-up plan. Priority views:
 
 - Storybook overview for `Button`, `Input`, `Select`, `Menu`, `Tabs`, `Toast`, `Nav`, `Field`, `Pagination`, `MarkdownRender`.
 - Website desktop and mobile header/navigation, component cards, documentation reading surfaces, and icon catalog density.
+- Focus-visible states across Button/Input/Textarea/Select/Menu/Dialog/NavOverlay using keyboard navigation.
+- Website search and catalog previews for accessible names, placeholder typography, and mobile safe-area behavior.
+- Static scan for private breakpoints in governed component/story source.
+- Reduced-motion checks for Spinner, Button loading, Popover, Tooltip, and Skeleton.
 
 ## Footer
 
-Updated on 2026-05-16 to preserve style-level component audit findings before deeper browser QA.
+Updated on 2026-05-17 to include follow-up WIG/mobile review findings and the shared responsive standard.

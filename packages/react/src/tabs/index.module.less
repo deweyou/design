@@ -162,6 +162,7 @@
   font-size: inherit;
   font-weight: var(--ui-font-weight-body);
   line-height: 1.4;
+  min-block-size: var(--ui-touch-target-min);
   outline: none;
   padding: 0.5rem 0.875rem;
   position: relative;
@@ -170,8 +171,8 @@
   // hover restores full opacity without a background color change.
   opacity: 0.72;
   transition:
-    opacity 140ms ease,
-    color 140ms ease;
+    opacity var(--ui-motion-duration-fast) var(--ui-motion-ease-exit),
+    color var(--ui-motion-duration-fast) var(--ui-motion-ease-exit);
   white-space: nowrap;
   user-select: none;
   flex-shrink: 0;
@@ -237,7 +238,7 @@
   font-size: 0.875em;
   margin-left: 0.125rem;
   opacity: 0.7;
-  transition: transform 140ms ease;
+  transition: transform var(--ui-motion-duration-fast) var(--ui-motion-ease-standard);
 }
 
 // Arrow rotates when menu is open (Ark Menu adds data-state="open" to the trigger)

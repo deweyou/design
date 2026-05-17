@@ -57,14 +57,29 @@ test('styles package exposes the shared palette foundation while keeping text al
   expect(internalPrimitives.color.textPalette).toEqual(colorPalette);
 });
 
-test('styles package keeps typography internal while defining the serif defaults', () => {
+test('styles package keeps typography internal while defining sans UI defaults and serif content roles', () => {
   expect(publicThemeTokens.some((token) => token.cssVar.startsWith('--ui-font'))).toBe(false);
-  expect(internalTypographyRoleNames).toEqual(['body', 'display', 'mono']);
+  expect(internalTypographyRoleNames).toEqual([
+    'sans',
+    'serif',
+    'body',
+    'control',
+    'content',
+    'display',
+    'mono',
+  ]);
   expect(internalPrimitives.font.roles.body.defaultWeightTier).toBe('body');
+  expect(internalPrimitives.font.roles.control.defaultWeightTier).toBe('emphasis');
+  expect(internalPrimitives.font.roles.content.defaultWeightTier).toBe('body');
   expect(internalPrimitives.font.roles.display.defaultWeightTier).toBe('title');
-  expect(internalPrimitives.font.body).toContain('Source Han Serif CN Web');
+  expect(internalPrimitives.font.sans).toContain('Source Han Sans SC Web');
+  expect(internalPrimitives.font.serif).toContain('Source Han Serif CN Web');
+  expect(internalPrimitives.font.body).toContain('Source Han Sans SC Web');
+  expect(internalPrimitives.font.control).toContain('Source Han Sans SC Web');
+  expect(internalPrimitives.font.content).toContain('Source Han Serif CN Web');
   expect(internalPrimitives.font.display).toContain('Songti SC');
-  expect(internalPrimitives.font.fallbacks.windows).toEqual(['SimSun', 'NSimSun']);
+  expect(internalPrimitives.font.fallbacks.serifWindows).toEqual(['SimSun', 'NSimSun']);
+  expect(internalPrimitives.font.fallbacks.sansMacos).toEqual(['PingFang SC', 'Heiti SC']);
   expect(internalPrimitives.font.weights).toEqual({
     body: '400',
     emphasis: '500',

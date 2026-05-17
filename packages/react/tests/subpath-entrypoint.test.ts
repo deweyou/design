@@ -4,6 +4,7 @@ import { resolve } from 'node:path';
 import { expect, test } from 'vite-plus/test';
 
 import * as buttonEntry from '../src/button/index.tsx';
+import * as codeBlockEntry from '../src/code-block/index.tsx';
 import * as fieldEntry from '../src/field/index.tsx';
 import * as markdownRenderEntry from '../src/markdown-render/index.tsx';
 import * as navEntry from '../src/nav/index.tsx';
@@ -31,6 +32,11 @@ test('components package exposes button, popover, and text subpath exports in pa
       default: './dist/button/index.js',
       import: './dist/button/index.js',
       types: './dist/button/index.d.ts',
+    },
+    './code-block': {
+      default: './dist/code-block/index.js',
+      import: './dist/code-block/index.js',
+      types: './dist/code-block/index.d.ts',
     },
     './field': {
       default: './dist/field/index.js',
@@ -73,6 +79,7 @@ test('components package exposes button, popover, and text subpath exports in pa
 test('components subpath entries match the root entry public contract', () => {
   expect(buttonEntry.Button).toBe(rootEntry.Button);
   expect(buttonEntry.IconButton).toBe(rootEntry.IconButton);
+  expect(codeBlockEntry.CodeBlock).toBe(rootEntry.CodeBlock);
   expect(fieldEntry.Field).toBe(rootEntry.Field);
   expect(markdownRenderEntry.MarkdownRender).toBe(rootEntry.MarkdownRender);
   expect(markdownRenderEntry.markdownRenderSizeOptions).toBe(rootEntry.markdownRenderSizeOptions);
@@ -96,6 +103,7 @@ test('components subpath entries expose their public API without requiring the p
     'buttonVariantOptions',
     'iconButtonVariantOptions',
   ]);
+  expect(Object.keys(codeBlockEntry).sort()).toEqual(['CodeBlock']);
   expect(Object.keys(fieldEntry).sort()).toEqual([
     'Field',
     'useFieldContext',

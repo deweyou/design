@@ -18,7 +18,15 @@ export {
 export { publicThemeTokens, semanticTokens } from './semantics';
 export { darkTheme, lightTheme, sharedColorTheme } from './themes';
 
-export const internalTypographyRoleNames = ['body', 'display', 'mono'] as const;
+export const internalTypographyRoleNames = [
+  'sans',
+  'serif',
+  'body',
+  'control',
+  'content',
+  'display',
+  'mono',
+] as const;
 export const internalColorFamilyNames = colorFamilyNames;
 export const internalColorPaletteStepNames = colorPaletteStepNames;
 export const internalTextPaletteFamilyNames = colorFamilyNames;

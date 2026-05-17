@@ -1,6 +1,6 @@
 import { useState, type MouseEvent } from 'react';
 
-import { Input, Text } from '@deweyou-design/react';
+import { CodeBlock, Input, Text } from '@deweyou-design/react';
 import { ExternalLinkIcon } from '@deweyou-design/react-icons';
 
 import {
@@ -44,7 +44,7 @@ export const ComponentsPage = () => {
           <Input
             id="components-search"
             label="Search components"
-            placeholder="Search components..."
+            placeholder="Search components…"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
@@ -94,7 +94,7 @@ const ComponentCard = ({ item }: ComponentCardProps) => (
       <span>{item.category}</span>
     </div>
     <p>{item.description}</p>
-    <code>{item.importSnippet}</code>
+    <CodeBlock size="sm">{item.importSnippet}</CodeBlock>
     <div className={styles.dimensions}>
       {item.dimensions.map((dimension) => (
         <span key={dimension}>{dimension}</span>

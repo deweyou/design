@@ -7,6 +7,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useId,
   useMemo,
   useRef,
 } from 'react';
@@ -66,6 +67,8 @@ export type SelectRootProps = {
   id?: string;
   label?: ReactNode;
   multiple?: boolean;
+  form?: string;
+  name?: string;
   placeholder?: string;
   required?: boolean;
   children: ReactNode;
@@ -103,12 +106,17 @@ const SelectRoot = ({
   id,
   label,
   multiple,
+  form,
+  name,
   placeholder,
   required,
   children,
   className,
   style,
 }: SelectRootProps) => {
+  const reactId = useId();
+  const fieldId = id ?? `select-field-${reactId.replace(/[^a-zA-Z0-9_-]/g, '')}`;
+  const labelId = `${fieldId}-label`;
   const items = useMemo(() => extractItems(children), [children]);
   const hasError = Boolean(error);
 
@@ -130,13 +138,13 @@ const SelectRoot = ({
   return (
     <Field.Root
       disabled={disabled}
-      hasDescription={hint !== undefined && !hasError}
+      hasDescription={hint !== undefined}
       hasError={hasError}
-      id={id}
+      id={fieldId}
       invalid={hasError}
       required={required}
     >
-      {label && <Field.Label>{label}</Field.Label>}
+      {label && <Field.Label id={labelId}>{label}</Field.Label>}
       <SelectContext.Provider value={ctxValue}>
         <ArkSelectRoot
           collection={collection}
@@ -144,7 +152,10 @@ const SelectRoot = ({
           defaultValue={defaultValue}
           onValueChange={handleValueChange}
           disabled={disabled}
+          form={form}
+          ids={{ label: label ? labelId : undefined, trigger: fieldId }}
           multiple={multiple}
+          name={name}
           className={classNames(styles.root, className)}
           style={style}
         >

@@ -64,7 +64,7 @@ export const Controlled: StoryObj = {
 };
 
 export const ManyPages: StoryObj = {
-  render: () => <Pagination count={500} pageSize={10} siblingCount={2} />,
+  render: () => <Pagination count={500} pageSize={10} siblingCount={0} />,
 };
 
 export const LinkVariant: StoryObj = {

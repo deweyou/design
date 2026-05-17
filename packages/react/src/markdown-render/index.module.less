@@ -15,7 +15,7 @@
 
   color: var(--ui-color-text);
   box-sizing: border-box;
-  font-family: var(--ui-font-body);
+  font-family: var(--ui-font-content);
   inline-size: 100%;
   max-inline-size: 100%;
   min-inline-size: 0;
@@ -50,7 +50,7 @@
 
 .paragraph {
   color: var(--ui-color-text);
-  font-family: var(--ui-font-body);
+  font-family: var(--ui-font-content);
   font-size: var(--ui-text-size-body);
   font-weight: var(--ui-font-weight-body);
   line-height: var(--ui-text-line-height-body);
@@ -180,76 +180,17 @@
 }
 
 .taskMarker {
-  align-items: center;
-  background: var(--ui-color-surface);
-  block-size: 1rem;
-  border: 1px solid var(--ui-color-border-strong);
-  border-radius: var(--ui-radius-rect);
-  display: inline-flex;
-  flex-shrink: 0;
-  inline-size: 1rem;
-  justify-content: center;
-  transition:
-    background 140ms ease,
-    border-color 140ms ease;
+  margin-block-start: 0.12em;
 }
 
-.taskMarker[data-checked='true'] {
-  background: var(--ui-color-brand-bg);
-  border-color: var(--ui-color-brand-bg);
-}
-
-.taskMarkerIndicator {
-  align-items: center;
-  color: var(--ui-color-text-on-brand);
-  display: none;
-  font-size: 0.75rem;
-  justify-content: center;
-  line-height: 1;
-}
-
-.taskMarker[data-checked='true'] .taskMarkerIndicator {
-  display: inline-flex;
-}
-
-.taskMarkerIndicator svg {
-  display: block;
-  flex-shrink: 0;
-}
-
-.taskMarkerState {
-  block-size: 1px;
-  clip: rect(0 0 0 0);
-  clip-path: inset(50%);
-  inline-size: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  white-space: nowrap;
-}
-
-.codeScrollArea {
-  background: color-mix(in srgb, var(--ui-color-text) 6%, transparent);
-  border: 1px solid var(--ui-color-border);
-  border-radius: var(--ui-radius-rect);
-  box-sizing: border-box;
-  margin-block: var(--markdown-block-gap);
-  max-block-size: var(--markdown-code-max-height);
-  max-inline-size: 100%;
-}
-
-.codeViewport {
-  max-block-size: var(--markdown-code-max-height);
-}
-
-.pre {
-  box-sizing: border-box;
-  inline-size: max-content;
-  margin: 0;
-  min-inline-size: 100%;
-  padding: 0.85rem 1rem;
-  padding-inline-end: 3rem;
+.codeBlock {
+  --code-block-attribute: var(--markdown-code-attribute);
+  --code-block-keyword: var(--markdown-code-keyword);
+  --code-block-literal: var(--markdown-code-literal);
+  --code-block-margin-block: var(--markdown-block-gap);
+  --code-block-max-height: var(--markdown-code-max-height);
+  --code-block-string: var(--markdown-code-string);
+  --code-block-title: var(--markdown-code-title);
 }
 
 .code,
@@ -274,69 +215,6 @@
 
 .code {
   background: transparent;
-  font-size: 0.88rem;
-  line-height: 1.65;
-  white-space: pre;
-}
-
-.codeLanguage {
-  background: color-mix(in srgb, var(--ui-color-surface) 90%, transparent);
-  border: 1px solid var(--ui-color-border);
-  border-radius: var(--ui-radius-rect);
-  color: var(--ui-color-text-muted);
-  font-family: var(
-    --ui-font-code,
-    ui-monospace,
-    SFMono-Regular,
-    Menlo,
-    Monaco,
-    Consolas,
-    monospace
-  );
-  font-size: 0.625rem;
-  inset-block-start: 0.45rem;
-  inset-inline-end: 0.5rem;
-  line-height: 1;
-  padding: 0.16rem 0.32rem;
-  position: absolute;
-  text-transform: uppercase;
-}
-
-.code :global(.hljs-keyword),
-.code :global(.hljs-selector-tag),
-.code :global(.hljs-built_in) {
-  color: var(--markdown-code-keyword);
-}
-
-.code :global(.hljs-string),
-.code :global(.hljs-regexp),
-.code :global(.hljs-template-variable) {
-  color: var(--markdown-code-string);
-}
-
-.code :global(.hljs-number),
-.code :global(.hljs-literal),
-.code :global(.hljs-symbol) {
-  color: var(--markdown-code-literal);
-}
-
-.code :global(.hljs-title),
-.code :global(.hljs-title.function_),
-.code :global(.hljs-title.class_) {
-  color: var(--markdown-code-title);
-}
-
-.code :global(.hljs-attr),
-.code :global(.hljs-attribute),
-.code :global(.hljs-property),
-.code :global(.hljs-variable) {
-  color: var(--markdown-code-attribute);
-}
-
-.code :global(.hljs-comment),
-.code :global(.hljs-quote) {
-  color: var(--ui-color-text-muted);
-  font-style: italic;
 }
 
 .tableScroller {

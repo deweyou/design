@@ -135,10 +135,10 @@ export const internalPrimitives = {
   color: {
     black: baseMonochrome.black,
     white: baseMonochrome.white,
-    // 暖白三档（自定义值，不走色板算法）
-    warmCanvas: '#fefcf8',
-    warmSurface: '#fffefb',
-    warmSurfaceRaised: '#ffffff',
+    // 中性白三档（自定义值，不走色板算法）
+    whiteCanvas: '#fafafa',
+    whiteSurface: '#ffffff',
+    whiteSurfaceRaised: '#ffffff',
     // 文字
     text: colorPalette.stone['950'],
     textMuted: colorPalette.stone['500'],
@@ -190,6 +190,9 @@ export const internalPrimitives = {
     heightXl: '3.5rem',
     touchTargetMin: '2.75rem',
   },
+  breakpoint: {
+    compact: '30rem',
+  },
   motion: {
     durationFast: '140ms',
     durationBase: '160ms',
@@ -208,13 +211,34 @@ export const internalPrimitives = {
     lgDark: '0 18px 40px rgba(0, 0, 0, 0.34)',
   },
   font: {
-    body: '"Source Han Serif CN Web", "Songti SC", "STSong", "SimSun", "NSimSun", serif',
+    sans: '"Source Han Sans SC Web", "PingFang SC", "Heiti SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif',
+    serif: '"Source Han Serif CN Web", "Songti SC", "STSong", "SimSun", "NSimSun", serif',
+    body: '"Source Han Sans SC Web", "PingFang SC", "Heiti SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif',
+    control:
+      '"Source Han Sans SC Web", "PingFang SC", "Heiti SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif',
+    content: '"Source Han Serif CN Web", "Songti SC", "STSong", "SimSun", "NSimSun", serif',
     display: '"Source Han Serif CN Web", "Songti SC", "STSong", "SimSun", "NSimSun", serif',
     mono: '"IBM Plex Mono", "SFMono-Regular", monospace',
     roles: {
+      sans: {
+        defaultWeightTier: 'body',
+        usageScope: 'UI chrome and dense component text',
+      },
+      serif: {
+        defaultWeightTier: 'body',
+        usageScope: 'editorial and long-form content',
+      },
       body: {
         defaultWeightTier: 'body',
-        usageScope: 'body text, buttons, forms, and data cells',
+        usageScope: 'default app text and data cells',
+      },
+      control: {
+        defaultWeightTier: 'emphasis',
+        usageScope: 'buttons, inputs, navigation, tooltips, and compact controls',
+      },
+      content: {
+        defaultWeightTier: 'body',
+        usageScope: 'markdown, prose, and rich text content',
       },
       display: {
         defaultWeightTier: 'title',
@@ -226,8 +250,10 @@ export const internalPrimitives = {
       },
     },
     fallbacks: {
-      macos: ['Songti SC', 'STSong'],
-      windows: ['SimSun', 'NSimSun'],
+      sansMacos: ['PingFang SC', 'Heiti SC'],
+      sansWindows: ['Microsoft YaHei'],
+      serifMacos: ['Songti SC', 'STSong'],
+      serifWindows: ['SimSun', 'NSimSun'],
     },
     weights: {
       body: '400',

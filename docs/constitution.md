@@ -97,7 +97,7 @@ ghost 和 link variant 不支持 shape prop。
 | hover 混色  | `color-mix(in srgb, <color> 6–12%, transparent)`                                                     | 直接改背景色    |
 | active 位移 | `translateY(1px)`                                                                                    | translateY(2px) |
 
-**字体族**：Source Han Serif CN Web → Songti SC → STSong → SimSun → NSimSun → serif（body 与 display 同族）。
+**字体族**：body/control 使用 Source Han Sans SC Web → PingFang SC → Heiti SC → Microsoft YaHei → Noto Sans CJK SC → sans-serif；content/display 使用 Source Han Serif CN Web → Songti SC → STSong → SimSun → NSimSun → serif。
 
 **圆角档位**：rect（0）/ float（4px）/ auto（8px）/ pill（999px）。
 

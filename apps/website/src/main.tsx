@@ -10,6 +10,7 @@ import 'virtual:deweyou-website-fonts.css';
 import { Navbar } from './components/navbar';
 import { ScrollToTop } from './components/scroll-to-top';
 import { ComponentsPage } from './pages/components';
+import { FontsPage } from './pages/fonts';
 import { HomePage } from './pages/home';
 import { IconsPage } from './pages/icons';
 import './style.css';
@@ -34,6 +35,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: 'components', element: <ComponentsPage /> },
+      { path: 'fonts', element: <FontsPage /> },
       { path: 'icons', element: <IconsPage /> },
     ],
   },

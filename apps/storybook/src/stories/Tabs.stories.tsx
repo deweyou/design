@@ -457,7 +457,14 @@ export const MenuItems: StoryObj = {
 
 export const OverflowScroll: StoryObj = {
   render: () => (
-    <div style={{ ...storyStyles.card, overflow: 'hidden', width: '480px' }}>
+    <div
+      style={{
+        ...storyStyles.card,
+        maxWidth: '100%',
+        overflow: 'hidden',
+        width: 'min(30rem, 100%)',
+      }}
+    >
       <div style={storyStyles.label}>overflowMode="scroll" — 20 tabs in 480 px container</div>
       <Tabs defaultValue="t1">
         <TabList>
@@ -492,7 +499,14 @@ export const OverflowScroll: StoryObj = {
 
 export const OverflowCollapse: StoryObj = {
   render: () => (
-    <div style={{ ...storyStyles.card, overflow: 'hidden', width: '480px' }}>
+    <div
+      style={{
+        ...storyStyles.card,
+        maxWidth: '100%',
+        overflow: 'hidden',
+        width: 'min(30rem, 100%)',
+      }}
+    >
       <div style={storyStyles.label}>overflowMode="collapse" — 20 tabs in 480 px container</div>
       <Tabs defaultValue="t1" overflowMode="collapse">
         <TabList>

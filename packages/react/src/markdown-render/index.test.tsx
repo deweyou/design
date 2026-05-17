@@ -53,6 +53,7 @@ describe('MarkdownRender', () => {
     expect(markup).toContain('data-markdown-node="ol"');
     expect(markup).toContain('data-markdown-node="li"');
     expect(markup).toContain('data-markdown-task-marker="true"');
+    expect(markup).toContain('data-ui-checkbox-mark=""');
     expect(markup).toContain('data-checked="true"');
     expect(markup).toContain('data-checked="false"');
     expect(markup).toContain('data-markdown-node="table"');
@@ -91,6 +92,7 @@ describe('MarkdownRender', () => {
     expect(markup).toContain('data-markdown-node="img"');
     expect(markup).toContain('alt="Alt text"');
     expect(markup).toContain('data-markdown-node="pre"');
+    expect(markup).toContain('data-ui-code-block="true"');
     expect(markup).toContain('data-language="mermaid"');
     expect(markup).toContain('graph TD');
   });
@@ -262,6 +264,16 @@ describe('MarkdownRender', () => {
     expect(markup).toContain('Completed task');
     expect(markup).toContain('Incomplete task');
     expect(markup).not.toContain('role="checkbox"');
+  });
+
+  it('renders markdown images with lazy loading defaults', () => {
+    const markup = renderMarkdown({
+      value: '![Diagram](/diagram.png)',
+    });
+
+    expect(markup).toContain('alt="Diagram"');
+    expect(markup).toContain('loading="lazy"');
+    expect(markup).toContain('decoding="async"');
   });
 
   it('marks fenced code without a language as block code', () => {

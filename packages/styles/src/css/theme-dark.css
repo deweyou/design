@@ -30,7 +30,17 @@
   --ui-radius-float: 4px;
   --ui-radius-pill: 999px;
   --ui-shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.34);
-  --ui-font-body: 'Source Han Serif CN Web', 'Songti SC', 'STSong', 'SimSun', 'NSimSun', serif;
+  --ui-font-sans:
+    'Source Han Sans SC Web', 'PingFang SC', 'Heiti SC', 'Microsoft YaHei', 'Noto Sans CJK SC',
+    sans-serif;
+  --ui-font-serif: 'Source Han Serif CN Web', 'Songti SC', 'STSong', 'SimSun', 'NSimSun', serif;
+  --ui-font-body:
+    'Source Han Sans SC Web', 'PingFang SC', 'Heiti SC', 'Microsoft YaHei', 'Noto Sans CJK SC',
+    sans-serif;
+  --ui-font-control:
+    'Source Han Sans SC Web', 'PingFang SC', 'Heiti SC', 'Microsoft YaHei', 'Noto Sans CJK SC',
+    sans-serif;
+  --ui-font-content: 'Source Han Serif CN Web', 'Songti SC', 'STSong', 'SimSun', 'NSimSun', serif;
   --ui-font-display: 'Source Han Serif CN Web', 'Songti SC', 'STSong', 'SimSun', 'NSimSun', serif;
   --ui-font-mono: 'IBM Plex Mono', 'SFMono-Regular', monospace;
   --ui-font-weight-body: 400;

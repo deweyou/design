@@ -64,7 +64,7 @@ test('textarea renders error message and applies error classes when error prop i
   expect(markup).toContain('aria-invalid="true"');
 });
 
-test('textarea prefers error text over hint for aria-describedby', () => {
+test('textarea keeps hint and error text in aria-describedby when invalid', () => {
   const markup = renderMarkup({
     error: 'Message is required.',
     hint: 'Optional hint.',
@@ -72,8 +72,7 @@ test('textarea prefers error text over hint for aria-describedby', () => {
   });
 
   expect(markup).toContain('id="message-error"');
-  expect(markup).toContain('aria-describedby="message-error"');
-  expect(markup).not.toContain('aria-describedby="message-description"');
+  expect(markup).toContain('aria-describedby="message-description message-error"');
 });
 
 test('textarea applies disabled class and disabled attribute when disabled is true', () => {

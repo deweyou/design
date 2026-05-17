@@ -1,13 +1,13 @@
 import type { MouseEvent, ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { Button, Text } from '@deweyou-design/react';
+import { Button, CodeBlock, Text } from '@deweyou-design/react';
 import { ArrowRightIcon, ExternalLinkIcon, LogoGithubIcon } from '@deweyou-design/react-icons';
 
 import styles from './home.module.less';
 
 const PRINCIPLES = [
-  ['Serif Identity', 'Serif type is the interface signature across body and display text.'],
+  ['Split Typography', 'Sans handles controls while serif keeps content and display identity.'],
   ['Semantic Color', 'Components expose neutral, primary, and danger before decorative palettes.'],
   ['Line Before Shadow', 'Borders and spacing carry structure; shadow is reserved for elevation.'],
   [
@@ -50,8 +50,9 @@ export const HomePage = () => {
         <p className={styles.eyebrow}>Component Library · Design Manual</p>
         <h1>Deweyou Design</h1>
         <Text className={styles.lead} variant="body">
-          A serif-led React component library with crisp lines, quiet light and dark themes, and a
-          small semantic color model limited to neutral, primary, and danger.
+          A React component library with crisp lines, sans-first controls, serif content rhythm,
+          quiet light and dark themes, and a small semantic color model limited to neutral, primary,
+          and danger.
         </Text>
         <div className={styles.coverActions}>
           <Button
@@ -78,9 +79,11 @@ export const HomePage = () => {
       <SpecSection meta="install · import · links" number="01" title="Get Started">
         <div className={styles.startBody}>
           <div className={styles.startGrid}>
-            <code>npm i @deweyou-design/react @deweyou-design/styles</code>
-            <code>import '@deweyou-design/styles/theme.css';</code>
-            <code>import {'{ Button, Input }'} from '@deweyou-design/react';</code>
+            <CodeBlock size="sm">npm i @deweyou-design/react @deweyou-design/styles</CodeBlock>
+            <CodeBlock size="sm">import '@deweyou-design/styles/theme.css';</CodeBlock>
+            <CodeBlock size="sm">
+              import {'{ Button, Input }'} from '@deweyou-design/react';
+            </CodeBlock>
           </div>
           <nav className={styles.startLinks} aria-label="Get started resources">
             <Button
@@ -140,13 +143,13 @@ export const HomePage = () => {
         </div>
       </SpecSection>
 
-      <SpecSection meta="source han serif cn · subset loading" number="04" title="Typography">
+      <SpecSection meta="source han sans sc · source han serif cn" number="04" title="Typography">
         <div className={styles.typeSpec}>
           <Text variant="h1">Design System</Text>
-          <Text variant="h3">Serif is interface identity, not decoration.</Text>
+          <Text variant="h3">Sans for controls, serif for content.</Text>
           <Text variant="body">
-            Website uses a font subset path so the design language stays faithful without loading
-            full original font files on first paint.
+            Website uses a font subset path for first paint, with an explicit idle full-font
+            fallback available for dynamic text.
           </Text>
         </div>
       </SpecSection>

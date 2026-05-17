@@ -1,6 +1,7 @@
 import { type CSSProperties, type ReactNode } from 'react';
 import {
   SwitchRoot as ArkSwitchRoot,
+  SwitchControl as ArkSwitchControl,
   SwitchThumb as ArkSwitchThumb,
   SwitchLabel as ArkSwitchLabel,
   SwitchHiddenInput as ArkSwitchHiddenInput,
@@ -20,29 +21,27 @@ export type SwitchProps = {
   value?: string;
   className?: string;
   style?: CSSProperties;
+  'aria-label'?: string;
+  'aria-labelledby'?: string;
 };
 
-const SwitchTrack = ({ className }: { className?: string }) => {
+const SwitchHiddenControl = ({
+  ariaLabel,
+  ariaLabelledBy,
+}: {
+  ariaLabel?: string;
+  ariaLabelledBy?: string;
+}) => {
   const ctx = useSwitchContext();
+
   return (
-    <span
-      role="switch"
+    <ArkSwitchHiddenInput
       aria-checked={ctx.checked}
       aria-disabled={ctx.disabled ? true : undefined}
-      data-state={ctx.checked ? 'checked' : 'unchecked'}
-      className={className}
-      onClick={(e) => {
-        // Prevent the label's default htmlFor activation (would double-toggle the hidden input).
-        // stopPropagation keeps the event from reaching ArkSwitchRoot's onClick as well.
-        e.preventDefault();
-        e.stopPropagation();
-        if (!ctx.disabled) {
-          ctx.toggleChecked();
-        }
-      }}
-    >
-      <ArkSwitchThumb className={styles.thumb} />
-    </span>
+      aria-label={ariaLabel}
+      aria-labelledby={ariaLabelledBy}
+      role="switch"
+    />
   );
 };
 
@@ -56,6 +55,8 @@ export const Switch = ({
   value,
   className,
   style,
+  'aria-label': ariaLabel,
+  'aria-labelledby': ariaLabelledBy,
 }: SwitchProps) => {
   const handleCheckedChange = (details: { checked: boolean }) => {
     onCheckedChange?.(details.checked);
@@ -69,11 +70,18 @@ export const Switch = ({
       disabled={disabled}
       name={name}
       value={value}
+      aria-label={ariaLabel}
+      aria-labelledby={ariaLabelledBy}
       className={classNames(styles.root, className)}
       style={style}
     >
-      <ArkSwitchHiddenInput />
-      <SwitchTrack className={styles.control} />
+      <SwitchHiddenControl
+        ariaLabel={children === undefined ? ariaLabel : undefined}
+        ariaLabelledBy={children === undefined ? ariaLabelledBy : undefined}
+      />
+      <ArkSwitchControl className={styles.control}>
+        <ArkSwitchThumb className={styles.thumb} />
+      </ArkSwitchControl>
       {children !== undefined && (
         <ArkSwitchLabel className={styles.label}>{children}</ArkSwitchLabel>
       )}

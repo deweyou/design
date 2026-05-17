@@ -16,15 +16,15 @@
   display: flex;
   gap: 12px;
   left: 0;
-  right: 0;
   margin-inline: auto;
+  max-width: var(--ui-breakpoint-compact);
   min-width: 240px;
   opacity: var(--opacity, 1);
   padding: 12px 16px;
+  right: 0;
   transform: translateY(var(--y, 0));
   transition: transform var(--ui-motion-duration-slow) var(--ui-motion-ease-standard);
-  width: 38vw;
-  max-width: 480px;
+  width: calc(100vw - 32px - env(safe-area-inset-left) - env(safe-area-inset-right));
 }
 
 /* Prevent stray clicks on a closing toast from re-triggering actions */

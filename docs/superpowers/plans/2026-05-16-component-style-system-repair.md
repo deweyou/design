@@ -1019,3 +1019,80 @@ git commit -m "fix: address component style qa findings"
 ```
 
 If no source changes were required in Task 6, do not create an empty commit.
+
+## Task 7: Follow-up WIG and Mobile Review Repairs
+
+**Files:**
+
+- Modify: `packages/styles/src/less/bridge.less`
+- Modify: `packages/react/src/field/index.tsx`
+- Modify: `packages/react/src/input/index.tsx`
+- Modify: `packages/react/src/textarea/index.tsx`
+- Modify: `packages/react/src/radio-group/index.tsx`
+- Modify: `packages/react/src/checkbox/index.tsx`
+- Modify: `packages/react/src/switch/index.tsx`
+- Modify: `packages/react/src/select/index.tsx`
+- Modify: `packages/react/src/menu/index.module.less`
+- Modify: `packages/react/src/select/index.module.less`
+- Modify: `packages/react/src/tabs/index.module.less`
+- Modify: `packages/react/src/scroll-area/index.module.less`
+- Modify: `packages/react/src/dialog/index.module.less`
+- Modify: `packages/react/src/nav-overlay/index.module.less`
+- Modify: `packages/react/src/toast/index.module.less`
+- Modify: `packages/react/src/spinner/index.module.less`
+- Modify: `packages/react/src/button/index.module.less`
+- Modify: `packages/react/src/popover/index.module.less`
+- Modify: `packages/react/src/pagination/index.module.less`
+- Modify: `packages/react/src/card/index.module.less`
+- Modify: `packages/react/src/markdown-render/index.tsx`
+- Modify: `apps/storybook/src/stories/*`
+- Modify: `apps/website/src/data/component-catalog.tsx`
+- Modify: `docs/design/system.md`
+
+- [ ] **Step 1: Add responsive standard to bridge**
+
+Add:
+
+```less
+@ui-breakpoint-compact: 30rem;
+```
+
+Use this for component-level narrow viewport rules. Do not add private `480px` / `500px` component breakpoints.
+
+- [ ] **Step 2: Repair accessible-name and form semantics**
+
+Add `aria-label` / `aria-labelledby` support to label-less Checkbox and Switch usage, and add `name` / `form` support to RadioGroup and Select. Switch should keep the visual track decorative while the hidden input exposes `role="switch"`, `aria-checked`, and form semantics.
+
+- [ ] **Step 3: Preserve helper and error text**
+
+Change `Field.Root` so invalid fields with both helper text and error text emit:
+
+```html
+aria-describedby="field-description field-error"
+```
+
+Input, Textarea, and Select should keep `hasDescription` true whenever a hint exists, even during an error state.
+
+- [ ] **Step 4: Repair mobile/touch defaults**
+
+Menu items, Select triggers/items, and Tabs triggers should use `--ui-touch-target-min` by default. ScrollArea viewport, Card anchors, and Pagination buttons should have visible `:focus-visible` affordances.
+
+- [ ] **Step 5: Repair overlay mobile constraints**
+
+Dialog, NavOverlay, Toast, Select, Menu, and Popover should be safe-area-aware and scroll-contained where applicable. Reduced motion should stop infinite rotation for Spinner and Button loading indicators.
+
+- [ ] **Step 6: Repair demos that teach the wrong defaults**
+
+Storybook and website catalog examples should use visible labels or accessible names, avoid fixed desktop-only widths, and use `width: min(30rem, 100%)` / wrapping layouts for mobile examples.
+
+- [ ] **Step 7: Verify**
+
+Run:
+
+```bash
+vp check
+vp test
+vp run storybook#test
+```
+
+Expected: all commands pass after starting Storybook for the e2e command.

@@ -23,10 +23,14 @@ export type RadioGroupRootProps = {
   defaultValue?: string;
   onValueChange?: (value: string) => void;
   disabled?: boolean;
+  form?: string;
+  name?: string;
   orientation?: 'horizontal' | 'vertical';
   children: ReactNode;
   className?: string;
   style?: CSSProperties;
+  'aria-label'?: string;
+  'aria-labelledby'?: string;
 };
 
 export type RadioGroupItemProps = {
@@ -42,10 +46,14 @@ const RadioGroupRoot = ({
   defaultValue,
   onValueChange,
   disabled,
+  form,
+  name,
   orientation = 'vertical',
   children,
   className,
   style,
+  'aria-label': ariaLabel,
+  'aria-labelledby': ariaLabelledBy,
 }: RadioGroupRootProps) => {
   const handleValueChange = (details: RadioGroupValueChangeDetails) => {
     if (details.value !== null) {
@@ -60,7 +68,11 @@ const RadioGroupRoot = ({
         defaultValue={defaultValue}
         onValueChange={handleValueChange}
         disabled={disabled}
+        form={form}
+        name={name}
         orientation={orientation}
+        aria-label={ariaLabel}
+        aria-labelledby={ariaLabelledBy}
         className={classNames(
           styles.root,
           orientation === 'horizontal' ? styles.horizontal : styles.vertical,

@@ -7,6 +7,10 @@
 @menu-z-index: var(--ui-z-dropdown);
 @menu-min-width: 10rem;
 @menu-max-width: min(20rem, calc(100vw - 32px));
+@menu-max-height: min(
+  24rem,
+  calc(100vh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom))
+);
 @menu-padding-block: 0.25rem;
 @menu-item-padding-block: 0.45rem;
 @menu-item-padding-inline: 0.75rem;
@@ -22,11 +26,17 @@
   border: 1px solid var(--ui-color-border);
   box-shadow: var(--ui-shadow-md);
   color: var(--ui-color-text);
+  max-block-size: @menu-max-height;
   max-inline-size: @menu-max-width;
   outline: none;
-  overflow: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   position: relative;
   z-index: @menu-z-index;
+}
+
+.content:focus-visible {
+  .focus-ring();
 }
 
 // Enter animation (default: top/bottom)
@@ -170,6 +180,7 @@
   gap: @menu-item-gap;
   line-height: 1.4;
   margin-inline: 0.25rem;
+  min-block-size: var(--ui-touch-target-min);
   outline: none;
   transition:
     background var(--ui-motion-duration-fast) var(--ui-motion-ease-exit),
@@ -338,6 +349,7 @@
   .item {
     border-radius: var(--ui-radius-float);
     font-size: 0.8125rem;
+    min-block-size: var(--ui-touch-target-min);
     padding-block: 0.28rem;
     padding-inline: 0.5rem;
   }
@@ -356,6 +368,7 @@
   .item {
     border-radius: var(--ui-radius-float);
     font-size: 0.875rem;
+    min-block-size: var(--ui-touch-target-min);
     padding-block: 0.35rem;
     padding-inline: 0.625rem;
   }
@@ -374,6 +387,7 @@
   .item {
     border-radius: var(--ui-radius-float);
     font-size: 1rem;
+    min-block-size: var(--ui-touch-target-min);
     padding-block: 0.45rem;
     padding-inline: 0.75rem;
   }
