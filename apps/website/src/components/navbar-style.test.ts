@@ -20,6 +20,13 @@ test('navbar controls use the shared touch target floor', () => {
   expect(navbarStyles).toContain('block-size: var(--ui-touch-target-min);');
 });
 
+test('desktop navbar allows the Explore menu to overflow the link row', () => {
+  const linksRule = navbarStyles.match(/\.links\s*\{[\s\S]*?\n\}/)?.[0] ?? '';
+
+  expect(linksRule).toContain('overflow: visible');
+  expect(linksRule).not.toContain('overflow-x: auto');
+});
+
 test('mobile document offset matches the compact navbar height', () => {
   const mobileGlobalRule =
     globalStyles.match(/@media \(max-width: 760px\) \{[\s\S]*?\n\}/)?.[0] ?? '';

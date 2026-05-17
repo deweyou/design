@@ -7,10 +7,16 @@ import { afterAll, afterEach, beforeAll, test, vi } from 'vite-plus/test';
 import { expect } from '../test-setup';
 
 vi.mock('@deweyou-design/react-icons', () => ({
+  CheckIcon: () => <span aria-hidden data-testid="mock-check-icon" />,
+  ChevronDownIcon: () => <span aria-hidden data-testid="mock-chevron-down-icon" />,
   ExternalLinkIcon: () => <span aria-hidden data-testid="mock-external-link-icon" />,
+  EyeIcon: () => <span aria-hidden data-testid="mock-eye-icon" />,
+  EditIcon: () => <span aria-hidden data-testid="mock-edit-icon" />,
+  FileMarkdownIcon: () => <span aria-hidden data-testid="mock-file-markdown-icon" />,
   LogoGithubIcon: () => <span aria-hidden data-testid="mock-github-icon" />,
   MenuApplicationIcon: () => <span aria-hidden data-testid="mock-menu-icon" />,
   MenuIcon: () => <span aria-hidden data-testid="mock-nav-menu-icon" />,
+  MinusIcon: () => <span aria-hidden data-testid="mock-minus-icon" />,
   MoonIcon: () => <span aria-hidden data-testid="mock-moon-icon" />,
   SunnyIcon: () => <span aria-hidden data-testid="mock-sunny-icon" />,
   XIcon: () => <span aria-hidden data-testid="mock-x-icon" />,
@@ -59,16 +65,18 @@ const LocationProbe = () => {
   return <output aria-label="current path">{location.pathname}</output>;
 };
 
-test('renders the compact top navigation without a Theme destination', () => {
+test('renders the compact top navigation with grouped explore destinations', () => {
   renderNavbar();
 
   expect(screen.getByRole('link', { name: 'Deweyou Design' })).toBeInTheDocument();
   expect(screen.getByRole('link', { name: 'Overview' })).toBeInTheDocument();
-  expect(screen.getByRole('link', { name: 'Components' })).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: 'Explore' })).toBeInTheDocument();
   expect(screen.getByRole('link', { name: 'AI' })).toBeInTheDocument();
-  expect(screen.getByRole('link', { name: 'Fonts' })).toBeInTheDocument();
-  expect(screen.getByRole('link', { name: 'Icons' })).toBeInTheDocument();
   expect(screen.getByRole('link', { name: 'Storybook' })).toBeInTheDocument();
+  expect(screen.queryByRole('link', { name: 'Components' })).not.toBeInTheDocument();
+  expect(screen.queryByRole('link', { name: 'Fonts' })).not.toBeInTheDocument();
+  expect(screen.queryByRole('link', { name: 'Icons' })).not.toBeInTheDocument();
+  expect(screen.queryByRole('link', { name: 'Markdown' })).not.toBeInTheDocument();
   expect(screen.queryByRole('tab', { name: 'GitHub', hidden: true })).not.toBeInTheDocument();
   expect(screen.queryByText('Theme')).not.toBeInTheDocument();
   expect(screen.queryByText('v1.0')).not.toBeInTheDocument();
@@ -86,7 +94,7 @@ test('marks Overview active on the home route', () => {
 
 test('marks Components active on /components', () => {
   renderNavbar('/components');
-  expect(screen.getByRole('link', { name: 'Components' })).toHaveAttribute('aria-current', 'page');
+  expect(screen.getByRole('button', { name: 'Explore' })).toHaveAttribute('aria-current', 'page');
 });
 
 test('marks AI active on /ai', () => {
@@ -96,12 +104,41 @@ test('marks AI active on /ai', () => {
 
 test('marks Icons active on /icons', () => {
   renderNavbar('/icons');
-  expect(screen.getByRole('link', { name: 'Icons' })).toHaveAttribute('aria-current', 'page');
+  expect(screen.getByRole('button', { name: 'Explore' })).toHaveAttribute('aria-current', 'page');
 });
 
 test('marks Fonts active on /fonts', () => {
   renderNavbar('/fonts');
-  expect(screen.getByRole('link', { name: 'Fonts' })).toHaveAttribute('aria-current', 'page');
+  expect(screen.getByRole('button', { name: 'Explore' })).toHaveAttribute('aria-current', 'page');
+});
+
+test('marks Markdown active on /markdown-render', () => {
+  renderNavbar('/markdown-render');
+  expect(screen.getByRole('button', { name: 'Explore' })).toHaveAttribute('aria-current', 'page');
+});
+
+test('explore menu exposes grouped destinations', async () => {
+  renderNavbar('/fonts');
+
+  fireEvent.click(screen.getByRole('button', { name: 'Explore' }));
+
+  expect(await screen.findByRole('menuitem', { name: 'Components' })).toBeInTheDocument();
+  expect(screen.getByRole('menuitem', { name: 'Fonts' })).toBeInTheDocument();
+  expect(screen.getByRole('menuitem', { name: 'Icons' })).toBeInTheDocument();
+  expect(screen.getByRole('menuitem', { name: 'Markdown' })).toBeInTheDocument();
+});
+
+test('explore menu closes when clicking outside the menu', async () => {
+  renderNavbar('/fonts');
+
+  fireEvent.click(screen.getByRole('button', { name: 'Explore' }));
+  expect(await screen.findByRole('menuitem', { name: 'Markdown' })).toBeInTheDocument();
+
+  fireEvent.pointerDown(document.body);
+
+  await waitFor(() => {
+    expect(screen.queryByRole('menuitem', { name: 'Markdown' })).not.toBeInTheDocument();
+  });
 });
 
 test('route links preserve React Router client navigation', async () => {
@@ -112,10 +149,27 @@ test('route links preserve React Router client navigation', async () => {
     </MemoryRouter>,
   );
 
-  fireEvent.click(screen.getByRole('link', { name: 'Components' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Explore' }));
+  fireEvent.click(await screen.findByRole('menuitem', { name: 'Markdown' }));
 
   return waitFor(() => {
-    expect(screen.getByLabelText('current path')).toHaveTextContent('/components');
+    expect(screen.getByLabelText('current path')).toHaveTextContent('/markdown-render');
+  });
+});
+
+test('explore menu preserves React Router client navigation', async () => {
+  render(
+    <MemoryRouter initialEntries={['/']}>
+      <Navbar mode="light" onToggleMode={() => undefined} />
+      <LocationProbe />
+    </MemoryRouter>,
+  );
+
+  fireEvent.click(screen.getByRole('button', { name: 'Explore' }));
+  fireEvent.click(await screen.findByRole('menuitem', { name: 'Icons' }));
+
+  return waitFor(() => {
+    expect(screen.getByLabelText('current path')).toHaveTextContent('/icons');
   });
 });
 

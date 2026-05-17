@@ -36,15 +36,13 @@
   display: flex;
   justify-content: center;
   min-width: 0;
-  overflow-x: auto;
+  overflow: visible;
   scrollbar-width: none;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
 }
 
 .routeNav {
+  align-items: center;
+  display: flex;
   flex: 1 1 auto;
   justify-content: center;
   max-width: 100%;
@@ -53,23 +51,10 @@
 }
 
 .routeNavList {
+  align-items: center;
+  display: flex;
   gap: 4px;
   justify-content: center;
-
-  :global(a) {
-    color: var(--ui-color-text-muted);
-    flex-shrink: 0;
-    font-family: var(--ui-font-display);
-    font-size: 13px;
-    min-block-size: var(--ui-touch-target-min);
-    padding: 0 10px;
-    text-decoration: none;
-
-    &:hover,
-    &[data-active] {
-      color: var(--ui-color-text);
-    }
-  }
 }
 
 .routeNavList {
@@ -78,10 +63,151 @@
   }
 }
 
+.routeLink,
+.routeMenuTrigger {
+  align-items: center;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-radius: var(--ui-radius-float);
+  color: var(--ui-color-text-muted);
+  cursor: pointer;
+  display: inline-flex;
+  flex-shrink: 0;
+  font-family: var(--ui-font-display);
+  font-size: 13px;
+  gap: 5px;
+  min-block-size: var(--ui-touch-target-min);
+  padding: 0 10px;
+  position: relative;
+  text-decoration: none;
+
+  &:hover,
+  &[data-active] {
+    color: var(--ui-color-text);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ui-color-focus-ring);
+    outline-offset: 2px;
+  }
+
+  &[data-active]::after {
+    background: var(--ui-color-brand-bg);
+    bottom: 0;
+    content: '';
+    height: 2px;
+    left: 6px;
+    position: absolute;
+    right: 6px;
+  }
+}
+
+.routeMenu {
+  flex-shrink: 0;
+  position: relative;
+}
+
+.routeMenuContent {
+  background: var(--ui-color-surface);
+  border: 1px solid var(--ui-color-border);
+  border-radius: var(--ui-radius-float);
+  box-shadow: var(--ui-shadow-md);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  inset-block-start: calc(100% + 6px);
+  inset-inline-start: 50%;
+  min-inline-size: 152px;
+  padding: 6px;
+  position: absolute;
+  transform: translateX(-50%);
+  z-index: 24;
+}
+
+.routeMenuItem {
+  border-radius: var(--ui-radius-rect);
+  color: var(--ui-color-text-muted);
+  font-family: var(--ui-font-control);
+  font-size: 0.875rem;
+  padding: 9px 10px;
+  text-decoration: none;
+
+  &:hover,
+  &[data-active] {
+    background: color-mix(in srgb, var(--ui-color-text) 8%, transparent);
+    color: var(--ui-color-text);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ui-color-focus-ring);
+    outline-offset: 2px;
+  }
+}
+
 .routeNavLabel {
   align-items: center;
   display: inline-flex;
   gap: 5px;
+}
+
+.mobileNav {
+  display: none;
+}
+
+.mobileNavContent {
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ui-space-xl);
+  overflow: hidden;
+  padding-block: 72px 0;
+  padding-inline: var(--ui-space-lg);
+}
+
+.mobileNavList {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+  overflow-y: auto;
+  padding-block-end: calc(var(--ui-space-xl) + 72px);
+  scroll-padding-block-end: calc(var(--ui-space-xl) + 72px);
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.mobileNavLink {
+  align-items: center;
+  border-radius: var(--ui-radius-float);
+  color: var(--ui-color-text-muted);
+  display: flex;
+  font-family: var(--ui-font-control);
+  font-size: 1.375rem;
+  justify-content: flex-start;
+  min-block-size: var(--ui-control-height-lg);
+  padding: 10px 12px;
+  text-decoration: none;
+
+  &:hover,
+  &[data-active] {
+    color: var(--ui-color-text);
+  }
+}
+
+.mobileNavCloseButton {
+  block-size: var(--ui-touch-target-min);
+  bottom: max(var(--ui-space-lg), env(safe-area-inset-bottom));
+  inline-size: var(--ui-touch-target-min);
+  left: 50%;
+  position: fixed;
+  right: auto;
+  top: auto;
+  transform: translateX(-50%);
 }
 
 .actions {
@@ -118,6 +244,18 @@
     grid-column: 2;
     justify-content: flex-end;
     overflow: visible;
+  }
+
+  .routeNav {
+    justify-content: flex-end;
+  }
+
+  .routeNavList {
+    display: none;
+  }
+
+  .mobileNav {
+    display: block;
   }
 
   .actions {
