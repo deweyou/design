@@ -1,27 +1,27 @@
-# 组件开发范式：基于 Ark UI 的行为基础层
+# Component Development Pattern: Ark UI Behavior Layer
 
-交互型组件（含浮层、选择器、对话框、菜单等）必须基于 Ark UI 原语（`@ark-ui/react`）构建，而非自行实现行为逻辑。
+Interactive components, including floating surfaces, selectors, dialogs, and menus, must be built on Ark UI primitives from `@ark-ui/react` instead of hand-rolled behavior logic.
 
-## 判断准则
+## Decision Rules
 
-- Ark UI 有对应组件（Popover、Dialog、Menu、Tooltip 等）→ 必须使用
-- Ark UI 无对应覆盖（纯展示组件、特定业务逻辑）→ 可自行实现，需在 spec/plan 中说明原因
+- Ark UI has a matching component, such as Popover, Dialog, Menu, or Tooltip: use Ark UI.
+- Ark UI does not cover the need, such as presentational components or specific business logic: custom implementation is allowed, but explain the reason in the spec or plan.
 
-## 实现约定
+## Implementation Rules
 
-1. 用 Ark UI 原语提供行为（状态机、ARIA、焦点管理、定位）
-2. 所有样式通过 CSS Modules（Less）+ 设计 token 实现，不使用 Ark UI 默认样式
-3. 保持公开 API 与 Ark UI 原语解耦（不直接透传 Ark UI props 给消费方）
-4. 如需在 Ark UI 不支持的触发类型上叠加行为，使用受控模式（`open` prop）桥接
+1. Use Ark UI primitives for behavior: state machines, ARIA, focus management, and positioning.
+2. Implement all styling through CSS Modules with Less and design tokens. Do not use Ark UI default styles.
+3. Keep the public API decoupled from Ark UI primitives. Do not pass Ark UI props straight through to consumers as the public contract.
+4. When a trigger mode is not directly supported by Ark UI, bridge the behavior with controlled mode through the `open` prop.
 
-参考实现：`packages/react/src/popover/index.tsx`
+Reference implementation: `packages/react/src/popover/index.tsx`.
 
-## 开发工具
+## Development Tooling
 
-实现基于 Ark UI 的组件前，需在 Claude Code 中安装 Ark UI MCP Server：
+Before implementing Ark UI-backed components, install the Ark UI MCP Server in Claude Code:
 
 ```bash
 claude mcp add ark-ui -- npx -y @ark-ui/mcp
 ```
 
-安装后可在对话中直接查阅 Ark UI 组件 API、props 和用法。
+After installation, use the conversation to inspect Ark UI component APIs, props, and usage patterns.

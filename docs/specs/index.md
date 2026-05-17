@@ -1,55 +1,55 @@
-# Feature Specs 索引
+# Feature Specs Index
 
-所有迭代记录按时间倒序排列。每个条目链接到对应的 spec 目录；完成实现后应补充 archive.md。
+All iteration records are listed in reverse chronological order. Each entry links to its spec directory. Add `archive.md` after implementation is complete.
 
 ---
 
 ## 2026-05
 
-| 分支                                                                               | 类型 | 说明                                                                                            |
-| ---------------------------------------------------------------------------------- | ---- | ----------------------------------------------------------------------------------------------- |
-| [20260509-component-coverage-roadmap](20260509-component-coverage-roadmap/spec.md) | docs | 规划下一阶段组件覆盖：Fieldset、InputGroup、Alert、Empty、Kbd、ButtonGroup、Avatar、Collapsible |
+| Branch                                                                             | Type | Description                                                                                                   |
+| ---------------------------------------------------------------------------------- | ---- | ------------------------------------------------------------------------------------------------------------- |
+| [20260509-component-coverage-roadmap](20260509-component-coverage-roadmap/spec.md) | docs | Plan next-stage component coverage: Fieldset, InputGroup, Alert, Empty, Kbd, ButtonGroup, Avatar, Collapsible |
 
 ## 2026-04
 
-| 分支                                                                          | 类型     | 说明                                                                                                        |
-| ----------------------------------------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------- |
-| [20260409-component-testing-standards](20260409-component-testing-standards/) | feature  | 制定组件测试规范（Vitest UT + Storybook e2e），补齐 5 个存量组件覆盖缺口，CI 接入 80% 覆盖率门禁与 e2e 步骤 |
-| [20260408-storybook-e2e](20260408-storybook-e2e/)                             | feature  | 基于 `@storybook/test-runner` 为现有组件补充 Storybook Interaction e2e 测试覆盖                             |
-| [20260408-restructure-packages](20260408-restructure-packages/)               | refactor | packages 重命名为 `@deweyou-design/*` scope；infra 分离构建层；dist/package.json 版本解析                   |
-| [20260408-npm-publish-workflow](20260408-npm-publish-workflow/)               | feature  | 探索并建立 npm 发包工作流：开发分支发 beta/prerelease 包，合入主分支后发正式包                              |
+| Branch                                                                        | Type     | Description                                                                                                                                     |
+| ----------------------------------------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| [20260409-component-testing-standards](20260409-component-testing-standards/) | feature  | Define component testing standards, cover five existing component gaps, and add CI gates for 80% coverage and e2e                               |
+| [20260408-storybook-e2e](20260408-storybook-e2e/)                             | feature  | Add Storybook Interaction e2e coverage for existing components with `@storybook/test-runner`                                                    |
+| [20260408-restructure-packages](20260408-restructure-packages/)               | refactor | Rename packages to the `@deweyou-design/*` scope, separate infra as the build layer, and resolve dist package versions                          |
+| [20260408-npm-publish-workflow](20260408-npm-publish-workflow/)               | feature  | Explore and establish the npm publishing workflow: beta/prerelease packages from development branches and stable releases after merging to main |
 
-## 2026-03（下半月）
+## 2026-03 Second Half
 
-| 分支                                                                    | 类型     | 说明                                                                                                                |
-| ----------------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------- |
-| [20260331-tabs-component](20260331-tabs-component/)                     | feature  | 基于 Ark UI 实现 Tabs 组件：线条 / bg 两种 active 样式，切换动画，超长滑动 + 渐变，嵌套 Menu 下拉                   |
-| [20260330-storybook-docs-upgrade](20260330-storybook-docs-upgrade/)     | chore    | 升级 Storybook 版本；重组 stories（color / components 分类）；补齐所有 API 文档说明                                 |
-| [20260329-menu-component](20260329-menu-component/)                     | feature  | 基于 Ark UI 实现 Menu 组件：分组、分割线、多级子菜单、单选/多选、contextMenu                                        |
-| [20260329-distill-design-style](20260329-distill-design-style/)         | docs     | 从现有组件中提炼设计风格指南，后续收敛到 `docs/design/system.md`；完成 AGENTS.md → CLAUDE.md 迁移                   |
-| [20260327-ark-ui-integration](20260327-ark-ui-integration/)             | refactor | 引入 `@ark-ui/react` 作为组件行为基础层；基于 Ark UI 重构 Popover；建立后续交互型组件开发范式                       |
-| [20260326-optimize-package-outputs](20260326-optimize-package-outputs/) | build    | 包构建与发布产物治理：preserveModules + CSS split，精简构建配置，peerDep 对齐，workspace 版本号解析                 |
-| [20260324-define-color-palette](20260324-define-color-palette/)         | feature  | 在 `@deweyou-design/styles` 建立统一颜色 token 体系（26 色 × 11 色阶 + 纯黑白）                                     |
-| [20260324-add-popover-component](20260324-add-popover-component/)       | feature  | 实现 Popover 组件（定位、触发模式、受控/非受控）                                                                    |
-| [20260323-refine-button-padding](20260323-refine-button-padding/)       | fix      | 优化 Button 间距平衡：区分图标按钮与文字按钮的 padding 策略，解决视觉上下大、左右小问题                             |
-| [20260323-button-props-loading](20260323-button-props-loading/)         | feature  | 补齐 Button 公开属性（onClick、color danger、htmlType、href/target、ref）；新增 loading 状态                        |
-| [20260323-button-hover-motion](20260323-button-hover-motion/)           | fix      | 整理按钮 hover 反馈：link 保留下划线动画，outlined 改为默认低色度 border + hover 平滑过渡，移除 animated prop       |
-| [20260323-add-text-component](20260323-add-text-component/)             | feature  | 实现 Text 排版组件：variant（plain/span/h1-h5/caption/body）、斜体/字重/下划线/删除线、lineClamp                    |
-| [20260322-define-songti-typography](20260322-define-songti-typography/) | feature  | 定义组件库宋体字体系统：字族栈、字重、配套英文数字字体                                                              |
-| [20260320-button-variants](20260320-button-variants/)                   | feature  | 重构 Button 组件：variant（outlined/filled/ghost/link）、color（neutral/primary/danger）、size（5档）、shape（3档） |
+| Branch                                                                  | Type     | Description                                                                                                                                                |
+| ----------------------------------------------------------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [20260331-tabs-component](20260331-tabs-component/)                     | feature  | Implement Tabs with Ark UI, line/bg active styles, transitions, overflow scrolling, gradients, and nested Menu dropdowns                                   |
+| [20260330-storybook-docs-upgrade](20260330-storybook-docs-upgrade/)     | chore    | Upgrade Storybook, reorganize stories into color/components categories, and complete API docs                                                              |
+| [20260329-menu-component](20260329-menu-component/)                     | feature  | Implement Menu with Ark UI: groups, separators, nested submenus, single/multiple selection, and contextMenu                                                |
+| [20260329-distill-design-style](20260329-distill-design-style/)         | docs     | Distill design style guidance from existing components into `docs/design/system.md` and complete AGENTS.md to CLAUDE.md migration                          |
+| [20260327-ark-ui-integration](20260327-ark-ui-integration/)             | refactor | Introduce `@ark-ui/react` as the component behavior layer, refactor Popover on Ark UI, and establish the interactive component pattern                     |
+| [20260326-optimize-package-outputs](20260326-optimize-package-outputs/) | build    | Govern package build and publish outputs: preserveModules, CSS split, simplified build config, peer dependency alignment, and workspace version resolution |
+| [20260324-define-color-palette](20260324-define-color-palette/)         | feature  | Establish the unified color token system in `@deweyou-design/styles`: 26 colors x 11 steps plus black and white                                            |
+| [20260324-add-popover-component](20260324-add-popover-component/)       | feature  | Implement Popover with positioning, trigger modes, and controlled/uncontrolled behavior                                                                    |
+| [20260323-refine-button-padding](20260323-refine-button-padding/)       | fix      | Improve Button spacing by separating icon-button and text-button padding strategies                                                                        |
+| [20260323-button-props-loading](20260323-button-props-loading/)         | feature  | Complete public Button props including onClick, danger color, htmlType, href/target, ref, and loading state                                                |
+| [20260323-button-hover-motion](20260323-button-hover-motion/)           | fix      | Refine Button hover feedback: keep link underline motion, smooth outlined hover borders, and remove animated prop                                          |
+| [20260323-add-text-component](20260323-add-text-component/)             | feature  | Implement Text typography component with variants, italic/weight/underline/delete, and lineClamp                                                           |
+| [20260322-define-songti-typography](20260322-define-songti-typography/) | feature  | Define the Songti typography system, font stacks, and companion Latin/digit fonts                                                                          |
+| [20260320-button-variants](20260320-button-variants/)                   | feature  | Refactor Button variants: variant, color, five sizes, and three shapes                                                                                     |
 
-## 2026-03（上半月）
+## 2026-03 First Half
 
-| 分支                                                                | 类型    | 说明                                                                                                          |
-| ------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------- |
-| [20260317-upgrade-storybook](20260317-upgrade-storybook/)           | chore   | 升级 Storybook 至最新稳定版                                                                                   |
-| [20260317-repo-conventions](20260317-repo-conventions/)             | chore   | 建立仓库规范：箭头函数、TSX-first、kebab-case、单测 colocate、src/<unit>/ 结构                                |
-| [20260317-icon-package](20260317-icon-package/)                     | feature | 新增 `@deweyou-design/react-icons` 包；早期基于 Iconify，当前已收敛为 Tabler curated set                      |
-| [20260316-ui-monorepo-foundation](20260316-ui-monorepo-foundation/) | feature | 初建 monorepo 架构（utils/hooks/styles/components + website/storybook），确立 CSS Modules + TS token 主题系统 |
+| Branch                                                              | Type    | Description                                                                                                                               |
+| ------------------------------------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| [20260317-upgrade-storybook](20260317-upgrade-storybook/)           | chore   | Upgrade Storybook to the latest stable version                                                                                            |
+| [20260317-repo-conventions](20260317-repo-conventions/)             | chore   | Establish repository conventions: arrow functions, TSX-first, kebab-case, colocated tests, and `src/<unit>/` structure                    |
+| [20260317-icon-package](20260317-icon-package/)                     | feature | Add `@deweyou-design/react-icons`; it started from Iconify and later converged to a Tabler curated set                                    |
+| [20260316-ui-monorepo-foundation](20260316-ui-monorepo-foundation/) | feature | Create the monorepo foundation with utils/hooks/styles/components plus website/storybook, and establish CSS Modules with TS token theming |
 
 ---
 
-## 归档说明
+## Archive Notes
 
-- **archive.md**：完成实现后补充，记录关键决策、踩坑和可复用模式。
-- **知识沉淀**：可泛化的规范或模式可在归档时按需沉淀到 `docs/<topic>.md`，并在 `CLAUDE.md` 中添加指针。
+- **archive.md**: added after implementation to record key decisions, pitfalls, and reusable patterns.
+- **Knowledge capture**: reusable rules or patterns may be distilled into `docs/<topic>.md` during archive and linked from `AGENTS.md` or `CLAUDE.md`.

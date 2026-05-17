@@ -1,151 +1,124 @@
-# Deweyou UI 宪章
+# Deweyou UI Constitution
 
-> Version: 1.3.0 | Created: 2026-03-15 | Last revised: 2026-04-08
+> Version: 1.4.0 | Created: 2026-03-15 | Last revised: 2026-05-17
 >
-> 本文件在仓库初始化时建立，并在后续归档流程中持续更新。
-> CLAUDE.md 引用此文件，作为每次功能工作开始前需要读取的治理基线。
+> This file was established during repository initialization and is updated by later archive flows.
+> `AGENTS.md` references this file as the governance baseline to read before feature work.
 
 ---
 
-## 核心原则
+## Core Principles
 
-### I. 包优先的组件架构
+### I. Package-First Component Architecture
 
-所有可复用的 UI 能力都必须先作为 monorepo 中的 package 实现，然后才能被 demo 站点或任何下游应用消费。每个 package 都必须只承担清晰且收敛的职责，暴露明确的公开 API，并避免与 `website` 内部实现形成隐式耦合。共享逻辑、hooks、tokens 和 primitives 必须放在 package 中，不能在各个 app 中重复实现。理由：这个 monorepo 的目标是交付一个可维护的组件库，而不是单独维护一个网站。
+All reusable UI capabilities must be implemented as monorepo packages before being consumed by the demo site or any downstream app. Each package must have a clear and focused responsibility, expose an explicit public API, and avoid implicit coupling to `website` internals. Shared logic, hooks, tokens, and primitives belong in packages, not duplicated across apps. Rationale: this monorepo exists to deliver a maintainable component library, not only a website.
 
-**Ark UI 行为基础层**：凡是具有复杂交互行为（浮层定位、焦点管理、状态机、ARIA 输出）的组件，必须优先基于 Ark UI（`@ark-ui/react`）构建，而不是手工实现相同能力。样式层保持使用 CSS Modules（Less）+ 设计 token，不依赖 Ark UI 的默认样式。公开 API 必须与 Ark UI 内部接口解耦。非 click 触发类型应通过受控模式（`open` prop）桥接。参考实现：`packages/react/src/popover/index.tsx`。
+**Ark UI behavior layer**: any component with complex interaction behavior, such as floating positioning, focus management, state machines, or ARIA output, must prefer Ark UI (`@ark-ui/react`) instead of hand-rolled equivalents. Styling remains CSS Modules with Less and design tokens, without relying on Ark UI default styles. Public APIs must be decoupled from Ark UI internals. Non-click trigger modes should be bridged through controlled mode with the `open` prop. Reference implementation: `packages/react/src/popover/index.tsx`.
 
-### II. 无障碍与 API 一致性
+### II. Accessibility And API Consistency
 
-所有公开组件都必须在实现前定义其无障碍契约与交互模型。键盘行为、焦点管理、语义化标记、ARIA 使用、禁用态以及受本地化影响的文本都必须被说明并验证。props、slots、events、variants 以及受控/非受控行为等公开 API，除非有文档化例外并获得批准，否则必须遵循现有命名与组合模式。理由：无障碍和 API 一致性是产品要求，不是最后补上的打磨工作。
+Every public component must define its accessibility contract and interaction model before implementation. Keyboard behavior, focus management, semantic markup, ARIA usage, disabled states, and localized text must be described and verified. Public APIs, including props, slots, events, variants, and controlled/uncontrolled behavior, must follow existing naming and composition patterns unless a documented exception is approved. Rationale: accessibility and API consistency are product requirements, not final polish.
 
-### III. Token 与主题作为事实来源
+### III. Tokens And Themes As Source Of Truth
 
-凡是预期会复用的视觉决策，都必须通过共享设计 tokens 与主题 primitives 表达。组件必须消费规范化的 tokens 来处理颜色、排版、间距、圆角、动效和状态样式，而不能直接写死一次性的值。任何新的视觉 primitive 都必须文档化其浅色/深色主题行为、密度影响以及可覆盖边界。`@deweyou-design/styles` 是所有 `--ui-*` 变量的唯一事实来源；组件直接消费这些变量，不得内联 token 值。理由：以 token 驱动的样式系统可以让组件库保持一致、可主题化，并能安全扩展。
+Every reusable visual decision must be expressed through shared design tokens and theme primitives. Components must consume normalized tokens for color, typography, spacing, radius, motion, and state styles instead of hardcoding one-off values. Any new visual primitive must document its light/dark behavior, density impact, and override boundaries. `@deweyou-design/styles` is the sole source of truth for all `--ui-*` variables; components consume those variables directly and must not inline token values. Rationale: a token-driven style system keeps the component library consistent, themeable, and safely extensible.
 
-### IV. 测试与预览门禁
+### IV. Testing And Preview Gates
 
-每一次组件 package 的变更都必须同时附带自动化验证和人工评审面。最低要求是：功能变更必须包含组件逻辑单测、用户可见行为的交互或集成测试，以及 `website` 中覆盖主要状态的预览或 demo 更新。如果某个缺陷首次是在人工 QA 中发现，而它本来可以通过自动化测试提前发现，那么在关闭该问题前必须补充相应测试。理由：对 UI 回归来说，可重复执行的测试加上可视化评审是成本最低的发现方式。
+Every component package change must ship with automated verification and a human review surface. At minimum, functional changes need component logic unit tests, interaction or integration tests for user-visible behavior, and updated previews or demos that cover major states in `website`. If a defect is first found by manual QA and could have been caught by automation, the missing test must be added before the issue is closed. Rationale: repeatable tests plus visual review are the cheapest way to catch UI regressions.
 
-### V. Vite+ Monorepo 与规格文档纪律
+### V. Vite+ Monorepo And Documentation Discipline
 
-所有依赖管理、lint、格式化、测试、打包和构建操作，都必须使用 `vp` 命令或
-`vp run` 的任务入口。除非已经文档化工具能力缺口，否则项目工作流和文档中都不允许
-直接使用 `pnpm`、`npm`、`yarn`、`npx`、独立 `vite` 或独立 `vitest`。所有
-package 都必须能够在 monorepo 的任务图中独立构建和测试。
+All dependency management, linting, formatting, testing, packaging, and build operations must use `vp` commands or `vp run` task entries. Unless a tooling capability gap is already documented, project workflows and docs must not call `pnpm`, `npm`, `yarn`, `npx`, standalone `vite`, or standalone `vitest` directly. Every package must be independently buildable and testable in the monorepo task graph.
 
-所有 `packages/` 下拟发布的 package 都必须默认复用 Vite+ 的统一构建约定，而不是
-预设保留包级专用构建配置。只有在公开入口、产物结构、资产复制或发布契约等要求无法
-通过统一约定满足时，才允许保留 package 级构建配置，并且必须在对应 spec、plan 或
-package 文档中说明为什么默认约定不足。理由：Vite+ 的价值之一就是统一构建心智和
-降低维护成本，例外必须被显式约束，而不能成为新包的默认起点。
+All publishable packages under `packages/` must reuse Vite+ shared build conventions by default instead of assuming package-specific build config. Package-level build config is allowed only when public entrypoints, output structure, asset copying, or publish contracts cannot be satisfied by the shared conventions; the related spec, plan, or package documentation must explain why the default is insufficient. Rationale: Vite+ reduces maintenance cost by unifying build mental models, so exceptions must be explicit and constrained.
 
-`docs/specs/` 目录下生成或维护的 `spec.md`、`plan.md`、
-`tasks.md`、`research.md`、`data-model.md`、`quickstart.md`、`checklist` 及同类
-评审文档，正文必须使用简体中文。代码标识符、命令、文件路径、环境变量、协议字段名、
-第三方 API 名称和 semver 版本号可以保留原文。理由：统一工具链与统一文档语言
-可以同时减少流程偏差，并确保评审、协作和交接面向当前团队保持一致。
+Durable repository documentation is written in English by default. This includes root routing docs, README content, design knowledge, testing standards, architecture notes, and future knowledge-base updates under `docs/`. Historical spec archives under `docs/specs/` and `docs/superpowers/` are exempt from retroactive translation unless a task explicitly targets them. Code identifiers, commands, file paths, environment variables, protocol fields, third-party API names, and semver versions should stay unchanged.
 
-### VI. 仓库编码规范
+### VI. Repository Coding Standards
 
-以下规范适用于 `packages/` 下所有受治理源码单元，违反时必须在变更中说明原因。
+The following standards apply to all governed source units under `packages/`. Violations must be explained in the change.
 
-**函数风格**：所有函数默认使用箭头函数。仅当框架边界（如 React 的 `forwardRef`
-之外的场景）、提升需求或外部 API 约束使函数声明更安全时，才允许使用 `function`
-声明，且必须在变更中注明原因。
+**Function style**: use arrow functions by default. Function declarations are allowed only when a framework boundary, hoisting requirement, or external API constraint makes them safer, and the change must explain the reason.
 
-**React 组件文件**：React 组件必须使用 `.tsx` 文件编写。除非有明确的工具链限制
-并已文档化，否则不得引入 `React.createElement` 风格的组件写法。
+**React component files**: React components must be written in `.tsx` files. Do not introduce `React.createElement` component implementations unless a clear toolchain limitation is documented.
 
-**文件与目录命名**：受治理区域中新建或重命名的文件和目录必须使用小写字母加连字符
-（kebab-case）命名。
+**File and directory names**: new or renamed files and directories in governed areas must use lowercase kebab-case names.
 
-**源码单元结构**：`packages/react`、`packages/react-hooks`、`packages/utils` 中，
-每个受治理源码单元必须位于 `src/<unit-name>/` 目录下，并将本地入口文件和单测保留
-为同目录下的 `index.tsx`（或 `index.ts`）与 `index.test.tsx`（colocate 单测）。
+**Source unit structure**: in `packages/react`, `packages/react-hooks`, and `packages/utils`, each governed source unit must live under `src/<unit-name>/` and keep its local entry and unit test as colocated `index.tsx` or `index.ts` and `index.test.tsx`.
 
-**Commit 格式**：提交信息必须遵循 `<type>(<scope>): <summary>` 格式（scope 有意义时），
-或 `<type>: <summary>`。推荐 type：`feat`、`fix`、`refactor`、`docs`、`test`、
-`build`、`chore`。subject 使用祈使语气、小写，聚焦单一逻辑变更。格式通过
-`.vite-hooks/commit-msg` 强制校验。理由：一致的编码风格和提交格式降低评审认知
-负担，并保证 changelog 可读性。
+**Commit format**: commit messages must use `<type>(<scope>): <summary>` when scope is meaningful, or `<type>: <summary>`. Recommended types are `feat`, `fix`, `refactor`, `docs`, `test`, `build`, and `chore`. Subjects use imperative mood, lowercase wording, and one logical change. `.vite-hooks/commit-msg` enforces the format. Rationale: consistent code style and commit format reduce review load and keep changelogs readable.
 
-### VII. 设计系统视觉规范
+### VII. Design System Visual Standards
 
-所有组件的视觉与交互实现必须严格对照以下约束，不得随意偏差。评审时以下数值视为
-不可谈判（non-negotiable）。详细规范参见 [docs/design/system.md](design/system.md)。
+All component visual and interaction implementation must follow these constraints. During review, these values are non-negotiable. See [docs/design/system.md](design/system.md) for details.
 
-**组件变体模型**：交互组件必须基于以下四个正交维度建模：
+**Component variant model**: interactive components must be modeled through four orthogonal dimensions:
 
-| 维度    | 可选值                                             | 说明                            |
-| ------- | -------------------------------------------------- | ------------------------------- |
-| variant | filled / outlined / ghost / link                   | 视觉层级（实心→线框→幽灵→文本） |
-| color   | neutral / primary / danger                         | 语义色三档                      |
-| size    | extra-small / small / medium / large / extra-large | 尺寸五档                        |
-| shape   | rect / float / pill                                | 仅 filled/outlined 支持         |
+| Dimension | Values                                             | Meaning                                    |
+| --------- | -------------------------------------------------- | ------------------------------------------ |
+| variant   | filled / outlined / ghost / link                   | visual hierarchy from solid to text        |
+| color     | neutral / primary / danger                         | three semantic colors                      |
+| size      | extra-small / small / medium / large / extra-large | five size levels                           |
+| shape     | rect / float / pill                                | supported only by filled/outlined variants |
 
-ghost 和 link variant 不支持 shape prop。
+Ghost and link variants do not support the shape prop.
 
-**交互状态数值**（以下数值为强制值，常见偏差见括号）：
+**Interaction state values**:
 
-| 属性        | 强制值                                                                                               | 常见错误        |
-| ----------- | ---------------------------------------------------------------------------------------------------- | --------------- |
-| disabled    | `opacity: 0.56`                                                                                      | 0.3、0.4        |
-| 交互过渡    | `140ms ease`                                                                                         | 200ms、300ms    |
-| 浮层动效    | `160ms`（入场 cubic-bezier，出场 ease）                                                              | 200ms、300ms    |
-| 焦点环      | `box-shadow: 0 0 0 2px var(--ui-color-surface), 0 0 0 4px var(--ui-color-focus-ring); outline: none` | outline、border |
-| hover 混色  | `color-mix(in srgb, <color> 6–12%, transparent)`                                                     | 直接改背景色    |
-| active 位移 | `translateY(1px)`                                                                                    | translateY(2px) |
+| Property               | Required value                                                                                       | Common mistake         |
+| ---------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------- |
+| disabled               | `opacity: 0.56`                                                                                      | 0.3, 0.4               |
+| interaction transition | `140ms ease`                                                                                         | 200ms, 300ms           |
+| floating motion        | `160ms`, cubic-bezier on enter and ease on exit                                                      | 200ms, 300ms           |
+| focus ring             | `box-shadow: 0 0 0 2px var(--ui-color-surface), 0 0 0 4px var(--ui-color-focus-ring); outline: none` | outline, border        |
+| hover mix              | `color-mix(in srgb, <color> 6-12%, transparent)`                                                     | direct background swap |
+| active movement        | `translateY(1px)`                                                                                    | translateY(2px)        |
 
-**字体族**：body/control 使用 Source Han Sans SC Web → PingFang SC → Heiti SC → Microsoft YaHei → Noto Sans CJK SC → sans-serif；content/display 使用 Source Han Serif CN Web → Songti SC → STSong → SimSun → NSimSun → serif。
+**Font families**: body/control uses Source Han Sans SC Web -> PingFang SC -> Heiti SC -> Microsoft YaHei -> Noto Sans CJK SC -> sans-serif; content/display uses Source Han Serif CN Web -> Songti SC -> STSong -> SimSun -> NSimSun -> serif.
 
-**圆角档位**：rect（0）/ float（4px）/ auto（8px）/ pill（999px）。
+**Radius levels**: rect (0), float (4px), auto (8px), pill (999px).
 
-**阴影**：卡片默认 border-first，不带阴影；浮层按层级使用 `--ui-shadow-sm` / `--ui-shadow-md` / `--ui-shadow-lg`，不得 hardcode 阴影值。
+**Shadows**: cards are border-first and have no shadow by default. Floating surfaces use `--ui-shadow-sm`, `--ui-shadow-md`, or `--ui-shadow-lg` by layer. Do not hardcode shadow values.
 
-**焦点**：所有可交互元素仅在 `:focus-visible` 时显示焦点环，不在鼠标点击时触发。
+**Focus**: every interactive element shows the focus ring only on `:focus-visible`, never from mouse click.
 
-**prefers-reduced-motion**：浮层 transform 归零，link clip-path 过渡禁用。
+**prefers-reduced-motion**: floating transforms are reset and link clip-path transitions are disabled.
 
-理由：设计系统数值的一致性直接影响用户体验可信度，任何随意偏差都会破坏整体视觉
-语言。将数值入宪可确保 checklist 和 code review 有明确的数值基准。
+Rationale: design-system value consistency directly affects user trust. Encoding values in the constitution gives checklists and code review a clear baseline.
 
 ---
 
-## Package 标准
+## Package Standards
 
-- 每个可发布的 package 都必须在 README 或 package 级文档中说明其目标使用者、入口点以及 semver 影响面。
-- 任何破坏性 API、样式 token 或行为变更，都必须在合并前于相关 spec、plan 或 release note 中附带迁移说明。
-- 仅用于演示的代码可以存在于 `website` 中，但它不能成为可复用 package 的组件行为、样式或文档的唯一来源。
-- 跨 package 依赖必须从高层组件指向低层 primitives 或 utilities，禁止循环依赖。
-
----
-
-## 工作流与质量门禁
-
-- 功能 spec 必须明确目标 package、公开 API 变化、无障碍预期、token 或主题影响，以及 demo 覆盖计划。
-- `docs/specs/` 下新建或更新的评审文档必须默认使用简体中文；如需保留英文，仅限代码标识符、命令、路径和外部协议原文。
-- 如果 implementation plan 缺少 package 边界、可访问交互定义、必要测试、`vp` 验证命令，或违反原则 VI（编码规范）、VII（设计数值），那么其 Constitution Check 必须视为失败。
-- 任务拆解必须包含 package 侧工作、website 预览更新，以及 `vp check` 加相关 `vp test` 或 `vp run` 命令的验证任务。
-- 只有当受影响 package 可以构建、测试通过、预览覆盖已更新、且面向评审者的文档反映了变更时，该变更才算完成。
+- Every publishable package must document its target consumers, entrypoints, and semver impact in its README or package-level docs.
+- Any breaking API, style-token, or behavior change must include migration notes in the related spec, plan, or release note before merge.
+- Demo-only code may live in `website`, but it cannot be the only source for reusable package behavior, styling, or documentation.
+- Cross-package dependencies must point from higher-level components to lower-level primitives or utilities. Cyclic dependencies are forbidden.
 
 ---
 
-## 治理
+## Workflow And Quality Gates
 
-本宪章优先于与其冲突的本地实践和模板。任何修订都必须记录在 `docs/constitution.md` 中，附带同步影响报告，并在同一变更中同步更新所有受影响的模板或指导文件。
+- Feature specs must identify the target package, public API changes, accessibility expectations, token or theme impact, and demo coverage plan.
+- New or updated durable knowledge documents should be written in English. Historical spec archives may remain as-is unless explicitly targeted.
+- If an implementation plan lacks package boundaries, accessible interaction definitions, required tests, `vp` verification commands, or compliance with Principle VI or VII, its Constitution Check must fail.
+- Task breakdowns must include package-side work, website preview updates, and verification tasks with `vp check` plus relevant `vp test` or `vp run` commands.
+- A change is complete only when affected packages build, tests pass, preview coverage is updated, and reviewer-facing docs reflect the change.
 
-本宪章采用语义化版本控制：MAJOR 用于以不兼容方式移除或重定义原则，MINOR 用于
-新增原则或实质性扩大治理范围，PATCH 用于不改变政策含义的措辞澄清。每个 plan 和
-pull request 都必须进行合规评审：评审者在批准前必须确认包优先架构、无障碍、
-token 使用、测试与预览覆盖、Vite+ 工作流合规性、仓库编码规范（原则 VI）、
-设计系统数值合规性（原则 VII），以及 `docs/specs/` 下文档语言是否符合简体中文要求。
+---
+
+## Governance
+
+This constitution overrides conflicting local practices and templates. Any revision must be recorded in `docs/constitution.md`, include a synchronization impact report, and update all affected templates or guidance files in the same change.
+
+This constitution follows semantic versioning: MAJOR removes or redefines principles incompatibly, MINOR adds principles or materially expands governance scope, and PATCH clarifies wording without changing policy meaning. Every plan and pull request must run a compliance review: reviewers must confirm package-first architecture, accessibility, token usage, testing and preview coverage, Vite+ workflow compliance, repository coding standards, design-system values, and documentation-language compliance.
 
 ---
 
 ## VIII. Accumulated Learnings
 
-> 各 feature 的完整归档记录见 [docs/specs/index.md](specs/index.md)，每个 spec 目录下的 `archive.md` 包含关键决策、踩坑和可复用模式。
-> 本节仅保留需要直接影响宪章决策的跨 feature 级别洞察。
+> Full archive records for features live in [docs/specs/index.md](specs/index.md). Each spec directory's `archive.md` records key decisions, pitfalls, and reusable patterns.
+> This section keeps only cross-feature insights that directly affect constitution decisions.
 
 <!-- Archive entries that materially affect the constitution can be appended here. -->
