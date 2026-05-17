@@ -3,7 +3,7 @@
  * release.mjs
  *
  * npm 发包入口脚本。
- * 用法：node scripts/release.mjs <beta|stable> [--dry-run]
+ * 用法：node scripts/release.mjs <beta|stable> [--bump <patch|minor|major>] [--dry-run]
  *
  * 退出码：
  *   0  发布成功（或无包需要发布）
@@ -31,13 +31,27 @@ const exit = (code, msg) => {
 // ── 参数解析 ──────────────────────────────────────────────────────────────────
 
 const [, , channelArg, ...flags] = process.argv;
-const dryRun = flags.includes('--dry-run');
+const getFlagValue = (name) => {
+  const equalsFlag = flags.find((flag) => flag.startsWith(`${name}=`));
+  if (equalsFlag) return equalsFlag.slice(name.length + 1);
 
-if (!['beta', 'stable'].includes(channelArg)) {
-  console.error('用法：node scripts/release.mjs <beta|stable> [--dry-run]');
+  const index = flags.indexOf(name);
+  const value = index >= 0 ? flags[index + 1] : undefined;
+  return value && !value.startsWith('--') ? value : undefined;
+};
+
+const dryRun = flags.includes('--dry-run');
+const SUPPORTED_BUMPS = ['patch', 'minor', 'major'];
+const bumpArg = getFlagValue('--bump') ?? 'patch';
+
+if (!['beta', 'stable'].includes(channelArg) || !SUPPORTED_BUMPS.includes(bumpArg)) {
+  console.error(
+    '用法：node scripts/release.mjs <beta|stable> [--bump <patch|minor|major>] [--dry-run]',
+  );
   console.error('');
   console.error('  beta    从当前分支发布 prerelease 包（dist-tag: beta）');
   console.error('  stable  从 main 分支发布正式包（dist-tag: latest）');
+  console.error('  --bump  版本升级类型：patch、minor 或 major（默认：patch）');
   process.exit(1);
 }
 
@@ -56,7 +70,7 @@ if (channelArg === 'stable' && currentBranch !== 'main') {
   exit(1, `正式版只能从 main 分支发布。\n   当前分支：${currentBranch}`);
 }
 
-console.log(`✔  分支校验通过（分支：${currentBranch}，通道：${channelArg}）`);
+console.log(`✔  分支校验通过（分支：${currentBranch}，通道：${channelArg}，版本：${bumpArg}）`);
 
 // ── npm 鉴权校验 ──────────────────────────────────────────────────────────────
 
@@ -97,6 +111,11 @@ const PUBLISHABLE_PACKAGES = [
     shortName: 'utils',
     npmName: '@deweyou-design/utils',
     dir: resolve(REPO_ROOT, 'packages/utils'),
+  },
+  {
+    shortName: 'mcp',
+    npmName: '@deweyou-design/mcp',
+    dir: resolve(REPO_ROOT, 'packages/mcp'),
   },
 ];
 
@@ -139,33 +158,39 @@ const semverGt = (a, b) => {
   return false;
 };
 
-// changelogen 找不到可 bump 的 commit 时，手动做 patch bump 作为兜底。
-const fallbackBump = (version, channel) => {
+const bumpStableVersion = (version, bump) => {
+  const [major, minor, patch] = version.split('.').map(Number);
+  if (bump === 'major') return `${major + 1}.0.0`;
+  if (bump === 'minor') return `${major}.${minor + 1}.0`;
+  return `${major}.${minor}.${patch + 1}`;
+};
+
+// changelogen 找不到可 bump 的 commit 时，按 release 输入做确定性 bump 作为兜底。
+const getNextVersion = (version, channel, bump) => {
   const [main, pre] = version.split(/-(.+)/);
-  const [major, minor, patch] = main.split('.').map(Number);
   if (channel === 'beta') {
     if (pre?.startsWith('beta.')) {
       return `${main}-beta.${Number(pre.slice(5)) + 1}`;
     }
-    return `${major}.${minor}.${patch + 1}-beta.0`;
+    return `${bumpStableVersion(main, bump)}-beta.0`;
   }
-  // stable: 如果当前是 prerelease 则去掉后缀，否则 patch+1
-  return pre ? main : `${major}.${minor}.${patch + 1}`;
+  // stable: 如果当前是 prerelease 则去掉后缀，否则按输入升级。
+  return pre ? main : bumpStableVersion(main, bump);
 };
 
-const bumpPackage = (pkgDir, channel, lastTag) => {
+const bumpPackage = (pkgDir, channel, bump, lastTag) => {
   const prevVersion = getCurrentVersion(pkgDir);
+  const targetVersion = getNextVersion(prevVersion, channel, bump);
   const changelogPath = resolve(pkgDir, 'CHANGELOG.md');
   const changelogen = resolve(REPO_ROOT, 'node_modules/.bin/changelogen');
   const fromFlag = lastTag ? `--from ${lastTag}` : '';
-  const prereleaseFlag = channel === 'beta' ? '--prerelease beta' : '';
   const dryFlag = dryRun ? '--dry' : '';
   const cmd = [
     changelogen,
     `--dir ${pkgDir}`,
     `--output ${changelogPath}`,
     fromFlag,
-    prereleaseFlag,
+    `-r ${targetVersion}`,
     '--bump',
     '--no-commit',
     '--no-tag',
@@ -183,10 +208,14 @@ const bumpPackage = (pkgDir, channel, lastTag) => {
     // 降级到手动 bump + 写最小 changelog
   }
 
+  if (dryRun) {
+    return targetVersion;
+  }
+
   let newVersion = getCurrentVersion(pkgDir);
-  if (newVersion === prevVersion) {
-    // changelogen 未找到可 bump 的 commit 或执行失败，回退到 patch bump
-    newVersion = fallbackBump(prevVersion, channel);
+  if (newVersion !== targetVersion) {
+    // changelogen 未找到可 bump 的 commit、执行失败，或内部 semver 规则调整了 0.x bump 时，回退到输入指定版本。
+    newVersion = targetVersion;
     const pkgPath = resolve(pkgDir, 'package.json');
     const pkg = JSON.parse(readFileSync(pkgPath, 'utf8'));
     pkg.version = newVersion;
@@ -218,7 +247,7 @@ for (const pkg of PUBLISHABLE_PACKAGES) {
 
   console.log(`  📦 ${pkg.npmName}: 检测到变更（上次 tag: ${lastTag ?? '首次发布'}）`);
 
-  const newVersion = bumpPackage(pkg.dir, channelArg, lastTag);
+  const newVersion = bumpPackage(pkg.dir, channelArg, bumpArg, lastTag);
   console.log(`  ✔  ${pkg.npmName}: ${newVersion}${dryRun ? ' (dry-run)' : ''}`);
 
   if (!dryRun) {

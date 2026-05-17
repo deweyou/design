@@ -10,6 +10,15 @@ on:
         options:
           - beta
           - stable
+      bump:
+        description: '版本升级类型'
+        required: true
+        type: choice
+        default: patch
+        options:
+          - patch
+          - minor
+          - major
       dry_run:
         description: '预演模式（不实际发布）'
         required: false
@@ -25,7 +34,7 @@ permissions:
 
 jobs:
   release:
-    name: Release (${{ inputs.channel }})
+    name: Release (${{ inputs.channel }}, ${{ inputs.bump }})
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
@@ -56,12 +65,12 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Release (${{ inputs.channel }})
+      - name: Release (${{ inputs.channel }}, ${{ inputs.bump }})
         run: |
           DRY_RUN_FLAG=""
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             DRY_RUN_FLAG="--dry-run"
           fi
-          node scripts/release.mjs ${{ inputs.channel }} $DRY_RUN_FLAG
+          node scripts/release.mjs ${{ inputs.channel }} --bump ${{ inputs.bump }} $DRY_RUN_FLAG
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
