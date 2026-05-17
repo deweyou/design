@@ -83,6 +83,7 @@ test('components root entry exposes Button, IconButton, Popover, Text, Menu fami
     'Button',
     'Card',
     'Checkbox',
+    'CodeBlock',
     'ContextMenu',
     'Dialog',
     'Field',

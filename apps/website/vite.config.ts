@@ -35,7 +35,6 @@ const subsetFont = require('subset-font') as (
 const websiteFontsVirtualId = 'virtual:deweyou-website-fonts.css';
 const resolvedWebsiteFontsVirtualId = `\0${websiteFontsVirtualId}`;
 const websiteFontsDevPrefix = '/@deweyou-website-fonts';
-const websiteFontFamily = 'Source Han Serif CN Web';
 const websiteFontFallbackCorpus = `
 Deweyou Design Component Library Design Manual Overview Components Icons Storybook GitHub Browse Search Copy Copied Import Typography Principles Color Semantics neutral primary danger serif identity line shadow spacing light dark theme
 abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789
@@ -43,6 +42,7 @@ abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789
 `;
 
 type WebsiteFontSource = {
+  family: 'Source Han Sans SC Web' | 'Source Han Serif CN Web';
   fileName: string;
   outputFileName: string;
   placeholder: string;
@@ -51,27 +51,59 @@ type WebsiteFontSource = {
 
 const websiteFontSources: WebsiteFontSource[] = [
   {
-    fileName: 'SourceHanSerifCN-Regular.otf',
-    outputFileName: 'source-han-serif-cn-web-400.woff2',
-    placeholder: 'data:font/woff2;base64,__DEWEYOU_WEBSITE_FONT_400__',
+    family: 'Source Han Sans SC Web',
+    fileName: 'SourceHanSansSC-Regular.otf',
+    outputFileName: 'source-han-sans-sc-web-400.woff2',
+    placeholder: 'data:font/woff2;base64,__DEWEYOU_WEBSITE_SANS_FONT_400__',
     weight: 400,
   },
   {
-    fileName: 'SourceHanSerifCN-Medium.otf',
-    outputFileName: 'source-han-serif-cn-web-500.woff2',
-    placeholder: 'data:font/woff2;base64,__DEWEYOU_WEBSITE_FONT_500__',
+    family: 'Source Han Sans SC Web',
+    fileName: 'SourceHanSansSC-Medium.otf',
+    outputFileName: 'source-han-sans-sc-web-500.woff2',
+    placeholder: 'data:font/woff2;base64,__DEWEYOU_WEBSITE_SANS_FONT_500__',
     weight: 500,
   },
   {
-    fileName: 'SourceHanSerifCN-SemiBold.otf',
-    outputFileName: 'source-han-serif-cn-web-600.woff2',
-    placeholder: 'data:font/woff2;base64,__DEWEYOU_WEBSITE_FONT_600__',
+    family: 'Source Han Sans SC Web',
+    fileName: 'SourceHanSansSC-Medium.otf',
+    outputFileName: 'source-han-sans-sc-web-600.woff2',
+    placeholder: 'data:font/woff2;base64,__DEWEYOU_WEBSITE_SANS_FONT_600__',
     weight: 600,
   },
   {
+    family: 'Source Han Sans SC Web',
+    fileName: 'SourceHanSansSC-Bold.otf',
+    outputFileName: 'source-han-sans-sc-web-700.woff2',
+    placeholder: 'data:font/woff2;base64,__DEWEYOU_WEBSITE_SANS_FONT_700__',
+    weight: 700,
+  },
+  {
+    family: 'Source Han Serif CN Web',
+    fileName: 'SourceHanSerifCN-Regular.otf',
+    outputFileName: 'source-han-serif-cn-web-400.woff2',
+    placeholder: 'data:font/woff2;base64,__DEWEYOU_WEBSITE_SERIF_FONT_400__',
+    weight: 400,
+  },
+  {
+    family: 'Source Han Serif CN Web',
+    fileName: 'SourceHanSerifCN-Medium.otf',
+    outputFileName: 'source-han-serif-cn-web-500.woff2',
+    placeholder: 'data:font/woff2;base64,__DEWEYOU_WEBSITE_SERIF_FONT_500__',
+    weight: 500,
+  },
+  {
+    family: 'Source Han Serif CN Web',
+    fileName: 'SourceHanSerifCN-SemiBold.otf',
+    outputFileName: 'source-han-serif-cn-web-600.woff2',
+    placeholder: 'data:font/woff2;base64,__DEWEYOU_WEBSITE_SERIF_FONT_600__',
+    weight: 600,
+  },
+  {
+    family: 'Source Han Serif CN Web',
     fileName: 'SourceHanSerifCN-Bold.otf',
     outputFileName: 'source-han-serif-cn-web-700.woff2',
-    placeholder: 'data:font/woff2;base64,__DEWEYOU_WEBSITE_FONT_700__',
+    placeholder: 'data:font/woff2;base64,__DEWEYOU_WEBSITE_SERIF_FONT_700__',
     weight: 700,
   },
 ];
@@ -114,7 +146,7 @@ const createWebsiteFontCss = (
   assets
     .map(
       (asset) => `@font-face {
-  font-family: '${websiteFontFamily}';
+  font-family: '${asset.family}';
   src: url('${resolveUrl(asset)}') format('woff2');
   font-style: normal;
   font-weight: ${asset.weight};

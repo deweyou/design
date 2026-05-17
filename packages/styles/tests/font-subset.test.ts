@@ -8,6 +8,7 @@ import {
   createFontFaceCss,
   createFontSubset,
   createFontSubsetInput,
+  sourceHanSansScManifest,
   sourceHanSerifCnManifest,
 } from '../src/font-subset';
 
@@ -141,11 +142,59 @@ test('font subset creation validates supported weights and delegates binary gene
       subsetFont: async ({ targetPath }) => {
         writeFileSync(targetPath, 'subset-font');
       },
-      // @ts-expect-error invalid runtime input
       weights: [300],
       outputDir,
     }),
   ).rejects.toThrow('Unsupported Source Han Serif CN weight: 300');
+
+  rmSync(root, { recursive: true, force: true });
+});
+
+test('font subset creation can target the Source Han Sans SC manifest', async () => {
+  const root = createTempDir();
+  const outputDir = resolve(root, 'dist');
+
+  const result = await createFontSubset({
+    root,
+    source: 'source-han-sans-sc',
+    safelist: {
+      chars: '按钮',
+      builtin: false,
+    },
+    subsetFont: async ({ sourcePath, targetPath, weight }) => {
+      expect(sourcePath).toContain('SourceHanSansSC');
+      expect([250, 300, 350, 400, 500, 600, 700, 900]).toContain(weight);
+      writeFileSync(targetPath, 'subset-font');
+    },
+    weights: [250, 400, 600, 700, 900],
+    outputDir,
+  });
+
+  expect(result.css).toContain("font-family: 'Source Han Sans SC Web';");
+  expect(result.assets.map((asset) => asset.fileName)).toEqual([
+    expect.stringMatching(/source-han-sans-sc-250\.subset\.[a-f0-9]+\.woff2$/),
+    expect.stringMatching(/source-han-sans-sc-400\.subset\.[a-f0-9]+\.woff2$/),
+    expect.stringMatching(/source-han-sans-sc-600\.subset\.[a-f0-9]+\.woff2$/),
+    expect.stringMatching(/source-han-sans-sc-700\.subset\.[a-f0-9]+\.woff2$/),
+    expect.stringMatching(/source-han-sans-sc-900\.subset\.[a-f0-9]+\.woff2$/),
+  ]);
+
+  await expect(
+    createFontSubset({
+      root,
+      source: 'source-han-sans-sc',
+      safelist: {
+        chars: '按钮',
+        builtin: false,
+      },
+      subsetFont: async ({ targetPath }) => {
+        writeFileSync(targetPath, 'subset-font');
+      },
+      // @ts-expect-error invalid runtime input
+      weights: [800],
+      outputDir,
+    }),
+  ).rejects.toThrow('Unsupported Source Han Sans SC weight: 800');
 
   rmSync(root, { recursive: true, force: true });
 });
@@ -178,4 +227,22 @@ test('source han serif cn manifest maps all required weights to source font file
   expect(Object.keys(sourceHanSerifCnManifest.weights)).toEqual(['400', '500', '600', '700']);
   expect(sourceHanSerifCnManifest.weights[400]).toContain('SourceHanSerifCN-Regular.otf');
   expect(sourceHanSerifCnManifest.weights[700]).toContain('SourceHanSerifCN-Bold.otf');
+});
+
+test('source han sans sc manifest maps official static weights and the semantic 600 alias', () => {
+  expect(sourceHanSansScManifest.family).toBe('Source Han Sans SC Web');
+  expect(Object.keys(sourceHanSansScManifest.weights)).toEqual([
+    '250',
+    '300',
+    '350',
+    '400',
+    '500',
+    '600',
+    '700',
+    '900',
+  ]);
+  expect(sourceHanSansScManifest.weights[250]).toContain('SourceHanSansSC-ExtraLight.otf');
+  expect(sourceHanSansScManifest.weights[350]).toContain('SourceHanSansSC-Normal.otf');
+  expect(sourceHanSansScManifest.weights[600]).toContain('SourceHanSansSC-Medium.otf');
+  expect(sourceHanSansScManifest.weights[900]).toContain('SourceHanSansSC-Heavy.otf');
 });

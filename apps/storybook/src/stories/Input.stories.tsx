@@ -48,16 +48,20 @@ export const Default: Story = {
   args: {
     label: 'Email address',
     hint: 'We will never share your email.',
+    autoComplete: 'email',
+    name: 'email',
     placeholder: 'you@example.com',
+    spellCheck: false,
+    type: 'email',
   },
 };
 
 export const Variants: Story = {
   render: () => (
     <div style={{ display: 'grid', gap: '16px', maxWidth: '360px' }}>
-      <Input label="Default (md)" placeholder="Placeholder text" />
-      <Input label="Small (sm)" size="sm" placeholder="Placeholder text" />
-      <Input label="Large (lg)" size="lg" placeholder="Placeholder text" />
+      <Input label="Default (md)" placeholder="Type a value…" />
+      <Input label="Small (sm)" size="sm" placeholder="Type a compact value…" />
+      <Input label="Large (lg)" size="lg" placeholder="Type a larger value…" />
     </div>
   ),
 };
@@ -65,9 +69,9 @@ export const Variants: Story = {
 export const States: Story = {
   render: () => (
     <div style={{ display: 'grid', gap: '16px', maxWidth: '360px' }}>
-      <Input label="Normal" hint="Helper text here." placeholder="Placeholder" />
-      <Input label="With error" error="This field is required." placeholder="Placeholder" />
-      <Input label="Disabled" disabled placeholder="Cannot type here" />
+      <Input label="Normal" hint="Helper text here." placeholder="Enter a value…" />
+      <Input label="With error" error="This field is required." placeholder="Enter a value…" />
+      <Input label="Disabled" disabled placeholder="Cannot type here…" />
     </div>
   ),
 };
@@ -84,13 +88,17 @@ export const Interaction: Story = {
       <Input
         label="Email"
         error="Invalid email address."
+        autoComplete="email"
+        name="email"
         placeholder="you@example.com"
+        spellCheck={false}
         data-testid="error-input"
+        type="email"
       />
       <Input
         label="Disabled field"
         disabled
-        placeholder="Not editable"
+        placeholder="Not editable…"
         data-testid="disabled-input"
       />
     </div>

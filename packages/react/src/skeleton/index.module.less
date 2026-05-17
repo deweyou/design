@@ -20,11 +20,18 @@
     transparent 100%
   );
   background-size: 200% 100%;
-  animation: skeleton-shimmer 1.6s ease-in-out infinite;
+  animation: skeleton-shimmer 1.6s var(--ui-motion-ease-exit) infinite;
   overflow: hidden;
 }
 
 .circle {
   border-radius: var(--ui-radius-pill);
   aspect-ratio: 1 / 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root {
+    animation: none;
+    background-image: none;
+  }
 }

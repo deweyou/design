@@ -16,15 +16,15 @@
   display: flex;
   gap: 12px;
   left: 0;
-  right: 0;
   margin-inline: auto;
+  max-width: var(--ui-breakpoint-compact);
   min-width: 240px;
   opacity: var(--opacity, 1);
   padding: 12px 16px;
+  right: 0;
   transform: translateY(var(--y, 0));
-  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
-  width: 38vw;
-  max-width: 480px;
+  transition: transform var(--ui-motion-duration-slow) var(--ui-motion-ease-standard);
+  width: calc(100vw - 32px - env(safe-area-inset-left) - env(safe-area-inset-right));
 }
 
 /* Prevent stray clicks on a closing toast from re-triggering actions */
@@ -82,14 +82,16 @@
   cursor: pointer;
   display: flex;
   flex-shrink: 0;
-  height: 24px;
+  block-size: var(--ui-touch-target-min);
+  inline-size: var(--ui-touch-target-min);
   justify-content: center;
+  margin-block: -10px;
+  margin-inline-end: -10px;
   opacity: 0.5;
   padding: 0;
   transition:
-    background 140ms ease,
-    opacity 140ms ease;
-  width: 24px;
+    background var(--ui-motion-duration-fast) var(--ui-motion-ease-exit),
+    opacity var(--ui-motion-duration-fast) var(--ui-motion-ease-exit);
 
   &:hover {
     background: color-mix(in srgb, currentColor 8%, transparent);

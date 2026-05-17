@@ -6,6 +6,7 @@ import {
   Button,
   Card,
   Checkbox,
+  CodeBlock,
   Dialog,
   Field,
   IconButton,
@@ -150,6 +151,19 @@ export const COMPONENT_CATALOG: ComponentCatalogItem[] = [
     preview: <Checkbox defaultChecked>Accept</Checkbox>,
   },
   {
+    name: 'CodeBlock',
+    category: 'content',
+    description: 'Scrollable code block shared by MarkdownRender and product examples.',
+    importSnippet: "import { CodeBlock } from '@deweyou-design/react';",
+    dimensions: ['language', 'size', 'overflow'],
+    storyId: 'components-codeblock--default',
+    preview: (
+      <CodeBlock language="tsx" size="sm">
+        {'const active = true;'}
+      </CodeBlock>
+    ),
+  },
+  {
     name: 'Dialog',
     category: 'overlays',
     description: 'Modal decision surface for focused confirmation and details.',
@@ -199,7 +213,7 @@ export const COMPONENT_CATALOG: ComponentCatalogItem[] = [
       <Field.Root id="catalog-field" hasDescription>
         <Field.Label>Name</Field.Label>
         <Field.Control>
-          <input aria-label="Name" />
+          <Input placeholder="Deweyou" size="sm" />
         </Field.Control>
         <Field.Description>Short field hint</Field.Description>
       </Field.Root>
@@ -212,7 +226,7 @@ export const COMPONENT_CATALOG: ComponentCatalogItem[] = [
     importSnippet: "import { Input } from '@deweyou-design/react';",
     dimensions: ['size', 'disabled', 'invalid'],
     storyId: 'components-input--default',
-    preview: <Input placeholder="Search..." size="sm" />,
+    preview: <Input hint="Filters the component catalog." label="Search" placeholder="Search…" />,
   },
   {
     name: 'MarkdownRender',
@@ -316,7 +330,7 @@ export const COMPONENT_CATALOG: ComponentCatalogItem[] = [
     dimensions: ['value', 'orientation', 'disabled'],
     storyId: 'components-radiogroup--default',
     preview: (
-      <RadioGroup.Root defaultValue="a">
+      <RadioGroup.Root aria-label="Catalog choice" defaultValue="a" name="catalog-choice">
         <RadioGroup.Item value="a">A</RadioGroup.Item>
       </RadioGroup.Root>
     ),
@@ -342,7 +356,7 @@ export const COMPONENT_CATALOG: ComponentCatalogItem[] = [
     dimensions: ['value', 'placeholder', 'disabled'],
     storyId: 'components-select--default',
     preview: (
-      <Select.Root placeholder="Choose">
+      <Select.Root label="Choice" name="catalog-select" placeholder="Choose">
         <Select.Trigger />
         <Select.Content>
           <Select.Item value="a" label="Option A" />
@@ -418,7 +432,7 @@ export const COMPONENT_CATALOG: ComponentCatalogItem[] = [
     importSnippet: "import { Textarea } from '@deweyou-design/react';",
     dimensions: ['size', 'disabled', 'invalid'],
     storyId: 'components-textarea--default',
-    preview: <Textarea placeholder="Write..." size="sm" />,
+    preview: <Textarea hint="Supports multiline input." label="Message" placeholder="Write…" />,
   },
   {
     name: 'toast',

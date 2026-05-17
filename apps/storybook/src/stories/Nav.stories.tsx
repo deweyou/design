@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, within } from 'storybook/test';
 
 import { IconButton, Nav } from '@deweyou-design/react';
 import { MenuApplicationIcon } from '@deweyou-design/react-icons';
@@ -55,6 +56,7 @@ export const Responsive: Story = {
 
 export const ResponsiveLongList: Story = {
   parameters: {
+    fullViewport: true,
     viewport: {
       defaultViewport: 'mobile1',
     },
@@ -74,4 +76,22 @@ export const ResponsiveLongList: Story = {
       value="section-1"
     />
   ),
+};
+
+export const Interaction: Story = {
+  name: 'Interaction',
+  render: Responsive.render,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await expect(canvas.getByRole('navigation', { name: 'Responsive navigation' })).toBeVisible();
+    await expect(canvas.getByRole('link', { name: 'Components' })).toHaveAttribute(
+      'aria-current',
+      'page',
+    );
+    await expect(canvas.getByRole('link', { name: /Storybook/ })).toHaveAttribute(
+      'target',
+      '_blank',
+    );
+  },
 };

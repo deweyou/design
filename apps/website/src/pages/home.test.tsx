@@ -53,6 +53,7 @@ test('renders Overview as a design specification cover', () => {
   expect(screen.getByRole('link', { name: 'Components' })).toBeInTheDocument();
   expect(screen.getAllByRole('link', { name: 'Storybook' }).length).toBeGreaterThan(0);
   expect(screen.getByRole('link', { name: 'GitHub' })).toBeInTheDocument();
+  expect(screen.getByText(/Sans for controls, serif for content/)).toBeInTheDocument();
   expect(screen.getAllByText('01').length).toBeGreaterThan(0);
   expect(document.body.innerHTML).toContain('--ui-color-brand-bg-hover');
   expect(document.body.innerHTML).toContain('--ui-color-danger-bg-hover');

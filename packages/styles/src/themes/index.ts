@@ -35,6 +35,25 @@ const createTextColorThemeSurface = (textShade: '200' | '800', backgroundShade: 
 const paletteThemeSurface = createPaletteThemeSurface();
 const lightTextColorThemeSurface = createTextColorThemeSurface('800', '100');
 const darkTextColorThemeSurface = createTextColorThemeSurface('200', '900');
+const sharedInteractionTheme = {
+  '--ui-control-height-xs': internalPrimitives.control.heightXs,
+  '--ui-control-height-sm': internalPrimitives.control.heightSm,
+  '--ui-control-height-md': internalPrimitives.control.heightMd,
+  '--ui-control-height-lg': internalPrimitives.control.heightLg,
+  '--ui-control-height-xl': internalPrimitives.control.heightXl,
+  '--ui-touch-target-min': internalPrimitives.control.touchTargetMin,
+  '--ui-breakpoint-compact': internalPrimitives.breakpoint.compact,
+  '--ui-motion-duration-fast': internalPrimitives.motion.durationFast,
+  '--ui-motion-duration-base': internalPrimitives.motion.durationBase,
+  '--ui-motion-duration-slow': internalPrimitives.motion.durationSlow,
+  '--ui-motion-ease-standard': internalPrimitives.motion.easeStandard,
+  '--ui-motion-ease-exit': internalPrimitives.motion.easeExit,
+  '--ui-z-dropdown': internalPrimitives.zIndex.dropdown,
+  '--ui-z-tooltip': internalPrimitives.zIndex.tooltip,
+  '--ui-z-popover': internalPrimitives.zIndex.popover,
+  '--ui-z-dialog': internalPrimitives.zIndex.dialog,
+  '--ui-z-toast': internalPrimitives.zIndex.toast,
+} as const;
 
 export const sharedColorTheme = {
   '--ui-color-black': internalPrimitives.color.black,
@@ -45,9 +64,9 @@ export const sharedColorTheme = {
 } as const;
 
 export const lightTheme = {
-  '--ui-color-canvas': internalPrimitives.color.warmCanvas,
-  '--ui-color-surface': internalPrimitives.color.warmSurface,
-  '--ui-color-surface-raised': internalPrimitives.color.warmSurfaceRaised,
+  '--ui-color-canvas': internalPrimitives.color.whiteCanvas,
+  '--ui-color-surface': internalPrimitives.color.whiteSurface,
+  '--ui-color-surface-raised': internalPrimitives.color.whiteSurfaceRaised,
   '--ui-color-text': createPaletteCssVar('stone', '950'),
   '--ui-color-text-muted': createPaletteCssVar('stone', '500'),
   '--ui-color-text-disabled': createPaletteCssVar('stone', '400'),
@@ -73,7 +92,11 @@ export const lightTheme = {
   '--ui-radius-float': internalPrimitives.radius.float,
   '--ui-radius-pill': internalPrimitives.radius.pill,
   '--ui-shadow-soft': internalPrimitives.shadow.soft,
+  '--ui-font-sans': internalPrimitives.font.sans,
+  '--ui-font-serif': internalPrimitives.font.serif,
   '--ui-font-body': internalPrimitives.font.body,
+  '--ui-font-control': internalPrimitives.font.control,
+  '--ui-font-content': internalPrimitives.font.content,
   '--ui-font-display': internalPrimitives.font.display,
   '--ui-font-mono': internalPrimitives.font.mono,
   '--ui-font-weight-body': internalPrimitives.font.weights.body,
@@ -99,10 +122,7 @@ export const lightTheme = {
   '--ui-space-md': internalPrimitives.spacing.md,
   '--ui-space-lg': internalPrimitives.spacing.lg,
   '--ui-space-xl': internalPrimitives.spacing.xl,
-  '--ui-z-tooltip': internalPrimitives.zIndex.tooltip,
-  '--ui-z-popover': internalPrimitives.zIndex.popover,
-  '--ui-z-dialog': internalPrimitives.zIndex.dialog,
-  '--ui-z-toast': internalPrimitives.zIndex.toast,
+  ...sharedInteractionTheme,
   '--ui-shadow-sm': internalPrimitives.shadow.sm,
   '--ui-shadow-md': internalPrimitives.shadow.md,
   '--ui-shadow-lg': internalPrimitives.shadow.lg,
@@ -138,7 +158,11 @@ export const darkTheme = {
   '--ui-radius-float': internalPrimitives.radius.float,
   '--ui-radius-pill': internalPrimitives.radius.pill,
   '--ui-shadow-soft': internalPrimitives.shadow.softDark,
+  '--ui-font-sans': internalPrimitives.font.sans,
+  '--ui-font-serif': internalPrimitives.font.serif,
   '--ui-font-body': internalPrimitives.font.body,
+  '--ui-font-control': internalPrimitives.font.control,
+  '--ui-font-content': internalPrimitives.font.content,
   '--ui-font-display': internalPrimitives.font.display,
   '--ui-font-mono': internalPrimitives.font.mono,
   '--ui-font-weight-body': internalPrimitives.font.weights.body,
@@ -159,6 +183,7 @@ export const darkTheme = {
   '--ui-text-line-height-h4': internalPrimitives.text.heading4LineHeight,
   '--ui-text-size-h5': internalPrimitives.text.heading5Size,
   '--ui-text-line-height-h5': internalPrimitives.text.heading5LineHeight,
+  ...sharedInteractionTheme,
   '--ui-shadow-sm': internalPrimitives.shadow.smDark,
   '--ui-shadow-md': internalPrimitives.shadow.mdDark,
   '--ui-shadow-lg': internalPrimitives.shadow.lgDark,

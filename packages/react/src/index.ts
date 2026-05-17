@@ -12,6 +12,14 @@ export {
 } from './popover/index.tsx';
 export { Text, type TextProps } from './text/index.tsx';
 export {
+  CodeBlock,
+  type CodeBlockCommonLanguage,
+  type CodeBlockCopyDetails,
+  type CodeBlockLanguage,
+  type CodeBlockProps,
+  type CodeBlockSize,
+} from './code-block/index.tsx';
+export {
   Tabs,
   TabList,
   TabTrigger,

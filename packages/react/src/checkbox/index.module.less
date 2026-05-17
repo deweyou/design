@@ -5,6 +5,7 @@
   cursor: pointer;
   display: inline-flex;
   gap: 0.5rem;
+  min-block-size: var(--ui-touch-target-min);
   position: relative;
   user-select: none;
 }
@@ -14,43 +15,25 @@
   opacity: 0.56;
 }
 
-.control {
-  align-items: center;
-  background: var(--ui-color-surface);
-  border: 1px solid var(--ui-color-border-strong);
-  border-radius: var(--ui-radius-rect);
-  display: inline-flex;
-  flex-shrink: 0;
-  height: 1rem;
-  justify-content: center;
-  transition:
-    background 140ms ease,
-    border-color 140ms ease;
-  width: 1rem;
+.root:hover:not([data-disabled]) [data-ui-checkbox-mark] {
+  background: color-mix(in srgb, var(--ui-color-brand-bg) 4%, var(--ui-color-surface));
+  border-color: var(--ui-color-brand-text);
 }
 
-.root[data-state='checked'] .control,
-.root[data-state='indeterminate'] .control {
+.root[data-state='checked'] [data-ui-checkbox-mark],
+.root[data-state='indeterminate'] [data-ui-checkbox-mark] {
   background: var(--ui-color-brand-bg);
   border-color: var(--ui-color-brand-bg);
 }
 
-.root:has(:focus-visible) .control {
+.root[data-state='checked']:hover:not([data-disabled]) [data-ui-checkbox-mark],
+.root[data-state='indeterminate']:hover:not([data-disabled]) [data-ui-checkbox-mark] {
+  background: var(--ui-color-brand-bg-hover);
+  border-color: var(--ui-color-brand-bg-hover);
+}
+
+.root:has(:focus-visible) [data-ui-checkbox-mark] {
   .focus-ring-offset();
-}
-
-.indicator {
-  align-items: center;
-  color: var(--ui-color-text-on-brand);
-  display: none;
-  font-size: 0.75rem;
-  justify-content: center;
-  line-height: 1;
-}
-
-.root[data-state='checked'] .indicator,
-.root[data-state='indeterminate'] .indicator {
-  display: inline-flex;
 }
 
 .label {

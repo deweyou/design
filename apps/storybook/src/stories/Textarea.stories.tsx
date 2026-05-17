@@ -55,9 +55,9 @@ export const Default: Story = {
 export const Variants: Story = {
   render: () => (
     <div style={{ display: 'grid', gap: '16px', maxWidth: '400px' }}>
-      <Textarea label="Small (sm)" size="sm" placeholder="Small textarea" />
-      <Textarea label="Medium (md)" size="md" placeholder="Medium textarea" />
-      <Textarea label="Large (lg)" size="lg" placeholder="Large textarea" />
+      <Textarea label="Small (sm)" size="sm" placeholder="Describe it briefly…" />
+      <Textarea label="Medium (md)" size="md" placeholder="Describe the issue…" />
+      <Textarea label="Large (lg)" size="lg" placeholder="Write the full context…" />
     </div>
   ),
 };
@@ -65,9 +65,13 @@ export const Variants: Story = {
 export const States: Story = {
   render: () => (
     <div style={{ display: 'grid', gap: '16px', maxWidth: '400px' }}>
-      <Textarea label="Normal" hint="Helper text here." placeholder="Placeholder" />
-      <Textarea label="With error" error="Message cannot be empty." placeholder="Placeholder" />
-      <Textarea label="Disabled" disabled placeholder="Cannot type here" />
+      <Textarea label="Normal" hint="Helper text here." placeholder="Write a message…" />
+      <Textarea
+        label="With error"
+        error="Message cannot be empty."
+        placeholder="Write a message…"
+      />
+      <Textarea label="Disabled" disabled placeholder="Cannot type here…" />
     </div>
   ),
 };
@@ -89,7 +93,7 @@ export const Interaction: Story = {
       <Textarea
         label="Read-only area"
         disabled
-        placeholder="Cannot be edited"
+        placeholder="Cannot be edited…"
         data-testid="disabled-textarea"
       />
     </div>

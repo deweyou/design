@@ -24,6 +24,10 @@ test('styles package exposes the documented semantic and foundational color toke
   expect(publicCssVars).toContain('--ui-color-palette-olive-950');
   expect(publicCssVars).toContain('--ui-text-color-emerald');
   expect(publicCssVars).toContain('--ui-text-background-mist');
+  expect(publicCssVars).toContain('--ui-control-height-sm');
+  expect(publicCssVars).toContain('--ui-touch-target-min');
+  expect(publicCssVars).toContain('--ui-motion-duration-base');
+  expect(publicCssVars).toContain('--ui-z-dropdown');
 });
 
 test('styles package exposes the shared palette foundation while keeping text aliases stable', () => {
@@ -53,14 +57,29 @@ test('styles package exposes the shared palette foundation while keeping text al
   expect(internalPrimitives.color.textPalette).toEqual(colorPalette);
 });
 
-test('styles package keeps typography internal while defining the serif defaults', () => {
+test('styles package keeps typography internal while defining sans UI defaults and serif content roles', () => {
   expect(publicThemeTokens.some((token) => token.cssVar.startsWith('--ui-font'))).toBe(false);
-  expect(internalTypographyRoleNames).toEqual(['body', 'display', 'mono']);
+  expect(internalTypographyRoleNames).toEqual([
+    'sans',
+    'serif',
+    'body',
+    'control',
+    'content',
+    'display',
+    'mono',
+  ]);
   expect(internalPrimitives.font.roles.body.defaultWeightTier).toBe('body');
+  expect(internalPrimitives.font.roles.control.defaultWeightTier).toBe('emphasis');
+  expect(internalPrimitives.font.roles.content.defaultWeightTier).toBe('body');
   expect(internalPrimitives.font.roles.display.defaultWeightTier).toBe('title');
-  expect(internalPrimitives.font.body).toContain('Source Han Serif CN Web');
+  expect(internalPrimitives.font.sans).toContain('Source Han Sans SC Web');
+  expect(internalPrimitives.font.serif).toContain('Source Han Serif CN Web');
+  expect(internalPrimitives.font.body).toContain('Source Han Sans SC Web');
+  expect(internalPrimitives.font.control).toContain('Source Han Sans SC Web');
+  expect(internalPrimitives.font.content).toContain('Source Han Serif CN Web');
   expect(internalPrimitives.font.display).toContain('Songti SC');
-  expect(internalPrimitives.font.fallbacks.windows).toEqual(['SimSun', 'NSimSun']);
+  expect(internalPrimitives.font.fallbacks.serifWindows).toEqual(['SimSun', 'NSimSun']);
+  expect(internalPrimitives.font.fallbacks.sansMacos).toEqual(['PingFang SC', 'Heiti SC']);
   expect(internalPrimitives.font.weights).toEqual({
     body: '400',
     emphasis: '500',

@@ -1,0 +1,186 @@
+@import '@deweyou-design/styles/less/bridge';
+
+.root {
+  --code-block-attribute: color-mix(
+    in srgb,
+    var(--ui-color-warning-text) 78%,
+    var(--ui-color-text)
+  );
+  --code-block-keyword: color-mix(in srgb, var(--ui-color-brand-text) 82%, var(--ui-color-text));
+  --code-block-literal: color-mix(in srgb, var(--ui-color-brand-bg) 70%, var(--ui-color-text));
+  --code-block-margin-block: 0;
+  --code-block-max-height: 22rem;
+  --code-block-string: color-mix(in srgb, var(--ui-color-danger-text) 78%, var(--ui-color-text));
+  --code-block-title: color-mix(in srgb, var(--ui-color-brand-bg-hover) 76%, var(--ui-color-text));
+
+  background: color-mix(in srgb, var(--ui-color-surface) 88%, var(--ui-color-text) 3%);
+  border: 1px solid color-mix(in srgb, var(--ui-color-border) 72%, transparent);
+  border-radius: var(--ui-radius-rect);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--ui-color-white) 72%, transparent),
+    0 1px 2px color-mix(in srgb, var(--ui-color-text) 5%, transparent);
+  box-sizing: border-box;
+  color: var(--ui-color-text);
+  margin-block: var(--code-block-margin-block);
+  max-block-size: var(--code-block-max-height);
+  max-inline-size: 100%;
+}
+
+.viewport {
+  max-block-size: var(--code-block-max-height);
+}
+
+.pre {
+  box-sizing: border-box;
+  inline-size: max-content;
+  margin: 0;
+  min-inline-size: 100%;
+  padding: var(--code-block-padding-block) var(--code-block-padding-inline);
+  padding-inline-end: 5.75rem;
+}
+
+.code {
+  background: transparent;
+  color: var(--ui-color-text);
+  display: block;
+  font-family: var(
+    --ui-font-code,
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace
+  );
+  font-size: var(--code-block-font-size);
+  line-height: 1.6;
+  white-space: pre;
+}
+
+.sm {
+  --code-block-font-size: 0.76rem;
+  --code-block-padding-block: 0.68rem;
+  --code-block-padding-inline: 0.85rem;
+}
+
+.md {
+  --code-block-font-size: 0.84rem;
+  --code-block-padding-block: 0.78rem;
+  --code-block-padding-inline: 0.92rem;
+}
+
+.actions {
+  align-items: center;
+  background: color-mix(in srgb, var(--ui-color-surface) 84%, transparent);
+  border: 1px solid color-mix(in srgb, var(--ui-color-border) 58%, transparent);
+  border-radius: 999px;
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--ui-color-white) 70%, transparent),
+    0 1px 2px color-mix(in srgb, var(--ui-color-text) 4%, transparent);
+  display: inline-flex;
+  gap: 0.12rem;
+  inset-block-start: 0.55rem;
+  inset-inline-end: 0.55rem;
+  padding: 0.12rem;
+  position: absolute;
+  z-index: 1;
+}
+
+.actionPill {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  box-sizing: border-box;
+  color: var(--ui-color-text-muted);
+  display: inline-flex;
+  font-family: var(
+    --ui-font-code,
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace
+  );
+  font-size: 0.625rem;
+  justify-content: center;
+  line-height: 1;
+  padding: 0;
+}
+
+.language {
+  min-block-size: 1.35rem;
+  padding-inline: 0.44rem;
+  text-transform: uppercase;
+}
+
+.language:not(:last-child) {
+  padding-inline-end: 0.3rem;
+}
+
+.copyButton {
+  appearance: none;
+  block-size: 1.35rem;
+  border-radius: 999px;
+  cursor: pointer;
+  inline-size: 1.35rem;
+  transition:
+    background-color var(--ui-motion-duration-fast) var(--ui-motion-ease-exit),
+    color var(--ui-motion-duration-fast) var(--ui-motion-ease-exit);
+}
+
+.copyButton:hover {
+  background: color-mix(in srgb, var(--ui-color-text) 7%, transparent);
+  color: var(--ui-color-text);
+}
+
+.copyButton:active {
+  background: color-mix(in srgb, var(--ui-color-text) 10%, transparent);
+}
+
+.copyButton:focus-visible {
+  .focus-ring();
+  color: var(--ui-color-text);
+}
+
+.copyButton[data-copied='true'] {
+  background: color-mix(in srgb, var(--ui-color-brand-bg) 12%, transparent);
+  color: var(--ui-color-brand-text);
+}
+
+.code :global(.hljs-keyword),
+.code :global(.hljs-selector-tag),
+.code :global(.hljs-built_in) {
+  color: var(--code-block-keyword);
+}
+
+.code :global(.hljs-string),
+.code :global(.hljs-regexp),
+.code :global(.hljs-template-variable) {
+  color: var(--code-block-string);
+}
+
+.code :global(.hljs-number),
+.code :global(.hljs-literal),
+.code :global(.hljs-symbol) {
+  color: var(--code-block-literal);
+}
+
+.code :global(.hljs-title),
+.code :global(.hljs-title.function_),
+.code :global(.hljs-title.class_) {
+  color: var(--code-block-title);
+}
+
+.code :global(.hljs-attr),
+.code :global(.hljs-attribute),
+.code :global(.hljs-property),
+.code :global(.hljs-variable) {
+  color: var(--code-block-attribute);
+}
+
+.code :global(.hljs-comment),
+.code :global(.hljs-quote) {
+  color: var(--ui-color-text-muted);
+  font-style: italic;
+}

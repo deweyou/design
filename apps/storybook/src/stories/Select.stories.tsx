@@ -29,7 +29,7 @@ export default meta;
 
 export const Default: StoryObj = {
   render: () => (
-    <Select.Root placeholder="Select a fruit">
+    <Select.Root label="Fruit" name="default-fruit" placeholder="Select a fruit">
       <Select.Trigger />
       <Select.Content>
         {fruits.map((f) => (
@@ -45,7 +45,7 @@ export const Variants: StoryObj = {
     <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
         <p style={{ margin: 0, fontSize: '0.875rem', color: 'var(--ui-color-text)' }}>Single</p>
-        <Select.Root placeholder="Select a fruit">
+        <Select.Root label="Single fruit" name="single-fruit" placeholder="Select a fruit">
           <Select.Trigger />
           <Select.Content>
             {fruits.map((f) => (
@@ -56,7 +56,12 @@ export const Variants: StoryObj = {
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
         <p style={{ margin: 0, fontSize: '0.875rem', color: 'var(--ui-color-text)' }}>Multiple</p>
-        <Select.Root placeholder="Select fruits" multiple>
+        <Select.Root
+          label="Multiple fruits"
+          multiple
+          name="multiple-fruits"
+          placeholder="Select fruits"
+        >
           <Select.Trigger />
           <Select.Content>
             {fruits.map((f) => (
@@ -76,7 +81,7 @@ export const States: StoryObj = {
         <p style={{ margin: '0 0 6px', fontSize: '0.875rem', color: 'var(--ui-color-text)' }}>
           Placeholder
         </p>
-        <Select.Root placeholder="No selection">
+        <Select.Root label="Placeholder fruit" name="placeholder-fruit" placeholder="No selection">
           <Select.Trigger />
           <Select.Content>
             {fruits.map((f) => (
@@ -89,7 +94,7 @@ export const States: StoryObj = {
         <p style={{ margin: '0 0 6px', fontSize: '0.875rem', color: 'var(--ui-color-text)' }}>
           With initial value
         </p>
-        <Select.Root defaultValue={['banana']}>
+        <Select.Root defaultValue={['banana']} label="Initial fruit" name="initial-fruit">
           <Select.Trigger />
           <Select.Content>
             {fruits.map((f) => (
@@ -102,7 +107,12 @@ export const States: StoryObj = {
         <p style={{ margin: '0 0 6px', fontSize: '0.875rem', color: 'var(--ui-color-text)' }}>
           Disabled
         </p>
-        <Select.Root disabled placeholder="Cannot select">
+        <Select.Root
+          disabled
+          label="Disabled fruit"
+          name="disabled-fruit"
+          placeholder="Cannot select"
+        >
           <Select.Trigger />
           <Select.Content>
             {fruits.map((f) => (
@@ -119,7 +129,13 @@ const ControlledDemo = () => {
   const [value, setValue] = useState<string[]>([]);
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-      <Select.Root value={value} onValueChange={setValue} placeholder="Select a fruit">
+      <Select.Root
+        label="Controlled fruit"
+        name="controlled-fruit"
+        value={value}
+        onValueChange={setValue}
+        placeholder="Select a fruit"
+      >
         <Select.Trigger />
         <Select.Content>
           {fruits.map((f) => (
@@ -139,7 +155,7 @@ export const Controlled: StoryObj = { render: () => <ControlledDemo /> };
 export const Interaction: StoryObj = {
   name: 'Interaction',
   render: () => (
-    <Select.Root placeholder="Select a fruit">
+    <Select.Root label="Interaction fruit" name="interaction-fruit" placeholder="Select a fruit">
       <Select.Trigger />
       <Select.Content>
         {fruits.map((f) => (

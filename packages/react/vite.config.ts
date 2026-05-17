@@ -17,6 +17,7 @@ export default defineConfig({
         '@deweyou-design/react-hooks',
         '@deweyou-design/styles',
         'classnames',
+        'highlight.js/lib/common',
         'react',
         'react-dom',
         'react/jsx-runtime',

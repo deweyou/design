@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, userEvent, within } from 'storybook/test';
 
 import { Field, Input } from '@deweyou-design/react';
 
@@ -19,4 +20,19 @@ export const Default: Story = {
       <Field.Description>Field connects label, description, and control ids.</Field.Description>
     </Field.Root>
   ),
+};
+
+export const Interaction: Story = {
+  name: 'Interaction',
+  render: Default.render,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const input = canvas.getByLabelText('Name');
+    const description = canvas.getByText('Field connects label, description, and control ids.');
+
+    await expect(input).toBeInTheDocument();
+    await expect(input.getAttribute('aria-describedby')).toBe(description.id);
+    await userEvent.type(input, ' Dewey');
+    await expect(input).toHaveValue(' Dewey');
+  },
 };

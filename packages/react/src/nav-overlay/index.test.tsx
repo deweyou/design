@@ -1,9 +1,13 @@
 // @vitest-environment jsdom
 
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { cleanup, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vite-plus/test';
 
 import { NavOverlay } from './index.tsx';
+
+const stylesheet = readFileSync(resolve(import.meta.dirname, './index.module.less'), 'utf8');
 
 afterEach(() => {
   cleanup();
@@ -53,5 +57,19 @@ describe('NavOverlay', () => {
         </NavOverlay.Root>,
       ),
     ).not.toThrow();
+  });
+
+  it('keeps the fullscreen panel scroll-contained with room for the close button', () => {
+    expect(stylesheet).toContain('overscroll-behavior: contain;');
+    expect(stylesheet).toContain(
+      'padding-block-end: calc(var(--ui-space-xl) + 72px + env(safe-area-inset-bottom));',
+    );
+    expect(stylesheet).toContain(
+      'scroll-padding-block-end: calc(var(--ui-space-xl) + 72px + env(safe-area-inset-bottom));',
+    );
+    expect(stylesheet).toContain('position: fixed;');
+    expect(stylesheet).toContain('z-index: var(--ui-z-dialog);');
+    expect(stylesheet).toContain('bottom: max(var(--ui-space-lg), env(safe-area-inset-bottom));');
+    expect(stylesheet).toContain('transform: translateX(-50%);');
   });
 });

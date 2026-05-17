@@ -6,14 +6,16 @@ import {
   type CSSProperties,
   isValidElement,
   type MouseEvent,
+  type ReactElement,
   type ReactNode,
 } from 'react';
 import classNames from 'classnames';
-import { CheckIcon } from '@deweyou-design/react-icons';
 import rehypeHighlight from 'rehype-highlight';
 import ReactMarkdown, { type Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
+import { CheckboxMark } from '../checkbox-mark/index.tsx';
+import { CodeBlock, type CodeBlockProps } from '../code-block/index.tsx';
 import { Separator } from '../separator/index.tsx';
 import { ScrollArea } from '../scroll-area/index.tsx';
 import { Text, type TextProps } from '../text/index.tsx';
@@ -99,6 +101,15 @@ type MarkdownCodeKind = 'block' | 'inline';
 type MarkdownCodeProps = ComponentPropsWithoutRef<'code'> & {
   'data-markdown-code'?: MarkdownCodeKind;
 };
+type MarkdownDataAttributes = {
+  [key: `data-${string}`]: MarkdownRenderNodeAttributeValue;
+};
+type MarkdownCodeBlockProps = CodeBlockProps & {
+  languageLabelProps?: ComponentPropsWithoutRef<'span'> & MarkdownDataAttributes;
+  preProps?: ComponentPropsWithoutRef<'pre'> & MarkdownDataAttributes;
+};
+
+const MarkdownCodeBlock = CodeBlock as (props: MarkdownCodeBlockProps) => ReactElement;
 
 type ResolveMarkdownNodeProps = <T extends object>(
   props: T,
@@ -319,6 +330,8 @@ const createMarkdownImage =
         {...nodeProps}
         alt={alt ?? ''}
         className={classNames(styles.image, nodeProps.className)}
+        decoding={nodeProps.decoding ?? 'async'}
+        loading={nodeProps.loading ?? 'lazy'}
       />
     );
   };
@@ -389,19 +402,15 @@ const createMarkdownTaskMarker =
     const nodeProps = resolveMarkdownNodeProps(props, 'task-marker', checked ? 'true' : 'false');
 
     return (
-      <span
+      <CheckboxMark
         {...nodeProps}
         className={classNames(styles.taskMarker, nodeProps.className)}
         data-checked={checked ? 'true' : 'false'}
         data-markdown-task-marker="true"
-      >
-        <span className={styles.taskMarkerIndicator}>
-          <CheckIcon aria-hidden="true" />
-        </span>
-        <span className={styles.taskMarkerState}>
-          {checked ? 'Completed task' : 'Incomplete task'}
-        </span>
-      </span>
+        data-readonly="true"
+        state={checked ? 'checked' : 'unchecked'}
+        stateLabel={checked ? 'Completed task' : 'Incomplete task'}
+      />
     );
   };
 
@@ -442,33 +451,20 @@ const createMarkdownPre =
     const nodeProps = resolveMarkdownNodeProps(props, 'pre', children);
 
     return (
-      <ScrollArea.Root className={styles.codeScrollArea} data-testid="markdown-code-scroll-area">
-        {language !== undefined && (
-          <span
-            aria-hidden="true"
-            className={styles.codeLanguage}
-            data-markdown-code-language-label="true"
-          >
-            {language}
-          </span>
-        )}
-        <ScrollArea.Viewport className={styles.codeViewport}>
-          <pre
-            {...nodeProps}
-            className={classNames(styles.pre, nodeProps.className)}
-            data-markdown-code="block"
-            data-language={language}
-          >
-            {blockChildren}
-          </pre>
-        </ScrollArea.Viewport>
-        <ScrollArea.Scrollbar orientation="horizontal">
-          <ScrollArea.Thumb />
-        </ScrollArea.Scrollbar>
-        <ScrollArea.Scrollbar orientation="vertical">
-          <ScrollArea.Thumb />
-        </ScrollArea.Scrollbar>
-      </ScrollArea.Root>
+      <MarkdownCodeBlock
+        className={styles.codeBlock}
+        data-testid="markdown-code-scroll-area"
+        language={language}
+        languageLabelProps={{ 'data-markdown-code-language-label': 'true' }}
+        preProps={{
+          ...nodeProps,
+          className: nodeProps.className,
+          'data-markdown-code': 'block',
+          'data-language': language,
+        }}
+      >
+        {blockChildren}
+      </MarkdownCodeBlock>
     );
   };
 

@@ -36,6 +36,17 @@ describe('RadioGroup — default render', () => {
     expect(screen.getByRole('radiogroup')).toBeDefined();
   });
 
+  it('accepts accessible name and form name props', () => {
+    render(
+      <RadioGroup.Root aria-label="Fruit preference" name="fruit">
+        <RadioGroup.Item value="a">Option A</RadioGroup.Item>
+      </RadioGroup.Root>,
+    );
+
+    expect(screen.getByRole('radiogroup', { name: 'Fruit preference' })).toBeDefined();
+    expect(document.querySelector('input[name="fruit"]')).toBeDefined();
+  });
+
   it('renders all radio items', () => {
     render(
       <RadioGroup.Root>

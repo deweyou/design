@@ -1,6 +1,6 @@
 import { useState, type ComponentType } from 'react';
 
-import { Input, Text, toast } from '@deweyou-design/react';
+import { CodeBlock, Input, Text, toast } from '@deweyou-design/react';
 import * as Icons from '@deweyou-design/react-icons';
 import type { IconProps } from '@deweyou-design/react-icons';
 
@@ -117,7 +117,9 @@ export const IconsPage = () => {
           name, category, or keyword, then click an icon to copy the import snippet.
         </Text>
         <div className={styles.sample}>
-          <code>import {'{ AlertCircleIcon }'} from '@deweyou-design/react-icons'</code>
+          <CodeBlock size="sm">
+            import {'{ AlertCircleIcon }'} from '@deweyou-design/react-icons'
+          </CodeBlock>
         </div>
       </header>
 
@@ -126,7 +128,7 @@ export const IconsPage = () => {
           <Input
             id="icons-search"
             label="Search icons"
-            placeholder="Search icons..."
+            placeholder="Search icons…"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />

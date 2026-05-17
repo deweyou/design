@@ -1,10 +1,14 @@
 // @vitest-environment jsdom
 
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vite-plus/test';
 
 import { Nav } from './index.tsx';
+
+const stylesheet = readFileSync(resolve(import.meta.dirname, './index.module.less'), 'utf8');
 
 beforeEach(() => {
   if (!window.ResizeObserver) {
@@ -139,5 +143,12 @@ describe('Nav.Responsive', () => {
     const dialog = await waitFor(() => screen.getByRole('dialog'));
 
     expect(within(dialog).getByRole('link', { name: 'Overview' })).toBeTruthy();
+  });
+
+  it('keeps collapsed overlay content clear of the persistent close button', () => {
+    expect(stylesheet).toContain('padding-block-end: calc(var(--ui-space-xl) + 72px);');
+    expect(stylesheet).toContain('scroll-padding-block-end: calc(var(--ui-space-xl) + 72px);');
+    expect(stylesheet).toContain('inline-size: var(--ui-touch-target-min);');
+    expect(stylesheet).toContain('block-size: var(--ui-touch-target-min);');
   });
 });

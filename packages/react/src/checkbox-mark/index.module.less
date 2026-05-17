@@ -1,0 +1,65 @@
+@import '@deweyou-design/styles/less/bridge';
+
+.mark {
+  align-items: center;
+  background: var(--ui-color-surface);
+  border: 1px solid var(--ui-color-border-strong);
+  border-radius: var(--ui-radius-rect);
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-shrink: 0;
+  block-size: 1.125rem;
+  inline-size: 1.125rem;
+  justify-content: center;
+  transition:
+    background var(--ui-motion-duration-fast) var(--ui-motion-ease-exit),
+    border-color var(--ui-motion-duration-fast) var(--ui-motion-ease-exit);
+}
+
+.mark[data-state='checked'],
+.mark[data-state='indeterminate'] {
+  background: var(--ui-color-brand-bg);
+  border-color: var(--ui-color-brand-bg);
+}
+
+.mark:hover:not([data-disabled='true']):not([data-readonly='true']) {
+  background: color-mix(in srgb, var(--ui-color-brand-bg) 4%, var(--ui-color-surface));
+  border-color: var(--ui-color-brand-text);
+}
+
+.mark[data-state='checked']:hover:not([data-disabled='true']):not([data-readonly='true']),
+.mark[data-state='indeterminate']:hover:not([data-disabled='true']):not([data-readonly='true']) {
+  background: var(--ui-color-brand-bg-hover);
+  border-color: var(--ui-color-brand-bg-hover);
+}
+
+.indicator {
+  align-items: center;
+  color: var(--ui-color-text-on-brand);
+  display: none;
+  justify-content: center;
+  line-height: 1;
+}
+
+.indicator svg {
+  display: block;
+  block-size: 0.875rem;
+  inline-size: 0.875rem;
+}
+
+.mark[data-state='checked'] .indicator,
+.mark[data-state='indeterminate'] .indicator {
+  display: inline-flex;
+}
+
+.stateLabel {
+  block-size: 1px;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  inline-size: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+}

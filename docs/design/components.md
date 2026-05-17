@@ -13,6 +13,7 @@ This document is the human-readable companion to `packages/react/package.json` e
 | `Button`, `IconButton` | `@deweyou-design/react` | `@deweyou-design/react/button`          |
 | `Card`                 | `@deweyou-design/react` | `@deweyou-design/react/card`            |
 | `Checkbox`             | `@deweyou-design/react` | `@deweyou-design/react/checkbox`        |
+| `CodeBlock`            | `@deweyou-design/react` | `@deweyou-design/react/code-block`      |
 | `Dialog`               | `@deweyou-design/react` | `@deweyou-design/react/dialog`          |
 | `Field`                | `@deweyou-design/react` | `@deweyou-design/react/field`           |
 | `Input`                | `@deweyou-design/react` | `@deweyou-design/react/input`           |
@@ -190,7 +191,16 @@ an item from the overflow menu follows the same route or command.
 <MarkdownRender value={content} components={{ a: CustomLink, pre: CodeBlock }} />
 ```
 
-`MarkdownRender` is the safe runtime Markdown path for CommonMark plus GFM content. Use `size` to adjust typography density, `onLinkClick` and `onCopy` for light interaction hooks, `resolveNodeAttributes` to attach light DOM attributes such as heading ids, `components` to replace rendered nodes, and `className` with `[data-markdown-node]` selectors for light style overrides. Event callbacks preserve default browser behavior unless the consumer calls `event.preventDefault()`. `resolveNodeAttributes` receives the node name, text content, and a zero-based per-node `index`, which keeps repeated headings addressable without a component override. Fenced code blocks with a language are syntax-highlighted by default and show a compact language tag. Tables and code blocks use default max-height guards with scrolling; override `--markdown-table-max-height` or `--markdown-code-max-height` from the consumer surface when needed. MDX and executable content belong in a separate rendering boundary.
+`MarkdownRender` is the safe runtime Markdown path for CommonMark plus GFM content. Use `size` to adjust typography density, `onLinkClick` and `onCopy` for light interaction hooks, `resolveNodeAttributes` to attach light DOM attributes such as heading ids, `components` to replace rendered nodes, and `className` with `[data-markdown-node]` selectors for light style overrides. Event callbacks preserve default browser behavior unless the consumer calls `event.preventDefault()`. `resolveNodeAttributes` receives the node name, text content, and a zero-based per-node `index`, which keeps repeated headings addressable without a component override. Fenced code blocks render through `CodeBlock`, with syntax highlighting from Markdown parsing and a compact language tag when a language is present. Tables and code blocks use default max-height guards with scrolling; override `--markdown-table-max-height` or `--markdown-code-max-height` from the consumer surface when needed. MDX and executable content belong in a separate rendering boundary.
+
+### CodeBlock
+
+```tsx
+<CodeBlock copy language="tsx">{`const value = "Deweyou"`}</CodeBlock>
+<CodeBlock size="sm">npm i @deweyou-design/react</CodeBlock>
+```
+
+`CodeBlock` is the shared scrollable block-code primitive. Use it for standalone snippets in product surfaces and documentation so they visually match fenced code rendered by `MarkdownRender`. Pass `language` when the label adds useful context; it supports common ids such as `ts`, `tsx`, `js`, `jsx`, `json`, `css`, `html`, `bash`, and `markdown`, while still accepting custom strings. Set `copy` to show the compact copy icon button; `onCopy` receives the copied plain text after the Clipboard API write succeeds.
 
 ### Navigation
 

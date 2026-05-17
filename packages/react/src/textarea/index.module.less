@@ -6,7 +6,7 @@
 }
 
 .label {
-  font: var(--ui-font-weight-emphasis) 0.875rem / 1.25 var(--ui-font-body);
+  font: var(--ui-font-weight-emphasis) 0.875rem / 1.25 var(--ui-font-control);
   color: var(--ui-color-text);
 }
 
@@ -14,16 +14,16 @@
   border-radius: var(--ui-radius-rect);
   padding: 0.4rem 0.6rem;
   color: var(--ui-color-text);
-  font: 0.875rem / 1.5 var(--ui-font-body);
+  font: 0.875rem / 1.5 var(--ui-font-control);
   width: 100%;
   box-sizing: border-box;
   outline: none;
   resize: vertical;
   min-height: 80px;
   transition:
-    border-color 140ms ease,
-    box-shadow 140ms ease,
-    background 140ms ease;
+    border-color var(--ui-motion-duration-fast) var(--ui-motion-ease-exit),
+    box-shadow var(--ui-motion-duration-fast) var(--ui-motion-ease-exit),
+    background var(--ui-motion-duration-fast) var(--ui-motion-ease-exit);
 
   &::placeholder {
     color: var(--ui-color-text-muted);
@@ -31,7 +31,7 @@
 
   &:focus-visible {
     border-color: var(--ui-color-focus-ring);
-    .focus-ring-offset();
+    box-shadow: none;
   }
 }
 
@@ -59,7 +59,7 @@
 
   &:focus-visible {
     border-color: var(--ui-color-danger-bg);
-    .focus-ring-offset();
+    box-shadow: none;
   }
 }
 

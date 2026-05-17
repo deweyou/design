@@ -13,7 +13,7 @@ npm install @deweyou-design/styles
 | Import                                        | Description                                                            |
 | --------------------------------------------- | ---------------------------------------------------------------------- |
 | `@deweyou-design/styles/theme.css`            | Default consumer entry — reset, base, theme layers, and fallback fonts |
-| `@deweyou-design/styles/theme-with-fonts.css` | Full Source Han Serif CN webfont entry for prototypes and previews     |
+| `@deweyou-design/styles/theme-with-fonts.css` | Full Source Han Sans SC + Serif CN webfont entry for previews          |
 | `@deweyou-design/styles/theme-light.css`      | Light theme only                                                       |
 | `@deweyou-design/styles/theme-dark.css`       | Dark theme only                                                        |
 | `@deweyou-design/styles/color.css`            | Raw color palette — theme-invariant tokens                             |
@@ -26,11 +26,11 @@ Import `theme.css` once at your app root:
 import '@deweyou-design/styles/theme.css';
 ```
 
-`theme.css` defines typography tokens and platform fallback stacks, but does not load the full bundled Source Han Serif CN files. Use `theme-with-fonts.css` only when the full webfont payload is acceptable.
+`theme.css` defines typography tokens and platform fallback stacks, but does not load the full bundled Source Han files. Use `theme-with-fonts.css` only when the full webfont payload is acceptable.
 
 ## Font Subsets
 
-For production apps that want Source Han Serif CN with a smaller payload, configure the build-time plugin and import the generated virtual CSS:
+For production apps that want Source Han typography with a smaller first-paint payload, configure the build-time plugin and import the generated virtual CSS:
 
 ```ts
 // vite.config.ts
@@ -39,12 +39,10 @@ import { fontSubset } from '@deweyou-design/styles/unplugin-font-subset';
 export default {
   plugins: [
     fontSubset.vite({
-      charset: ['./src/font-charset.md'],
       scan: {
         include: ['src/**/*.{ts,tsx,md,mdx,json}'],
         exclude: ['**/*.test.*', 'src/generated/**'],
       },
-      weights: [400, 500, 600, 700],
     }),
   ],
 };
@@ -56,7 +54,47 @@ import '@deweyou-design/styles/theme.css';
 import 'virtual:deweyou-font-subset.css';
 ```
 
-The final character set is built from the built-in Latin/punctuation safelist, explicit charset files, optional scanned source files, user safelist additions, and blocklist removals. The plugin emits hashed `woff2` files and `@font-face` rules for the existing `Source Han Serif CN Web` family.
+The final character set is built from the built-in Latin/punctuation safelist, explicit charset files, optional scanned source files, user safelist additions, and blocklist removals. The plugin emits hashed `woff2` files and `@font-face` rules for the configured Source Han family.
+
+### Font subset options
+
+Most apps only need `scan.include`. The lower-level knobs exist for constrained builds and generated content:
+
+| Option           | Default                | Description                                                                  |
+| ---------------- | ---------------------- | ---------------------------------------------------------------------------- |
+| `scan.include`   | —                      | Project files to scan for literal characters.                                |
+| `scan.exclude`   | common build/test dirs | Extra files to skip.                                                         |
+| `charset`        | —                      | Explicit text files whose characters must be included.                       |
+| `safelist.chars` | —                      | Literal characters to force into the subset.                                 |
+| `safelist.files` | —                      | Files whose characters should be forced into the subset.                     |
+| `blocklist`      | —                      | Characters to remove after scanning and safelisting.                         |
+| `source`         | `source-han-serif-cn`  | Low-level font source override; most apps should leave this unset.           |
+| `family`         | source family          | CSS `font-family` override; also infers the built-in source when recognized. |
+| `weights`        | `[400,500,600,700]`    | Low-level emitted subset weights.                                            |
+| `output.fontDir` | `assets/fonts`         | Final bundle directory for generated subset font files.                      |
+| `inject`         | `false`                | When `true`, injects the virtual font modules into Vite HTML automatically.  |
+| `fullFonts`      | `false`                | Set to `'idle'` to load stable full font files after page idle.              |
+
+Automatic injection is useful for simple Vite SPAs:
+
+```ts
+fontSubset.vite({
+  scan: {
+    include: ['src/**/*.{ts,tsx,md,mdx,json}'],
+  },
+  inject: true,
+  fullFonts: 'idle',
+});
+```
+
+This is equivalent to importing the subset CSS immediately and, when `fullFonts: 'idle'` is set, importing the idle full-font loader:
+
+```ts
+import 'virtual:deweyou-font-subset.css';
+import 'virtual:deweyou-full-fonts-loader.js';
+```
+
+`fullFonts: 'idle'` keeps subset fonts on the critical path and registers full vendored fonts later through the FontFace API. Full font assets use stable versioned names such as `source-han-serif-cn-full-400-v2.003R.otf`, so repeat visits can reuse browser cache until the vendored font version changes.
 
 ## Less Authoring Utilities
 
@@ -100,7 +138,8 @@ Plus `baseMonochrome`: `black` and `white`.
 
 ## Typography Contract
 
-- `--ui-font-body` and `--ui-font-display` default to a Source Han Serif CN stack, falling back to `Songti SC` / `STSong` on macOS and `SimSun` on Windows.
+- `--ui-font-body` and `--ui-font-control` default to a Source Han Sans SC stack for controls and dense UI.
+- `--ui-font-content` and `--ui-font-display` default to a Source Han Serif CN stack for Markdown, Text, and display typography.
 - `--ui-font-mono` is the explicit exception for code and fixed-width content.
 - Bundled and subset webfont files are covered by the SIL Open Font License 1.1.
 

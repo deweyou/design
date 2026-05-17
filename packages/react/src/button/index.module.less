@@ -17,7 +17,7 @@
   --button-filled-text-color: var(--ui-color-canvas);
   --button-font-size: 0.875rem;
   --button-gap: 0.55rem;
-  --button-height: 2.5rem;
+  --button-height: var(--ui-control-height-md);
   --button-ghost-background-active: color-mix(in srgb, var(--ui-color-text) 10%, transparent);
   --button-ghost-background-hover: color-mix(in srgb, var(--ui-color-text) 6%, transparent);
   --button-ghost-text-color: var(--ui-color-text);
@@ -47,16 +47,16 @@
   background: var(--button-background);
   color: var(--button-text-color);
   cursor: pointer;
-  font: 600 var(--button-font-size) / 1.25 var(--ui-font-body);
+  font: 600 var(--button-font-size) / 1.25 var(--ui-font-control);
   overflow-wrap: normal;
   text-align: center;
   text-decoration: none;
   transition:
-    background 140ms ease,
-    border-color 140ms ease,
-    color 140ms ease,
-    box-shadow 140ms ease,
-    transform 140ms ease;
+    background var(--ui-motion-duration-fast) var(--ui-motion-ease-exit),
+    border-color var(--ui-motion-duration-fast) var(--ui-motion-ease-exit),
+    color var(--ui-motion-duration-fast) var(--ui-motion-ease-exit),
+    box-shadow var(--ui-motion-duration-fast) var(--ui-motion-ease-exit),
+    transform var(--ui-motion-duration-fast) var(--ui-motion-ease-exit);
   vertical-align: middle;
   white-space: nowrap;
 }
@@ -175,7 +175,7 @@
   background: currentColor;
   pointer-events: none;
   clip-path: inset(0 100% 0 0 round var(--ui-radius-pill));
-  transition: clip-path 260ms ease;
+  transition: clip-path var(--ui-motion-duration-slow) var(--ui-motion-ease-exit);
   will-change: clip-path;
 }
 
@@ -340,7 +340,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .loadingIndicator {
-    animation-duration: 1.8s;
+    animation: none;
   }
 
   .linkUnderlineDecoration {
@@ -356,35 +356,35 @@
 
 .sizeXs {
   --button-font-size: 0.75rem;
-  --button-height: 1.5rem;
+  --button-height: var(--ui-control-height-xs);
   --button-padding-block: 0;
   --button-padding-inline: 0.5rem;
 }
 
 .sizeSm {
   --button-font-size: 0.875rem;
-  --button-height: 2rem;
+  --button-height: var(--ui-control-height-sm);
   --button-padding-block: 0;
   --button-padding-inline: 0.75rem;
 }
 
 .sizeMd {
   --button-font-size: 1rem;
-  --button-height: 2.5rem;
+  --button-height: var(--ui-control-height-md);
   --button-padding-block: 0;
   --button-padding-inline: 1rem;
 }
 
 .sizeLg {
   --button-font-size: 1.0625rem;
-  --button-height: 3rem;
+  --button-height: var(--ui-control-height-lg);
   --button-padding-block: 0;
   --button-padding-inline: 1.25rem;
 }
 
 .sizeXl {
   --button-font-size: 1.125rem;
-  --button-height: 3.5rem;
+  --button-height: var(--ui-control-height-xl);
   --button-padding-block: 0;
   --button-padding-inline: 1.5rem;
 }

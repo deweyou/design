@@ -21,6 +21,7 @@ input,
 select,
 textarea {
   font: inherit;
+  font-family: var(--ui-font-control);
 }
 
 a {
@@ -75,14 +76,14 @@ samp {
 }
 
 .typography-tier-emphasis {
-  font-family: var(--ui-font-body);
+  font-family: var(--ui-font-control);
   font-weight: var(--ui-font-weight-emphasis);
   font-size: var(--ui-text-size-body);
   line-height: var(--ui-text-line-height-body);
 }
 
 .typography-tier-title {
-  font-family: var(--ui-font-display);
+  font-family: var(--ui-font-content);
   font-weight: var(--ui-font-weight-title);
   font-size: var(--ui-text-size-h4);
   line-height: var(--ui-text-line-height-h4);

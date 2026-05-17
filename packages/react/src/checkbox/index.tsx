@@ -2,12 +2,12 @@ import { type CSSProperties, type ReactNode } from 'react';
 import {
   CheckboxRoot as ArkCheckboxRoot,
   CheckboxControl as ArkCheckboxControl,
-  CheckboxIndicator as ArkCheckboxIndicator,
   CheckboxLabel as ArkCheckboxLabel,
   CheckboxHiddenInput as ArkCheckboxHiddenInput,
 } from '@ark-ui/react/checkbox';
-import { CheckIcon, MinusIcon } from '@deweyou-design/react-icons';
 import classNames from 'classnames';
+
+import { CheckboxMark } from '../checkbox-mark/index.tsx';
 
 import styles from './index.module.less';
 
@@ -22,6 +22,8 @@ export type CheckboxProps = {
   value?: string;
   className?: string;
   style?: CSSProperties;
+  'aria-label'?: string;
+  'aria-labelledby'?: string;
 };
 
 export const Checkbox = ({
@@ -35,6 +37,8 @@ export const Checkbox = ({
   value,
   className,
   style,
+  'aria-label': ariaLabel,
+  'aria-labelledby': ariaLabelledBy,
 }: CheckboxProps) => {
   const handleCheckedChange = (details: { checked: boolean | 'indeterminate' }) => {
     if (typeof details.checked === 'boolean') {
@@ -50,6 +54,8 @@ export const Checkbox = ({
       disabled={disabled}
       name={name}
       value={value}
+      aria-label={ariaLabel}
+      aria-labelledby={ariaLabelledBy}
       className={classNames(styles.root, className)}
       style={style}
     >
@@ -57,10 +63,8 @@ export const Checkbox = ({
         aria-disabled={disabled ? true : undefined}
         aria-checked={indeterminate ? 'mixed' : undefined}
       />
-      <ArkCheckboxControl className={styles.control}>
-        <ArkCheckboxIndicator className={styles.indicator}>
-          {indeterminate ? <MinusIcon /> : <CheckIcon />}
-        </ArkCheckboxIndicator>
+      <ArkCheckboxControl asChild>
+        <CheckboxMark icon={indeterminate ? 'minus' : 'check'} />
       </ArkCheckboxControl>
       {children !== undefined && (
         <ArkCheckboxLabel className={styles.label}>{children}</ArkCheckboxLabel>

@@ -21,7 +21,7 @@ export default meta;
 
 export const Default: StoryObj = {
   render: () => (
-    <RadioGroup.Root defaultValue="b">
+    <RadioGroup.Root aria-label="Options" defaultValue="b" name="default-option">
       <RadioGroup.Item value="a">Option A</RadioGroup.Item>
       <RadioGroup.Item value="b">Option B</RadioGroup.Item>
       <RadioGroup.Item value="c">Option C</RadioGroup.Item>
@@ -36,7 +36,7 @@ export const Variants: StoryObj = {
         <p style={{ marginBottom: '8px', fontSize: '0.875rem', color: 'var(--ui-color-text)' }}>
           Vertical (default)
         </p>
-        <RadioGroup.Root defaultValue="a">
+        <RadioGroup.Root aria-label="Vertical fruit" defaultValue="a" name="vertical-fruit">
           <RadioGroup.Item value="a">Apple</RadioGroup.Item>
           <RadioGroup.Item value="b">Banana</RadioGroup.Item>
           <RadioGroup.Item value="c">Cherry</RadioGroup.Item>
@@ -46,7 +46,12 @@ export const Variants: StoryObj = {
         <p style={{ marginBottom: '8px', fontSize: '0.875rem', color: 'var(--ui-color-text)' }}>
           Horizontal
         </p>
-        <RadioGroup.Root defaultValue="a" orientation="horizontal">
+        <RadioGroup.Root
+          aria-label="Horizontal fruit"
+          defaultValue="a"
+          name="horizontal-fruit"
+          orientation="horizontal"
+        >
           <RadioGroup.Item value="a">Apple</RadioGroup.Item>
           <RadioGroup.Item value="b">Banana</RadioGroup.Item>
           <RadioGroup.Item value="c">Cherry</RadioGroup.Item>
@@ -63,7 +68,7 @@ export const States: StoryObj = {
         <p style={{ marginBottom: '8px', fontSize: '0.875rem', color: 'var(--ui-color-text)' }}>
           Default
         </p>
-        <RadioGroup.Root>
+        <RadioGroup.Root aria-label="Default options" name="default-state-option">
           <RadioGroup.Item value="a">Option A</RadioGroup.Item>
           <RadioGroup.Item value="b">Option B</RadioGroup.Item>
         </RadioGroup.Root>
@@ -72,7 +77,12 @@ export const States: StoryObj = {
         <p style={{ marginBottom: '8px', fontSize: '0.875rem', color: 'var(--ui-color-text)' }}>
           Disabled (group)
         </p>
-        <RadioGroup.Root disabled defaultValue="a">
+        <RadioGroup.Root
+          aria-label="Disabled options"
+          disabled
+          defaultValue="a"
+          name="disabled-option"
+        >
           <RadioGroup.Item value="a">Option A</RadioGroup.Item>
           <RadioGroup.Item value="b">Option B</RadioGroup.Item>
         </RadioGroup.Root>
@@ -81,7 +91,11 @@ export const States: StoryObj = {
         <p style={{ marginBottom: '8px', fontSize: '0.875rem', color: 'var(--ui-color-text)' }}>
           Partially disabled
         </p>
-        <RadioGroup.Root defaultValue="a">
+        <RadioGroup.Root
+          aria-label="Partially disabled options"
+          defaultValue="a"
+          name="partial-option"
+        >
           <RadioGroup.Item value="a">Option A</RadioGroup.Item>
           <RadioGroup.Item value="b" disabled>
             Option B (disabled)
@@ -96,7 +110,12 @@ const ControlledDemo = () => {
   const [value, setValue] = useState('a');
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-      <RadioGroup.Root value={value} onValueChange={setValue}>
+      <RadioGroup.Root
+        aria-label="Controlled options"
+        name="controlled-option"
+        value={value}
+        onValueChange={setValue}
+      >
         <RadioGroup.Item value="a">Option A</RadioGroup.Item>
         <RadioGroup.Item value="b">Option B</RadioGroup.Item>
         <RadioGroup.Item value="c">Option C</RadioGroup.Item>
@@ -115,7 +134,7 @@ export const Controlled: StoryObj = {
 export const Interaction: StoryObj = {
   name: 'Interaction',
   render: () => (
-    <RadioGroup.Root defaultValue="a">
+    <RadioGroup.Root aria-label="Interaction options" defaultValue="a" name="interaction-option">
       <RadioGroup.Item value="a">Option A</RadioGroup.Item>
       <RadioGroup.Item value="b">Option B</RadioGroup.Item>
       <RadioGroup.Item value="c">Option C</RadioGroup.Item>

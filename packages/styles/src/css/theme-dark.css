@@ -30,7 +30,17 @@
   --ui-radius-float: 4px;
   --ui-radius-pill: 999px;
   --ui-shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.34);
-  --ui-font-body: 'Source Han Serif CN Web', 'Songti SC', 'STSong', 'SimSun', 'NSimSun', serif;
+  --ui-font-sans:
+    'Source Han Sans SC Web', 'PingFang SC', 'Heiti SC', 'Microsoft YaHei', 'Noto Sans CJK SC',
+    sans-serif;
+  --ui-font-serif: 'Source Han Serif CN Web', 'Songti SC', 'STSong', 'SimSun', 'NSimSun', serif;
+  --ui-font-body:
+    'Source Han Sans SC Web', 'PingFang SC', 'Heiti SC', 'Microsoft YaHei', 'Noto Sans CJK SC',
+    sans-serif;
+  --ui-font-control:
+    'Source Han Sans SC Web', 'PingFang SC', 'Heiti SC', 'Microsoft YaHei', 'Noto Sans CJK SC',
+    sans-serif;
+  --ui-font-content: 'Source Han Serif CN Web', 'Songti SC', 'STSong', 'SimSun', 'NSimSun', serif;
   --ui-font-display: 'Source Han Serif CN Web', 'Songti SC', 'STSong', 'SimSun', 'NSimSun', serif;
   --ui-font-mono: 'IBM Plex Mono', 'SFMono-Regular', monospace;
   --ui-font-weight-body: 400;
@@ -51,6 +61,22 @@
   --ui-text-line-height-h4: 1.22;
   --ui-text-size-h5: 1.15rem;
   --ui-text-line-height-h5: 1.32;
+  --ui-control-height-xs: 2rem;
+  --ui-control-height-sm: 2.5rem;
+  --ui-control-height-md: 2.75rem;
+  --ui-control-height-lg: 3rem;
+  --ui-control-height-xl: 3.5rem;
+  --ui-touch-target-min: 2.75rem;
+  --ui-motion-duration-fast: 140ms;
+  --ui-motion-duration-base: 160ms;
+  --ui-motion-duration-slow: 260ms;
+  --ui-motion-ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
+  --ui-motion-ease-exit: ease;
+  --ui-z-dropdown: 1080;
+  --ui-z-tooltip: 1090;
+  --ui-z-popover: 1100;
+  --ui-z-dialog: 1200;
+  --ui-z-toast: 1300;
   --ui-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
   --ui-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.28);
   --ui-shadow-lg: 0 18px 40px rgba(0, 0, 0, 0.34);

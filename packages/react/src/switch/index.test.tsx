@@ -26,6 +26,12 @@ describe('Switch — default render', () => {
     expect(sw).toBeDefined();
   });
 
+  it('accepts aria-label for label-less usage', () => {
+    render(<Switch aria-label="Enable notifications" />);
+
+    expect(screen.getByRole('switch', { name: 'Enable notifications' })).toBeDefined();
+  });
+
   it('renders label text when children provided', () => {
     render(<Switch>Notifications</Switch>);
     expect(screen.getByText('Notifications')).toBeDefined();
@@ -73,6 +79,7 @@ describe('Switch — disabled state', () => {
     render(<Switch disabled>Disabled switch</Switch>);
     const sw = screen.getByRole('switch');
     expect(sw.getAttribute('aria-disabled')).toBe('true');
+    expect(sw).toHaveProperty('disabled', true);
   });
 
   it('does not fire onCheckedChange when disabled and clicked', async () => {

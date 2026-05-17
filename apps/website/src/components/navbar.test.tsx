@@ -5,6 +5,17 @@ import { MemoryRouter, useLocation } from 'react-router-dom';
 import { afterAll, afterEach, beforeAll, test, vi } from 'vite-plus/test';
 
 import { expect } from '../test-setup';
+
+vi.mock('@deweyou-design/react-icons', () => ({
+  ExternalLinkIcon: () => <span aria-hidden data-testid="mock-external-link-icon" />,
+  LogoGithubIcon: () => <span aria-hidden data-testid="mock-github-icon" />,
+  MenuApplicationIcon: () => <span aria-hidden data-testid="mock-menu-icon" />,
+  MenuIcon: () => <span aria-hidden data-testid="mock-nav-menu-icon" />,
+  MoonIcon: () => <span aria-hidden data-testid="mock-moon-icon" />,
+  SunnyIcon: () => <span aria-hidden data-testid="mock-sunny-icon" />,
+  XIcon: () => <span aria-hidden data-testid="mock-x-icon" />,
+}));
+
 import { Navbar } from './navbar';
 
 class ResizeObserverStub {
@@ -54,6 +65,7 @@ test('renders the compact top navigation without a Theme destination', () => {
   expect(screen.getByText('Deweyou Design')).toBeInTheDocument();
   expect(screen.getByText('Overview')).toBeInTheDocument();
   expect(screen.getByText('Components')).toBeInTheDocument();
+  expect(screen.getByText('Fonts')).toBeInTheDocument();
   expect(screen.getByText('Icons')).toBeInTheDocument();
   expect(screen.getByText('Storybook')).toBeInTheDocument();
   expect(screen.queryByRole('tab', { name: 'GitHub', hidden: true })).not.toBeInTheDocument();
@@ -79,6 +91,11 @@ test('marks Components active on /components', () => {
 test('marks Icons active on /icons', () => {
   renderNavbar('/icons');
   expect(screen.getByRole('link', { name: 'Icons' })).toHaveAttribute('aria-current', 'page');
+});
+
+test('marks Fonts active on /fonts', () => {
+  renderNavbar('/fonts');
+  expect(screen.getByRole('link', { name: 'Fonts' })).toHaveAttribute('aria-current', 'page');
 });
 
 test('route links preserve React Router client navigation', async () => {

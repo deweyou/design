@@ -12,6 +12,7 @@ const PUBLIC_COMPONENTS = [
   'IconButton',
   'Card',
   'Checkbox',
+  'CodeBlock',
   'Dialog',
   'Field',
   'Input',

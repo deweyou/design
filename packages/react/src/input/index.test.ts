@@ -64,7 +64,7 @@ test('input renders error message and applies error classes when error prop is p
   expect(markup).toContain('aria-invalid="true"');
 });
 
-test('input prefers error text over hint for aria-describedby', () => {
+test('input keeps hint and error text in aria-describedby when invalid', () => {
   const markup = renderMarkup({
     error: 'This field is required.',
     hint: 'Optional hint.',
@@ -72,8 +72,7 @@ test('input prefers error text over hint for aria-describedby', () => {
   });
 
   expect(markup).toContain('id="email-error"');
-  expect(markup).toContain('aria-describedby="email-error"');
-  expect(markup).not.toContain('aria-describedby="email-description"');
+  expect(markup).toContain('aria-describedby="email-description email-error"');
 });
 
 test('input does not apply error classes when error is absent', () => {

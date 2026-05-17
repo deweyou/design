@@ -11,13 +11,14 @@ test('consumer setup keeps the global style import explicit', () => {
     resolve(root, 'apps/storybook/.storybook/preview.ts'),
     'utf8',
   );
+  const storybookMain = readFileSync(resolve(root, 'apps/storybook/.storybook/main.ts'), 'utf8');
   const lessBridge = readFileSync(resolve(root, 'packages/styles/src/less/bridge.less'), 'utf8');
 
   expect(websiteMain).toContain("import '@deweyou-design/styles/theme.css';");
   expect(websiteMain).toContain("import 'virtual:deweyou-website-fonts.css';");
-  expect(storybookPreview).toContain("import '@deweyou-design/styles/theme.css';");
+  expect(storybookPreview).toContain("import '@deweyou-design/styles/theme-with-fonts.css';");
+  expect(storybookMain).toContain('find: /^@deweyou-design\\/styles\\/theme-with-fonts\\.css$/');
   expect(websiteMain).not.toContain('theme-with-fonts.css');
-  expect(storybookPreview).not.toContain('theme-with-fonts.css');
   expect(lessBridge).toContain('@brand-bg');
   expect(lessBridge).toContain('@danger-bg');
   expect(lessBridge).toContain('@brand-text');
@@ -25,11 +26,13 @@ test('consumer setup keeps the global style import explicit', () => {
   expect(storybookPreview).not.toContain('@deweyou-design/react/style.css');
 });
 
-test('website owns the Source Han Serif subset generation', () => {
+test('website owns the Source Han Sans and Serif subset generation', () => {
   const websiteViteConfig = readFileSync(resolve(root, 'apps/website/vite.config.ts'), 'utf8');
 
   expect(websiteViteConfig).toContain("'subset-font'");
   expect(websiteViteConfig).toContain('virtual:deweyou-website-fonts.css');
+  expect(websiteViteConfig).toContain('Source Han Sans SC Web');
+  expect(websiteViteConfig).toContain('SourceHanSansSC-Regular.otf');
   expect(websiteViteConfig).toContain('Source Han Serif CN Web');
   expect(websiteViteConfig).toContain('SourceHanSerifCN-Regular.otf');
   expect(websiteViteConfig).toContain('font-display: swap');

@@ -26,9 +26,21 @@ describe('Checkbox — default render', () => {
     expect(checkbox).toBeDefined();
   });
 
+  it('accepts aria-label for label-less usage', () => {
+    render(<Checkbox aria-label="Accept terms" />);
+
+    expect(screen.getByRole('checkbox', { name: 'Accept terms' })).toBeDefined();
+  });
+
   it('renders label text when children provided', () => {
     render(<Checkbox>Accept terms</Checkbox>);
     expect(screen.getByText('Accept terms')).toBeDefined();
+  });
+
+  it('renders the shared checkbox mark visual', () => {
+    const { container } = render(<Checkbox>Accept terms</Checkbox>);
+
+    expect(container.querySelector('[data-ui-checkbox-mark]')).not.toBeNull();
   });
 
   it('accepts className and style props', () => {

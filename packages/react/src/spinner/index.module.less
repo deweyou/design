@@ -14,3 +14,11 @@
   animation: spinner-spin 600ms linear infinite;
   flex-shrink: 0;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .root {
+    animation: none;
+    border-top-color: currentColor;
+    opacity: 0.72;
+  }
+}

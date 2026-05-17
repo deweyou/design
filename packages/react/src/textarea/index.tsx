@@ -63,7 +63,7 @@ export const Textarea = ({
         className,
       )}
       disabled={disabled}
-      hasDescription={hint !== undefined && !hasError}
+      hasDescription={hint !== undefined}
       hasError={hasError}
       id={id}
       invalid={hasError}

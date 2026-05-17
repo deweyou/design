@@ -61,6 +61,10 @@ const config: StorybookConfig = {
             replacement: `${stylesCssDir}/theme.css`,
           },
           {
+            find: /^@deweyou-design\/styles\/theme-with-fonts\.css$/,
+            replacement: `${stylesCssDir}/theme-with-fonts.css`,
+          },
+          {
             find: /^@deweyou-design\/styles\/theme-light\.css$/,
             replacement: `${stylesCssDir}/theme-light.css`,
           },
