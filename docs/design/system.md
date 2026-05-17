@@ -1,61 +1,61 @@
-# Deweyou 设计系统知识库
+# Deweyou Design System Knowledge
 
-> 受众：AI 辅助开发、组件实现、网站/移动端界面设计评审
-> 来源：仓库现有组件实现 + Claude Design handoff（Deweyou Design System）
-> 目标：沉淀设计意图与不可轻易从代码推断的判断规则，而不是复述每个组件实现。
-
----
-
-## 设计理念
-
-Deweyou Design 是 Dewey Ou 的个人设计系统。它服务于博客、组件预览站和小型工具应用，不追求通用 SaaS 风格，而追求克制、清楚、有字形记忆点的个人产品气质。
-
-核心判断语是：**Simple, clean, and with clean lines. Less is more.**
-
-落到界面上有五条原则：
-
-- **黑体承载控件，宋体承载内容**：默认 UI、导航、表单、按钮、tooltip 等控件使用思源黑体方向；Markdown、Text 内容排版和展示标题保留思源宋体方向，作为品牌字形记忆点。
-- **语义少于装饰**：全局只承认 neutral、primary、danger 三个组件语义色。色彩用于表达角色，不用于制造热闹。
-- **中性画布承载内容**：页面底色使用中性浅灰/白色层级，不使用奶黄或米色作为默认底；深色主题也应像纸面墨色，而不是高对比发光界面。
-- **边框优先于阴影**：卡片、容器、表单首先用 1px 边框建立结构。阴影只表达浮层抬升，不承担普通分组职责。
-- **排版精度胜过插画装饰**：不要用渐变背景、hero 图片、emoji、玻璃拟态或大面积插画补气氛。系统的辨识度来自宋体、留白、线条、圆角和极少量绿色。
-
-这些原则优先于单个页面的临时审美。若某个需求看起来需要更多颜色、更多装饰或更戏剧化动效，先判断是否已经偏离 Deweyou 的个人设计语言。
+> Audience: AI-assisted development, component implementation, website/mobile UI design review
+> Sources: existing repository components and Claude Design handoff for Deweyou Design System
+> Goal: preserve design intent and judgment rules that are not easy to infer from code, instead of restating every component implementation.
 
 ---
 
-## 内容与语气
+## Design Philosophy
 
-主要界面文案使用简体中文，可内联英文技术词，如 `Popover 内容`、`Component Library · v1.0`。
+Deweyou Design is Dewey Ou's personal design system. It serves the blog, component preview site, and small tool applications. It does not chase a generic SaaS style; it aims for a restrained, clear, personal product language with memorable typography.
 
-语气应当是事实性的、技术性的、克制的：
+The core judgment phrase is: **Simple, clean, and with clean lines. Less is more.**
 
-- 用短句和清楚的名词，不写营销式承诺。
-- 操作用祈使语气，如 `打开菜单`、`复制`、`删除`。
-- 少用代词，避免“我们为你打造”这类广告语。
-- 不使用 emoji。
-- 中英文之间不手动插入空格，宋体本身已经承担视觉平衡。
-- `·` 是系统内的签名分隔符，适合 eyebrow、section label、版本/类别并列信息。
+In interface work, this becomes five principles:
 
-示例：
+- **Sans carries controls; serif carries content**: default UI, navigation, forms, buttons, tooltips, and controls use the Source Han Sans direction. Markdown, `Text`, long-form content, and display headings keep the Source Han Serif direction as the brand typographic memory.
+- **Semantics over decoration**: the system recognizes only three regular component semantic colors: neutral, primary, and danger. Color expresses role, not excitement.
+- **Neutral canvases carry content**: page backgrounds use neutral light-gray and white layers. Do not use cream or beige as the default canvas. Dark themes should feel like ink on paper, not a high-contrast glowing interface.
+- **Borders before shadows**: cards, containers, and forms establish structure with 1px borders first. Shadows express floating-surface elevation only; they do not group ordinary content.
+- **Typographic precision over illustration**: do not use gradient backgrounds, hero images, emoji, glassmorphism, or large decorative illustrations to create atmosphere. Recognition comes from serif typography, whitespace, lines, radius, and a small amount of green.
+
+These principles take precedence over temporary page aesthetics. If a requirement appears to need more colors, more decoration, or more dramatic motion, first check whether it has drifted away from Deweyou's personal design language.
+
+---
+
+## Content And Voice
+
+User-facing product copy may use the product's target locale, including Simplified Chinese where appropriate. Repository knowledge and durable design docs are written in English.
+
+The voice should be factual, technical, and restrained:
+
+- Use short sentences and clear nouns. Avoid marketing promises.
+- Use imperative wording for actions, such as `Open menu`, `Copy`, and `Delete`.
+- Use fewer pronouns. Avoid ad-style phrasing.
+- Do not use emoji.
+- Do not manually insert spaces between Chinese and English in Chinese product copy; the serif rhythm handles visual balance.
+- `·` is the system signature separator. Use it for eyebrows, section labels, and parallel version/category metadata.
+
+Example:
 
 ```text
 Component Library · v1.0
-基于宋体字形节奏与温暖色系构建，27 个组件覆盖完整 UI 场景。深浅双主题，开箱即用。
+Built on serif rhythm and a warm palette, with 27 components for complete UI scenarios. Light and dark themes, ready out of the box.
 Design & Components
 Icons · Deweyou registry
-查看全部图标 →
+View all icons →
 ```
 
-英文 eyebrow 或微标签可以使用 uppercase + letter-spacing，但只用于很小的辅助层级。控件文案默认走黑体，正文型内容和展示型标题走宋体。
+English eyebrows or micro labels can use uppercase plus letter spacing, but only for small supporting hierarchy. Control copy defaults to sans; body content and display headings use serif.
 
 ---
 
-## Token 是事实来源
+## Tokens Are The Source Of Truth
 
-组件代码只能消费 `--ui-*` 语义 token。调色板 primitive、具体 hex/hsl/rgba 值、临时透明度都不应出现在组件样式里。
+Component code may consume only `--ui-*` semantic tokens. Palette primitives, concrete hex/hsl/rgba values, and temporary opacity values should not appear in component styles.
 
-正确方式：
+Correct:
 
 ```less
 .root {
@@ -69,7 +69,7 @@ Icons · Deweyou registry
 }
 ```
 
-错误方式：
+Incorrect:
 
 ```less
 .root {
@@ -82,43 +82,43 @@ Icons · Deweyou registry
 }
 ```
 
-新增视觉值前先问三个问题：
+Before adding a new visual value, ask three questions:
 
-1. 这是设计系统可复用的 primitive，还是某个页面一次性布局需要？
-2. 它能否由现有语义 token + `color-mix()` 推导？
-3. 它是否会引入第四种语义角色或第五种圆角/阴影层级？
+1. Is this a reusable design-system primitive, or a one-off layout need for a page?
+2. Can it be derived from existing semantic tokens plus `color-mix()`?
+3. Would it introduce a fourth semantic role or a fifth radius/shadow level?
 
-若答案显示它会扩大系统语言，必须先更新设计文档和 token，再实现组件。
-
----
-
-## 色彩系统
-
-### 语义角色
-
-| 角色    | 视觉来源 | 用途                             |
-| ------- | -------- | -------------------------------- |
-| neutral | stone    | 默认文字、边框、表面、中性操作   |
-| primary | emerald  | 品牌强调、主要操作、选中、焦点环 |
-| danger  | red      | 破坏性操作、错误状态             |
-
-`warning` 可以在 Toast 等反馈类组件中作为支持角色存在，但不要把它扩展成通用组件 color。Badge、Button、Tabs、Menu、表单控件等常规组件应只暴露三色语义。
-
-### 品牌绿
-
-UI 的 primary 是深 emerald，不是 logo 里的亮 mint 渐变。logo 渐变只属于字标本身，不应用作按钮、背景、卡片或浮层装饰。
-
-### 画布与表面
-
-浅色主题使用中性浅灰 canvas 和白色 surface；surface 和 raised surface 逐级抬高。不要使用奶黄、米色或大面积渐变承载页面气氛。
-
-深色主题应保持暖黑、低眩光。文字不是纯白发光，而是接近纸面墨色的 warm off-white。
+If the answers show that it expands the system language, update design documentation and tokens before implementing the component.
 
 ---
 
-## 字体与排版
+## Color System
 
-字体栈：
+### Semantic Roles
+
+| Role    | Visual source | Usage                                            |
+| ------- | ------------- | ------------------------------------------------ |
+| neutral | stone         | default text, borders, surfaces, neutral actions |
+| primary | emerald       | brand emphasis, primary actions, selected, focus |
+| danger  | red           | destructive actions and error states             |
+
+`warning` may exist as a supporting feedback role in components such as Toast, but do not expand it into a general component color. Regular components such as Badge, Button, Tabs, Menu, and form controls should expose only the three semantic colors.
+
+### Brand Green
+
+The UI primary color is deep emerald, not the bright mint gradient from the logo. The logo gradient belongs only to the wordmark; do not use it for buttons, backgrounds, cards, or floating-surface decoration.
+
+### Canvas And Surfaces
+
+Light theme uses neutral light-gray canvas and white surfaces, with surface and raised surface stepping upward. Do not use cream, beige, or large gradients as page atmosphere.
+
+Dark theme should stay warm black with low glare. Text should not glow pure white; it should feel like warm off-white ink on paper.
+
+---
+
+## Typography
+
+Font stack:
 
 ```css
 --ui-font-sans:
@@ -132,105 +132,105 @@ UI 的 primary 是深 emerald，不是 logo 里的亮 mint 渐变。logo 渐变�
 --ui-font-mono: 'IBM Plex Mono', 'SFMono-Regular', ui-monospace, monospace;
 ```
 
-排版规则：
+Rules:
 
-- body/control 使用黑体/Sans，优先服务组件可读性和控件密度。
-- content/display 使用宋体/Serif，优先用于 MarkdownRender、Text、长文和展示型标题。
-- 只使用 400 / 500 / 600 / 700 四档字重。
-- display 行高紧，正文行高舒展。
-- 页面中同级标题不要混用尺寸；组件内部标题不要使用 hero 级字号。
-- 技术 token、代码片段、包名用 mono，但不要把普通英文 UI 文案切到 mono。
-- 使用 `<Text>` 组件承接排版语义，不要直接在组件中裸写 h1-h5/p 再补样式。
+- Body/control uses sans for component readability and control density.
+- Content/display uses serif for `MarkdownRender`, `Text`, long-form content, and display headings.
+- Use only four weights: 400, 500, 600, and 700.
+- Display line height is tight; body line height is more relaxed.
+- Do not mix heading sizes at the same page hierarchy level. Do not use hero-scale type inside compact components.
+- Use mono for technical tokens, code snippets, and package names, but do not switch ordinary English UI copy to mono.
+- Use the `<Text>` component for typographic semantics instead of writing raw h1-h5/p elements inside components and patching styles afterward.
 
-字体资产：
+Font assets:
 
-- `theme-with-fonts.css` 同时声明 `Source Han Sans SC Web` 和 `Source Han Serif CN Web`。
-- `theme.css` 只声明 token，不强制加载字体文件；生产站点应通过 font subset 插件或自有字体加载策略显式引入。
-- Source Han Sans SC 的官方静态字重中没有 600；系统把 600 语义映射到 Medium 文件，避免浏览器临时合成过重字形。
-- `fontSubset.vite({ inject: true })` 可在 Vite SPA 中自动注入 subset CSS；库、SSR、多入口应用应保持显式 import。
-- `fullFonts: 'idle'` 是可选兜底策略：首屏仍使用 subset，页面空闲后通过 FontFace API 注册全量字体。全量字体文件名使用字体发行版本号而不是构建 hash，例如 `source-han-serif-cn-full-400-v2.003R.otf`，便于浏览器长期缓存。
+- `theme-with-fonts.css` declares both `Source Han Sans SC Web` and `Source Han Serif CN Web`.
+- `theme.css` declares tokens only and does not force font file loading. Production sites should explicitly load fonts through the font subset plugin or their own font strategy.
+- Official Source Han Sans SC static weights do not include 600. The system maps the 600 semantic weight to the Medium file to avoid browser-synthesized overweight glyphs.
+- `fontSubset.vite({ inject: true })` can automatically inject subset CSS in Vite SPAs. Libraries, SSR, and multi-entry apps should keep explicit imports.
+- `fullFonts: 'idle'` is an optional fallback strategy. The first screen still uses subsets; after the page becomes idle, the FontFace API registers full fonts. Full-font filenames use the font release version instead of a build hash, such as `source-han-serif-cn-full-400-v2.003R.otf`, so browsers can cache them long term.
 
-字号基线：
+Type scale baseline:
 
-| 层级    | 字号                       | 行高 | 字重 |
-| ------- | -------------------------- | ---- | ---- |
-| h1      | clamp(2.8rem, 5vw, 4.6rem) | 1.02 | 700  |
-| h2      | 2.3rem                     | 1.08 | 600  |
-| h3      | 1.85rem                    | 1.14 | 600  |
-| h4      | 1.45rem                    | 1.22 | 600  |
-| h5      | 1.15rem                    | 1.32 | 700  |
-| body    | 1rem                       | 1.6  | 400  |
-| caption | 0.875rem                   | 1.45 | 400  |
-
----
-
-## 空间、尺寸与形态
-
-空间使用 4px grid：
-
-| Token | 值   |
-| ----- | ---- |
-| xs    | 4px  |
-| sm    | 8px  |
-| md    | 16px |
-| lg    | 24px |
-| xl    | 40px |
-
-交互组件尺寸五档：
-
-| size | 高度 | 用途                         |
-| ---- | ---- | ---------------------------- |
-| xs   | 24px | 紧凑表格操作、内联辅助按钮   |
-| sm   | 32px | 工具栏、侧边栏、表单次要操作 |
-| md   | 40px | 默认尺寸                     |
-| lg   | 48px | 页面主要操作、关键表单       |
-| xl   | 56px | hero 或落地页 CTA            |
-
-圆角只有四档：
-
-| 档位  | 值    | 判断方式                                 |
-| ----- | ----- | ---------------------------------------- |
-| rect  | 0     | 输入、文本域、嵌入式表单元素             |
-| float | 4px   | ghost/link 按钮、tooltip、小型轻浮层     |
-| auto  | 8px   | filled/outlined 按钮、card、dialog、menu |
-| pill  | 999px | badge、switch、胶囊操作                  |
-
-不要写 `6px`、`10px`、`12px` 这类中间圆角。如果视觉不对，通常是组件分类错了，而不是缺少新圆角。
+| Level   | Font size                  | Line height | Weight |
+| ------- | -------------------------- | ----------- | ------ |
+| h1      | clamp(2.8rem, 5vw, 4.6rem) | 1.02        | 700    |
+| h2      | 2.3rem                     | 1.08        | 600    |
+| h3      | 1.85rem                    | 1.14        | 600    |
+| h4      | 1.45rem                    | 1.22        | 600    |
+| h5      | 1.15rem                    | 1.32        | 700    |
+| body    | 1rem                       | 1.6         | 400    |
+| caption | 0.875rem                   | 1.45        | 400    |
 
 ---
 
-## 组件变体模型
+## Space, Size, And Shape
 
-公开组件优先使用四个正交维度：
+Spacing uses a 4px grid:
 
-| 维度    | 问题             | 可选值                                   |
-| ------- | ---------------- | ---------------------------------------- |
-| variant | 视觉层级是什么？ | `filled` / `outlined` / `ghost` / `link` |
-| color   | 语义意图是什么？ | `neutral` / `primary` / `danger`         |
-| size    | 在布局中占多大？ | `xs` / `sm` / `md` / `lg` / `xl`         |
-| shape   | 边角形态是什么？ | `rect` / `float` / `auto` / `pill`       |
+| Token | Value |
+| ----- | ----- |
+| xs    | 4px   |
+| sm    | 8px   |
+| md    | 16px  |
+| lg    | 24px  |
+| xl    | 40px  |
 
-变体维度要互相独立。不要让 `variant="primary"` 同时表达视觉层级和颜色，也不要让 `size` 偷偷改变圆角。
+Interactive components have five sizes:
 
-只有当多个组件都需要新的表达能力时，才新增维度；单个页面的偶发需求优先用 `className` 在应用侧处理。
+| Size | Height | Usage                                           |
+| ---- | ------ | ----------------------------------------------- |
+| xs   | 24px   | compact table actions and inline helper buttons |
+| sm   | 32px   | toolbars, sidebars, secondary form actions      |
+| md   | 40px   | default size                                    |
+| lg   | 48px   | page primary actions and key forms              |
+| xl   | 56px   | hero or landing-page CTA                        |
 
-复杂交互组件可以拥有自己的领域能力，例如 Tabs 的 overflow、菜单化展示、受控状态等。这类能力不应为了“通用视觉”被删掉；需要收敛的是默认视觉语言和 token 使用，不是行为能力。
+There are only four radius levels:
+
+| Level | Value | Judgment rule                                    |
+| ----- | ----- | ------------------------------------------------ |
+| rect  | 0     | inputs, textareas, embedded form elements        |
+| float | 4px   | ghost/link buttons, tooltips, small light floats |
+| auto  | 8px   | filled/outlined buttons, cards, dialogs, menus   |
+| pill  | 999px | badges, switches, pill actions                   |
+
+Do not write intermediate radii such as `6px`, `10px`, or `12px`. If the visual feels wrong, the component is usually classified incorrectly; it usually does not need a new radius.
 
 ---
 
-## 交互状态
+## Component Variant Model
 
-状态表现必须稳定、短促、低戏剧性：
+Public components prefer four orthogonal dimensions:
 
-| 状态     | 规则                                                                                        |
-| -------- | ------------------------------------------------------------------------------------------- |
-| hover    | 使用 `color-mix()` 让基色加深约 8%                                                          |
-| active   | 加深约 14%，并 `transform: translateY(1px)`                                                 |
-| disabled | `[data-disabled] { opacity: 0.56; cursor: not-allowed; }`                                   |
-| focus    | 仅 `:focus-visible`，使用统一柔和 `box-shadow` 替代默认 `outline`，不改布局性 border        |
-| loading  | 保留原内容占位，文字 `color: transparent`，中心 spinner overlay，避免按钮宽度或文字布局跳动 |
+| Dimension | Question                      | Values                                   |
+| --------- | ----------------------------- | ---------------------------------------- |
+| variant   | What is the visual hierarchy? | `filled` / `outlined` / `ghost` / `link` |
+| color     | What is the semantic intent?  | `neutral` / `primary` / `danger`         |
+| size      | How much space does it take?  | `xs` / `sm` / `md` / `lg` / `xl`         |
+| shape     | What is the corner shape?     | `rect` / `float` / `auto` / `pill`       |
 
-焦点环标准写法：
+Variant dimensions must stay independent. Do not make `variant="primary"` express both visual hierarchy and color. Do not let `size` secretly change radius.
+
+Add a new dimension only when multiple components need the new expressive ability. One-off page needs should first be handled with app-side `className`.
+
+Complex interactive components can have domain abilities such as Tabs overflow, menu-style display, and controlled state. These abilities should not be removed in the name of generic visuals; the default visual language and token usage need convergence, not behavior capability.
+
+---
+
+## Interaction States
+
+State expression must be stable, brief, and low-drama:
+
+| State    | Rule                                                                                                                                |
+| -------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| hover    | Use `color-mix()` to deepen the base color by about 8%                                                                              |
+| active   | Deepen by about 14% and apply `transform: translateY(1px)`                                                                          |
+| disabled | `[data-disabled] { opacity: 0.56; cursor: not-allowed; }`                                                                           |
+| focus    | Only `:focus-visible`; use a unified soft `box-shadow` instead of default `outline`; do not change layout borders                   |
+| loading  | Preserve the original content slot, set text `color: transparent`, and center a spinner overlay to avoid width or text-layout jumps |
+
+Standard focus ring:
 
 ```less
 .root:focus-visible {
@@ -239,144 +239,144 @@ UI 的 primary 是深 emerald，不是 logo 里的亮 mint 渐变。logo 渐变�
 }
 ```
 
-所有可交互 disabled 样式都应通过属性选择器表达。不要用 React inline style 控制颜色、透明度或 cursor。
+All interactive disabled styling should be expressed through attribute selectors. Do not use React inline styles to control color, opacity, or cursor.
 
 ---
 
-## 动效
+## Motion
 
-动效只服务于状态确认，不制造视觉表演。
+Motion exists only to confirm state; it should not perform.
 
-| 场景     | 时长  | 曲线                           | 属性                                                   |
-| -------- | ----- | ------------------------------ | ------------------------------------------------------ |
-| 交互元素 | 140ms | ease                           | background, border-color, color, box-shadow, transform |
-| 浮层入场 | 160ms | cubic-bezier(0.22, 1, 0.36, 1) | opacity + 小幅 translate/scale                         |
-| 浮层出场 | 160ms | ease                           | opacity + 小幅 translate/scale                         |
-| Link     | 260ms | ease                           | underline / clip-path                                  |
-| Spinner  | 0.9s  | linear infinite                | rotate                                                 |
+| Scenario             | Duration | Curve                          | Properties                                             |
+| -------------------- | -------- | ------------------------------ | ------------------------------------------------------ |
+| Interactive elements | 140ms    | ease                           | background, border-color, color, box-shadow, transform |
+| Floating enter       | 160ms    | cubic-bezier(0.22, 1, 0.36, 1) | opacity + small translate/scale                        |
+| Floating exit        | 160ms    | ease                           | opacity + small translate/scale                        |
+| Link                 | 260ms    | ease                           | underline / clip-path                                  |
+| Spinner              | 0.9s     | linear infinite                | rotate                                                 |
 
-必须响应 `prefers-reduced-motion`：
+Respect `prefers-reduced-motion`:
 
-- spinner 和 loading indicator 停止无限旋转，保留静态可感知状态。
-- 浮层保留 opacity，移除位移和缩放。
-- 普通交互 transition 可关闭。
+- Spinners and loading indicators stop infinite rotation and keep a static perceivable state.
+- Floating surfaces keep opacity while removing movement and scale.
+- Ordinary interaction transitions may be disabled.
 
-## 响应式与移动端标准
+## Responsive And Mobile Standards
 
-组件库不使用内部 `isMobile` 判断，也不在不同组件里发明不同断点。移动端特化按能力和空间约束表达：
+The component library does not use internal `isMobile` checks and does not invent different breakpoints in different components. Mobile-specific behavior is expressed through capability and space constraints:
 
-- 窄视口统一使用 `@ui-breakpoint-compact: 30rem`，来自 `@deweyou-design/styles/less/bridge`；尺寸型样式可消费同源 token `--ui-breakpoint-compact`。
-- 触控目标使用 `--ui-touch-target-min`，默认 44px；视觉控件可以更小，但可点击根节点不能更小。
-- 输入方式相关行为使用能力查询，如 `(pointer: coarse)`、`(hover: none)`，不要把它们混同为手机判断。
-- safe-area 使用 `env(safe-area-inset-*)`，不要写固定 top/bottom offset 覆盖。
-- Storybook 和 website 示例使用 `width: min(30rem, 100%)`、`max-width: 100%`、wrap 或滚动 rail，不写一次性 `480px` / `500px` 断点。
+- Narrow viewports use the shared `@ui-breakpoint-compact: 30rem` from `@deweyou-design/styles/less/bridge`; size-oriented styles may consume the matching token `--ui-breakpoint-compact`.
+- Touch targets use `--ui-touch-target-min`, defaulting to 44px. The visual control may be smaller, but the clickable root cannot be smaller.
+- Input-mode behavior uses capability queries such as `(pointer: coarse)` and `(hover: none)`. Do not treat them as phone detection.
+- Safe areas use `env(safe-area-inset-*)`; do not override them with fixed top/bottom offsets.
+- Storybook and website examples use `width: min(30rem, 100%)`, `max-width: 100%`, wrapping, or scroll rails instead of one-off `480px` / `500px` breakpoints.
 
-当 React 行为必须分叉时，优先暴露显式 prop，例如 `density`、`placement`、`modal`、`strategy`。只有无法用 CSS/能力查询表达时，才在应用层用统一 hook 判断 media query；组件内部不要直接读 `window.innerWidth`。
+When React behavior must branch, prefer explicit props such as `density`, `placement`, `modal`, or `strategy`. Only use a shared app-level media-query hook when CSS/capability queries cannot express the behavior. Components should not read `window.innerWidth` directly.
 
 ---
 
-## 容器与浮层
+## Containers And Floating Surfaces
 
-卡片是内容容器，不是装饰卡片：
+Cards are content containers, not decorative cards:
 
-- 默认 `background: var(--ui-color-surface)`。
-- 默认 `border: 1px solid var(--ui-color-border)`。
-- 默认 `radius: var(--ui-radius-auto)`。
-- 默认无 shadow。
+- Default `background: var(--ui-color-surface)`.
+- Default `border: 1px solid var(--ui-color-border)`.
+- Default `radius: var(--ui-radius-auto)`.
+- No shadow by default.
 
-浮层代表 z 轴抬升，应使用 shadow token：
+Floating surfaces represent z-axis elevation and should use shadow tokens:
 
-| 层级                      | z-index token    | 阴影       |
+| Layer                     | z-index token    | Shadow     |
 | ------------------------- | ---------------- | ---------- |
-| Tooltip                   | `--ui-z-tooltip` | sm 或 none |
+| Tooltip                   | `--ui-z-tooltip` | sm or none |
 | Popover / Dropdown / Menu | `--ui-z-popover` | md         |
 | Dialog                    | `--ui-z-dialog`  | lg         |
 | Toast                     | `--ui-z-toast`   | sm         |
 
-Dialog backdrop 使用低调遮罩，不使用 blur/glassmorphism。不要引入 `backdrop-filter`。
+Dialog backdrops use a subtle scrim, not blur or glassmorphism. Do not introduce `backdrop-filter`.
 
-所有浮层内容必须 Portal 到 `document.body`，避免被父级 `overflow` 或 z-index 上下文裁切。复杂交互和 ARIA 由 Ark UI 负责，视觉由 CSS Modules + Less 负责。
-
----
-
-## 表单控件
-
-表单控件应体现“线条清楚、输入区域安静”的原则：
-
-- Input/Textarea 使用 `rect`，不做胶囊输入框。
-- 默认背景为 surface，边框为 `--ui-color-border-strong`。
-- focus 使用统一焦点环，不通过加粗 border 表达。
-- placeholder 使用 muted text。
-- disabled 通过 `[data-disabled]` 表达，整体 opacity 0.56。
-- Checkbox/Radio/Switch 的选中态使用 primary；危险语义不应出现在基础选择控件里，除非业务状态明确要求。
+All floating content must portal to `document.body` so it is not clipped by parent `overflow` or z-index contexts. Ark UI owns complex interaction and ARIA; CSS Modules with Less own visual styling.
 
 ---
 
-## 图标
+## Form Controls
 
-所有生产组件中的图标都从 `@deweyou-design/react-icons` 导入。组件内部不要维护私有 SVG 图标，也不要直接依赖上游 icon 包。
+Form controls should express clear lines and quiet input areas:
 
-图标规则：
-
-- `@deweyou-design/react-icons` 由 Deweyou curated registry 驱动，默认 SVG 来源为 `tdesign-icons-svg`。
-- 应用代码优先使用命名导入，例如 `import { SearchIcon } from '@deweyou-design/react-icons'`，不要为了普通使用场景引入整个 icon namespace。
-- 图标支持 `xs` / `sm` / `md` / `lg` / `xl` 尺寸语义，默认 `md`。
-- 图标支持 `inherit` / `neutral` / `primary` / `danger` 颜色语义，默认 `inherit`。
-- icon-only action 必须使用 `IconButton`、`Button.Icon` 或带清晰 accessible name 的交互控件承载语义。
-- 不使用 emoji 或 Unicode 符号替代图标，`·` 分隔符除外。
-
-logo 是例外：`assets/logo.svg` / `logo-animated.svg` 的 mint 渐变只属于 Dewey Ou 字标。静态 logo 适合 header；动画 logo 只适合 hero、loading 或品牌展示时刻。
+- Input/Textarea use `rect`; do not make pill inputs.
+- Default background is surface, and border is `--ui-color-border-strong`.
+- Focus uses the unified focus ring and does not express itself by thickening the border.
+- Placeholder uses muted text.
+- Disabled state uses `[data-disabled]` with overall opacity 0.56.
+- Checkbox/Radio/Switch selected state uses primary. Danger semantics should not appear in basic selection controls unless the business state clearly requires it.
 
 ---
 
-## 页面与 H5 应用
+## Icons
 
-website 和 H5 都应继承同一套系统语言，而不是分别发明视觉风格。
+All production component icons come from `@deweyou-design/react-icons`. Components should not maintain private SVG icons or depend directly on the upstream icon package.
 
-页面布局基线：
+Icon rules:
 
-- 首屏可以有 hero，但 hero 应以字标、标题、短文案和组件实例为主，不使用大图背景或插画。
-- 内容最大宽度保持克制，常见中心内容宽度约 640px，组件展示区可以更宽。
-- Section header 使用小号 uppercase eyebrow + 宋体标题。
-- 组件 demo 可以密集，但分组要靠 gap、细边框、短分隔线，而不是嵌套卡片。
-- 44×2px 的短横线可作为 h1 下的品牌 motif，但不要滥用为每个卡片装饰。
+- `@deweyou-design/react-icons` is driven by a Deweyou curated registry and defaults to SVGs from `tdesign-icons-svg`.
+- Application code should prefer named imports, such as `import { SearchIcon } from '@deweyou-design/react-icons'`; do not import the whole icon namespace for ordinary usage.
+- Icons support semantic sizes `xs` / `sm` / `md` / `lg` / `xl`, defaulting to `md`.
+- Icons support semantic colors `inherit` / `neutral` / `primary` / `danger`, defaulting to `inherit`.
+- Icon-only actions must use `IconButton`, `Button.Icon`, or an interactive control with a clear accessible name.
+- Do not use emoji or Unicode symbols as icon replacements, except the `·` separator.
 
-H5 设计应保留这些原则：
-
-- 不为移动端引入新的色彩、圆角或字体系统。
-- 触控目标不小于 `--ui-touch-target-min`，默认使用 `md` 或 `lg`。
-- 底部/浮层交互仍按 Ark UI/Portal/焦点规则实现。
-- 文案更短，但语气不变。
+The logo is the exception. The mint gradient in `assets/logo.svg` / `logo-animated.svg` belongs only to the Dewey Ou wordmark. The static logo works for headers; the animated logo is only for heroes, loading, or brand showcase moments.
 
 ---
 
-## 不要做的事
+## Pages And H5 Apps
 
-- 不要新增 blue、purple、orange 等通用组件语义色。
-- 不要把 warning 扩展成所有组件都有的 color。
-- 不要在组件里 hardcode hex、hsl、rgba、box-shadow 或圆角值。
-- 不要用渐变背景、光斑、玻璃拟态、bokeh、纯装饰插图撑页面。
-- 不要把品牌 logo 的 mint gradient 挪到按钮、卡片或页面背景。
-- 不要在组件内部复制 SVG 图标。
-- 不要为了视觉“更高级”加大阴影、延长动效或堆叠卡片。
-- 不要让 app/website 的临时 demo 成为 package 行为的唯一来源。
+The website and H5 apps inherit the same system language instead of inventing separate visual styles.
+
+Page layout baseline:
+
+- The first viewport may have a hero, but the hero should center on the wordmark, title, short copy, and component instances. Do not use large image backgrounds or illustrations.
+- Keep content max width restrained. Centered content commonly sits around 640px; component showcase areas may be wider.
+- Section headers use a small uppercase eyebrow plus a serif title.
+- Component demos may be dense, but grouping should rely on gaps, thin borders, and short separators instead of nested cards.
+- A 44x2px short line may be used as the brand motif under h1, but do not reuse it as decoration on every card.
+
+H5 design keeps the same principles:
+
+- Do not introduce a new color, radius, or font system for mobile.
+- Touch targets are at least `--ui-touch-target-min`, using `md` or `lg` by default.
+- Bottom and floating interactions still follow Ark UI, Portal, and focus rules.
+- Copy is shorter, but the voice does not change.
 
 ---
 
-## 评审检查清单
+## Do Not
 
-修改组件或页面时，至少检查：
+- Do not add general component semantic colors such as blue, purple, or orange.
+- Do not expand warning into a `color` option for every component.
+- Do not hardcode hex, hsl, rgba, box-shadow, or radius values in components.
+- Do not use gradient backgrounds, light blobs, glassmorphism, bokeh, or purely decorative illustrations to prop up a page.
+- Do not move the logo's mint gradient into buttons, cards, or page backgrounds.
+- Do not copy SVG icons inside components.
+- Do not add larger shadows, longer motion, or stacked cards just to make visuals feel more premium.
+- Do not let temporary app/website demos become the only source for package behavior.
 
-- 是否只消费 `--ui-*` 语义 token？
-- 是否仍然只有 neutral / primary / danger 三个常规语义色？
-- 是否保持宋体为 body/display 字体？
-- 圆角是否属于 rect / float / auto / pill？
-- 卡片是否 border-first，浮层才使用 shadow？
-- focus 是否只在 `:focus-visible` 下出现，并使用统一柔和 `box-shadow`？
-- 移动端/窄视口规则是否使用 `@ui-breakpoint-compact` 或能力查询，而不是私有像素断点？
-- loading 是否保留布局，不造成按钮或文字跳动？
-- 图标是否来自 `@deweyou-design/react-icons`？
-- 文案是否简体中文优先、技术性、克制、无 emoji？
-- website 和 H5 是否复用同一套理念，而不是另起一套移动端视觉？
+---
 
-_Last updated: 2026-05-17 | Reason: added shared responsive/mobile standards and updated focus/reduced-motion rules._
+## Review Checklist
+
+When changing components or pages, check at least:
+
+- Does it consume only `--ui-*` semantic tokens?
+- Does it still keep neutral / primary / danger as the only regular semantic colors?
+- Does it preserve serif as the content/display font and sans as the control font?
+- Does the radius belong to rect / float / auto / pill?
+- Are cards border-first, with shadow reserved for floating surfaces?
+- Does focus appear only under `:focus-visible` and use the unified soft `box-shadow`?
+- Do mobile/narrow-viewport rules use `@ui-breakpoint-compact` or capability queries instead of private pixel breakpoints?
+- Does loading preserve layout without button or text jumps?
+- Do icons come from `@deweyou-design/react-icons`?
+- Is product copy factual, technical, restrained, and emoji-free?
+- Do website and H5 reuse the same principles instead of creating a separate mobile visual language?
+
+_Last updated: 2026-05-17 | Reason: translated durable knowledge base to English and clarified future documentation language._

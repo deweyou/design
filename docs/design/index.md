@@ -1,27 +1,27 @@
-# 设计系统知识库索引
+# Design System Knowledge Index
 
-仓库知识库统一沉淀在 `docs/` 下。本目录只作为设计系统入口，避免把同一套规则拆散到多个互相矛盾的文档里。
+Repository knowledge is stored under `docs/`. This directory is only the design-system entry point, so the same rules do not drift across several conflicting documents.
 
-## 必读文档
+## Required Reading
 
-- [Deweyou 设计系统知识库](system.md) — 设计理念、内容语气、视觉语言、组件约束、website/H5 应用规则。
-- [Ark UI 组件范式](../architecture/ark-ui.md) — 交互型组件的行为基础层、Portal、受控模式和样式边界。
-- [包层级规则](../architecture/package-layers.md) — `styles`、`react`、`react-icons` 等 package 的职责和依赖方向。
+- [Deweyou design system knowledge](system.md) - design principles, content voice, visual language, component constraints, and website/H5 application rules.
+- [Ark UI component pattern](../architecture/ark-ui.md) - behavior layer, Portal, controlled mode, and styling boundaries for interactive components.
+- [Package layer rules](../architecture/package-layers.md) - responsibilities and dependency direction for `styles`, `react`, `react-icons`, and related packages.
 
-## 理念速记
+## Principle Notes
 
-- 黑体承载控件，宋体承载内容；宋体仍是内容与展示层的品牌身份。
-- 三个常规语义色：neutral、primary、danger；warning 只作为反馈类支持角色。
-- 中性浅灰/暖黑画布承载内容，避免奶黄、渐变和装饰背景。
-- 边框优先于阴影；卡片默认无 shadow，浮层才表达抬升。
-- 图标统一收敛到 `@deweyou-design/react-icons`：Deweyou curated registry backed by `tdesign-icons-svg`，使用直接命名导入、语义化 size/color，icon-only action 交给 `IconButton` 等具备 accessible name 的控件；详见 [system.md#图标](system.md#图标)。
-- 文案简体中文优先，技术性、克制、无 emoji，`·` 是系统内的签名分隔符。
+- Sans carries controls; serif carries content. Serif remains the brand identity for content and display surfaces.
+- The regular semantic colors are neutral, primary, and danger. Warning is only a supporting feedback role.
+- Use neutral light-gray or warm-black canvases for content. Avoid cream, gradients, and decorative backgrounds.
+- Prefer borders to shadows. Cards have no shadow by default; floating surfaces express elevation.
+- Icons converge on `@deweyou-design/react-icons`: a Deweyou curated registry backed by `tdesign-icons-svg`, direct named imports, semantic size/color, and icon-only actions handled by `IconButton` or another control with an accessible name. See [system.md#icons](system.md#icons).
+- UI copy should be factual, technical, restrained, and emoji-free. `·` is the system signature separator.
 
-## 修改设计相关代码时
+## When Changing Design-Related Code
 
-1. 先读 [system.md](system.md)，确认这次改动是否触碰色彩、字体、圆角、状态、动效、图标或内容语气。
-2. 若改动涉及复杂交互组件，再读 [../architecture/ark-ui.md](../architecture/ark-ui.md)。
-3. 若需要新增 token、组件或 package 依赖，再读 [../architecture/package-layers.md](../architecture/package-layers.md)。
-4. 如果 Claude Design handoff、Figma 或实际页面提出了新视觉方向，先把可泛化理念写回 `docs/design/system.md`，再落实现代码。
+1. Read [system.md](system.md) first and check whether the change touches color, typography, radius, state, motion, icons, or content voice.
+2. If the change involves a complex interactive component, also read [../architecture/ark-ui.md](../architecture/ark-ui.md).
+3. If the change requires a new token, component, or package dependency, also read [../architecture/package-layers.md](../architecture/package-layers.md).
+4. If a Claude Design handoff, Figma file, or real page introduces a new visual direction, write the reusable principle back to `docs/design/system.md` before implementing code.
 
-_Last updated: 2026-05-17 | Reason: aligned typography guidance with the sans-control / serif-content split._
+_Last updated: 2026-05-17 | Reason: translated durable knowledge base to English and set future documentation language._

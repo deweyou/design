@@ -1,64 +1,72 @@
-# ui 开发指南
+# UI Development Guide
 
-## 知识库
+## Knowledge Base
 
-- [Ark UI 组件范式](docs/architecture/ark-ui.md) — 交互型组件的行为基础层选型与实现约定
-- [包层级规则](docs/architecture/package-layers.md) — 已发布包 vs 构建基础设施的划分与依赖规则
-- [测试架构](docs/architecture/testing.md) — 单测、contract test、样式测试与 Storybook e2e 的职责边界
+- [Ark UI component pattern](docs/architecture/ark-ui.md) - behavior-layer selection and implementation rules for interactive components.
+- [Package layer rules](docs/architecture/package-layers.md) - boundaries between published packages and build infrastructure.
+- [Testing architecture](docs/architecture/testing.md) - responsibility boundaries for unit tests, contract tests, style tests, and Storybook e2e.
 
-## 技术栈
+## Technical Stack
 
-- TypeScript 5.x、React 19.x、Node.js 24.14.0
-- vite-plus（构建、测试、lint、格式化）
-- React、Less、CSS Modules、Storybook
-- `@ark-ui/react`（交互型组件行为层）、`@deweyou-design/styles`（设计 token）
+- TypeScript 5.x, React 19.x, Node.js 24.14.0
+- vite-plus for build, test, lint, and formatting
+- React, Less, CSS Modules, Storybook
+- `@ark-ui/react` for interactive component behavior and `@deweyou-design/styles` for design tokens
 
-## 项目结构
+## Project Structure
 
 ```text
 packages/
-├── react/        # @deweyou-design/react — React 组件库
-├── react-hooks/  # @deweyou-design/react-hooks — 共享 React hooks
-├── react-icons/  # @deweyou-design/react-icons — React 图标组件
-├── styles/       # @deweyou-design/styles — 设计 token
-├── utils/        # @deweyou-design/utils — 运行时工具
-└── infra/        # @deweyou-ui/infra — 构建基础设施（不发布）
+├── react/        # @deweyou-design/react - React component library
+├── react-hooks/  # @deweyou-design/react-hooks - shared React hooks
+├── react-icons/  # @deweyou-design/react-icons - React icon components
+├── styles/       # @deweyou-design/styles - design tokens
+├── utils/        # @deweyou-design/utils - runtime utilities
+└── infra/        # @deweyou-ui/infra - build infrastructure, not published
 apps/
-├── website/      # 组件预览站
-└── storybook/    # 组件故事
+├── website/      # component preview site
+└── storybook/    # component stories
 ```
 
-## 命令
+## Commands
 
 ```bash
-vp check            # 类型检查 + lint + 格式化
-vp test             # 运行测试
-vp run build -r     # 全量构建
-vp run website#dev  # 启动预览站
-vp install          # 安装依赖
+vp check            # typecheck + lint + format
+vp test             # run tests
+vp run build -r     # full build
+vp run website#dev  # start preview site
+vp install          # install dependencies
 ```
 
 ---
 
-## 仓库约定
+## Repository Conventions
 
-- 函数默认使用**箭头函数**风格。仅当框架边界、提升需求或外部 API 约束使函数声明更安全时，才允许例外，并需在变更中说明原因。
-- React 组件必须使用 **TSX 文件**编写。除非有明确的工具限制并已文档化，否则不要引入 `React.createElement` 风格的组件写法。
-- 受治理区域中新建或重命名的文件和目录必须使用**小写名称并使用连字符分隔**（kebab-case）。
-- 在 `packages/react`、`packages/react-hooks` 和 `packages/infra` 中，每个受治理源码单元都应位于自己的 `src/<unit-name>/` 目录下。
-- 每个受治理源码单元都应将本地入口文件和单测保留为同目录下的 `index` 与 `index.test`（**colocate 单测**）。
-- `packages/` 下的新包默认不得保留包级专用构建配置；应优先复用 Vite+ 统一约定。
-- commit message 格式：`<type>(<scope>): <summary>`（scope 有意义时），或 `<type>: <summary>`。
-- 推荐 commit type：`feat`、`fix`、`refactor`、`docs`、`test`、`build`、`chore`。
-- commit subject 使用祈使语气、小写，聚焦单一逻辑变更。格式通过 `.vite-hooks/commit-msg` 强制校验。
+- Use arrow functions by default. Function declarations are allowed only when a framework boundary, hoisting requirement, or external API constraint makes them safer; explain the exception in the change.
+- React components must be written in **TSX files**. Do not introduce `React.createElement` component implementations unless a clear tooling limitation is documented.
+- New or renamed files and directories in governed areas must use lowercase kebab-case names.
+- In `packages/react`, `packages/react-hooks`, and `packages/infra`, each governed source unit should live in its own `src/<unit-name>/` directory.
+- Each governed source unit should keep its local entry and unit test colocated as `index` and `index.test`.
+- New packages under `packages/` must not keep package-specific build config by default; prefer shared Vite+ conventions.
+- Commit messages use `<type>(<scope>): <summary>` when scope is meaningful, or `<type>: <summary>`.
+- Recommended commit types: `feat`, `fix`, `refactor`, `docs`, `test`, `build`, `chore`.
+- Commit subjects use imperative mood, lowercase wording, and one logical change. `.vite-hooks/commit-msg` enforces the format.
+
+## Documentation Language
+
+- Root `README.md`, `AGENTS.md`, `CLAUDE.md`, and durable knowledge under `docs/` are maintained in English.
+- Keep Chinese user-facing README content in `README_ZH.md`; root `README.md` and `README_ZH.md` must keep language switch links.
+- Historical spec archives under `docs/specs/` and `docs/superpowers/` do not need retroactive translation unless a task explicitly targets them.
+- Future knowledge-base updates should be written in English by default. Preserve code identifiers, commands, package names, API names, and version strings exactly.
 
 ## Harness Development
 
-AI 辅助开发的上下文与知识库：
+AI-assisted development context and repository memory:
 
-- **宪章**（项目原则）: [docs/constitution.md](docs/constitution.md)
-- **设计系统**: [docs/design/system.md](docs/design/system.md)
-- **测试标准**: [docs/testing-standards.md](docs/testing-standards.md)
-- **Feature specs 索引**: [docs/specs/index.md](docs/specs/index.md)
+- **Knowledge base root**: [docs/](docs/) - future repository knowledge is stored under `docs/`.
+- **Constitution**: [docs/constitution.md](docs/constitution.md)
+- **Design system**: [docs/design/system.md](docs/design/system.md)
+- **Testing standards**: [docs/testing-standards.md](docs/testing-standards.md)
+- **Feature specs index**: [docs/specs/index.md](docs/specs/index.md)
 
-> 主题知识文件（如 `docs/design-style.md`）由 archive 步骤在发现可泛化模式时添加。
+> Topic knowledge files, such as `docs/design/system.md`, are added by archive steps when reusable patterns appear.
