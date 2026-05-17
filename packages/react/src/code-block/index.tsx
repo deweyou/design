@@ -144,6 +144,7 @@ const CodeBlockBase = ({
 }: CodeBlockProps & CodeBlockInternalProps) => {
   const resetCopiedTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const [copied, setCopied] = useState(false);
+  const [copyStatus, setCopyStatus] = useState('');
   const copyText = useMemo(() => getTextContent(children), [children]);
   const highlightedCode =
     typeof children === 'string' ? highlightCode(children, language) : undefined;
@@ -190,9 +191,15 @@ const CodeBlockBase = ({
       return;
     }
 
-    await navigator.clipboard.writeText(copyText);
-    setCopied(true);
-    onCopy?.({ language, text: copyText });
+    try {
+      await navigator.clipboard.writeText(copyText);
+      setCopied(true);
+      setCopyStatus('Code copied');
+      onCopy?.({ language, text: copyText });
+    } catch {
+      setCopied(false);
+      setCopyStatus('Unable to copy code');
+    }
 
     if (resetCopiedTimer.current) {
       clearTimeout(resetCopiedTimer.current);
@@ -200,6 +207,7 @@ const CodeBlockBase = ({
 
     resetCopiedTimer.current = setTimeout(() => {
       setCopied(false);
+      setCopyStatus('');
     }, 1200);
   };
 
@@ -241,6 +249,11 @@ const CodeBlockBase = ({
             </button>
           )}
         </div>
+      )}
+      {copy && (
+        <span aria-live="polite" className={styles.copyStatus}>
+          {copyStatus}
+        </span>
       )}
       <ScrollArea.Viewport className={classNames(styles.viewport, viewportClassName)}>
         <pre

@@ -145,10 +145,59 @@ describe('Nav.Responsive', () => {
     expect(within(dialog).getByRole('link', { name: 'Overview' })).toBeTruthy();
   });
 
+  it('moves overflowing desktop items into a More menu', async () => {
+    const clientWidthSpy = vi
+      .spyOn(HTMLElement.prototype, 'clientWidth', 'get')
+      .mockReturnValue(220);
+    const rectSpy = vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue({
+      bottom: 0,
+      height: 44,
+      left: 0,
+      right: 80,
+      toJSON: () => ({}),
+      top: 0,
+      width: 80,
+      x: 0,
+      y: 0,
+    });
+
+    render(
+      <Nav.Responsive
+        aria-label="Overflowing"
+        items={[
+          { href: '#one', label: 'Section 1', value: 'section-1' },
+          { href: '#two', label: 'Section 2', value: 'section-2' },
+          { href: '#three', label: 'Section 3', value: 'section-3' },
+          { href: '#four', label: 'Section 4', value: 'section-4' },
+        ]}
+      />,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: 'More navigation items' })).toBeTruthy();
+    });
+
+    expect(screen.getByRole('navigation', { name: 'Overflowing' })).toBeTruthy();
+
+    clientWidthSpy.mockRestore();
+    rectSpy.mockRestore();
+  });
+
   it('keeps collapsed overlay content clear of the persistent close button', () => {
     expect(stylesheet).toContain('padding-block-end: calc(var(--ui-space-xl) + 72px);');
     expect(stylesheet).toContain('scroll-padding-block-end: calc(var(--ui-space-xl) + 72px);');
     expect(stylesheet).toContain('inline-size: var(--ui-touch-target-min);');
     expect(stylesheet).toContain('block-size: var(--ui-touch-target-min);');
+  });
+
+  it('collapses long horizontal navigation lists into a More menu without wrapping labels', () => {
+    expect(stylesheet).toContain('inline-size: 100%;');
+    expect(stylesheet).toContain('max-inline-size: 100%;');
+    expect(stylesheet).toContain('flex: 0 1 auto;');
+    expect(stylesheet).toContain('overflow-x: hidden;');
+    expect(stylesheet).toContain('.responsiveMeasureList');
+    expect(stylesheet).toContain('.moreTrigger');
+    expect(stylesheet).toContain('white-space: nowrap;');
+    expect(stylesheet).toContain('text-overflow: ellipsis;');
   });
 });

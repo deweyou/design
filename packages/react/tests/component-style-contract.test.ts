@@ -5,6 +5,7 @@ import { expect, test } from 'vite-plus/test';
 
 const reactSourceRoot = resolve(import.meta.dirname, '../src');
 const stylesSourceRoot = resolve(import.meta.dirname, '../../styles/src');
+const breadcrumbStylesPath = resolve(reactSourceRoot, 'breadcrumb/index.module.less');
 const buttonStylesPath = resolve(reactSourceRoot, 'button/index.module.less');
 const cardStylesPath = resolve(reactSourceRoot, 'card/index.module.less');
 const codeBlockStylesPath = resolve(reactSourceRoot, 'code-block/index.module.less');
@@ -109,6 +110,13 @@ test('interactive component styles consume shared control and touch target token
   expect(buttonStylesheet).toContain('--button-height: var(--ui-control-height-md);');
   expect(buttonStylesheet).toContain('--button-height: var(--ui-control-height-lg);');
   expect(buttonStylesheet).toContain('--button-height: var(--ui-control-height-xl);');
+  expect(buttonStylesheet).toContain('min-block-size: var(--button-height);');
+  expect(buttonStylesheet).toContain(
+    'inline-size: max(var(--button-square-size), var(--ui-touch-target-min));',
+  );
+  expect(buttonStylesheet).toContain(
+    'block-size: max(var(--button-square-size), var(--ui-touch-target-min));',
+  );
   expect(paginationStylesheet).toContain('min-inline-size: var(--ui-touch-target-min);');
   expect(paginationStylesheet).toContain('min-block-size: var(--ui-touch-target-min);');
   expect(inputStylesheet).toContain('min-block-size: var(--ui-control-height-sm);');
@@ -116,8 +124,11 @@ test('interactive component styles consume shared control and touch target token
   expect(inputStylesheet).toContain('min-block-size: var(--ui-control-height-lg);');
   expect(selectStylesheet).toContain('min-block-size: var(--ui-touch-target-min);');
   expect(checkboxStylesheet).toContain('min-block-size: var(--ui-touch-target-min);');
+  expect(checkboxStylesheet).toContain('min-inline-size: var(--ui-touch-target-min);');
   expect(radioGroupStylesheet).toContain('min-block-size: var(--ui-touch-target-min);');
+  expect(radioGroupStylesheet).toContain('min-inline-size: var(--ui-touch-target-min);');
   expect(switchStylesheet).toContain('min-block-size: var(--ui-touch-target-min);');
+  expect(switchStylesheet).toContain('min-inline-size: var(--ui-touch-target-min);');
   expect(toastStylesheet).toContain('inline-size: var(--ui-touch-target-min);');
   expect(toastStylesheet).toContain('block-size: var(--ui-touch-target-min);');
 });
@@ -144,11 +155,14 @@ test('overlay and motion styles use shared z-index and motion tokens', () => {
   expect(menuStylesheet).toContain('var(--ui-motion-duration-base)');
   expect(menuStylesheet).toContain('var(--ui-motion-ease-standard)');
   expect(navOverlayStylesheet).toContain('env(safe-area-inset-bottom)');
+  expect(navOverlayStylesheet).toContain('env(safe-area-inset-top)');
   expect(navOverlayStylesheet).toContain('overscroll-behavior: contain');
+  expect(popoverStylesheet).toContain('100dvh');
   expect(popoverStylesheet).toContain('--popover-z-index: var(--ui-z-popover);');
   expect(popoverStylesheet).toContain('var(--ui-motion-duration-base)');
   expect(popoverStylesheet).toContain('var(--ui-motion-ease-standard)');
   expect(selectStylesheet).toContain('z-index: var(--ui-z-dropdown);');
+  expect(selectStylesheet).toContain('100dvh');
   expect(selectStylesheet).toContain('var(--ui-motion-duration-base)');
   expect(textareaStylesheet).toContain('var(--ui-motion-duration-fast)');
   expect(textareaStylesheet).not.toContain('140ms ease');
@@ -160,6 +174,7 @@ test('overlay and motion styles use shared z-index and motion tokens', () => {
 });
 
 test('interactive surfaces expose hover and focus-visible affordances', () => {
+  const breadcrumbStylesheet = readFileSync(breadcrumbStylesPath, 'utf8');
   const cardStylesheet = readFileSync(cardStylesPath, 'utf8');
   const checkboxMarkStylesheet = readFileSync(checkboxMarkStylesPath, 'utf8');
   const checkboxStylesheet = readFileSync(checkboxStylesPath, 'utf8');
@@ -170,6 +185,10 @@ test('interactive surfaces expose hover and focus-visible affordances', () => {
 
   expect(cardStylesheet).toContain('.root:where(a)');
   expect(cardStylesheet).toContain('&:focus-visible');
+  expect(breadcrumbStylesheet).toContain('&:hover');
+  expect(breadcrumbStylesheet).toContain('.focus-ring-offset()');
+  expect(breadcrumbStylesheet).not.toContain('&::after');
+  expect(breadcrumbStylesheet).not.toContain('clip-path');
   expect(checkboxStylesheet).toContain('.root:hover:not([data-disabled]) [data-ui-checkbox-mark]');
   expect(checkboxMarkStylesheet).toContain(".mark[data-state='checked']");
   expect(checkboxMarkStylesheet).toContain(".mark[data-state='indeterminate']");
@@ -177,9 +196,11 @@ test('interactive surfaces expose hover and focus-visible affordances', () => {
   expect(radioGroupStylesheet).toContain('.item:hover:not([data-disabled]) .control');
   expect(navStylesheet).not.toContain('background var(--ui-motion-duration-fast)');
   expect(navStylesheet).not.toContain('background: color-mix(in srgb, var(--ui-color-text) 8%');
+  expect(navStylesheet).toContain('min-block-size: var(--ui-touch-target-min);');
   expect(paginationStylesheet).toContain('&:hover:not([data-disabled]):not([data-selected])');
   expect(paginationStylesheet).toContain('&:focus-visible');
   expect(scrollAreaStylesheet).toContain('&:focus-visible');
+  expect(scrollAreaStylesheet).toContain('.root:focus-within .scrollbar');
 });
 
 test('focus mixins keep visible keyboard focus without native outline styling', () => {
@@ -272,6 +293,12 @@ test('markdown render styles consume semantic typography and surface tokens', ()
   expect(stylesheet).toContain('--markdown-code-keyword');
   expect(stylesheet).toContain('--code-block-keyword: var(--markdown-code-keyword);');
   expect(codeBlockStylesheet).toContain('--code-block-keyword');
+  expect(codeBlockStylesheet).toContain('block-size: 1.75rem;');
+  expect(codeBlockStylesheet).toContain('inline-size: 1.75rem;');
+  expect(codeBlockStylesheet).toContain('inset: calc((1.75rem - var(--ui-touch-target-min)) / 2);');
+  expect(codeBlockStylesheet).not.toContain(
+    'margin-block: calc((1.35rem - var(--ui-touch-target-min)) / 2);',
+  );
   expect(stylesheet).toContain('--markdown-code-max-height');
   expect(stylesheet).toContain('--code-block-max-height: var(--markdown-code-max-height);');
   expect(stylesheet).toContain('--markdown-table-max-height');

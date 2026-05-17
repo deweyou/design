@@ -108,6 +108,27 @@ describe('Dialog — close trigger', () => {
     });
   });
 
+  it('provides an accessible default close button', async () => {
+    render(
+      <Dialog.Root>
+        <Dialog.Trigger>
+          <button>Open dialog</button>
+        </Dialog.Trigger>
+        <Dialog.Content>
+          <Dialog.Title>Confirm action</Dialog.Title>
+          <Dialog.Description>Are you sure?</Dialog.Description>
+          <Dialog.CloseButton />
+        </Dialog.Content>
+      </Dialog.Root>,
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Open dialog' }));
+    await waitFor(() => screen.getByRole('dialog'));
+    fireEvent.click(screen.getByRole('button', { name: 'Close dialog' }));
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog')).toBeNull();
+    });
+  });
+
   it('closes the dialog when Escape is pressed', async () => {
     render(
       <Dialog.Root>

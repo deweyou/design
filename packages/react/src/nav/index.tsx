@@ -1,17 +1,21 @@
 import {
   createContext,
-  useState,
+  useCallback,
   useContext,
+  useEffect,
+  useRef,
+  useState,
   type AnchorHTMLAttributes,
   type CSSProperties,
   type HTMLAttributes,
   type MouseEvent,
   type ReactNode,
 } from 'react';
-import { MenuIcon } from '@deweyou-design/react-icons';
+import { ChevronDownIcon, MenuIcon } from '@deweyou-design/react-icons';
 import classNames from 'classnames';
 
 import { IconButton } from '../button/index.tsx';
+import { Menu, MenuContent, MenuItem, MenuTrigger } from '../menu/index.tsx';
 import { NavOverlay } from '../nav-overlay/index.tsx';
 import styles from './index.module.less';
 
@@ -179,6 +183,8 @@ const shouldIgnoreLinkClick = (event: MouseEvent<HTMLElement>) =>
   event.ctrlKey ||
   event.shiftKey;
 
+const MORE_TRIGGER_SIZE_FALLBACK = 88;
+
 const NavResponsive = ({
   items,
   value,
@@ -193,6 +199,11 @@ const NavResponsive = ({
   onSelect,
 }: NavResponsiveProps) => {
   const [overlayOpen, setOverlayOpen] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(items.length);
+  const responsiveRef = useRef<HTMLDivElement>(null);
+  const moreTriggerRef = useRef<HTMLButtonElement>(null);
+  const measuredLinkRefs = useRef(new Map<string, HTMLAnchorElement>());
+  const measuredLinkWidths = useRef(new Map<string, number>());
 
   const handleSelect = (item: NavResponsiveItem, event?: MouseEvent<HTMLElement>) => {
     const details = createSelectDetails(item, event);
@@ -225,14 +236,131 @@ const NavResponsive = ({
       }
     };
 
+  const measureOverflow = useCallback(() => {
+    const container = responsiveRef.current;
+
+    if (!container) {
+      return;
+    }
+
+    const containerWidth = container.clientWidth;
+
+    if (containerWidth <= 0) {
+      return;
+    }
+
+    const itemWidths = items.map((item) => {
+      const measuredNode = measuredLinkRefs.current.get(item.value);
+      const measuredWidth = measuredNode?.getBoundingClientRect().width;
+
+      if (measuredWidth && measuredWidth > 0) {
+        measuredLinkWidths.current.set(item.value, measuredWidth);
+        return measuredWidth;
+      }
+
+      return measuredLinkWidths.current.get(item.value) ?? 0;
+    });
+    const totalItemsWidth = itemWidths.reduce((total, width) => total + width, 0);
+
+    if (totalItemsWidth <= containerWidth) {
+      setVisibleCount(items.length);
+      return;
+    }
+
+    const moreTriggerWidth =
+      moreTriggerRef.current?.getBoundingClientRect().width || MORE_TRIGGER_SIZE_FALLBACK;
+    let usedWidth = moreTriggerWidth;
+    let nextVisibleCount = 0;
+
+    for (const itemWidth of itemWidths) {
+      if (usedWidth + itemWidth > containerWidth) {
+        break;
+      }
+
+      usedWidth += itemWidth;
+      nextVisibleCount += 1;
+    }
+
+    setVisibleCount(Math.min(items.length - 1, Math.max(0, nextVisibleCount)));
+  }, [items]);
+
+  useEffect(() => {
+    setVisibleCount(items.length);
+    measuredLinkWidths.current.clear();
+  }, [items]);
+
+  useEffect(() => {
+    const animationFrame = requestAnimationFrame(measureOverflow);
+    const container = responsiveRef.current;
+    const resizeObserver =
+      typeof ResizeObserver === 'undefined' ? undefined : new ResizeObserver(measureOverflow);
+
+    if (container) {
+      resizeObserver?.observe(container);
+    }
+
+    return () => {
+      cancelAnimationFrame(animationFrame);
+      resizeObserver?.disconnect();
+    };
+  }, [measureOverflow]);
+
+  const visibleItems = items.slice(0, visibleCount);
+  const overflowItems = items.slice(visibleCount);
+  const hasOverflowItems = overflowItems.length > 0;
+  const hasActiveOverflowItem = overflowItems.some((item) => isItemActive(item, value));
+  const handleOverflowItemSelect = (item: NavResponsiveItem) => {
+    if (item.disabled) {
+      return;
+    }
+
+    handleSelect(item);
+
+    if (!item.href || typeof window === 'undefined') {
+      return;
+    }
+
+    const target = getTarget(item);
+
+    if (target === '_blank') {
+      window.open(item.href, '_blank', 'noopener,noreferrer');
+      return;
+    }
+
+    window.location.assign(item.href);
+  };
+
   return (
-    <div className={classNames(styles.responsive, breakpointClassMap[breakpoint], className)}>
+    <div
+      ref={responsiveRef}
+      className={classNames(styles.responsive, breakpointClassMap[breakpoint], className)}
+    >
+      <div aria-hidden="true" className={styles.responsiveMeasureList}>
+        {items.map((item) => (
+          <a
+            key={item.value}
+            ref={(node) => {
+              if (node) {
+                measuredLinkRefs.current.set(item.value, node);
+                return;
+              }
+
+              measuredLinkRefs.current.delete(item.value);
+            }}
+            className={classNames(styles.link, styles.linkHorizontal)}
+            tabIndex={-1}
+          >
+            {item.icon !== undefined && <span className={styles.linkIcon}>{item.icon}</span>}
+            <span className={styles.linkLabel}>{item.label}</span>
+          </a>
+        ))}
+      </div>
       <NavRoot
         aria-label={ariaLabel}
         className={classNames(styles.responsiveList, listClassName)}
         size={size}
       >
-        {items.map((item) => (
+        {visibleItems.map((item) => (
           <NavLink
             key={item.value}
             active={isItemActive(item, value)}
@@ -249,6 +377,46 @@ const NavResponsive = ({
           </NavLink>
         ))}
       </NavRoot>
+
+      {hasOverflowItems && (
+        <Menu
+          onSelect={({ value: selectedValue }) => {
+            const selectedItem = overflowItems.find((item) => item.value === selectedValue);
+
+            if (selectedItem) {
+              handleOverflowItemSelect(selectedItem);
+            }
+          }}
+        >
+          <MenuTrigger>
+            <button
+              ref={moreTriggerRef}
+              aria-label="More navigation items"
+              className={classNames(styles.link, styles.linkHorizontal, styles.moreTrigger)}
+              data-active={hasActiveOverflowItem ? '' : undefined}
+              type="button"
+            >
+              <span className={styles.linkLabel}>More</span>
+              <span aria-hidden className={styles.moreTriggerIcon}>
+                <ChevronDownIcon size="xs" />
+              </span>
+            </button>
+          </MenuTrigger>
+          <MenuContent>
+            {overflowItems.map((item) => (
+              <MenuItem
+                key={item.value}
+                disabled={item.disabled}
+                icon={item.icon}
+                selected={isItemActive(item, value)}
+                value={item.value}
+              >
+                {item.label}
+              </MenuItem>
+            ))}
+          </MenuContent>
+        </Menu>
+      )}
 
       <div className={styles.responsiveOverlay}>
         <NavOverlay.Root open={overlayOpen} onOpenChange={setOverlayOpen}>

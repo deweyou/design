@@ -404,10 +404,12 @@ const createMarkdownTaskMarker =
     return (
       <CheckboxMark
         {...nodeProps}
+        aria-checked={checked ? 'true' : 'false'}
         className={classNames(styles.taskMarker, nodeProps.className)}
         data-checked={checked ? 'true' : 'false'}
         data-markdown-task-marker="true"
         data-readonly="true"
+        role="checkbox"
         state={checked ? 'checked' : 'unchecked'}
         stateLabel={checked ? 'Completed task' : 'Incomplete task'}
       />

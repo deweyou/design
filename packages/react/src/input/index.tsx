@@ -50,7 +50,7 @@ export const Input = ({
   ...props
 }: InputProps) => {
   const hasError = Boolean(error);
-  const hintText = error ?? hint;
+  const hasHint = Boolean(hint);
 
   return (
     <Field.Root
@@ -63,7 +63,7 @@ export const Input = ({
         className,
       )}
       disabled={disabled}
-      hasDescription={hint !== undefined}
+      hasDescription={hasHint}
       hasError={hasError}
       id={id}
       invalid={hasError}
@@ -82,12 +82,8 @@ export const Input = ({
           required={required}
         />
       </Field.Control>
-      {hintText &&
-        (hasError ? (
-          <Field.ErrorText className={styles.error}>{hintText}</Field.ErrorText>
-        ) : (
-          <Field.Description className={styles.hint}>{hintText}</Field.Description>
-        ))}
+      {hint && <Field.Description className={styles.hint}>{hint}</Field.Description>}
+      {hasError && <Field.ErrorText className={styles.error}>{error}</Field.ErrorText>}
     </Field.Root>
   );
 };

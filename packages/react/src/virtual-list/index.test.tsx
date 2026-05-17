@@ -69,6 +69,21 @@ describe('VirtualList', () => {
     expect(document.querySelector('[data-orientation="vertical"]')).toBeTruthy();
   });
 
+  it('exposes list semantics for virtualized rows by default', () => {
+    render(
+      <VirtualList
+        count={20}
+        estimateSize={() => 20}
+        height={100}
+        renderItem={({ index }) => <div>Row {index}</div>}
+      />,
+    );
+
+    expect(screen.getByRole('list', { name: 'Virtualized list' })).toBeDefined();
+    expect(screen.getAllByRole('listitem')[0]?.getAttribute('aria-posinset')).toBe('1');
+    expect(screen.getAllByRole('listitem')[0]?.getAttribute('aria-setsize')).toBe('20');
+  });
+
   it('scrolls to a specific item and offset through the ref api', () => {
     const ref = createRef<VirtualListRef>();
     render(

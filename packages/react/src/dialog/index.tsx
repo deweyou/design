@@ -10,8 +10,10 @@ import {
   DialogDescription as ArkDialogDescription,
   DialogCloseTrigger as ArkDialogCloseTrigger,
 } from '@ark-ui/react/dialog';
+import { XIcon } from '@deweyou-design/react-icons';
 import classNames from 'classnames';
 
+import { IconButton } from '../button/index.tsx';
 import styles from './index.module.less';
 
 const getDefaultPortalContainer = () => {
@@ -26,7 +28,12 @@ export type DialogRootProps = {
 };
 
 export type DialogTriggerProps = { children: ReactNode };
-export type DialogContentProps = { children: ReactNode; className?: string; style?: CSSProperties };
+export type DialogContentProps = {
+  children: ReactNode;
+  className?: string;
+  style?: CSSProperties;
+  'aria-label'?: string;
+};
 export type DialogTitleProps = { children: ReactNode; className?: string; style?: CSSProperties };
 export type DialogDescriptionProps = {
   children: ReactNode;
@@ -34,6 +41,11 @@ export type DialogDescriptionProps = {
   style?: CSSProperties;
 };
 export type DialogCloseTriggerProps = { children: ReactNode };
+export type DialogCloseButtonProps = {
+  className?: string;
+  style?: CSSProperties;
+  'aria-label'?: string;
+};
 
 const DialogRoot = ({ open, defaultOpen, onOpenChange, children }: DialogRootProps) => {
   const isControlled = open !== undefined;
@@ -83,12 +95,21 @@ const DialogTrigger = ({ children }: DialogTriggerProps) => (
   <ArkDialogTrigger asChild>{children}</ArkDialogTrigger>
 );
 
-const DialogContent = ({ children, className, style }: DialogContentProps) => {
+const DialogContent = ({
+  children,
+  className,
+  style,
+  'aria-label': ariaLabel,
+}: DialogContentProps) => {
   const content = (
     <>
       <ArkDialogBackdrop className={styles.backdrop} />
       <ArkDialogPositioner className={styles.positioner}>
-        <ArkDialogContent className={classNames(styles.panel, className)} style={style}>
+        <ArkDialogContent
+          aria-label={ariaLabel}
+          className={classNames(styles.panel, className)}
+          style={style}
+        >
           {children}
         </ArkDialogContent>
       </ArkDialogPositioner>
@@ -115,6 +136,22 @@ const DialogCloseTrigger = ({ children }: DialogCloseTriggerProps) => (
   <ArkDialogCloseTrigger asChild>{children}</ArkDialogCloseTrigger>
 );
 
+const DialogCloseButton = ({
+  className,
+  style,
+  'aria-label': ariaLabel = 'Close dialog',
+}: DialogCloseButtonProps) => (
+  <ArkDialogCloseTrigger asChild>
+    <IconButton
+      aria-label={ariaLabel}
+      className={classNames(styles.closeButton, className)}
+      icon={<XIcon />}
+      style={style}
+      variant="ghost"
+    />
+  </ArkDialogCloseTrigger>
+);
+
 export const Dialog = {
   Root: DialogRoot,
   Trigger: DialogTrigger,
@@ -122,4 +159,5 @@ export const Dialog = {
   Title: DialogTitle,
   Description: DialogDescription,
   CloseTrigger: DialogCloseTrigger,
+  CloseButton: DialogCloseButton,
 };

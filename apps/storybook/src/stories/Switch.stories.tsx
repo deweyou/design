@@ -26,14 +26,15 @@ const meta: Meta<typeof Switch> = {
 };
 
 export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const Default: StoryObj = {
-  render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-      <Switch>Enable notifications</Switch>
-      <Switch defaultChecked>Dark mode</Switch>
-    </div>
-  ),
+export const Default: Story = {
+  args: {
+    children: 'Enable notifications',
+    defaultChecked: false,
+    disabled: false,
+  },
+  render: (args) => <Switch {...args} />,
 };
 
 export const Variants: StoryObj = {

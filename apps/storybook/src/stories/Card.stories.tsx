@@ -18,7 +18,7 @@ const meta = {
       table: { defaultValue: { summary: 'md' } },
     },
     shape: {
-      description: 'Border radius shape. auto = 0.8rem, rect = square corners.',
+      description: 'Border radius shape. auto = var(--ui-radius-auto), rect = square corners.',
       control: { type: 'select' },
       options: shapeOptions,
       table: { defaultValue: { summary: 'auto' } },
@@ -54,7 +54,7 @@ export const ShapeVariants: Story = {
           shape=&quot;auto&quot;
         </strong>
         <p style={{ margin: 0, color: 'var(--ui-color-text-muted)', fontSize: '0.85rem' }}>
-          Rounded corners (0.8rem)
+          Rounded corners (var(--ui-radius-auto))
         </p>
       </Card>
       <Card padding="md" shape="rect" style={{ minWidth: '200px' }}>

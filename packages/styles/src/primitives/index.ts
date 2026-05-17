@@ -141,7 +141,7 @@ export const internalPrimitives = {
     whiteSurfaceRaised: '#ffffff',
     // 文字
     text: colorPalette.stone['950'],
-    textMuted: colorPalette.stone['500'],
+    textMuted: colorPalette.stone['700'],
     textDisabled: colorPalette.stone['400'],
     textOnBrand: baseMonochrome.white,
     textOnDanger: baseMonochrome.white,
@@ -152,7 +152,7 @@ export const internalPrimitives = {
     brandBackground: colorPalette.emerald['900'],
     brandBackgroundHover: colorPalette.emerald['950'],
     brandBackgroundActive: colorPalette.emerald['950'],
-    brandText: colorPalette.emerald['800'],
+    brandText: colorPalette.emerald['900'],
     // 危险
     dangerBackground: colorPalette.red['700'],
     dangerBackgroundHover: colorPalette.red['800'],
@@ -162,8 +162,8 @@ export const internalPrimitives = {
     warningBackground: colorPalette.amber['600'],
     warningBackgroundHover: colorPalette.amber['700'],
     warningBackgroundActive: colorPalette.amber['800'],
-    warningText: colorPalette.amber['700'],
-    textOnWarning: baseMonochrome.white,
+    warningText: colorPalette.amber['900'],
+    textOnWarning: baseMonochrome.black,
     // 焦点
     focusRing: colorPalette.emerald['600'],
     // 调色板引用

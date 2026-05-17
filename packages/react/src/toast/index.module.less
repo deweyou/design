@@ -25,6 +25,7 @@
   transform: translateY(var(--y, 0));
   transition: transform var(--ui-motion-duration-slow) var(--ui-motion-ease-standard);
   width: calc(100vw - 32px - env(safe-area-inset-left) - env(safe-area-inset-right));
+  z-index: var(--ui-z-toast);
 }
 
 /* Prevent stray clicks on a closing toast from re-triggering actions */

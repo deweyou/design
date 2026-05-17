@@ -33,10 +33,14 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  render: () => (
+  args: {
+    orientation: 'horizontal',
+    label: '',
+  },
+  render: (args) => (
     <div style={{ maxWidth: '360px' }}>
       <p style={{ margin: '0 0 12px', color: 'var(--ui-color-text)' }}>Above content</p>
-      <Separator />
+      <Separator {...args} />
       <p style={{ margin: '12px 0 0', color: 'var(--ui-color-text)' }}>Below content</p>
     </div>
   ),

@@ -23,41 +23,21 @@
 }
 
 .link {
+  align-items: center;
   color: var(--ui-color-text-muted);
+  display: inline-flex;
+  min-block-size: var(--ui-touch-target-min);
+  position: relative;
   text-decoration: none;
   transition: color var(--ui-motion-duration-fast) var(--ui-motion-ease-exit);
-  position: relative;
-
-  &::after {
-    content: '';
-    position: absolute;
-    inset-inline: 0;
-    inset-block-end: -0.24em;
-    block-size: 0.08em;
-    border-radius: var(--ui-radius-pill);
-    background: currentcolor;
-    pointer-events: none;
-    clip-path: inset(0 100% 0 0 round var(--ui-radius-pill));
-    transition: clip-path var(--ui-motion-duration-slow) var(--ui-motion-ease-standard);
-  }
 
   &:hover {
     color: var(--ui-color-text);
     text-decoration: none;
-
-    &::after {
-      clip-path: inset(0 0% 0 0 round var(--ui-radius-pill));
-    }
   }
 
   &:focus-visible {
     .focus-ring-offset();
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .link::after {
-    transition: none;
   }
 }
 

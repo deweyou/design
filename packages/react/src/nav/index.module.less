@@ -6,12 +6,14 @@
   display: flex;
   font-family: var(--ui-font-control);
   margin: 0;
+  min-inline-size: 0;
   padding: 0;
 }
 
 .orientationHorizontal {
   align-items: center;
   flex-direction: row;
+  min-inline-size: 0;
 }
 
 .orientationVertical {
@@ -40,8 +42,12 @@
   color: var(--ui-color-text-muted);
   cursor: pointer;
   display: flex;
+  flex: 0 0 auto;
   font: inherit;
   gap: 6px;
+  max-inline-size: min(18rem, 100%);
+  min-block-size: var(--ui-touch-target-min);
+  min-inline-size: 0;
   padding: 6px 10px;
   position: relative;
   text-decoration: none;
@@ -100,7 +106,10 @@
 }
 
 .linkLabel {
-  // semantic wrapper only
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 // ── Responsive ────────────────────────────────────────────────────────────
@@ -108,14 +117,51 @@
 .responsive {
   align-items: center;
   display: flex;
+  inline-size: 100%;
+  max-inline-size: 100%;
+  min-inline-size: 0;
+  position: relative;
 }
 
 .responsiveList {
   display: flex;
+  flex: 0 1 auto;
+  max-inline-size: 100%;
+  min-inline-size: 0;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.responsiveMeasureList {
+  block-size: 0;
+  display: flex;
+  inline-size: max-content;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  overflow: hidden;
+  pointer-events: none;
+  position: absolute;
+  visibility: hidden;
 }
 
 .responsiveOverlay {
+  flex: 0 0 auto;
   display: none;
+}
+
+.moreTrigger {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  flex: 0 0 auto;
+  font: inherit;
+}
+
+.moreTriggerIcon {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  opacity: 0.72;
 }
 
 .responsiveOverlayContent {
@@ -162,8 +208,9 @@
 }
 
 .responsiveBreakpointSm {
-  @media (max-width: 640px) {
-    .responsiveList {
+  @media (max-width: @ui-breakpoint-compact) {
+    .responsiveList,
+    .moreTrigger {
       display: none;
     }
 
@@ -175,7 +222,8 @@
 
 .responsiveBreakpointMd {
   @media (max-width: 768px) {
-    .responsiveList {
+    .responsiveList,
+    .moreTrigger {
       display: none;
     }
 
@@ -187,7 +235,8 @@
 
 .responsiveBreakpointLg {
   @media (max-width: 1024px) {
-    .responsiveList {
+    .responsiveList,
+    .moreTrigger {
       display: none;
     }
 

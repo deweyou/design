@@ -9,7 +9,7 @@
 @menu-max-width: min(20rem, calc(100vw - 32px));
 @menu-max-height: min(
   24rem,
-  calc(100vh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom))
+  calc(100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom))
 );
 @menu-padding-block: 0.25rem;
 @menu-item-padding-block: 0.45rem;
@@ -203,7 +203,6 @@
 // Active press
 .item:active:not([data-disabled]) {
   background: color-mix(in srgb, var(--ui-color-text) 14%, transparent);
-  transform: translateY(1px);
 }
 
 // Focus visible (keyboard navigation)

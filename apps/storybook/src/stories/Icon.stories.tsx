@@ -232,7 +232,11 @@ const ReviewSurface = () => {
   );
 };
 
-export const Preview: Story = {
+export const Default: Story = {
+  args: {
+    color: 'inherit',
+    size: 'md',
+  },
   render: (args) => (
     <article style={{ ...storyStyles.card, width: 180 }}>
       <SearchIcon {...args} data-testid="icon-preview" />
@@ -240,6 +244,10 @@ export const Preview: Story = {
       <code style={storyStyles.meta}>controlled preview</code>
     </article>
   ),
+};
+
+export const Preview: Story = {
+  render: Default.render,
 };
 
 export const Catalog: Story = {

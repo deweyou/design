@@ -5,7 +5,10 @@
   border-radius: var(--ui-radius-float);
   color: var(--ui-color-canvas);
   font: 0.8125rem / 1.5 var(--ui-font-control);
-  max-width: 280px;
+  max-width: min(
+    280px,
+    calc(100vw - 32px - env(safe-area-inset-left) - env(safe-area-inset-right))
+  );
   padding: 8px 14px;
   word-break: break-word;
   z-index: var(--ui-z-tooltip);
@@ -33,7 +36,10 @@
 .sizeLg {
   &.content {
     font-size: 0.875rem;
-    max-width: 320px;
+    max-width: min(
+      320px,
+      calc(100vw - 32px - env(safe-area-inset-left) - env(safe-area-inset-right))
+    );
     padding: 10px 16px;
   }
 }

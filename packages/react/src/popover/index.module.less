@@ -24,6 +24,10 @@
   --popover-z-index: var(--ui-z-popover);
 
   min-inline-size: 0;
+  max-block-size: min(
+    24rem,
+    calc(100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom))
+  );
   max-inline-size: min(26rem, calc(100vw - 32px));
   overflow: visible;
   position: relative;
@@ -45,7 +49,10 @@
   border-radius: var(--popover-surface-radius);
   box-shadow: var(--ui-shadow-md);
   color: var(--ui-color-text);
+  max-block-size: inherit;
   min-inline-size: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   position: relative;
   z-index: 2;
 }
@@ -65,7 +72,7 @@
 }
 
 .surface[data-mode='pure'] {
-  overflow: hidden;
+  overflow: auto;
   padding: 0;
 }
 

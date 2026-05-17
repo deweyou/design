@@ -18,6 +18,12 @@ const meta = {
   component: CodeBlock,
   tags: ['autodocs'],
   parameters: {
+    docs: {
+      description: {
+        component:
+          'CodeBlock renders syntax-highlighted code with optional language labeling, horizontal scrolling, and an accessible copy action.',
+      },
+    },
     layout: 'padded',
   },
   argTypes: {

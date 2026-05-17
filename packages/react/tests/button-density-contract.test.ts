@@ -48,6 +48,10 @@ test('icon buttons use the dedicated square-size mode', () => {
   expect(textMarkup).toContain('data-content-mode="text-with-icon"');
   expect(iconMarkup).toContain('data-content-mode="icon-button"');
   expect(stylesheet).toContain('.modeIconButton');
-  expect(stylesheet).toContain('inline-size: var(--button-square-size);');
-  expect(stylesheet).toContain('block-size: var(--button-square-size);');
+  expect(stylesheet).toContain(
+    'inline-size: max(var(--button-square-size), var(--ui-touch-target-min));',
+  );
+  expect(stylesheet).toContain(
+    'block-size: max(var(--button-square-size), var(--ui-touch-target-min));',
+  );
 });

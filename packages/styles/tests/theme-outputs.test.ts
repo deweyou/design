@@ -140,10 +140,12 @@ test('semantic theme colors trace back to the shared palette foundation or monoc
   expect(lightTheme['--ui-color-canvas']).toBe('#fafafa');
   expect(lightTheme['--ui-color-surface']).toBe('#ffffff');
   expect(darkTheme['--ui-color-canvas']).toBe('var(--ui-color-palette-stone-950)');
+  expect(lightTheme['--ui-color-text-muted']).toBe('var(--ui-color-palette-stone-700)');
   expect(lightTheme['--ui-color-brand-bg']).toBe('var(--ui-color-palette-emerald-900)');
+  expect(lightTheme['--ui-color-brand-text']).toBe('var(--ui-color-palette-emerald-900)');
   expect(lightTheme['--ui-color-danger-bg']).toBe('var(--ui-color-palette-red-700)');
-  expect(darkTheme['--ui-color-brand-bg']).toBe('var(--ui-color-palette-emerald-600)');
-  expect(darkTheme['--ui-color-danger-bg']).toBe('var(--ui-color-palette-red-500)');
+  expect(darkTheme['--ui-color-brand-bg']).toBe('var(--ui-color-palette-emerald-900)');
+  expect(darkTheme['--ui-color-danger-bg']).toBe('var(--ui-color-palette-red-700)');
 });
 
 test('fonts asset directory contains the vendored Source Han Serif CN and Source Han Sans SC files', () => {
@@ -217,7 +219,9 @@ test('exposes shadow scale tokens with correct light and dark values', () => {
 test('exposes warning color tokens with correct light/dark values', () => {
   expect(lightTheme['--ui-color-warning-bg']).toBe('var(--ui-color-palette-amber-600)');
   expect(darkTheme['--ui-color-warning-bg']).toBe('var(--ui-color-palette-amber-500)');
-  expect(lightTheme['--ui-color-text-on-warning']).toBe('var(--ui-color-white)');
+  expect(lightTheme['--ui-color-warning-text']).toBe('var(--ui-color-palette-amber-900)');
+  expect(lightTheme['--ui-color-text-on-warning']).toBe('var(--ui-color-black)');
+  expect(darkTheme['--ui-color-text-on-warning']).toBe('var(--ui-color-black)');
 });
 
 test('styles publish manifest drops workspace-only metadata and rewrites dist-root entrypaths', () => {

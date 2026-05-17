@@ -51,12 +51,13 @@
   overflow-wrap: normal;
   text-align: center;
   text-decoration: none;
+  touch-action: manipulation;
   transition:
     background var(--ui-motion-duration-fast) var(--ui-motion-ease-exit),
     border-color var(--ui-motion-duration-fast) var(--ui-motion-ease-exit),
     color var(--ui-motion-duration-fast) var(--ui-motion-ease-exit),
     box-shadow var(--ui-motion-duration-fast) var(--ui-motion-ease-exit),
-    transform var(--ui-motion-duration-fast) var(--ui-motion-ease-exit);
+    filter var(--ui-motion-duration-fast) var(--ui-motion-ease-exit);
   vertical-align: middle;
   white-space: nowrap;
 }
@@ -68,7 +69,7 @@
 
 .root:active:not([data-disabled='true']) {
   background: var(--button-background-active);
-  transform: translateY(1px);
+  filter: brightness(0.98);
 }
 
 .root:focus-visible {
@@ -107,10 +108,10 @@
 .modeIconButton {
   --button-gap: 0;
 
-  min-inline-size: var(--button-square-size);
+  min-inline-size: max(var(--button-square-size), var(--ui-touch-target-min));
   padding: 0;
-  inline-size: var(--button-square-size);
-  block-size: var(--button-square-size);
+  inline-size: max(var(--button-square-size), var(--ui-touch-target-min));
+  block-size: max(var(--button-square-size), var(--ui-touch-target-min));
 }
 
 .contentGraphic {

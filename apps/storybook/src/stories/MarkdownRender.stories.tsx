@@ -191,6 +191,12 @@ const meta = {
   component: MarkdownRender,
   tags: ['autodocs'],
   parameters: {
+    docs: {
+      description: {
+        component:
+          'MarkdownRender provides a styled CommonMark and GFM surface for long-form content, release notes, task lists, tables, links, and code fences.',
+      },
+    },
     layout: 'padded',
   },
   argTypes: {

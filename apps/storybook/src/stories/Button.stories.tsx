@@ -183,6 +183,33 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
+export const Default: Story = {
+  args: {
+    children: 'Button',
+    color: 'neutral',
+    disabled: false,
+    loading: false,
+    shape: 'float',
+    size: 'md',
+    variant: 'filled',
+  },
+  render: ({ shape, variant = 'filled', ...args }) => {
+    if (variant === 'ghost' || variant === 'link') {
+      return <Button {...args} variant={variant} />;
+    }
+
+    return <Button {...args} shape={shape} variant={variant} />;
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Args-driven playground. Use the controls panel to inspect size, variant, color, loading, disabled, and shape changes on one Button instance.',
+      },
+    },
+  },
+};
+
 const EntrypointShell = () => {
   return (
     <div style={storyStyles.shell}>

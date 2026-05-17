@@ -59,10 +59,23 @@ describe('NavOverlay', () => {
     ).not.toThrow();
   });
 
+  it('gives the fullscreen dialog an accessible name by default', async () => {
+    render(
+      <NavOverlay.Root open>
+        <NavOverlay.Content>Content</NavOverlay.Content>
+      </NavOverlay.Root>,
+    );
+
+    expect(screen.getByRole('dialog', { name: 'Navigation' })).toBeTruthy();
+  });
+
   it('keeps the fullscreen panel scroll-contained with room for the close button', () => {
     expect(stylesheet).toContain('overscroll-behavior: contain;');
     expect(stylesheet).toContain(
       'padding-block-end: calc(var(--ui-space-xl) + 72px + env(safe-area-inset-bottom));',
+    );
+    expect(stylesheet).toContain(
+      'padding-block-start: max(var(--ui-space-lg), env(safe-area-inset-top));',
     );
     expect(stylesheet).toContain(
       'scroll-padding-block-end: calc(var(--ui-space-xl) + 72px + env(safe-area-inset-bottom));',

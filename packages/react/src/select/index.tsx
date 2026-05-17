@@ -119,6 +119,7 @@ const SelectRoot = ({
   const labelId = `${fieldId}-label`;
   const items = useMemo(() => extractItems(children), [children]);
   const hasError = Boolean(error);
+  const hasHint = Boolean(hint);
 
   const collection = useMemo(
     () => createListCollection<ItemData>({ items }),
@@ -138,7 +139,7 @@ const SelectRoot = ({
   return (
     <Field.Root
       disabled={disabled}
-      hasDescription={hint !== undefined}
+      hasDescription={hasHint}
       hasError={hasError}
       id={fieldId}
       invalid={hasError}
@@ -162,11 +163,8 @@ const SelectRoot = ({
           {children}
         </ArkSelectRoot>
       </SelectContext.Provider>
-      {hasError ? (
-        <Field.ErrorText>{error}</Field.ErrorText>
-      ) : (
-        hint && <Field.Description>{hint}</Field.Description>
-      )}
+      {hint && <Field.Description>{hint}</Field.Description>}
+      {hasError && <Field.ErrorText>{error}</Field.ErrorText>}
     </Field.Root>
   );
 };
