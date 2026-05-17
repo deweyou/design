@@ -39,6 +39,12 @@ test('cross-package boundary coverage stays in top-level tests', () => {
   ) as {
     publishConfig?: { directory?: string };
   };
+  const mcpPackage = JSON.parse(
+    readFileSync(resolve(root, 'packages/mcp/package.json'), 'utf8'),
+  ) as {
+    dependencies?: Record<string, string>;
+    publishConfig?: { directory?: string };
+  };
 
   expect(componentPackage.dependencies).toMatchObject({
     '@deweyou-design/react-hooks': 'workspace:*',
@@ -66,11 +72,13 @@ test('cross-package boundary coverage stays in top-level tests', () => {
   });
   expect(iconsPackage.dependencies ?? {}).not.toHaveProperty('@deweyou-design/react');
   expect(stylesPackage.dependencies ?? {}).not.toHaveProperty('@deweyou-design/react');
+  expect(mcpPackage.dependencies ?? {}).not.toHaveProperty('@deweyou-ui/infra');
   expect(componentPackage.publishConfig?.directory).toBe('dist');
   expect(hooksPackage.publishConfig?.directory).toBe('dist');
   expect(iconsPackage.publishConfig?.directory).toBe('dist');
   expect(stylesPackage.publishConfig?.directory).toBe('dist');
   expect(utilsPackage.publishConfig?.directory).toBe('dist');
+  expect(mcpPackage.publishConfig?.directory).toBe('dist');
 });
 
 test('components package keeps root compatibility while exposing documented subpath entries', () => {
@@ -120,6 +128,9 @@ test('workspace publish flow writes dist package manifests instead of mutating s
   const utilsPackage = JSON.parse(
     readFileSync(resolve(root, 'packages/utils/package.json'), 'utf8'),
   ) as { scripts?: Record<string, string> };
+  const mcpPackage = JSON.parse(
+    readFileSync(resolve(root, 'packages/mcp/package.json'), 'utf8'),
+  ) as { scripts?: Record<string, string> };
   const stylesScript = readFileSync(
     resolve(root, 'packages/styles/scripts/copy-assets.mjs'),
     'utf8',
@@ -132,6 +143,7 @@ test('workspace publish flow writes dist package manifests instead of mutating s
   expect(componentsPackage.scripts?.build).toContain('write-published-manifest.mjs');
   expect(hooksPackage.scripts?.build).toContain('write-published-manifest.mjs');
   expect(utilsPackage.scripts?.build).toContain('write-published-manifest.mjs');
+  expect(mcpPackage.scripts?.build).toContain('write-published-manifest.mjs');
   expect(stylesScript).toContain('writePublishedManifest');
   expect(stylesScript).not.toContain('writeFileSync');
   expect(iconsScript).toContain("resolve(packageRoot, 'dist')");

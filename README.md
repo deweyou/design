@@ -18,6 +18,12 @@ Install the icon package separately when icons are needed:
 npm install @deweyou-design/react-icons
 ```
 
+Install the MCP package when AI agents or MCP-capable tools need structured component, style, and icon context:
+
+```bash
+npm install @deweyou-design/mcp
+```
+
 ## Quick Start
 
 **1. Import theme styles**
@@ -151,3 +157,18 @@ Component styles are implemented with CSS custom properties, the design tokens. 
 ```
 
 See `@deweyou-design/styles` for the full token list.
+
+## AI / MCP
+
+The public website exposes `/llms.txt` for LLM-oriented package context. MCP-capable clients can run:
+
+```bash
+npm install @deweyou-design/mcp
+npx deweyou-design-mcp
+```
+
+The MCP server exposes read-only resources and tools for components, style entrypoints, icon exports, and import snippets. The installable agent skill is a separate entrypoint:
+
+```bash
+npx skills add https://github.com/deweyou/design/tree/main/skills/deweyou-design-components -g -a codex
+```

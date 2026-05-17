@@ -13,6 +13,7 @@ test('repository contains the expected app and package boundaries', () => {
     'packages/react-hooks',
     'packages/react-icons',
     'packages/styles',
+    'packages/mcp',
     'packages/infra',
     'packages/utils',
   ];

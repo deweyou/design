@@ -1,0 +1,12 @@
+interface:
+  display_name: 'Deweyou Design Components'
+  short_description: 'Build and inspect Deweyou Design UI packages'
+  default_prompt: 'Use $deweyou-design-components to update a Deweyou Design component, style, icon, or docs surface.'
+dependencies:
+  tools:
+    - type: 'mcp'
+      value: '@deweyou-design/mcp'
+      description: 'Read-only Deweyou Design component, style, and icon catalog MCP server'
+      transport: 'stdio'
+policy:
+  allow_implicit_invocation: true

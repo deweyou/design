@@ -1,0 +1,123 @@
+# Deweyou Design
+
+> React UI component library with design tokens, Ark UI behavior primitives, icon components, and a Vite preview website.
+
+Website: https://design.deweyou.me
+Storybook: https://design-storybook-deweyous-projects.vercel.app
+Repository docs: docs/
+
+## Install
+
+```bash
+npm install @deweyou-design/react @deweyou-design/styles
+npm install @deweyou-design/react-icons
+```
+
+## Required Theme Setup
+
+Import the global theme once near the app entry:
+
+```ts
+import '@deweyou-design/styles/theme.css';
+```
+
+Component styles are loaded by component imports. For SSR or full upfront CSS, use:
+
+```ts
+import '@deweyou-design/react/style.css';
+```
+
+## Import Rules
+
+Use root imports when consuming several components together:
+
+```tsx
+import { Button, Input } from '@deweyou-design/react';
+```
+
+Use subpath imports for docs, examples, and single-component usage:
+
+```tsx
+import { Button } from '@deweyou-design/react/button';
+```
+
+## Component Categories
+
+- Actions: Button, IconButton
+- Forms: Checkbox, Field, Input, RadioGroup, Select, Switch, Textarea
+- Overlays: ContextMenu, Dialog, Menu, Popover, Tooltip
+- Navigation: Breadcrumb, Nav, NavOverlay, Pagination, Tabs
+- Feedback: Badge, Skeleton, Spinner, toast, Toaster
+- Content: Card, CodeBlock, MarkdownRender, Separator, Text
+- Data: ScrollArea, VirtualList
+
+## Component Catalog
+
+- Badge (feedback): Compact status and metadata label for low-density surfaces. Import: `import { Badge } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-badge--overview
+- Breadcrumb (navigation): Hierarchy trail for document and application navigation. Import: `import { Breadcrumb } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-breadcrumb--overview
+- Button (actions): Primary command surface with semantic variants and stable sizing. Import: `import { Button } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-button--overview
+- IconButton (actions): Icon-only command that keeps accessible names explicit. Import: `import { IconButton } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-button--overview
+- Card (content): Border-led content container for small grouped surfaces. Import: `import { Card } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-card--overview
+- Checkbox (forms): Binary choice control with checked, unchecked, and disabled states. Import: `import { Checkbox } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-checkbox--overview
+- CodeBlock (content): Scrollable code block shared by MarkdownRender and product examples. Import: `import { CodeBlock } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-codeblock--overview
+- ContextMenu (overlays): Right-click command surface built on the menu contract. Import: `import { ContextMenu } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-menu--overview
+- Dialog (overlays): Modal decision surface for focused confirmation and details. Import: `import { Dialog } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-dialog--overview
+- Field (forms): Label, description, and validation wiring for form controls. Import: `import { Field } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-field--overview
+- Input (forms): Single-line text input with Deweyou field styling. Import: `import { Input } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-input--overview
+- MarkdownRender (content): Safe CommonMark and GFM rendering surface for product content. Import: `import { MarkdownRender } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-markdownrender--overview
+- Menu (overlays): Command menu and selection surface for grouped actions. Import: `import { Menu, MenuTrigger, MenuContent } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-menu--overview
+- Nav (navigation): Visible navigation landmark for page and app destinations. Import: `import { Nav } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-nav--overview
+- NavOverlay (navigation): Responsive overlay navigation pattern for compact screens. Import: `import { NavOverlay } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-navoverlay--overview
+- Pagination (navigation): Paged navigation for lists and document sets. Import: `import { Pagination } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-pagination--overview
+- Popover (overlays): Anchored floating content for lightweight contextual details. Import: `import { Popover } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-popover--overview
+- RadioGroup (forms): Single-choice option group with accessible roving interaction. Import: `import { RadioGroup } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-radiogroup--overview
+- ScrollArea (data): Styled scroll container that keeps overflow surfaces consistent. Import: `import { ScrollArea } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-scrollarea--overview
+- Select (forms): Listbox selection field with trigger, content, and item primitives. Import: `import { Select } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-select--overview
+- Separator (content): Semantic dividing line for content and controls. Import: `import { Separator } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-separator--overview
+- Skeleton (feedback): Low-noise loading affordance for content that has not resolved. Import: `import { Skeleton } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-skeleton--overview
+- Spinner (feedback): Small progress indicator for command and inline loading states. Import: `import { Spinner } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-spinner--overview
+- Switch (forms): Immediate on/off setting control. Import: `import { Switch } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-switch--overview
+- Tabs (navigation): Section switcher with line, color, size, and overflow support. Import: `import { Tabs, TabList, TabTrigger, TabContent } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-tabs--overview
+- Text (content): Typography primitive for Deweyou heading, body, and caption rhythm. Import: `import { Text } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-typography--overview
+- Textarea (forms): Multi-line text input with the same field rhythm as Input. Import: `import { Textarea } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-textarea--overview
+- toast (feedback): Imperative feedback API for transient messages. Import: `import { toast } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-toast--overview
+- Toaster (feedback): Toast viewport renderer used once near the application root. Import: `import { Toaster } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-toast--overview
+- Tooltip (overlays): Small hover/focus label for controls that need extra naming. Import: `import { Tooltip } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-tooltip--overview
+- VirtualList (data): Windowed list renderer for large one-dimensional collections. Import: `import { VirtualList } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-virtuallist--overview
+
+## Styles
+
+- `@deweyou-design/styles/theme.css`: Default consumer entry: reset, base, theme layers, and fallback fonts.
+- `@deweyou-design/styles/theme-with-fonts.css`: Full Source Han Sans SC and Serif CN webfont entry for previews.
+- `@deweyou-design/styles/theme-light.css`: Light theme token output only.
+- `@deweyou-design/styles/theme-dark.css`: Dark theme token output only.
+- `@deweyou-design/styles/color.css`: Raw color palette tokens that are theme invariant.
+- `@deweyou-design/styles/reset.css`: Reset layer only.
+- `@deweyou-design/styles/base.css`: Base typography and element defaults.
+- `@deweyou-design/styles/less/bridge`: Less variable bridge for component authors.
+- `@deweyou-design/styles/less/mixins`: Less authoring mixins for component styles.
+- `@deweyou-design/styles/unplugin-font-subset`: Vite/unplugin font subset generator for Source Han typography.
+
+## Icons
+
+Install and import icons from `@deweyou-design/react-icons`. The current MCP catalog includes 2351 icon exports from the Deweyou-maintained registry.
+
+```tsx
+import { SearchIcon, CheckIcon, ChevronDownIcon } from '@deweyou-design/react-icons';
+```
+
+Example icon exports: AbilityOpenIcon, AbstractIcon, AbstractFilledIcon, AccessibilityIcon, AccessibilityFilledIcon, ActivityIcon, ActivityFilledIcon, AddIcon, AddAndSubtractIcon, AddCircleIcon, AddCircleFilledIcon, AddRectangleIcon, AddRectangleFilledIcon, AddressBookIcon, AddressBookFilledIcon, AdjustmentIcon, AdjustmentFilledIcon, AiIcon, Ai1Icon, Ai1FilledIcon, AiArticleIcon, AiArticleFilledIcon, AiBookOpenIcon, AiBookOpenFilledIcon
+
+## Design And Implementation Rules
+
+- Follow docs/design/components.md for public component import and composition contracts.
+- Follow docs/design/system.md for visual language and token usage.
+- Follow docs/architecture/ark-ui.md when choosing Ark UI behavior primitives for interactive components.
+- Follow docs/architecture/package-layers.md before adding packages or dependencies.
+- React components must live in TSX files and use CSS Modules plus @deweyou-design/styles tokens.
+- Interactive icons should be wrapped in IconButton, Button.Icon, or a native button.
+- New public components should update package exports, docs, README files, website catalog, unit tests, Storybook stories, and contract tests.
+
+## MCP And Skill
+
+Use @deweyou-design/mcp for structured component, style, and icon lookup through MCP. Use the Deweyou Design component skill when an AI agent is modifying or documenting Deweyou Design components.

@@ -18,6 +18,12 @@ npm install @deweyou-design/react @deweyou-design/styles
 npm install @deweyou-design/react-icons
 ```
 
+如果 AI Agent 或 MCP 客户端需要结构化查询组件、样式和图标上下文，可安装 MCP 包：
+
+```bash
+npm install @deweyou-design/mcp
+```
+
 ## 快速上手
 
 **1. 引入主题样式**
@@ -151,3 +157,18 @@ export const RocketIcon = createTablerIcon(IconRocket);
 ```
 
 完整 token 列表参见 `@deweyou-design/styles`。
+
+## AI / MCP
+
+公开网站提供 `/llms.txt` 作为面向 LLM 的组件库上下文。支持 MCP 的客户端可以运行：
+
+```bash
+npm install @deweyou-design/mcp
+npx deweyou-design-mcp
+```
+
+MCP server 提供只读的组件、样式入口、图标和 import snippet 查询。Skill 是独立入口，可以通过 Skills CLI 安装：
+
+```bash
+npx skills add https://github.com/deweyou/design/tree/main/skills/deweyou-design-components -g -a codex
+```
