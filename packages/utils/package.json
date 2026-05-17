@@ -1,6 +1,6 @@
 {
   "name": "@deweyou-design/utils",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Framework-agnostic runtime utilities for Deweyou Design consumers.",
   "type": "module",
   "sideEffects": false,
