@@ -128,6 +128,34 @@ const meta: Meta<typeof Menu> = {
 };
 
 export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+  args: {
+    closeOnSelect: true,
+    defaultOpen: true,
+    disabled: false,
+    placement: 'bottom-start',
+    shape: 'rounded',
+    size: 'md',
+  },
+  render: (args) => (
+    <Menu {...args}>
+      <MenuTrigger>
+        <Button variant="outlined">Open menu</Button>
+      </MenuTrigger>
+      <MenuContent>
+        <MenuItem value="new">New file</MenuItem>
+        <MenuItem value="open">Open file</MenuItem>
+        <MenuItem value="save">Save</MenuItem>
+        <MenuSeparator />
+        <MenuItem value="delete" disabled>
+          Delete (disabled)
+        </MenuItem>
+      </MenuContent>
+    </Menu>
+  ),
+};
 
 // ---------------------------------------------------------------------------
 // Story: Basic

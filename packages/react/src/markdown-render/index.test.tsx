@@ -263,7 +263,9 @@ describe('MarkdownRender', () => {
     expect(markup).toContain('data-checked="false"');
     expect(markup).toContain('Completed task');
     expect(markup).toContain('Incomplete task');
-    expect(markup).not.toContain('role="checkbox"');
+    expect(markup).toContain('role="checkbox"');
+    expect(markup).toContain('aria-checked="true"');
+    expect(markup).toContain('aria-checked="false"');
   });
 
   it('renders markdown images with lazy loading defaults', () => {

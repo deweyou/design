@@ -52,14 +52,16 @@ const meta: Meta<typeof Checkbox> = {
 };
 
 export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const Default: StoryObj = {
-  render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-      <Checkbox>Subscribe to newsletter</Checkbox>
-      <Checkbox defaultChecked>Accept terms and conditions</Checkbox>
-    </div>
-  ),
+export const Default: Story = {
+  args: {
+    children: 'Subscribe to newsletter',
+    defaultChecked: false,
+    disabled: false,
+    indeterminate: false,
+  },
+  render: (args) => <Checkbox {...args} />,
 };
 
 export const Variants: StoryObj = {

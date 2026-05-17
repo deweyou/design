@@ -47,6 +47,9 @@ export type VirtualListProps = {
   style?: CSSProperties;
   viewportClassName?: string;
   viewportStyle?: CSSProperties;
+  role?: string;
+  'aria-label'?: string;
+  'aria-labelledby'?: string;
 };
 
 type SizeMap = {
@@ -154,6 +157,9 @@ export const VirtualList = forwardRef<VirtualListRef, VirtualListProps>(
       style,
       viewportClassName,
       viewportStyle,
+      role = 'list',
+      'aria-label': ariaLabel = 'Virtualized list',
+      'aria-labelledby': ariaLabelledBy,
     },
     ref,
   ) => {
@@ -245,14 +251,24 @@ export const VirtualList = forwardRef<VirtualListRef, VirtualListProps>(
       >
         <ScrollArea.Viewport
           ref={viewportRef}
+          aria-label={ariaLabelledBy ? undefined : ariaLabel}
+          aria-labelledby={ariaLabelledBy}
           className={classNames(styles.viewport, viewportClassName)}
           data-testid="virtual-list-viewport"
           onScroll={handleScroll}
+          role={role}
           style={viewportStyle}
         >
           <div className={styles.spacer} style={{ height: sizeMap.totalSize }}>
             {virtualItems.map((virtualItem) => (
-              <div key={virtualItem.key} className={styles.item} style={virtualItem.style}>
+              <div
+                key={virtualItem.key}
+                aria-posinset={role === 'list' ? virtualItem.index + 1 : undefined}
+                aria-setsize={role === 'list' ? count : undefined}
+                className={styles.item}
+                role={role === 'list' ? 'listitem' : undefined}
+                style={virtualItem.style}
+              >
                 {renderItem({ index: virtualItem.index, virtualItem })}
               </div>
             ))}

@@ -120,13 +120,32 @@
 
 .copyButton {
   appearance: none;
-  block-size: 1.35rem;
+  block-size: 1.75rem;
   border-radius: 999px;
   cursor: pointer;
-  inline-size: 1.35rem;
+  inline-size: 1.75rem;
+  position: relative;
   transition:
     background-color var(--ui-motion-duration-fast) var(--ui-motion-ease-exit),
     color var(--ui-motion-duration-fast) var(--ui-motion-ease-exit);
+}
+
+.copyButton::before {
+  content: '';
+  inset: calc((1.75rem - var(--ui-touch-target-min)) / 2);
+  position: absolute;
+}
+
+.copyStatus {
+  block-size: 1px;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  inline-size: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
 }
 
 .copyButton:hover {

@@ -24,6 +24,12 @@ const meta: Meta<typeof Pagination> = {
       control: { type: 'number' },
       table: { type: { summary: 'number' }, defaultValue: { summary: '1' } },
     },
+    variant: {
+      description: 'Visual treatment for page controls.',
+      control: { type: 'select' },
+      options: ['button', 'link'],
+      table: { type: { summary: "'button' | 'link'" }, defaultValue: { summary: 'button' } },
+    },
     onPageChange: {
       description: 'Callback fired when the current page changes.',
       control: false,
@@ -41,9 +47,16 @@ const meta: Meta<typeof Pagination> = {
 };
 
 export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const Default: StoryObj = {
-  render: () => <Pagination count={100} pageSize={10} />,
+export const Default: Story = {
+  args: {
+    count: 100,
+    pageSize: 10,
+    siblingCount: 1,
+    variant: 'button',
+  },
+  render: (args) => <Pagination {...args} />,
 };
 
 export const Controlled: StoryObj = {

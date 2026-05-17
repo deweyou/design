@@ -4,8 +4,11 @@ import { expect, waitFor, within } from 'storybook/test';
 import { ScrollArea } from '@deweyou-design/react/scroll-area';
 
 const sizeOptions = ['sm', 'md', 'lg'] as const;
+type ScrollAreaStoryArgs = {
+  size: (typeof sizeOptions)[number];
+};
 
-const meta: Meta = {
+const meta: Meta<ScrollAreaStoryArgs> = {
   title: 'Components/ScrollArea',
   tags: ['autodocs'],
   argTypes: {
@@ -27,14 +30,18 @@ const meta: Meta = {
 };
 
 export default meta;
+type Story = StoryObj<typeof meta>;
 
 const longText = Array.from(
   { length: 40 },
   (_, i) => `Line ${i + 1}: Lorem ipsum dolor sit amet, consectetur adipiscing elit.`,
 ).join('\n');
 
-export const Default: StoryObj = {
-  render: () => (
+export const Default: Story = {
+  args: {
+    size: 'md',
+  },
+  render: (args) => (
     <ScrollArea.Root
       style={{
         height: '200px',
@@ -55,7 +62,7 @@ export const Default: StoryObj = {
           {longText}
         </div>
       </ScrollArea.Viewport>
-      <ScrollArea.Scrollbar orientation="vertical">
+      <ScrollArea.Scrollbar orientation="vertical" size={args.size}>
         <ScrollArea.Thumb />
       </ScrollArea.Scrollbar>
     </ScrollArea.Root>

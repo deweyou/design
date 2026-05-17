@@ -62,12 +62,12 @@ const LocationProbe = () => {
 test('renders the compact top navigation without a Theme destination', () => {
   renderNavbar();
 
-  expect(screen.getByText('Deweyou Design')).toBeInTheDocument();
-  expect(screen.getByText('Overview')).toBeInTheDocument();
-  expect(screen.getByText('Components')).toBeInTheDocument();
-  expect(screen.getByText('Fonts')).toBeInTheDocument();
-  expect(screen.getByText('Icons')).toBeInTheDocument();
-  expect(screen.getByText('Storybook')).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'Deweyou Design' })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'Overview' })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'Components' })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'Fonts' })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'Icons' })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'Storybook' })).toBeInTheDocument();
   expect(screen.queryByRole('tab', { name: 'GitHub', hidden: true })).not.toBeInTheDocument();
   expect(screen.queryByText('Theme')).not.toBeInTheDocument();
   expect(screen.queryByText('v1.0')).not.toBeInTheDocument();

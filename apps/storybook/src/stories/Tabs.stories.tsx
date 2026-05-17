@@ -131,6 +131,29 @@ const meta: Meta<typeof Tabs> = {
 
 export default meta;
 
+export const Default: StoryObj<typeof Tabs> = {
+  args: {
+    color: 'neutral',
+    defaultValue: 'tab1',
+    orientation: 'horizontal',
+    overflowMode: 'scroll',
+    size: 'md',
+    variant: 'line',
+  },
+  render: (args) => (
+    <Tabs {...args}>
+      <TabList>
+        <TabTrigger value="tab1">Tab One</TabTrigger>
+        <TabTrigger value="tab2">Tab Two</TabTrigger>
+        <TabTrigger value="tab3">Tab Three</TabTrigger>
+      </TabList>
+      <TabContent value="tab1">Content for tab one</TabContent>
+      <TabContent value="tab2">Content for tab two</TabContent>
+      <TabContent value="tab3">Content for tab three</TabContent>
+    </Tabs>
+  ),
+};
+
 // ---------------------------------------------------------------------------
 // Story: Basic
 // ---------------------------------------------------------------------------
@@ -179,25 +202,8 @@ export const Basic: StoryObj = {
 // ---------------------------------------------------------------------------
 
 export const Playground: StoryObj<typeof Tabs> = {
-  args: {
-    defaultValue: 'tab1',
-    variant: 'line',
-    color: 'neutral',
-    size: 'md',
-    orientation: 'horizontal',
-  },
-  render: (args) => (
-    <Tabs {...args}>
-      <TabList>
-        <TabTrigger value="tab1">Tab One</TabTrigger>
-        <TabTrigger value="tab2">Tab Two</TabTrigger>
-        <TabTrigger value="tab3">Tab Three</TabTrigger>
-      </TabList>
-      <TabContent value="tab1">Content for tab one</TabContent>
-      <TabContent value="tab2">Content for tab two</TabContent>
-      <TabContent value="tab3">Content for tab three</TabContent>
-    </Tabs>
-  ),
+  args: Default.args,
+  render: Default.render,
 };
 
 // ---------------------------------------------------------------------------

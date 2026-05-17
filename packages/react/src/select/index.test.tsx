@@ -168,7 +168,7 @@ describe('Select — field semantics', () => {
     expect(document.querySelector('select[name="fruit"]')).toBeDefined();
   });
 
-  it('marks trigger invalid and prefers error text over hint', () => {
+  it('marks trigger invalid and keeps hint plus error relationships', () => {
     render(
       <Select.Root
         id="fruit"
@@ -189,6 +189,7 @@ describe('Select — field semantics', () => {
     const trigger = screen.getByRole('combobox');
     expect(trigger.getAttribute('aria-invalid')).toBe('true');
     expect(trigger.getAttribute('aria-describedby')).toBe('fruit-description fruit-error');
+    expect(screen.getByText('Pick one fruit.').getAttribute('id')).toBe('fruit-description');
     expect(screen.getByText('Fruit is required.').getAttribute('role')).toBe('alert');
   });
 });

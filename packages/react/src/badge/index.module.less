@@ -32,7 +32,7 @@
 
 .solid {
   --badge-bg: var(--badge-color);
-  color: var(--ui-color-canvas);
+  color: var(--badge-solid-color, var(--ui-color-canvas));
   --badge-border: var(--badge-color);
 }
 
@@ -47,8 +47,10 @@
 
 .colorPrimary {
   --badge-color: var(--ui-color-brand-bg);
+  --badge-solid-color: var(--ui-color-text-on-brand);
 }
 
 .colorDanger {
   --badge-color: var(--ui-color-danger-text);
+  --badge-solid-color: var(--ui-color-text-on-danger);
 }

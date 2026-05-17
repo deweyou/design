@@ -82,10 +82,33 @@ describe('CodeBlock', () => {
     await waitFor(() => {
       expect(writeText).toHaveBeenCalledWith('const value = 1;');
     });
+    expect(screen.getByText('Code copied')).toBeTruthy();
     expect(onCopy).toHaveBeenCalledWith({
       language: 'ts',
       text: 'const value = 1;',
     });
+  });
+
+  it('announces copy failures without calling onCopy', async () => {
+    const writeText = vi.fn().mockRejectedValue(new Error('denied'));
+    const onCopy = vi.fn();
+
+    vi.stubGlobal('navigator', {
+      clipboard: { writeText },
+    });
+
+    render(
+      <CodeBlock copy language="ts" onCopy={onCopy}>
+        const value = 1;
+      </CodeBlock>,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: 'Copy code' }));
+
+    await waitFor(() => {
+      expect(screen.getByText('Unable to copy code')).toBeTruthy();
+    });
+    expect(onCopy).not.toHaveBeenCalled();
   });
 
   it('omits the copy button when copy is disabled', () => {

@@ -1,7 +1,12 @@
 import type { CSSProperties } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { baseMonochrome, colorFamilyNames, colorPaletteStepNames } from '@deweyou-design/styles';
+import {
+  baseMonochrome,
+  colorFamilyNames,
+  colorPalette,
+  colorPaletteStepNames,
+} from '@deweyou-design/styles';
 
 const storyStyles = {
   card: {
@@ -55,7 +60,7 @@ const storyStyles = {
   stepGrid: {
     display: 'grid',
     gap: '8px',
-    gridTemplateColumns: `repeat(${colorPaletteStepNames.length}, minmax(0, 1fr))`,
+    gridTemplateColumns: 'repeat(auto-fit, minmax(4.25rem, 1fr))',
   },
   stepSwatch: {
     alignItems: 'end',
@@ -71,6 +76,42 @@ const monochromeEntries = [
   ['black', baseMonochrome.black],
   ['white', baseMonochrome.white],
 ] as const;
+
+const getReadableSwatchTextColor = (hslValue: string) => {
+  const match = /hsl\(\s*([\d.]+)\s+([\d.]+)%\s+([\d.]+)%\s*\)/.exec(hslValue);
+
+  if (!match) {
+    return baseMonochrome.black;
+  }
+
+  const hue = Number(match[1]);
+  const saturation = Number(match[2]) / 100;
+  const lightness = Number(match[3]) / 100;
+  const chroma = (1 - Math.abs(2 * lightness - 1)) * saturation;
+  const segment = hue / 60;
+  const x = chroma * (1 - Math.abs((segment % 2) - 1));
+  const offset = lightness - chroma / 2;
+  const [red, green, blue] =
+    segment < 1
+      ? [chroma, x, 0]
+      : segment < 2
+        ? [x, chroma, 0]
+        : segment < 3
+          ? [0, chroma, x]
+          : segment < 4
+            ? [0, x, chroma]
+            : segment < 5
+              ? [x, 0, chroma]
+              : [chroma, 0, x];
+  const toLinear = (channel: number) => {
+    const value = channel + offset;
+
+    return value <= 0.03928 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+  };
+  const luminance = 0.2126 * toLinear(red) + 0.7152 * toLinear(green) + 0.0722 * toLinear(blue);
+
+  return luminance > 0.18 ? baseMonochrome.black : baseMonochrome.white;
+};
 
 const meta = {
   title: 'Foundations/Color',
@@ -127,8 +168,7 @@ const SharedColorFoundation = () => {
                   style={{
                     ...storyStyles.stepSwatch,
                     background: `var(--ui-color-palette-${familyName}-${stepName})`,
-                    color:
-                      Number(stepName) >= 600 ? 'var(--ui-color-white)' : 'var(--ui-color-black)',
+                    color: getReadableSwatchTextColor(colorPalette[familyName][stepName]),
                   }}
                 >
                   <code>{stepName}</code>

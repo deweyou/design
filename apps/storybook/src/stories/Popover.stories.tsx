@@ -239,6 +239,25 @@ const basicContent = (
   </div>
 );
 
+export const Default: Story = {
+  args: {
+    boundaryPadding: 16,
+    content: basicContent,
+    defaultVisible: true,
+    disabled: false,
+    mode: 'card',
+    offset: 8,
+    placement: 'bottom',
+    shape: 'rounded',
+    trigger: 'click',
+  },
+  render: (args) => (
+    <Popover {...args}>
+      <Button variant="outlined">Open popover</Button>
+    </Popover>
+  ),
+};
+
 const PlacementMatrix = () => {
   return (
     <div style={storyStyles.grid}>

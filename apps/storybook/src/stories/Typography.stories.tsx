@@ -191,11 +191,13 @@ const meta = {
   argTypes: {
     variant: {
       description:
-        'Typographic role and rendered HTML element. `plain` → `<span>`; `body` / `caption` → `<div>`; `h1`–`h5` → the corresponding heading element.',
+        'Typographic role and rendered HTML element. `plain` → `<span>`; `body` / `caption` → `<div>`; `h1`–`h6` → the corresponding heading element.',
       control: { type: 'select' },
-      options: ['plain', 'body', 'caption', 'h1', 'h2', 'h3', 'h4', 'h5'],
+      options: ['plain', 'body', 'caption', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
       table: {
-        type: { summary: "'plain' | 'body' | 'caption' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5'" },
+        type: {
+          summary: "'plain' | 'body' | 'caption' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'",
+        },
         defaultValue: { summary: 'plain' },
       },
     },
@@ -281,6 +283,14 @@ const meta = {
 export default meta;
 
 type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+  args: {
+    children: 'Typography preview text',
+    variant: 'body',
+  },
+  render: (args) => <Text {...args} />,
+};
 
 const EntrypointShell = () => {
   return (

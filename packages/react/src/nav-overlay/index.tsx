@@ -38,6 +38,8 @@ export type NavOverlayContentProps = {
   children: ReactNode;
   className?: string;
   style?: CSSProperties;
+  /** Accessible label for the fullscreen navigation dialog. */
+  'aria-label'?: string;
 };
 
 export type NavOverlayCloseButtonProps = {
@@ -71,9 +73,18 @@ const NavOverlayTrigger = ({ children }: NavOverlayTriggerProps) => (
   <ArkDialogTrigger asChild>{children}</ArkDialogTrigger>
 );
 
-const NavOverlayContent = ({ children, className, style }: NavOverlayContentProps) => {
+const NavOverlayContent = ({
+  children,
+  className,
+  style,
+  'aria-label': ariaLabel = 'Navigation',
+}: NavOverlayContentProps) => {
   const content = (
-    <ArkDialogContent className={classNames(styles.content, className)} style={style}>
+    <ArkDialogContent
+      aria-label={ariaLabel}
+      className={classNames(styles.content, className)}
+      style={style}
+    >
       {children}
     </ArkDialogContent>
   );

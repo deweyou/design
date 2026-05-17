@@ -1,15 +1,38 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, within } from 'storybook/test';
+import { useState } from 'react';
+import { expect, userEvent, within } from 'storybook/test';
 
 import { IconButton, Nav } from '@deweyou-design/react';
 import { MenuApplicationIcon } from '@deweyou-design/react-icons';
 
-const meta: Meta = {
+const meta = {
   title: 'Components/Nav',
-};
+  component: Nav.Root,
+  tags: ['autodocs'],
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'Nav provides landmark navigation links and a responsive navigation pattern that keeps desktop overflow in a More menu and switches to a full-screen overlay at configured breakpoints.',
+      },
+    },
+  },
+  argTypes: {
+    orientation: {
+      control: { type: 'select' },
+      options: ['horizontal', 'vertical'],
+      table: { defaultValue: { summary: 'horizontal' } },
+    },
+    size: {
+      control: { type: 'select' },
+      options: ['sm', 'md', 'lg'],
+      table: { defaultValue: { summary: 'md' } },
+    },
+  },
+} satisfies Meta<typeof Nav.Root>;
 
 export default meta;
-type Story = StoryObj;
+type Story = StoryObj<typeof meta>;
 
 const responsiveItems = [
   { href: '#overview', label: 'Overview', value: 'overview' },
@@ -19,25 +42,36 @@ const responsiveItems = [
 ] as const;
 
 const longResponsiveItems = Array.from({ length: 32 }, (_, index) => ({
-  href: `#section-${index + 1}`,
   label: `Section ${index + 1}`,
   value: `section-${index + 1}`,
 }));
 
-export const Default: Story = {
-  render: () => (
-    <Nav.Root aria-label="Example navigation">
-      <Nav.Link href="#" active>
-        Overview
-      </Nav.Link>
-      <Nav.Link href="#">Components</Nav.Link>
-      <Nav.Link href="#">Icons</Nav.Link>
+const BasicNavDemo = (args: Story['args'] = {}) => {
+  const [activeValue, setActiveValue] = useState('overview');
+
+  return (
+    <Nav.Root aria-label="Example navigation" {...args}>
+      {responsiveItems.slice(0, 3).map((item) => (
+        <Nav.Link
+          key={item.value}
+          active={activeValue === item.value}
+          href={item.href}
+          onClick={(event) => {
+            event.preventDefault();
+            setActiveValue(item.value);
+          }}
+        >
+          {item.label}
+        </Nav.Link>
+      ))}
     </Nav.Root>
-  ),
+  );
 };
 
-export const Responsive: Story = {
-  render: () => (
+const ResponsiveNavDemo = () => {
+  const [activeValue, setActiveValue] = useState('components');
+
+  return (
     <Nav.Responsive
       aria-label="Responsive navigation"
       collapseTrigger={
@@ -49,19 +83,19 @@ export const Responsive: Story = {
         />
       }
       items={responsiveItems}
-      value="components"
+      value={activeValue}
+      onSelect={({ event, value }) => {
+        event?.preventDefault();
+        setActiveValue(value);
+      }}
     />
-  ),
+  );
 };
 
-export const ResponsiveLongList: Story = {
-  parameters: {
-    fullViewport: true,
-    viewport: {
-      defaultViewport: 'mobile1',
-    },
-  },
-  render: () => (
+const ResponsiveLongListDemo = () => {
+  const [activeValue, setActiveValue] = useState('section-1');
+
+  return (
     <Nav.Responsive
       aria-label="Long responsive navigation"
       collapseTrigger={
@@ -73,9 +107,34 @@ export const ResponsiveLongList: Story = {
         />
       }
       items={longResponsiveItems}
-      value="section-1"
+      value={activeValue}
+      onSelect={({ value }) => {
+        setActiveValue(value);
+      }}
     />
-  ),
+  );
+};
+
+export const Default: Story = {
+  args: {
+    orientation: 'horizontal',
+    size: 'md',
+  },
+  render: (args) => <BasicNavDemo {...args} />,
+};
+
+export const Responsive: Story = {
+  render: () => <ResponsiveNavDemo />,
+};
+
+export const ResponsiveLongList: Story = {
+  parameters: {
+    fullViewport: true,
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
+  },
+  render: () => <ResponsiveLongListDemo />,
 };
 
 export const Interaction: Story = {
@@ -92,6 +151,11 @@ export const Interaction: Story = {
     await expect(canvas.getByRole('link', { name: /Storybook/ })).toHaveAttribute(
       'target',
       '_blank',
+    );
+    await userEvent.click(canvas.getByRole('link', { name: 'Icons' }));
+    await expect(canvas.getByRole('link', { name: 'Icons' })).toHaveAttribute(
+      'aria-current',
+      'page',
     );
   },
 };
