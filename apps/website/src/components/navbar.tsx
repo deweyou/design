@@ -16,6 +16,7 @@ const GITHUB_URL = 'https://github.com/deweyou/design';
 const ROUTE_ITEMS = [
   { label: 'Overview', to: '/', value: '/' },
   { label: 'Components', to: '/components', value: '/components' },
+  { label: 'AI', to: '/ai', value: '/ai' },
   { label: 'Fonts', to: '/fonts', value: '/fonts' },
   { label: 'Icons', to: '/icons', value: '/icons' },
 ] as const;

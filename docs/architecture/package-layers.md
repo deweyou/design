@@ -11,6 +11,7 @@ These packages are published to npm and consumed externally.
 | `@deweyou-design/react-icons` | `packages/react-icons/` | Curated generated React icon components               |
 | `@deweyou-design/styles`      | `packages/styles/`      | Design tokens, theme CSS, Less bridge                 |
 | `@deweyou-design/utils`       | `packages/utils/`       | Runtime utilities for external consumers              |
+| `@deweyou-design/mcp`         | `packages/mcp/`         | MCP server and AI context for components/styles/icons |
 
 All published packages must:
 
@@ -40,6 +41,7 @@ apps/*            → @deweyou-design/* (workspace:*)
 @deweyou-design/react-icons → (generated icons; tdesign-icons-svg is build-only)
 @deweyou-design/styles  → (no deps)
 @deweyou-design/utils   → (no deps)
+@deweyou-design/mcp     → @modelcontextprotocol/sdk, zod; bundles component/style/icon metadata
 @deweyou-ui/infra       → (build-only, never in published deps)
 ```
 

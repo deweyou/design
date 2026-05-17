@@ -65,6 +65,7 @@ test('renders the compact top navigation without a Theme destination', () => {
   expect(screen.getByRole('link', { name: 'Deweyou Design' })).toBeInTheDocument();
   expect(screen.getByRole('link', { name: 'Overview' })).toBeInTheDocument();
   expect(screen.getByRole('link', { name: 'Components' })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'AI' })).toBeInTheDocument();
   expect(screen.getByRole('link', { name: 'Fonts' })).toBeInTheDocument();
   expect(screen.getByRole('link', { name: 'Icons' })).toBeInTheDocument();
   expect(screen.getByRole('link', { name: 'Storybook' })).toBeInTheDocument();
@@ -86,6 +87,11 @@ test('marks Overview active on the home route', () => {
 test('marks Components active on /components', () => {
   renderNavbar('/components');
   expect(screen.getByRole('link', { name: 'Components' })).toHaveAttribute('aria-current', 'page');
+});
+
+test('marks AI active on /ai', () => {
+  renderNavbar('/ai');
+  expect(screen.getByRole('link', { name: 'AI' })).toHaveAttribute('aria-current', 'page');
 });
 
 test('marks Icons active on /icons', () => {

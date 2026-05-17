@@ -22,6 +22,7 @@ packages/
 ├── react-icons/  # @deweyou-design/react-icons - React icon components
 ├── styles/       # @deweyou-design/styles - design tokens
 ├── utils/        # @deweyou-design/utils - runtime utilities
+├── mcp/          # @deweyou-design/mcp - AI/MCP context for external agents
 └── infra/        # @deweyou-ui/infra - build infrastructure, not published
 apps/
 ├── website/      # component preview site

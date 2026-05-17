@@ -1,0 +1,37 @@
+{
+  "name": "@deweyou-design/mcp",
+  "version": "0.0.0",
+  "description": "Read-only MCP server and LLM context generator for Deweyou Design.",
+  "bin": {
+    "deweyou-design-mcp": "./dist/bin/index.mjs"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "types": "./dist/index.d.mts",
+  "exports": {
+    ".": "./dist/index.mjs",
+    "./bin": "./dist/bin/index.mjs",
+    "./server": "./dist/server/index.mjs",
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "directory": "dist"
+  },
+  "scripts": {
+    "build": "vp pack && node ../infra/scripts/write-published-manifest.mjs .",
+    "mcp": "node ./dist/bin/index.mjs",
+    "test": "vp test"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
