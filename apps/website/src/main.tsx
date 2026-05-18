@@ -14,6 +14,7 @@ import { ComponentsPage } from './pages/components';
 import { FontsPage } from './pages/fonts';
 import { HomePage } from './pages/home';
 import { IconsPage } from './pages/icons';
+import { MarkdownRenderPage } from './pages/markdown-render';
 import './style.css';
 
 const Layout = () => {
@@ -39,6 +40,7 @@ const router = createBrowserRouter([
       { path: 'ai', element: <AiPage /> },
       { path: 'fonts', element: <FontsPage /> },
       { path: 'icons', element: <IconsPage /> },
+      { path: 'markdown-render', element: <MarkdownRenderPage /> },
     ],
   },
 ]);
