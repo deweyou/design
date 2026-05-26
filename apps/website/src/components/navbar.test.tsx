@@ -77,6 +77,7 @@ test('renders the compact top navigation with grouped explore destinations', () 
   expect(screen.queryByRole('link', { name: 'Fonts' })).not.toBeInTheDocument();
   expect(screen.queryByRole('link', { name: 'Icons' })).not.toBeInTheDocument();
   expect(screen.queryByRole('link', { name: 'Markdown' })).not.toBeInTheDocument();
+  expect(screen.queryByRole('link', { name: 'Mermaid' })).not.toBeInTheDocument();
   expect(screen.queryByRole('tab', { name: 'GitHub', hidden: true })).not.toBeInTheDocument();
   expect(screen.queryByText('Theme')).not.toBeInTheDocument();
   expect(screen.queryByText('v1.0')).not.toBeInTheDocument();
@@ -117,6 +118,11 @@ test('marks Markdown active on /markdown-render', () => {
   expect(screen.getByRole('button', { name: 'Explore' })).toHaveAttribute('aria-current', 'page');
 });
 
+test('marks Mermaid active on /mermaid-render', () => {
+  renderNavbar('/mermaid-render');
+  expect(screen.getByRole('button', { name: 'Explore' })).toHaveAttribute('aria-current', 'page');
+});
+
 test('explore menu exposes grouped destinations', async () => {
   renderNavbar('/fonts');
 
@@ -126,6 +132,7 @@ test('explore menu exposes grouped destinations', async () => {
   expect(screen.getByRole('menuitem', { name: 'Fonts' })).toBeInTheDocument();
   expect(screen.getByRole('menuitem', { name: 'Icons' })).toBeInTheDocument();
   expect(screen.getByRole('menuitem', { name: 'Markdown' })).toBeInTheDocument();
+  expect(screen.getByRole('menuitem', { name: 'Mermaid' })).toBeInTheDocument();
 });
 
 test('explore menu closes when clicking outside the menu', async () => {
@@ -150,10 +157,10 @@ test('route links preserve React Router client navigation', async () => {
   );
 
   fireEvent.click(screen.getByRole('button', { name: 'Explore' }));
-  fireEvent.click(await screen.findByRole('menuitem', { name: 'Markdown' }));
+  fireEvent.click(await screen.findByRole('menuitem', { name: 'Mermaid' }));
 
   return waitFor(() => {
-    expect(screen.getByLabelText('current path')).toHaveTextContent('/markdown-render');
+    expect(screen.getByLabelText('current path')).toHaveTextContent('/mermaid-render');
   });
 });
 

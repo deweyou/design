@@ -7,6 +7,7 @@ import * as buttonEntry from '../src/button/index.tsx';
 import * as codeBlockEntry from '../src/code-block/index.tsx';
 import * as fieldEntry from '../src/field/index.tsx';
 import * as markdownRenderEntry from '../src/markdown-render/index.tsx';
+import * as mermaidRenderEntry from '../src/mermaid-render/index.tsx';
 import * as navEntry from '../src/nav/index.tsx';
 import * as navOverlayEntry from '../src/nav-overlay/index.tsx';
 import * as rootEntry from '../src';
@@ -48,6 +49,11 @@ test('components package exposes button, popover, and text subpath exports in pa
       import: './dist/markdown-render/index.js',
       types: './dist/markdown-render/index.d.ts',
     },
+    './mermaid-render': {
+      default: './dist/mermaid-render/index.js',
+      import: './dist/mermaid-render/index.js',
+      types: './dist/mermaid-render/index.d.ts',
+    },
     './popover': {
       default: './dist/popover/index.js',
       import: './dist/popover/index.js',
@@ -83,6 +89,8 @@ test('components subpath entries match the root entry public contract', () => {
   expect(fieldEntry.Field).toBe(rootEntry.Field);
   expect(markdownRenderEntry.MarkdownRender).toBe(rootEntry.MarkdownRender);
   expect(markdownRenderEntry.markdownRenderSizeOptions).toBe(rootEntry.markdownRenderSizeOptions);
+  expect(mermaidRenderEntry.MermaidRender).toBe(rootEntry.MermaidRender);
+  expect(mermaidRenderEntry.MindmapRender).toBe(rootEntry.MindmapRender);
   expect(navEntry.Nav).toBe(rootEntry.Nav);
   expect(navOverlayEntry.NavOverlay).toBe(rootEntry.NavOverlay);
   expect(popoverEntry.Popover).toBe(rootEntry.Popover);
@@ -112,6 +120,11 @@ test('components subpath entries expose their public API without requiring the p
   expect(Object.keys(markdownRenderEntry).sort()).toEqual([
     'MarkdownRender',
     'markdownRenderSizeOptions',
+  ]);
+  expect(Object.keys(mermaidRenderEntry).sort()).toEqual([
+    'MermaidRender',
+    'MindmapRender',
+    'detectMermaidDiagramType',
   ]);
   expect(Object.keys(popoverEntry).sort()).toEqual([
     'Popover',

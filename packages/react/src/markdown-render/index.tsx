@@ -16,6 +16,7 @@ import remarkGfm from 'remark-gfm';
 
 import { CheckboxMark } from '../checkbox-mark/index.tsx';
 import { CodeBlock, type CodeBlockProps } from '../code-block/index.tsx';
+import { MermaidRender } from '../mermaid-render/index.tsx';
 import { Separator } from '../separator/index.tsx';
 import { ScrollArea } from '../scroll-area/index.tsx';
 import { Text, type TextProps } from '../text/index.tsx';
@@ -451,6 +452,24 @@ const createMarkdownPre =
       ? cloneElement(child, { 'data-markdown-code': 'block' })
       : children;
     const nodeProps = resolveMarkdownNodeProps(props, 'pre', children);
+    const codeValue =
+      childProps === undefined
+        ? getReactNodeText(children).replace(/\n$/, '')
+        : getReactNodeText(
+            (child as ReactElement<{ children?: ReactNode }>).props.children,
+          ).replace(/\n$/, '');
+
+    if (language === 'mermaid') {
+      return (
+        <div
+          {...(nodeProps as ComponentPropsWithoutRef<'div'>)}
+          className={classNames(styles.mermaidBlock, nodeProps.className)}
+          data-language={language}
+        >
+          <MermaidRender value={codeValue} />
+        </div>
+      );
+    }
 
     return (
       <MarkdownCodeBlock

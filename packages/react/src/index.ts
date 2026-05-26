@@ -91,6 +91,14 @@ export {
   type MarkdownRenderSize,
 } from './markdown-render/index.tsx';
 export {
+  MermaidRender,
+  MindmapRender,
+  detectMermaidDiagramType,
+  type MermaidDiagramType,
+  type MermaidRenderProps,
+  type MindmapRenderProps,
+} from './mermaid-render/index.tsx';
+export {
   Field,
   useFieldContext,
   useFieldControlProps,

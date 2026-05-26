@@ -152,6 +152,8 @@ test('workspace publish flow writes dist package manifests instead of mutating s
 test('components package externalizes markdown runtime dependencies in published builds', () => {
   const viteConfig = readFileSync(resolve(root, 'packages/react/vite.config.ts'), 'utf8');
 
+  expect(viteConfig).toContain("'beautiful-mermaid'");
+  expect(viteConfig).toContain("'mermaid'");
   expect(viteConfig).toContain("'react-markdown'");
   expect(viteConfig).toContain("'rehype-highlight'");
   expect(viteConfig).toContain("'remark-gfm'");

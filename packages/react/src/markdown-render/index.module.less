@@ -10,6 +10,12 @@
   --markdown-code-title: var(--ui-color-brand-bg-hover);
   --markdown-heading-gap: 1.35rem;
   --markdown-inline-code-background: color-mix(in srgb, var(--ui-color-text) 8%, transparent);
+  --markdown-link-color: var(--ui-color-brand-text);
+  --markdown-link-color-hover: color-mix(
+    in srgb,
+    var(--ui-color-brand-text) 84%,
+    var(--ui-color-text)
+  );
   --markdown-muted-border: var(--ui-color-border);
   --markdown-table-max-height: 24rem;
 
@@ -21,6 +27,16 @@
   min-inline-size: 0;
   overflow-x: hidden;
   overflow-wrap: anywhere;
+}
+
+:global([data-theme='dark']) .root {
+  --markdown-code-attribute: color-mix(in srgb, var(--ui-color-warning-text) 82%, white);
+  --markdown-code-keyword: color-mix(in srgb, var(--ui-color-brand-text) 76%, white);
+  --markdown-code-literal: color-mix(in srgb, var(--ui-color-warning-text) 74%, white);
+  --markdown-code-string: color-mix(in srgb, var(--ui-color-danger-text) 78%, white);
+  --markdown-code-title: color-mix(in srgb, var(--ui-color-brand-text) 88%, white);
+  --markdown-link-color: color-mix(in srgb, var(--ui-color-brand-text) 88%, white);
+  --markdown-link-color-hover: color-mix(in srgb, var(--ui-color-brand-text) 76%, white);
 }
 
 .sizeSm {
@@ -112,14 +128,14 @@
 }
 
 .link {
-  color: var(--ui-color-brand-bg);
+  color: var(--markdown-link-color);
   text-decoration-line: underline;
   text-decoration-thickness: from-font;
   text-underline-offset: 0.16em;
 }
 
 .link:hover {
-  color: var(--ui-color-brand-bg-hover);
+  color: var(--markdown-link-color-hover);
 }
 
 .link:focus-visible {
@@ -191,6 +207,10 @@
   --code-block-max-height: var(--markdown-code-max-height);
   --code-block-string: var(--markdown-code-string);
   --code-block-title: var(--markdown-code-title);
+}
+
+.mermaidBlock {
+  margin-block: var(--markdown-block-gap);
 }
 
 .code,

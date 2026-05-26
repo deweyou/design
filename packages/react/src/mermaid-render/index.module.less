@@ -1,0 +1,289 @@
+@import '@deweyou-design/styles/less/bridge';
+
+.root {
+  --mermaid-bg: var(--ui-color-surface);
+  --mermaid-fg: var(--ui-color-text);
+  --mermaid-line: color-mix(in srgb, var(--ui-color-text) 42%, transparent);
+  --mermaid-accent: var(--ui-color-brand-bg);
+  --mermaid-muted: var(--ui-color-text-muted);
+  --mermaid-surface: color-mix(in srgb, var(--ui-color-surface) 92%, var(--ui-color-text) 4%);
+  --mermaid-border: color-mix(in srgb, var(--ui-color-border) 86%, transparent);
+  --mermaid-highlight: color-mix(in srgb, var(--ui-color-white) 70%, transparent);
+  --mermaid-shadow: color-mix(in srgb, var(--ui-color-text) 5%, transparent);
+  --mermaid-toolbar-bg: color-mix(in srgb, var(--ui-color-surface) 84%, transparent);
+  --mermaid-toolbar-border: color-mix(in srgb, var(--ui-color-border) 58%, transparent);
+  --mermaid-toolbar-highlight: color-mix(in srgb, var(--ui-color-white) 70%, transparent);
+  --mermaid-toolbar-shadow: color-mix(in srgb, var(--ui-color-text) 4%, transparent);
+  --mermaid-root-bg: var(--ui-color-text);
+  --mermaid-root-border: var(--ui-color-text);
+  --mermaid-root-text: var(--ui-color-surface);
+  --mermaid-scroll-max-height: min(70vh, 36rem);
+  --mermaid-zoom: 1;
+  --mindmap-branch-1: color-mix(in srgb, var(--ui-color-brand-bg) 78%, var(--ui-color-text));
+  --mindmap-branch-2: color-mix(in srgb, var(--ui-color-success-bg) 72%, var(--ui-color-text));
+  --mindmap-branch-3: color-mix(in srgb, var(--ui-color-warning-bg) 68%, var(--ui-color-text));
+  --mindmap-branch-4: color-mix(in srgb, var(--ui-color-danger-bg) 72%, var(--ui-color-text));
+  --mindmap-branch-5: color-mix(in srgb, var(--ui-color-brand-bg) 62%, var(--ui-color-text));
+
+  box-sizing: border-box;
+  color: var(--mermaid-fg);
+  font-family: var(--ui-font-sans);
+  inline-size: 100%;
+  margin-block: var(--markdown-block-gap, 0.85rem);
+  max-inline-size: 100%;
+  min-inline-size: 0;
+  position: relative;
+}
+
+:global([data-theme='dark']) .root {
+  --mermaid-surface: color-mix(in srgb, var(--ui-color-surface) 92%, var(--ui-color-white) 2%);
+  --mermaid-border: color-mix(in srgb, var(--ui-color-border) 52%, transparent);
+  --mermaid-highlight: color-mix(in srgb, var(--ui-color-white) 8%, transparent);
+  --mermaid-shadow: color-mix(in srgb, var(--ui-color-black) 16%, transparent);
+  --mermaid-toolbar-bg: color-mix(in srgb, var(--ui-color-surface-raised) 78%, transparent);
+  --mermaid-toolbar-border: color-mix(in srgb, var(--ui-color-border-strong) 42%, transparent);
+  --mermaid-toolbar-highlight: color-mix(in srgb, var(--ui-color-white) 10%, transparent);
+  --mermaid-toolbar-shadow: color-mix(in srgb, var(--ui-color-black) 22%, transparent);
+  --mermaid-root-bg: color-mix(
+    in srgb,
+    var(--ui-color-surface-raised) 92%,
+    var(--ui-color-white) 4%
+  );
+  --mermaid-root-border: color-mix(in srgb, var(--ui-color-border-strong) 68%, transparent);
+  --mermaid-root-text: var(--ui-color-text);
+}
+
+.toolbar {
+  align-items: center;
+  background: var(--mermaid-toolbar-bg);
+  border: 1px solid var(--mermaid-toolbar-border);
+  border-radius: 999px;
+  box-shadow:
+    inset 0 1px 0 var(--mermaid-toolbar-highlight),
+    0 1px 2px var(--mermaid-toolbar-shadow);
+  display: inline-flex;
+  gap: 0.12rem;
+  inset-block-start: 0.55rem;
+  inset-inline-end: 0.55rem;
+  padding: 0.12rem;
+  position: absolute;
+  z-index: 1;
+}
+
+.zoomValue {
+  align-items: center;
+  block-size: 1.75rem;
+  box-sizing: border-box;
+  color: var(--ui-color-text-muted);
+  font-family: var(--ui-font-control);
+  font-size: 0.625rem;
+  font-variant-numeric: tabular-nums;
+  display: inline-flex;
+  justify-content: center;
+  line-height: 1;
+  min-inline-size: 2.35rem;
+  padding-inline: 0.3rem;
+}
+
+.toolbarButton {
+  align-items: center;
+  appearance: none;
+  background: transparent;
+  block-size: 1.75rem;
+  border: 0;
+  border-radius: 999px;
+  color: var(--ui-color-text-muted);
+  cursor: pointer;
+  display: inline-flex;
+  inline-size: 1.75rem;
+  justify-content: center;
+  padding: 0;
+  position: relative;
+  transition:
+    background-color var(--ui-motion-duration-fast) var(--ui-motion-ease-exit),
+    color var(--ui-motion-duration-fast) var(--ui-motion-ease-exit);
+}
+
+.toolbarButton::before {
+  content: '';
+  inset: calc((1.75rem - var(--ui-touch-target-min)) / 2);
+  position: absolute;
+}
+
+.toolbarButton:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--ui-color-text) 7%, transparent);
+  color: var(--ui-color-text);
+}
+
+.toolbarButton:active:not(:disabled) {
+  background: color-mix(in srgb, var(--ui-color-text) 10%, transparent);
+}
+
+.toolbarButton:focus-visible {
+  .focus-ring();
+  color: var(--ui-color-text);
+}
+
+.toolbarButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.scroller {
+  box-sizing: border-box;
+  cursor: grab;
+  inline-size: 100%;
+  max-inline-size: 100%;
+  min-inline-size: 0;
+  overflow: auto;
+  touch-action: none;
+  user-select: none;
+}
+
+.scroller[data-mermaid-scroll-measured='true'] {
+  block-size: min(
+    calc(var(--mermaid-scroll-height) + 1.6rem + 2px),
+    var(--mermaid-scroll-max-height)
+  );
+}
+
+.root[data-zoom-dragging='true'] .scroller {
+  cursor: grabbing;
+}
+
+.surface {
+  background: color-mix(in srgb, var(--mermaid-surface) 70%, transparent);
+  border: 1px solid var(--mermaid-border);
+  border-radius: var(--ui-radius-rect);
+  box-shadow:
+    inset 0 1px 0 var(--mermaid-highlight),
+    0 1px 2px var(--mermaid-shadow);
+  box-sizing: border-box;
+  inline-size: max-content;
+  min-block-size: 100%;
+  min-inline-size: 100%;
+  padding: 0.8rem;
+}
+
+.zoomViewport {
+  block-size: var(--mermaid-zoom-height, auto);
+  inline-size: var(--mermaid-zoom-width, max-content);
+  min-block-size: 1px;
+  min-inline-size: 1px;
+  overflow: hidden;
+  position: relative;
+}
+
+.zoomContent {
+  display: block;
+  inline-size: max-content;
+  min-block-size: 1px;
+  min-inline-size: 1px;
+  transform: scale(var(--mermaid-zoom));
+  transform-origin: 0 0;
+}
+
+.zoomViewport[data-mermaid-zoom-measured='true'] .zoomContent {
+  inset: 0;
+  position: absolute;
+}
+
+.zoomMeasure {
+  display: block;
+  inline-size: max-content;
+  min-block-size: 1px;
+  min-inline-size: 1px;
+}
+
+.svgHost svg,
+.mindmapSvg {
+  display: block;
+  font-family: var(--ui-font-sans);
+  max-inline-size: none;
+}
+
+.svgHost svg :where(text, tspan, foreignObject, span, div) {
+  font-family: var(--ui-font-sans);
+}
+
+.status {
+  color: var(--ui-color-text-muted);
+  font-size: var(--ui-text-size-body);
+  line-height: var(--ui-text-line-height-body);
+  margin: 0;
+}
+
+.error {
+  color: var(--ui-color-danger-text);
+  white-space: pre-wrap;
+}
+
+.mindmapSvg {
+  background: transparent;
+  font-family: var(--ui-font-sans);
+}
+
+.mindmapEdge {
+  fill: none;
+  stroke: var(--mindmap-branch-color, var(--mermaid-line));
+  stroke-linecap: round;
+  stroke-width: 1.35;
+}
+
+.mindmapNodeBox {
+  fill: var(--mermaid-surface);
+  stroke: var(--mindmap-branch-color, var(--mermaid-border));
+  stroke-opacity: 0.62;
+  stroke-width: 1;
+}
+
+.mindmapNodeText {
+  fill: var(--mermaid-fg);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.mindmapRootBox {
+  fill: var(--mermaid-root-bg);
+  stroke: var(--mermaid-root-border);
+}
+
+.mindmapRootText {
+  fill: var(--mermaid-root-text);
+  font-weight: var(--ui-font-weight-strong);
+}
+
+.mindmapLeafBox {
+  fill: transparent;
+  stroke: transparent;
+}
+
+.mindmapNodeToggle {
+  cursor: pointer;
+  outline: none;
+}
+
+.mindmapNodeToggleCircle {
+  fill: var(--mermaid-surface);
+  stroke: var(--mindmap-branch-color, var(--mermaid-border));
+  stroke-opacity: 0.72;
+  stroke-width: 1;
+}
+
+.mindmapNodeToggleMark {
+  fill: none;
+  pointer-events: none;
+  stroke: var(--mindmap-branch-color, var(--mermaid-fg));
+  stroke-linecap: round;
+  stroke-width: 1.2;
+}
+
+.mindmapNodeToggle:hover .mindmapNodeToggleCircle,
+.mindmapNodeToggle:focus .mindmapNodeToggleCircle {
+  fill: color-mix(
+    in srgb,
+    var(--mindmap-branch-color, var(--mermaid-accent)) 14%,
+    var(--mermaid-surface)
+  );
+  stroke-opacity: 1;
+}

@@ -18,6 +18,7 @@ This document is the human-readable companion to `packages/react/package.json` e
 | `Field`                | `@deweyou-design/react` | `@deweyou-design/react/field`           |
 | `Input`                | `@deweyou-design/react` | `@deweyou-design/react/input`           |
 | `MarkdownRender`       | `@deweyou-design/react` | `@deweyou-design/react/markdown-render` |
+| `MermaidRender`        | `@deweyou-design/react` | `@deweyou-design/react/mermaid-render`  |
 | `Menu`, `ContextMenu`  | `@deweyou-design/react` | `@deweyou-design/react/menu`            |
 | `Nav`                  | `@deweyou-design/react` | `@deweyou-design/react/nav`             |
 | `NavOverlay`           | `@deweyou-design/react` | `@deweyou-design/react/nav-overlay`     |
@@ -192,6 +193,15 @@ an item from the overflow menu follows the same route or command.
 ```
 
 `MarkdownRender` is the safe runtime Markdown path for CommonMark plus GFM content. Use `size` to adjust typography density, `onLinkClick` and `onCopy` for light interaction hooks, `resolveNodeAttributes` to attach light DOM attributes such as heading ids, `components` to replace rendered nodes, and `className` with `[data-markdown-node]` selectors for light style overrides. Event callbacks preserve default browser behavior unless the consumer calls `event.preventDefault()`. `resolveNodeAttributes` receives the node name, text content, and a zero-based per-node `index`, which keeps repeated headings addressable without a component override. Fenced code blocks render through `CodeBlock`, with syntax highlighting from Markdown parsing and a compact language tag when a language is present. Tables and code blocks use default max-height guards with scrolling; override `--markdown-table-max-height` or `--markdown-code-max-height` from the consumer surface when needed. MDX and executable content belong in a separate rendering boundary.
+
+### MermaidRender
+
+```tsx
+<MermaidRender value={diagram} />
+<MindmapRender value={mindmapDiagram} />
+```
+
+`MermaidRender` is the read-only diagram renderer for Mermaid strings. It prefers `beautiful-mermaid` for supported diagram families, uses Deweyou SVG rendering for `mindmap`, and falls back to native Mermaid for other syntax. Use it from Markdown by overriding fenced code blocks through `MarkdownRender` `components`; Mermaid execution remains outside the default Markdown path.
 
 ### CodeBlock
 

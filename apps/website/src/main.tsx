@@ -15,6 +15,7 @@ import { FontsPage } from './pages/fonts';
 import { HomePage } from './pages/home';
 import { IconsPage } from './pages/icons';
 import { MarkdownRenderPage } from './pages/markdown-render';
+import { MermaidRenderPage } from './pages/mermaid-render';
 import './style.css';
 
 const Layout = () => {
@@ -41,6 +42,7 @@ const router = createBrowserRouter([
       { path: 'fonts', element: <FontsPage /> },
       { path: 'icons', element: <IconsPage /> },
       { path: 'markdown-render', element: <MarkdownRenderPage /> },
+      { path: 'mermaid-render', element: <MermaidRenderPage /> },
     ],
   },
 ]);

@@ -66,6 +66,11 @@
       "import": "./dist/markdown-render/index.js",
       "default": "./dist/markdown-render/index.js"
     },
+    "./mermaid-render": {
+      "types": "./dist/mermaid-render/index.d.ts",
+      "import": "./dist/mermaid-render/index.js",
+      "default": "./dist/mermaid-render/index.js"
+    },
     "./menu": {
       "types": "./dist/menu/index.d.ts",
       "import": "./dist/menu/index.js",
@@ -172,8 +177,10 @@
     "@deweyou-design/react-hooks": "workspace:*",
     "@deweyou-design/react-icons": "workspace:*",
     "@deweyou-design/styles": "workspace:*",
+    "beautiful-mermaid": "catalog:",
     "classnames": "catalog:",
     "highlight.js": "catalog:",
+    "mermaid": "catalog:",
     "react-markdown": "catalog:",
     "rehype-highlight": "catalog:",
     "remark-gfm": "catalog:"

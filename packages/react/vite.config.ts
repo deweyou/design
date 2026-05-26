@@ -16,8 +16,10 @@ export default defineConfig({
       external: [
         '@deweyou-design/react-hooks',
         '@deweyou-design/styles',
+        'beautiful-mermaid',
         'classnames',
         'highlight.js/lib/common',
+        'mermaid',
         'react',
         'react-dom',
         'react/jsx-runtime',

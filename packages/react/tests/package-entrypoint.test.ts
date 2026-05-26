@@ -70,9 +70,14 @@ const exampleMarkdownRenderProps: import('../src').MarkdownRenderProps = {
   },
 };
 
+const exampleMermaidRenderProps: import('../src').MermaidRenderProps = {
+  value: 'flowchart TD\n  A --> B',
+};
+
 void exampleButtonProps;
 void exampleIconButtonProps;
 void exampleMarkdownRenderProps;
+void exampleMermaidRenderProps;
 void examplePopoverProps;
 void exampleTextProps;
 
@@ -101,6 +106,8 @@ test('components root entry exposes Button, IconButton, Popover, Text, Menu fami
     'MenuSeparator',
     'MenuTrigger',
     'MenuTriggerItem',
+    'MermaidRender',
+    'MindmapRender',
     'Nav',
     'NavOverlay',
     'Pagination',
@@ -122,6 +129,7 @@ test('components root entry exposes Button, IconButton, Popover, Text, Menu fami
     'Toaster',
     'Tooltip',
     'VirtualList',
+    'detectMermaidDiagramType',
     'markdownRenderSizeOptions',
     'toast',
     'useFieldContext',

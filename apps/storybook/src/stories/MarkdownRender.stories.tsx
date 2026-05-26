@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { expect, within } from 'storybook/test';
+import { expect, waitFor, within } from 'storybook/test';
 
 import { MarkdownRender, markdownRenderSizeOptions } from '@deweyou-design/react/markdown-render';
 
@@ -140,6 +140,18 @@ const comprehensiveMarkdown = [
   '',
   'It can include blank lines and indentation:',
   '  markdown-render --size md',
+  '```',
+  '',
+  '```mermaid',
+  'mindmap',
+  '  root((MarkdownRender))',
+  '    CommonMark',
+  '      Paragraphs',
+  '      Lists',
+  '      Tables',
+  '    Mermaid',
+  '      Beautiful route',
+  '      Mindmap route',
   '```',
   '',
   '### Wide Data Table',
@@ -312,6 +324,14 @@ export const Interaction: Story = {
     await expect(
       story.querySelector('[data-testid="markdown-code-scroll-area"]'),
     ).toBeInTheDocument();
+    await waitFor(() => {
+      const mermaid = story.querySelector('[data-testid="mermaid-render"]');
+
+      if (mermaid === null) {
+        throw new Error('Expected MermaidRender inside MarkdownRender story');
+      }
+    });
+    await expect(story.querySelector('[data-mermaid-renderer="mindmap"]')).toBeInTheDocument();
     const tableWrapper = story.querySelector<HTMLElement>('[data-markdown-node="table-wrapper"]');
     await expect(tableWrapper).toBeInTheDocument();
     const tableScrollArea = story.querySelector<HTMLElement>(

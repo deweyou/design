@@ -83,7 +83,8 @@
     white-space: nowrap;
   }
 
-  :global(textarea[aria-label='Markdown source']) {
+  :global(textarea[aria-label='Markdown source']),
+  :global(textarea[aria-label='Mermaid source']) {
     block-size: min(68vh, 720px);
     border: 0;
     border-radius: 0;
@@ -149,6 +150,7 @@
 
   .editor,
   .editor :global(textarea[aria-label='Markdown source']),
+  .editor :global(textarea[aria-label='Mermaid source']),
   .previewSurface {
     block-size: auto;
     min-block-size: max(28rem, calc(100vh - var(--website-nav-offset) - 220px));

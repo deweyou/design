@@ -20,7 +20,7 @@ Every public component supports root import and a documented subpath import. The
 
 Prefer subpath imports for better tree-shaking; use the root `@deweyou-design/react` import when consuming multiple components together.
 
-Core coverage: `Button`, `IconButton`, `Field`, `Input`, `Textarea`, `Select`, `Checkbox`, `RadioGroup`, `Switch`, `Dialog`, `Menu`, `Popover`, `Tooltip`, `Toast`, `Tabs`, `Pagination`, `Breadcrumb`, `Nav`, `NavOverlay`, `ScrollArea`, `CodeBlock`, `MarkdownRender`, `Text`, `Badge`, `Card`, `Separator`, `Skeleton`, and `Spinner`.
+Core coverage: `Button`, `IconButton`, `Field`, `Input`, `Textarea`, `Select`, `Checkbox`, `RadioGroup`, `Switch`, `Dialog`, `Menu`, `Popover`, `Tooltip`, `Toast`, `Tabs`, `Pagination`, `Breadcrumb`, `Nav`, `NavOverlay`, `ScrollArea`, `CodeBlock`, `MarkdownRender`, `MermaidRender`, `MindmapRender`, `Text`, `Badge`, `Card`, `Separator`, `Skeleton`, and `Spinner`.
 
 ## Button
 
@@ -112,6 +112,20 @@ import { MarkdownRender } from '@deweyou-design/react/markdown-render';
 ```
 
 Use `onLinkClick` and `onCopy` for light interaction hooks without changing default browser behavior; call `event.preventDefault()` inside the callback when a surface needs to own navigation. Use `resolveNodeAttributes` to attach light DOM attributes such as heading anchors, `aria-*`, or `data-*` without replacing the rendered node. Its `index` is the zero-based occurrence count for the current Markdown node type, so repeated headings can still produce stable ids. Use `components` to replace Markdown nodes such as links or code blocks. Fenced code blocks with a language are syntax-highlighted by default and show a compact language tag. Tables and code blocks use default max-height guards with scrolling; override `--markdown-table-max-height` or `--markdown-code-max-height` from `className` when a surface needs a different limit. Use `[data-markdown-node]` selectors for small visual adjustments; keep MDX and executable content in a separate renderer.
+
+## MermaidRender
+
+The shared read-only Mermaid diagram primitive for Markdown extension surfaces.
+
+### Usage
+
+```tsx
+import { MermaidRender } from '@deweyou-design/react/mermaid-render';
+
+<MermaidRender value={diagram} />;
+```
+
+`MermaidRender` routes supported diagrams through `beautiful-mermaid`, renders `mindmap` diagrams through the Deweyou SVG `MindmapRender`, and falls back to native Mermaid for other syntax. `MarkdownRender` keeps Mermaid opt-in through `components` overrides.
 
 ## CodeBlock
 

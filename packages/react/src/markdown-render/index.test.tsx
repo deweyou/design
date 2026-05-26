@@ -75,14 +75,9 @@ describe('MarkdownRender', () => {
       className: 'consumer-markdown',
       size: 'sm',
       style: { maxWidth: 640 },
-      value: [
-        '![Alt text](/image.png)',
-        '',
-        '```mermaid meta value',
-        'graph TD',
-        '  A --> B',
-        '```',
-      ].join('\n'),
+      value: ['![Alt text](/image.png)', '', '```ts meta value', 'const value = 1;', '```'].join(
+        '\n',
+      ),
     });
 
     expect(markup).toContain('class="');
@@ -93,8 +88,21 @@ describe('MarkdownRender', () => {
     expect(markup).toContain('alt="Alt text"');
     expect(markup).toContain('data-markdown-node="pre"');
     expect(markup).toContain('data-ui-code-block="true"');
-    expect(markup).toContain('data-language="mermaid"');
-    expect(markup).toContain('graph TD');
+    expect(markup).toContain('data-language="ts"');
+    expect(markup).toContain('const');
+  });
+
+  it('renders mermaid code fences through MermaidRender instead of CodeBlock', () => {
+    const markup = renderMarkdown({
+      value: ['```mermaid', 'mindmap', '  root((MarkdownRender))', '    MermaidRender', '```'].join(
+        '\n',
+      ),
+    });
+
+    expect(markup).toContain('data-mermaid-renderer="mindmap"');
+    expect(markup).toContain('data-mindmap-root="true"');
+    expect(markup).toContain('MarkdownRender');
+    expect(markup).not.toContain('data-ui-code-block="true"');
   });
 
   it('allows consumers to override nodes while keeping MarkdownRender data attributes', () => {

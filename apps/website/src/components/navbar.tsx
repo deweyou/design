@@ -24,6 +24,7 @@ const EXPLORE_ROUTE_ITEMS = [
   { label: 'Fonts', to: '/fonts', value: '/fonts' },
   { label: 'Icons', to: '/icons', value: '/icons' },
   { label: 'Markdown', to: '/markdown-render', value: '/markdown-render' },
+  { label: 'Mermaid', to: '/mermaid-render', value: '/mermaid-render' },
 ] as const;
 const MOBILE_ROUTE_ITEMS = [
   PRIMARY_ROUTE_ITEMS[0],
