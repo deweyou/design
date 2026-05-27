@@ -13,6 +13,7 @@ describe('component catalog', () => {
 
     expect(names).toContain('Button');
     expect(names).toContain('Dialog');
+    expect(names).toContain('MermaidRender');
     expect(names).toContain('NavOverlay');
     expect(names).toContain('VirtualList');
     expect(names).toContain('toast');
@@ -43,6 +44,9 @@ describe('component catalog', () => {
     );
     expect(getComponentImportSnippet('Button', { subpath: true })).toBe(
       "import { Button } from '@deweyou-design/react/button';",
+    );
+    expect(getComponentImportSnippet('MermaidRender', { subpath: true })).toBe(
+      "import { MermaidRender } from '@deweyou-design/react/mermaid-render';",
     );
     expect(getComponentImportSnippet('toast', { subpath: true })).toBe(
       "import { toast } from '@deweyou-design/react/toast';",

@@ -142,7 +142,8 @@ const createImplementationRules = () => {
 - Keep React components in TSX files under lowercase kebab-case component directories.
 - Use @deweyou-design/styles tokens through CSS Modules instead of hard-coded one-off styles.
 - Keep local entry and unit tests colocated as src/<unit-name>/index and index.test.
-- New public components must update README.md, docs/design/components.md, package exports, website catalog, unit tests, Storybook stories, and contract tests.
+- Public component additions, removals, and import or behavior contract changes must update README.md, docs/design/components.md, package exports, website catalog, unit tests, Storybook stories, and contract tests.
+- Keep AI-facing context synchronized with public component changes: update MCP catalog metadata, regenerated llms.txt, and repo-owned skills when workflow, routing, or checklist guidance changes.
 - Run focused package tests first, then vp check before claiming completion.
 `;
 };
