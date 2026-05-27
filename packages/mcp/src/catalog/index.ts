@@ -150,6 +150,17 @@ export const componentCatalog: ComponentCatalogItem[] = [
     importSnippet: rootImport('MarkdownRender'),
   },
   {
+    name: 'MermaidRender',
+    importName: 'MermaidRender',
+    category: 'content',
+    description:
+      'Read-only Mermaid diagram renderer with beautiful-mermaid, mindmap, and native fallback routes.',
+    dimensions: ['diagramType', 'renderer', 'zoom'],
+    storyId: 'components-mermaidrender--default',
+    subpath: 'mermaid-render',
+    importSnippet: rootImport('MermaidRender'),
+  },
+  {
     name: 'Menu',
     importName: 'Menu',
     category: 'overlays',

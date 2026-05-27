@@ -35,7 +35,7 @@ Use this skill for Deweyou Design component, style, icon, and AI-facing context.
 
 ## Public Component Checklist
 
-When adding a public component, update all relevant surfaces:
+When adding, removing, or changing the public import or behavior contract of a component, update all relevant surfaces:
 
 - `packages/react/src/index.ts`
 - `packages/react/package.json` exports
@@ -44,7 +44,8 @@ When adding a public component, update all relevant surfaces:
 - `apps/website/src/data/component-catalog.tsx`
 - Storybook stories and interaction coverage
 - unit tests plus package/export/docs contract tests
-- `packages/mcp/src/catalog/index.ts`, style/icon MCP metadata, and `apps/website/public/llms.txt` when AI-facing context changes
+- `packages/mcp/src/catalog/index.ts`, style/icon MCP metadata, and regenerated `apps/website/public/llms.txt` when public AI-facing context changes
+- this repo-owned skill when the component change also changes workflow, routing, checklist, or verification guidance for future agents
 
 ## MCP Resources
 

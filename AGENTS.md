@@ -56,7 +56,8 @@ vp install          # install dependencies
 ## Component Delivery Flow
 
 - When adding or substantially modifying a component, also deliver colocated unit tests, Storybook `Interaction` e2e coverage, and necessary package/export/docs contract tests by default.
-- When adding a public component, update `README.md`, `docs/design/components.md`, `packages/react/package.json` exports, and `packages/react/src/index.ts`.
+- When adding, removing, or changing the public import or behavior contract of a component, update `README.md`, `README_ZH.md`, `docs/design/components.md`, `packages/react/package.json` exports, `packages/react/src/index.ts`, the website catalog or dedicated website page, Storybook coverage, package/export/docs contract tests, MCP catalog metadata, and regenerated `apps/website/public/llms.txt`.
+- Update repo-owned skills such as `skills/deweyou-design-components/SKILL.md` when a component change also changes agent workflow, routing, checklist, or verification guidance; do not edit dependency skills in-place.
 - If a change contains a new design decision, component boundary, or future evolution direction, record it in `docs/superpowers/specs/` and `docs/superpowers/plans/`.
 - At wrap-up, run `vp check`, `vp test`, and related Storybook e2e. When adding or modifying a Storybook story, run `vp run storybook#test`; run `vp run build -r` when needed.
 

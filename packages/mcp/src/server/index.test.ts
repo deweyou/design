@@ -23,10 +23,12 @@ describe('MCP payload helpers', () => {
     ]);
 
     expect(createMcpResourcePayload('deweyou://design/components')).toContain('Button');
+    expect(createMcpResourcePayload('deweyou://design/components')).toContain('MermaidRender');
     expect(createMcpResourcePayload('deweyou://design/imports')).toContain(
-      '@deweyou-design/react/button',
+      '@deweyou-design/react/mermaid-render',
     );
     expect(createMcpResourcePayload('deweyou://design/rules')).toContain('Ark UI');
+    expect(createMcpResourcePayload('deweyou://design/rules')).toContain('AI-facing context');
     expect(createMcpResourcePayload('deweyou://design/styles')).toContain('theme.css');
     expect(createMcpResourcePayload('deweyou://design/icons')).toContain('SearchIcon');
   });
