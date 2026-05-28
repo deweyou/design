@@ -74,12 +74,21 @@ console.log(`✔  分支校验通过（分支：${currentBranch}，通道：${ch
 
 // ── npm 鉴权校验 ──────────────────────────────────────────────────────────────
 
+const isTrustedPublishingRuntime =
+  process.env.GITHUB_ACTIONS === 'true' &&
+  Boolean(process.env.ACTIONS_ID_TOKEN_REQUEST_TOKEN) &&
+  Boolean(process.env.ACTIONS_ID_TOKEN_REQUEST_URL);
+
 if (!dryRun) {
-  const whoami = spawnSync('npm', ['whoami'], { encoding: 'utf8', cwd: REPO_ROOT });
-  if (whoami.status !== 0) {
-    exit(2, 'npm 鉴权失败。\n   本地请运行 npm login，CI 请确认 NODE_AUTH_TOKEN 已配置。');
+  if (isTrustedPublishingRuntime) {
+    console.log('✔  npm trusted publishing 环境已检测到，跳过 npm whoami 预检');
+  } else {
+    const whoami = spawnSync('npm', ['whoami'], { encoding: 'utf8', cwd: REPO_ROOT });
+    if (whoami.status !== 0) {
+      exit(2, 'npm 鉴权失败。\n   本地请运行 npm login，CI 请确认 NODE_AUTH_TOKEN 已配置。');
+    }
+    console.log(`✔  npm 鉴权通过（用户：${whoami.stdout.trim()}）`);
   }
-  console.log(`✔  npm 鉴权通过（用户：${whoami.stdout.trim()}）`);
 } else {
   console.log('ℹ  dry-run 模式：跳过 npm 鉴权校验');
 }

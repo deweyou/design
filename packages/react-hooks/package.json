@@ -2,6 +2,10 @@
   "name": "@deweyou-design/react-hooks",
   "version": "0.1.0",
   "description": "Reusable React hooks for Deweyou UI packages and apps.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deweyou/design.git"
+  },
   "files": [
     "dist"
   ],
