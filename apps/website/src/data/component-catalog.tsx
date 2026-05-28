@@ -477,9 +477,9 @@ export const COMPONENT_CATALOG: ComponentCatalogItem[] = [
   {
     name: 'VirtualList',
     category: 'data',
-    description: 'Windowed list renderer for large one-dimensional collections.',
+    description: 'Windowed list renderer for dynamic-height document collections.',
     importSnippet: "import { VirtualList } from '@deweyou-design/react';",
-    dimensions: ['count', 'height', 'estimateSize'],
+    dimensions: ['count', 'estimateSize', 'scrollElement', 'onRangeChange'],
     storyId: 'components-virtuallist--default',
     preview: (
       <VirtualList

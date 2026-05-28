@@ -178,9 +178,12 @@ export {
   VirtualList,
   type VirtualItem,
   type VirtualListProps,
+  type VirtualListRange,
   type VirtualListRef,
   type VirtualListRenderDetails,
   type VirtualListScrollAlign,
+  type VirtualListScrollElement,
+  type VirtualListScrollToIndexOptions,
 } from './virtual-list/index.tsx';
 export { Pagination, type PaginationProps } from './pagination/index.tsx';
 export {
