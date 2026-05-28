@@ -160,11 +160,17 @@ export const RocketIcon = createTablerIcon(IconRocket);
 
 ## AI / MCP
 
-公开网站提供 `/llms.txt` 作为面向 LLM 的组件库上下文。支持 MCP 的客户端可以运行：
+公开网站提供 `/llms.txt` 作为面向 LLM 的组件库上下文。支持 MCP 的客户端可以通过类似下面的 client config 添加 stdio server：
 
-```bash
-npm install @deweyou-design/mcp
-npx deweyou-design-mcp
+```json
+{
+  "mcpServers": {
+    "deweyou-design": {
+      "command": "npx",
+      "args": ["-y", "@deweyou-design/mcp@latest"]
+    }
+  }
+}
 ```
 
 MCP server 提供只读的组件、样式入口、图标和 import snippet 查询。Skill 是独立入口，可以通过 Skills CLI 安装：

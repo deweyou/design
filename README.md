@@ -160,11 +160,17 @@ See `@deweyou-design/styles` for the full token list.
 
 ## AI / MCP
 
-The public website exposes `/llms.txt` for LLM-oriented package context. MCP-capable clients can run:
+The public website exposes `/llms.txt` for LLM-oriented package context. MCP-capable clients can add the stdio server with a client config such as:
 
-```bash
-npm install @deweyou-design/mcp
-npx deweyou-design-mcp
+```json
+{
+  "mcpServers": {
+    "deweyou-design": {
+      "command": "npx",
+      "args": ["-y", "@deweyou-design/mcp@latest"]
+    }
+  }
+}
 ```
 
 The MCP server exposes read-only resources and tools for components, style entrypoints, icon exports, and import snippets. The installable agent skill is a separate entrypoint:
