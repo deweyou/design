@@ -18,8 +18,9 @@ test('renders the AI entrypoints page with llms, MCP, and skill usage', () => {
   expect(screen.getByRole('heading', { name: 'MCP' })).toBeInTheDocument();
   expect(screen.getByRole('heading', { name: 'Skill' })).toBeInTheDocument();
   expect(screen.getByRole('link', { name: '/llms.txt' })).toHaveAttribute('href', '/llms.txt');
-  expect(screen.getByText('npm install @deweyou-design/mcp')).toBeInTheDocument();
-  expect(screen.getByText('npx deweyou-design-mcp')).toBeInTheDocument();
+  expect(document.body).toHaveTextContent('"mcpServers": {');
+  expect(document.body).toHaveTextContent('"command": "npx",');
+  expect(document.body).toHaveTextContent('"args": ["-y", "@deweyou-design/mcp@latest"]');
   expect(
     screen.getByText(
       'npx skills add https://github.com/deweyou/design/tree/main/skills/deweyou-design-components -g -a codex',

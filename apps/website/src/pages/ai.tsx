@@ -5,6 +5,15 @@ import styles from './ai.module.less';
 const SKILL_INSTALL_COMMAND =
   'npx skills add https://github.com/deweyou/design/tree/main/skills/deweyou-design-components -g -a codex';
 
+const MCP_CLIENT_CONFIG = `{
+  "mcpServers": {
+    "deweyou-design": {
+      "command": "npx",
+      "args": ["-y", "@deweyou-design/mcp@latest"]
+    }
+  }
+}`;
+
 const AI_SURFACES = [
   {
     body: 'Use the website-hosted text file when an external model only needs a compact, crawlable overview of Deweyou Design packages, source paths, and public entrypoints.',
@@ -15,10 +24,10 @@ const AI_SURFACES = [
     title: 'llms.txt',
   },
   {
-    body: 'Install the MCP server when an agent should query structured component, style, and icon metadata through tools instead of reading static documentation.',
-    command: 'npm install @deweyou-design/mcp\nnpx deweyou-design-mcp',
+    body: 'Add the stdio MCP server to an MCP-capable client when an agent should query structured component, style, and icon metadata through tools instead of reading static documentation.',
+    command: MCP_CLIENT_CONFIG,
     link: undefined,
-    meta: 'package · stdio server',
+    meta: 'client config · stdio server',
     number: '02',
     title: 'MCP',
   },
@@ -78,10 +87,7 @@ export const AiPage = () => (
             <CodeBlock language="text">{surface.command}</CodeBlock>
           ) : null}
           {surface.title === 'MCP' ? (
-            <div className={styles.commandList} aria-label="MCP commands">
-              <code>npm install @deweyou-design/mcp</code>
-              <code>npx deweyou-design-mcp</code>
-            </div>
+            <CodeBlock language="json">{surface.command}</CodeBlock>
           ) : null}
           {surface.title === 'Skill' ? (
             <div className={styles.commandList} aria-label="Skill install command">
