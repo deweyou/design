@@ -10,6 +10,9 @@ import { MermaidRenderPage } from './mermaid-render';
 vi.mock('@deweyou-design/react-icons', () => ({
   EditIcon: () => <span aria-hidden data-testid="mock-edit-icon" />,
   EyeIcon: () => <span aria-hidden data-testid="mock-eye-icon" />,
+  RefreshIcon: () => <span aria-hidden data-testid="mock-refresh-icon" />,
+  ZoomInIcon: () => <span aria-hidden data-testid="mock-zoom-in-icon" />,
+  ZoomOutIcon: () => <span aria-hidden data-testid="mock-zoom-out-icon" />,
 }));
 
 afterEach(() => {

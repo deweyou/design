@@ -84,7 +84,7 @@ import { Button } from '@deweyou-design/react/button';
 - toast (feedback): Imperative feedback API for transient messages. Import: `import { toast } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-toast--overview
 - Toaster (feedback): Toast viewport renderer used once near the application root. Import: `import { Toaster } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-toast--overview
 - Tooltip (overlays): Small hover/focus label for controls that need extra naming. Import: `import { Tooltip } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-tooltip--overview
-- VirtualList (data): Windowed list renderer for large one-dimensional collections. Import: `import { VirtualList } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-virtuallist--overview
+- VirtualList (data): Windowed list renderer for dynamic-height document collections. Import: `import { VirtualList } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-virtuallist--overview
 
 ## Styles
 

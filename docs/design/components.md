@@ -240,11 +240,17 @@ const listRef = useRef<VirtualListRef>(null);
   count={articles.length}
   height={420}
   estimateSize={() => 72}
-  renderItem={({ index }) => <ArticleAnchorRow article={articles[index]} />}
+  scrollMargin={64}
+  onRangeChange={(range) => syncReadingProgress(range.startIndex)}
+  renderItem={({ index, measureRef }) => (
+    <article ref={measureRef} id={articles[index].id}>
+      <ArticleAnchorRow article={articles[index]} />
+    </article>
+  )}
 />;
 ```
 
-`VirtualList` renders a scrollable window over large one-dimensional content and uses `ScrollArea` internally so scrollbar styling stays aligned with the rest of the system. Use `scrollToIndex(index)` for anchor-style navigation and `scrollToOffset(offset)` for precise document-position jumps.
+`VirtualList` renders a scrollable window over large one-dimensional content and uses `ScrollArea` internally so scrollbar styling stays aligned with the rest of the system. It measures rendered items with `ResizeObserver`, so long MDX feeds can start from `estimateSize(index)` and then settle into real heights as text wraps, images load, and responsive layout changes. Use `scrollElement="window"` when the page itself owns scrolling, `scrollMargin` or `scrollToIndex(index, { offset })` for sticky navigation, and `onRangeChange` for URL hash or reading progress sync. The default wrapper keeps `role="listitem"` plus positional ARIA; pass `itemRole={null}` when the rendered article should own item semantics.
 
 ### Floating And Feedback
 

@@ -10,6 +10,20 @@ const rows = Array.from({ length: 1000 }, (_, index) => ({
   description: `Document paragraph anchor ${index + 1}`,
 }));
 
+const dynamicRows = Array.from({ length: 120 }, (_, index) => ({
+  id: `note-${index + 1}`,
+  title: `Daily note ${index + 1}`,
+  paragraphs: Array.from({ length: (index % 4) + 1 }, (__, paragraphIndex) =>
+    [
+      `Measured article paragraph ${paragraphIndex + 1}.`,
+      'The row height is intentionally uneven so ResizeObserver can refine the estimate after render.',
+      index % 3 === 0
+        ? 'Longer notes wrap across more lines and behave like an MDX content stream.'
+        : 'Short notes stay compact.',
+    ].join(' '),
+  ),
+}));
+
 const meta: Meta<typeof VirtualList> = {
   title: 'Components/VirtualList',
   component: VirtualList,
@@ -119,6 +133,81 @@ export const AnchorNavigation: StoryObj = {
               </div>
             );
           }}
+          style={{
+            border: '1px solid var(--ui-color-border)',
+            borderRadius: 'var(--ui-radius-float)',
+          }}
+        />
+      </div>
+    );
+  },
+};
+
+export const DynamicContent: StoryObj = {
+  render: () => {
+    const listRef = useRef<VirtualListRef>(null);
+
+    return (
+      <div style={{ maxWidth: '100%', width: 'min(38rem, 100%)' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 12 }}>
+          <Button
+            onClick={() => listRef.current?.scrollToIndex(0, { offset: 16 })}
+            variant="outlined"
+          >
+            First
+          </Button>
+          <Button
+            onClick={() => listRef.current?.scrollToIndex(48, { offset: 16 })}
+            variant="outlined"
+          >
+            Note 49
+          </Button>
+          <Button
+            onClick={() => listRef.current?.scrollToIndex(96, { offset: 16 })}
+            variant="outlined"
+          >
+            Note 97
+          </Button>
+        </div>
+        <VirtualList
+          ref={listRef}
+          count={dynamicRows.length}
+          estimateSize={() => 132}
+          height={360}
+          itemClassName="virtual-list-story-entry"
+          itemRole={null}
+          overscan={3}
+          renderItem={({ index, measureRef }) => {
+            const row = dynamicRows[index];
+
+            return (
+              <article
+                ref={measureRef}
+                id={row.id}
+                style={{
+                  borderBottom: '1px solid var(--ui-color-border)',
+                  boxSizing: 'border-box',
+                  color: 'var(--ui-color-text)',
+                  padding: '14px 16px',
+                }}
+              >
+                <strong>{row.title}</strong>
+                {row.paragraphs.map((paragraph) => (
+                  <p
+                    key={paragraph}
+                    style={{
+                      color: 'var(--ui-color-text-muted)',
+                      lineHeight: 1.6,
+                      margin: '8px 0 0',
+                    }}
+                  >
+                    {paragraph}
+                  </p>
+                ))}
+              </article>
+            );
+          }}
+          scrollMargin={16}
           style={{
             border: '1px solid var(--ui-color-border)',
             borderRadius: 'var(--ui-radius-float)',

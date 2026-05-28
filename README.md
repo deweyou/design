@@ -119,31 +119,31 @@ export const RocketIcon = createTablerIcon(IconRocket);
 
 ## Components
 
-| Component     | Description                                          |
-| ------------- | ---------------------------------------------------- |
-| `Button`      | Button with multiple variants and sizes              |
-| `Input`       | Single-line text input                               |
-| `Textarea`    | Multi-line text input                                |
-| `Select`      | Select dropdown                                      |
-| `Checkbox`    | Checkbox                                             |
-| `RadioGroup`  | Radio group                                          |
-| `Switch`      | Switch                                               |
-| `Badge`       | Status badge                                         |
-| `Text`        | Typographic text                                     |
-| `Card`        | Card container                                       |
-| `Separator`   | Separator                                            |
-| `Skeleton`    | Loading placeholder                                  |
-| `Spinner`     | Loading indicator                                    |
-| `Breadcrumb`  | Breadcrumb navigation                                |
-| `Tabs`        | Tabs                                                 |
-| `Pagination`  | Pagination                                           |
-| `Menu`        | Dropdown menu / context menu                         |
-| `Popover`     | Popover                                              |
-| `Tooltip`     | Tooltip                                              |
-| `Dialog`      | Modal dialog                                         |
-| `Toast`       | Toast notification                                   |
-| `ScrollArea`  | Custom scrollbar container                           |
-| `VirtualList` | Virtualized list with long-document anchor scrolling |
+| Component     | Description                                                         |
+| ------------- | ------------------------------------------------------------------- |
+| `Button`      | Button with multiple variants and sizes                             |
+| `Input`       | Single-line text input                                              |
+| `Textarea`    | Multi-line text input                                               |
+| `Select`      | Select dropdown                                                     |
+| `Checkbox`    | Checkbox                                                            |
+| `RadioGroup`  | Radio group                                                         |
+| `Switch`      | Switch                                                              |
+| `Badge`       | Status badge                                                        |
+| `Text`        | Typographic text                                                    |
+| `Card`        | Card container                                                      |
+| `Separator`   | Separator                                                           |
+| `Skeleton`    | Loading placeholder                                                 |
+| `Spinner`     | Loading indicator                                                   |
+| `Breadcrumb`  | Breadcrumb navigation                                               |
+| `Tabs`        | Tabs                                                                |
+| `Pagination`  | Pagination                                                          |
+| `Menu`        | Dropdown menu / context menu                                        |
+| `Popover`     | Popover                                                             |
+| `Tooltip`     | Tooltip                                                             |
+| `Dialog`      | Modal dialog                                                        |
+| `Toast`       | Toast notification                                                  |
+| `ScrollArea`  | Custom scrollbar container                                          |
+| `VirtualList` | Virtualized list with dynamic document heights and anchor scrolling |
 
 ## Theme Customization
 
