@@ -2,6 +2,10 @@
   "name": "@deweyou-design/react",
   "version": "0.1.0",
   "description": "Reusable UI components for Deweyou UI.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deweyou/design.git"
+  },
   "files": [
     "dist"
   ],

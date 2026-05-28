@@ -2,6 +2,10 @@
   "name": "@deweyou-design/utils",
   "version": "0.1.0",
   "description": "Framework-agnostic runtime utilities for Deweyou Design consumers.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deweyou/design.git"
+  },
   "type": "module",
   "sideEffects": false,
   "types": "./dist/index.d.mts",

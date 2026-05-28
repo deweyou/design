@@ -2,6 +2,10 @@
   "name": "@deweyou-design/react-icons",
   "version": "0.1.0",
   "description": "React icon components for Deweyou UI generated from curated TDesign SVG sources.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deweyou/design.git"
+  },
   "files": [
     "dist"
   ],

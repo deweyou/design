@@ -1,5 +1,16 @@
 # Package Layers
 
+```mermaid
+flowchart TD
+    release[".github/workflows/release.yml"] --> script["scripts/release.mjs"]
+    script --> build["vp run build -r"]
+    build --> dist["packages/*/dist"]
+    dist --> publish["npm publish via Trusted Publishing"]
+    publish --> packages["@deweyou-design/* packages"]
+    infra["@deweyou-ui/infra"] --> build
+    infra -. "build-only" .-> packages
+```
+
 ## Published packages (`@deweyou-design/*`)
 
 These packages are published to npm and consumed externally.
@@ -16,8 +27,11 @@ These packages are published to npm and consumed externally.
 All published packages must:
 
 - Have `publishConfig.directory: "dist"` in `package.json`
+- Have a `repository` field pointing at `git+https://github.com/deweyou/design.git`; npm Trusted Publishing validates the package repository against the GitHub Actions publisher.
 - Run `write-published-manifest.mjs` in their build script to resolve `workspace:*` and `catalog:` specifiers to concrete version numbers in `dist/package.json`
 - Not reference `@deweyou-ui/infra` in runtime `dependencies`
+
+Release CI publishes with npm Trusted Publishing from `.github/workflows/release.yml` through `scripts/release.mjs`. The workflow grants `id-token: write` and does not pass a long-lived npm publish token; `npm whoami` is skipped in GitHub OIDC runs because OIDC authentication is exchanged only during `npm publish`.
 
 ## Build-time infrastructure (`@deweyou-ui/infra`)
 
@@ -46,3 +60,5 @@ apps/*            → @deweyou-design/* (workspace:*)
 ```
 
 Cross-layer violations are caught by `packages/react/tests/workspace-boundaries.test.ts`.
+
+_Last updated: 2026-05-28 | Reason: document Trusted Publishing requirements for release CI and publishable package manifests_

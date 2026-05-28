@@ -8,6 +8,10 @@ const root = resolve(import.meta.dirname, '../../..');
 type PackageManifest = {
   name?: string;
   private?: boolean;
+  repository?: {
+    type?: string;
+    url?: string;
+  };
   publishConfig?: {
     directory?: string;
   };
@@ -64,4 +68,41 @@ test('release workflow forwards the selected semver bump to the release script',
   expect(releaseScript).toContain(
     'const targetVersion = getNextVersion(prevVersion, channel, bump);',
   );
+});
+
+test('release workflow grants oidc publishing without forwarding a long-lived npm token', () => {
+  const workflow = readFileSync(resolve(root, '.github/workflows/release.yml'), 'utf8');
+
+  expect(workflow).toContain('id-token: write');
+  expect(workflow).not.toContain('NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}');
+});
+
+test('release script lets trusted publishing use the GitHub Actions oidc token exchange', () => {
+  const releaseScript = readFileSync(resolve(root, 'scripts/release.mjs'), 'utf8');
+
+  expect(releaseScript).toContain('const isTrustedPublishingRuntime =');
+  expect(releaseScript).toContain('ACTIONS_ID_TOKEN_REQUEST_TOKEN');
+  expect(releaseScript).toContain('trusted publishing');
+});
+
+test('publishable package manifests identify the trusted publishing repository', () => {
+  const packagesDir = resolve(root, 'packages');
+  const publishableManifests = readdirSync(packagesDir, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .filter((entry) => existsSync(resolve(packagesDir, entry.name, 'package.json')))
+    .map((entry) => readJson<PackageManifest>(resolve(packagesDir, entry.name, 'package.json')))
+    .filter(
+      (manifest) =>
+        manifest.private !== true &&
+        manifest.name?.startsWith('@deweyou-design/') &&
+        manifest.publishConfig?.directory === 'dist',
+    );
+
+  expect(publishableManifests).toHaveLength(6);
+  for (const manifest of publishableManifests) {
+    expect(manifest.repository).toEqual({
+      type: 'git',
+      url: 'git+https://github.com/deweyou/design.git',
+    });
+  }
 });
