@@ -14,6 +14,7 @@ import classNames from 'classnames';
 import { RefreshIcon, ZoomInIcon, ZoomOutIcon } from '@deweyou-design/react-icons';
 
 import { CodeBlock } from '../code-block/index.tsx';
+import { ScrollArea } from '../scroll-area/index.tsx';
 
 import styles from './index.module.less';
 
@@ -742,36 +743,47 @@ const MermaidFrame = ({
           <RefreshIcon aria-hidden size="xs" />
         </button>
       </div>
-      <div
-        ref={scrollerRef}
-        className={styles.scroller}
-        data-mermaid-scroll-area="true"
-        data-mermaid-scroll-measured={contentDimensions ? 'true' : undefined}
-        onPointerCancel={stopDragging}
-        onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={stopDragging}
-        onWheel={handleWheel}
+      <ScrollArea.Root
+        className={styles.mermaidScrollArea}
+        data-testid="mermaid-scroll-area"
         style={createScrollAreaStyle(contentDimensions)}
       >
-        <div className={styles.surface}>
-          <div
-            className={styles.zoomViewport}
-            data-mermaid-zoom-measured={contentDimensions ? 'true' : undefined}
-            style={createZoomViewportStyle(zoom, contentDimensions)}
-          >
+        <ScrollArea.Viewport
+          ref={scrollerRef}
+          className={styles.scrollerViewport}
+          data-mermaid-scroll-area="true"
+          data-mermaid-scroll-measured={contentDimensions ? 'true' : undefined}
+          onPointerCancel={stopDragging}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={stopDragging}
+          onWheel={handleWheel}
+        >
+          <div className={styles.surface}>
             <div
-              className={styles.zoomContent}
-              data-mermaid-zoom-content="true"
-              style={createZoomStyle(zoom)}
+              className={styles.zoomViewport}
+              data-mermaid-zoom-measured={contentDimensions ? 'true' : undefined}
+              style={createZoomViewportStyle(zoom, contentDimensions)}
             >
-              <div ref={zoomMeasureRef} className={styles.zoomMeasure}>
-                {children}
+              <div
+                className={styles.zoomContent}
+                data-mermaid-zoom-content="true"
+                style={createZoomStyle(zoom)}
+              >
+                <div ref={zoomMeasureRef} className={styles.zoomMeasure}>
+                  {children}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        </ScrollArea.Viewport>
+        <ScrollArea.Scrollbar orientation="horizontal">
+          <ScrollArea.Thumb />
+        </ScrollArea.Scrollbar>
+        <ScrollArea.Scrollbar orientation="vertical">
+          <ScrollArea.Thumb />
+        </ScrollArea.Scrollbar>
+      </ScrollArea.Root>
     </div>
   );
 };

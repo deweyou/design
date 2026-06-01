@@ -129,25 +129,27 @@
   opacity: 0.5;
 }
 
-.scroller {
+.mermaidScrollArea {
   box-sizing: border-box;
-  cursor: grab;
   inline-size: 100%;
   max-inline-size: 100%;
   min-inline-size: 0;
-  overflow: auto;
+}
+
+.scrollerViewport {
+  cursor: grab;
   touch-action: none;
   user-select: none;
 }
 
-.scroller[data-mermaid-scroll-measured='true'] {
+.mermaidScrollArea:has(.scrollerViewport[data-mermaid-scroll-measured='true']) {
   block-size: min(
     calc(var(--mermaid-scroll-height) + 1.6rem + 2px),
     var(--mermaid-scroll-max-height)
   );
 }
 
-.root[data-zoom-dragging='true'] .scroller {
+.root[data-zoom-dragging='true'] .scrollerViewport {
   cursor: grabbing;
 }
 
