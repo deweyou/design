@@ -21,6 +21,10 @@ if (typeof globalThis.IntersectionObserver === 'undefined') {
     IntersectionObserverStub as unknown as typeof IntersectionObserver;
 }
 
+if (typeof window !== 'undefined' && typeof window.IntersectionObserver === 'undefined') {
+  window.IntersectionObserver = globalThis.IntersectionObserver;
+}
+
 if (typeof globalThis.ResizeObserver === 'undefined') {
   class ResizeObserverStub {
     observe() {}
@@ -28,4 +32,8 @@ if (typeof globalThis.ResizeObserver === 'undefined') {
     disconnect() {}
   }
   globalThis.ResizeObserver = ResizeObserverStub as unknown as typeof ResizeObserver;
+}
+
+if (typeof window !== 'undefined' && typeof window.ResizeObserver === 'undefined') {
+  window.ResizeObserver = globalThis.ResizeObserver;
 }

@@ -243,6 +243,19 @@ All interactive disabled styling should be expressed through attribute selectors
 
 ---
 
+## Scrollable Surfaces
+
+Scrollable component surfaces should share one visual contract instead of relying on browser defaults per component.
+
+- Use the shared Less scrollbar mixins from `@deweyou-design/styles/less/bridge` for package styles.
+- `ScrollArea` owns custom Ark scrollbar parts. Components such as `VirtualList`, Markdown code blocks, Markdown table wrappers, and Mermaid scrollers should compose `ScrollArea` instead of copying scrollbar CSS.
+- Native overflow surfaces, including menus, selects, dialogs, popovers, and navigation overlays, should consume the native scrollbar mixin so the thumb color, size, radius, and hover/focus strengthening match `ScrollArea`.
+- Scrollbar thumbs are neutral affordances derived from text color, not brand-primary accents. Primary color stays reserved for selection, focus, and action emphasis.
+- Overflowing content should keep a subtle visible scrollbar by default and strengthen it on hover, focus, active scroll, or drag. Do not mix hidden-until-hover scrollbars with always-visible browser-default scrollbars in content surfaces.
+- Exceptions are allowed only for specialized navigation affordances, such as tab-strip overflow where edge fades or collapse behavior are the visible affordance.
+
+---
+
 ## Motion
 
 Motion exists only to confirm state; it should not perform.
@@ -375,8 +388,9 @@ When changing components or pages, check at least:
 - Does focus appear only under `:focus-visible` and use the unified soft `box-shadow`?
 - Do mobile/narrow-viewport rules use `@ui-breakpoint-compact` or capability queries instead of private pixel breakpoints?
 - Does loading preserve layout without button or text jumps?
+- Do scrollable component surfaces use the shared scrollbar mixins or compose `ScrollArea`?
 - Do icons come from `@deweyou-design/react-icons`?
 - Is product copy factual, technical, restrained, and emoji-free?
 - Do website and H5 reuse the same principles instead of creating a separate mobile visual language?
 
-_Last updated: 2026-05-17 | Reason: translated durable knowledge base to English and clarified future documentation language._
+_Last updated: 2026-06-01 | Reason: documented the shared scrollbar contract for component and content surfaces._

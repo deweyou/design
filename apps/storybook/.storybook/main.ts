@@ -14,6 +14,9 @@ const stylesEntry = fileURLToPath(
   new URL('../../../packages/styles/src/index.ts', import.meta.url),
 );
 const stylesCssDir = fileURLToPath(new URL('../../../packages/styles/src/css', import.meta.url));
+const stylesLessBridge = fileURLToPath(
+  new URL('../../../packages/styles/src/less/bridge.less', import.meta.url),
+);
 
 const config: StorybookConfig = {
   stories: ['../src/**/*.stories.@(ts|tsx)'],
@@ -79,6 +82,10 @@ const config: StorybookConfig = {
           {
             find: /^@deweyou-design\/styles\/base\.css$/,
             replacement: `${stylesCssDir}/base.css`,
+          },
+          {
+            find: /^@deweyou-design\/styles\/less\/bridge(?:\.less)?$/,
+            replacement: stylesLessBridge,
           },
           {
             find: /^@deweyou-design\/styles$/,

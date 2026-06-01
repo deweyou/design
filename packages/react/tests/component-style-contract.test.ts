@@ -262,6 +262,45 @@ test('scroll area styles only reveal scrollbars for overflowing directions', () 
   expect(stylesheet).not.toContain('.root:hover .scrollbar,\n.scrollbar[data-scrolling]');
 });
 
+test('scrollable component surfaces consume shared scrollbar styles', () => {
+  const bridgeStylesheet = readFileSync(bridgeStylesPath, 'utf8');
+  const dialogStylesheet = readFileSync(dialogStylesPath, 'utf8');
+  const menuStylesheet = readFileSync(menuStylesPath, 'utf8');
+  const mermaidRenderStylesheet = readFileSync(mermaidRenderStylesPath, 'utf8');
+  const navStylesheet = readFileSync(navStylesPath, 'utf8');
+  const navOverlayStylesheet = readFileSync(navOverlayStylesPath, 'utf8');
+  const popoverStylesheet = readFileSync(popoverStylesPath, 'utf8');
+  const scrollAreaStylesheet = readFileSync(scrollAreaStylesPath, 'utf8');
+  const selectStylesheet = readFileSync(selectStylesPath, 'utf8');
+
+  expect(bridgeStylesheet).toContain('.scrollbar-tokens()');
+  expect(bridgeStylesheet).toContain('.native-scrollbar()');
+  expect(bridgeStylesheet).toContain('--ui-scrollbar-thumb-bg');
+  expect(bridgeStylesheet).toContain(
+    '--ui-scrollbar-thumb-bg: color-mix(in srgb, var(--ui-color-text) 26%, transparent);',
+  );
+  expect(bridgeStylesheet).not.toContain(
+    '--ui-scrollbar-thumb-bg: color-mix(in srgb, var(--ui-color-brand-bg)',
+  );
+  expect(bridgeStylesheet).toContain('--ui-scrollbar-track-padding: 1px;');
+  expect(scrollAreaStylesheet).toContain('.scrollbar-tokens()');
+  expect(scrollAreaStylesheet).toContain('opacity: var(--ui-scrollbar-opacity);');
+  expect(scrollAreaStylesheet).toContain('background: var(--ui-scrollbar-thumb-bg);');
+  expect(mermaidRenderStylesheet).toContain('.mermaidScrollArea');
+  expect(mermaidRenderStylesheet).not.toContain('.native-scrollbar()');
+
+  for (const stylesheet of [
+    dialogStylesheet,
+    menuStylesheet,
+    navStylesheet,
+    navOverlayStylesheet,
+    popoverStylesheet,
+    selectStylesheet,
+  ]) {
+    expect(stylesheet).toContain('.native-scrollbar()');
+  }
+});
+
 test('markdown render styles consume semantic typography and surface tokens', () => {
   const stylesheet = readFileSync(markdownRenderStylesPath, 'utf8');
   const codeBlockStylesheet = readFileSync(codeBlockStylesPath, 'utf8');
@@ -344,7 +383,9 @@ test('mermaid render styles use sans typography even inside content surfaces', (
   expect(stylesheet).toContain('cursor: grabbing;');
   expect(stylesheet).toContain('touch-action: none;');
   expect(stylesheet).toContain('user-select: none;');
-  expect(stylesheet).toContain(".scroller[data-mermaid-scroll-measured='true']");
+  expect(stylesheet).toContain(
+    ".mermaidScrollArea:has(.scrollerViewport[data-mermaid-scroll-measured='true'])",
+  );
   expect(stylesheet).toContain('calc(var(--mermaid-scroll-height) + 1.6rem + 2px)');
   expect(stylesheet).toContain('min-block-size: 100%;');
   expect(stylesheet).toContain('block-size: var(--mermaid-zoom-height, auto);');

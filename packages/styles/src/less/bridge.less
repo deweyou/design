@@ -25,3 +25,48 @@
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--ui-color-focus-ring) 18%, transparent);
   outline: none;
 }
+
+.scrollbar-tokens() {
+  --ui-scrollbar-size: 8px;
+  --ui-scrollbar-size-sm: 4px;
+  --ui-scrollbar-size-lg: 12px;
+  --ui-scrollbar-track-padding: 1px;
+  --ui-scrollbar-opacity: 0.48;
+  --ui-scrollbar-opacity-active: 1;
+  --ui-scrollbar-thumb-bg: color-mix(in srgb, var(--ui-color-text) 26%, transparent);
+  --ui-scrollbar-thumb-bg-hover: color-mix(in srgb, var(--ui-color-text) 42%, transparent);
+}
+
+.native-scrollbar() {
+  .scrollbar-tokens();
+
+  scrollbar-color: var(--ui-scrollbar-thumb-bg) transparent;
+  scrollbar-width: thin;
+
+  &::-webkit-scrollbar {
+    height: var(--ui-scrollbar-size);
+    width: var(--ui-scrollbar-size);
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--ui-scrollbar-thumb-bg);
+    background-clip: content-box;
+    border: var(--ui-scrollbar-track-padding) solid transparent;
+    border-radius: var(--ui-radius-pill);
+  }
+
+  &:hover,
+  &:focus-within {
+    scrollbar-color: var(--ui-scrollbar-thumb-bg-hover) transparent;
+  }
+
+  &:hover::-webkit-scrollbar-thumb,
+  &:focus-within::-webkit-scrollbar-thumb {
+    background: var(--ui-scrollbar-thumb-bg-hover);
+    background-clip: content-box;
+  }
+}

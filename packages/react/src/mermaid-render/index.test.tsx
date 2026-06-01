@@ -2,7 +2,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { cleanup, fireEvent } from '@testing-library/react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { afterEach, describe, expect, it } from 'vite-plus/test';
+import { afterEach, beforeAll, describe, expect, it } from 'vite-plus/test';
 
 import { MermaidRender, MindmapRender } from './index';
 
@@ -27,6 +27,30 @@ const mindmapDiagram = [
 const pieDiagram = ['pie title Pets', '  "Dogs" : 42', '  "Cats" : 24'].join('\n');
 
 describe('MermaidRender', () => {
+  beforeAll(() => {
+    class IntersectionObserverStub {
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    }
+
+    class ResizeObserverStub {
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    }
+
+    globalThis.IntersectionObserver =
+      IntersectionObserverStub as unknown as typeof IntersectionObserver;
+    globalThis.ResizeObserver = ResizeObserverStub as unknown as typeof ResizeObserver;
+
+    if (typeof window !== 'undefined') {
+      window.IntersectionObserver =
+        IntersectionObserverStub as unknown as typeof IntersectionObserver;
+      window.ResizeObserver = ResizeObserverStub as unknown as typeof ResizeObserver;
+    }
+  });
+
   afterEach(() => {
     cleanup();
   });
@@ -46,6 +70,9 @@ describe('MermaidRender', () => {
     const markup = renderToStaticMarkup(<MermaidRender value={mindmapDiagram} />);
 
     expect(markup).toContain('data-mermaid-renderer="mindmap"');
+    expect(markup).toContain('data-testid="mermaid-scroll-area"');
+    expect(markup).toContain('data-orientation="horizontal"');
+    expect(markup).toContain('data-orientation="vertical"');
     expect(markup).toContain('data-mindmap-root="true"');
     expect(markup).toContain('data-mermaid-zoom-content="true"');
     expect(markup).toContain('Zoom in');
