@@ -21,6 +21,7 @@ const PRIMARY_ROUTE_ITEMS = [
 ] as const;
 const EXPLORE_ROUTE_ITEMS = [
   { label: 'Components', to: '/components', value: '/components' },
+  { label: 'Editor', to: '/editor', value: '/editor' },
   { label: 'Fonts', to: '/fonts', value: '/fonts' },
   { label: 'Icons', to: '/icons', value: '/icons' },
   { label: 'Markdown', to: '/markdown-render', value: '/markdown-render' },

@@ -20,12 +20,13 @@ export type ComponentCatalogItem = {
   importName: string;
   importSnippet: string;
   name: string;
+  packageName?: string;
   storyId: string;
   subpath: string;
 };
 
-const rootImport = (importName: string) => {
-  return `import { ${importName} } from '@deweyou-design/react';`;
+const rootImport = (importName: string, packageName = '@deweyou-design/react') => {
+  return `import { ${importName} } from '${packageName}';`;
 };
 
 export const componentCatalog: ComponentCatalogItem[] = [
@@ -148,6 +149,18 @@ export const componentCatalog: ComponentCatalogItem[] = [
     storyId: 'components-markdownrender--default',
     subpath: 'markdown-render',
     importSnippet: rootImport('MarkdownRender'),
+  },
+  {
+    name: 'Editor',
+    importName: 'Editor',
+    category: 'content',
+    description:
+      'Editor capability surface with adapters, pluggable toolbar, and Markdown shortcuts.',
+    dimensions: ['adapter', 'plugins', 'state'],
+    storyId: 'components-editor--default',
+    subpath: 'editor',
+    packageName: '@deweyou-design/editor',
+    importSnippet: rootImport('Editor', '@deweyou-design/editor'),
   },
   {
     name: 'MermaidRender',
@@ -372,7 +385,9 @@ export const getComponentImportSnippet = (name: string, options: { subpath?: boo
   }
 
   if (options.subpath) {
-    return `import { ${component.importName} } from '@deweyou-design/react/${component.subpath}';`;
+    return `import { ${component.importName} } from '${
+      component.packageName ?? '@deweyou-design/react'
+    }/${component.subpath}';`;
   }
 
   return component.importSnippet;

@@ -1,0 +1,44 @@
+@import '@deweyou-design/styles/less/bridge';
+
+.languageMenu {
+  position: fixed;
+  z-index: 20;
+  display: grid;
+  gap: 0.12rem;
+  min-inline-size: 8.5rem;
+  padding: 0.22rem;
+  border: 1px solid color-mix(in srgb, var(--ui-color-border) 58%, transparent);
+  border-radius: var(--ui-radius-rect);
+  background: var(--ui-color-surface-raised);
+  box-shadow: var(--ui-shadow-md);
+}
+
+.languageOption {
+  appearance: none;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  inline-size: 100%;
+  min-block-size: 1.8rem;
+  padding: 0.36rem 0.55rem;
+  border: 0;
+  border-radius: var(--ui-radius-rect);
+  background: transparent;
+  color: var(--ui-color-text);
+  cursor: pointer;
+  font: 500 0.78rem / 1.2 var(--ui-font-control);
+  text-align: start;
+}
+
+.languageOption:hover {
+  background: color-mix(in srgb, var(--ui-color-text) 7%, transparent);
+}
+
+.languageOption:focus-visible {
+  .focus-ring();
+}
+
+.languageOption[data-selected='true'] {
+  background: color-mix(in srgb, var(--ui-color-brand-bg) 14%, transparent);
+  color: var(--ui-color-brand-text);
+}

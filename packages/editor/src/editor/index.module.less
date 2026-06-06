@@ -1,0 +1,276 @@
+@import '@deweyou-design/styles/less/bridge';
+
+.root {
+  --editor-block-gap: var(--markdown-block-gap, 0.85rem);
+  --editor-code-attribute: var(--ui-color-warning-text);
+  --editor-code-keyword: var(--ui-color-brand-text);
+  --editor-code-literal: var(--ui-color-brand-bg);
+  --editor-code-string: var(--ui-color-danger-text);
+  --editor-code-title: var(--ui-color-brand-bg-hover);
+  --editor-min-block-size: 9rem;
+
+  box-sizing: border-box;
+  color: var(--ui-color-text);
+  font-family: var(--ui-font-content);
+  inline-size: 100%;
+}
+
+:global([data-theme='dark']) .root {
+  --editor-code-attribute: color-mix(in srgb, var(--ui-color-warning-text) 82%, white);
+  --editor-code-keyword: color-mix(in srgb, var(--ui-color-brand-text) 76%, white);
+  --editor-code-literal: color-mix(in srgb, var(--ui-color-warning-text) 74%, white);
+  --editor-code-string: color-mix(in srgb, var(--ui-color-danger-text) 78%, white);
+  --editor-code-title: color-mix(in srgb, var(--ui-color-brand-text) 88%, white);
+}
+
+.contentFrame {
+  position: relative;
+}
+
+.contentEditable {
+  box-sizing: border-box;
+  min-block-size: var(--editor-min-block-size);
+  inline-size: 100%;
+  padding: 1rem;
+  border: 1px solid var(--ui-color-border);
+  border-radius: var(--ui-radius-rect);
+  background: var(--ui-color-surface);
+  color: inherit;
+  font: inherit;
+  line-height: var(--ui-text-line-height-body);
+  outline: none;
+  overflow: auto;
+  scrollbar-color: color-mix(in srgb, var(--ui-color-text) 24%, transparent) transparent;
+  scrollbar-width: thin;
+
+  &:focus-visible {
+    .focus-ring-offset();
+  }
+
+  &::-webkit-scrollbar {
+    block-size: 0.625rem;
+    inline-size: 0.625rem;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border: 2px solid transparent;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--ui-color-text) 24%, transparent);
+    background-clip: content-box;
+  }
+}
+
+.contentEditable > :first-child {
+  margin-block-start: 0;
+}
+
+.contentEditable > :last-child {
+  margin-block-end: 0;
+}
+
+.contentEditable > :first-child:last-child {
+  margin-block: 0;
+}
+
+.root[data-disabled='true'] .contentEditable {
+  cursor: not-allowed;
+  opacity: 0.62;
+}
+
+.placeholder {
+  position: absolute;
+  inset-block-start: 1rem;
+  inset-inline-start: 1rem;
+  color: var(--ui-color-text-muted);
+  pointer-events: none;
+}
+
+.paragraph {
+  margin-block: var(--editor-block-gap);
+}
+
+.heading {
+  margin-block: calc(var(--editor-block-gap) * 1.6) var(--editor-block-gap);
+  color: var(--ui-color-text);
+  font-family: var(--ui-font-content);
+  font-weight: var(--ui-font-weight-strong);
+  line-height: var(--ui-text-line-height-h3);
+}
+
+.blockquote {
+  margin-block: var(--editor-block-gap);
+  padding-inline-start: 1rem;
+  border-inline-start: 3px solid var(--ui-color-border-strong);
+  color: var(--ui-color-text-muted);
+}
+
+.list {
+  margin-block: var(--editor-block-gap);
+  padding-inline-start: 1.45rem;
+}
+
+.listItem {
+  margin-block: 0.25rem;
+}
+
+.bold {
+  font-weight: var(--ui-font-weight-strong);
+}
+
+.italic {
+  font-style: italic;
+}
+
+.strikethrough {
+  text-decoration-line: line-through;
+}
+
+.inlineCode {
+  padding: 0;
+  border-radius: 0;
+  background: linear-gradient(
+    color-mix(in srgb, var(--ui-color-text) 8%, transparent),
+    color-mix(in srgb, var(--ui-color-text) 8%, transparent)
+  );
+  background-position: 0 82%;
+  background-repeat: repeat-x;
+  background-size: 100% 0.42em;
+  font-family: var(--ui-font-mono);
+  font-size: 0.92em;
+}
+
+.codeBlock {
+  --editor-code-block-bg: color-mix(in srgb, var(--ui-color-surface) 88%, var(--ui-color-text) 3%);
+  --editor-code-block-border: color-mix(in srgb, var(--ui-color-border) 72%, transparent);
+  --editor-code-block-highlight: color-mix(in srgb, var(--ui-color-white) 72%, transparent);
+  --editor-code-block-shadow: color-mix(in srgb, var(--ui-color-text) 5%, transparent);
+  --editor-code-block-actions-bg: color-mix(in srgb, var(--ui-color-surface) 84%, transparent);
+  --editor-code-block-actions-border: color-mix(in srgb, var(--ui-color-border) 58%, transparent);
+  --editor-code-block-actions-highlight: color-mix(in srgb, var(--ui-color-white) 70%, transparent);
+  --editor-code-block-actions-shadow: color-mix(in srgb, var(--ui-color-text) 4%, transparent);
+
+  display: block;
+  position: relative;
+  box-sizing: border-box;
+  max-block-size: 22rem;
+  inline-size: 100%;
+  margin-block: var(--editor-block-gap);
+  padding: 1rem;
+  padding-inline-end: 5.75rem;
+  border: 1px solid var(--editor-code-block-border);
+  border-radius: var(--ui-radius-rect);
+  background: var(--editor-code-block-bg);
+  box-shadow:
+    inset 0 1px 0 var(--editor-code-block-highlight),
+    0 1px 2px var(--editor-code-block-shadow);
+  font-family: var(
+    --ui-font-code,
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace
+  );
+  font-size: 0.84rem;
+  line-height: 1.6;
+  tab-size: 2;
+  white-space: pre;
+  overflow: auto;
+  scrollbar-color: color-mix(in srgb, var(--ui-color-text) 24%, transparent) transparent;
+  scrollbar-width: thin;
+
+  &::-webkit-scrollbar {
+    block-size: 0.625rem;
+    inline-size: 0.625rem;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border: 2px solid transparent;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--ui-color-text) 24%, transparent);
+    background-clip: content-box;
+  }
+}
+
+:global([data-theme='dark']) .codeBlock {
+  --editor-code-block-bg: color-mix(in srgb, var(--ui-color-surface) 92%, var(--ui-color-white) 2%);
+  --editor-code-block-border: color-mix(in srgb, var(--ui-color-border) 52%, transparent);
+  --editor-code-block-highlight: color-mix(in srgb, var(--ui-color-white) 8%, transparent);
+  --editor-code-block-shadow: color-mix(in srgb, var(--ui-color-black) 16%, transparent);
+  --editor-code-block-actions-bg: color-mix(
+    in srgb,
+    var(--ui-color-surface-raised) 78%,
+    transparent
+  );
+  --editor-code-block-actions-border: color-mix(
+    in srgb,
+    var(--ui-color-border-strong) 42%,
+    transparent
+  );
+  --editor-code-block-actions-highlight: color-mix(in srgb, var(--ui-color-white) 10%, transparent);
+  --editor-code-block-actions-shadow: color-mix(in srgb, var(--ui-color-black) 22%, transparent);
+}
+
+.codeBlock[data-language]::before {
+  position: absolute;
+  inset-block-start: 0.55rem;
+  inset-inline-end: 0.55rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  block-size: 1.35rem;
+  padding-inline: 0.44rem;
+  border: 1px solid var(--editor-code-block-actions-border);
+  border-radius: 999px;
+  background: var(--editor-code-block-actions-bg);
+  box-shadow:
+    inset 0 1px 0 var(--editor-code-block-actions-highlight),
+    0 1px 2px var(--editor-code-block-actions-shadow);
+  color: var(--ui-color-text-muted);
+  content: attr(data-language);
+  font-family: var(
+    --ui-font-code,
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace
+  );
+  font-size: 0.625rem;
+  letter-spacing: 0;
+  line-height: 1;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.codeTokenKeyword {
+  color: var(--editor-code-keyword);
+}
+
+.codeTokenString {
+  color: var(--editor-code-string);
+}
+
+.codeTokenLiteral {
+  color: var(--editor-code-literal);
+}
+
+.codeTokenTitle {
+  color: var(--editor-code-title);
+}
+
+.codeTokenAttribute {
+  color: var(--editor-code-attribute);
+}
+
+.codeTokenComment {
+  color: var(--ui-color-text-muted);
+  font-style: italic;
+}
+
+.codeTokenPunctuation {
+  color: color-mix(in srgb, var(--ui-color-text) 76%, transparent);
+}

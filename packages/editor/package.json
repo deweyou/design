@@ -1,0 +1,100 @@
+{
+  "name": "@deweyou-design/editor",
+  "version": "0.1.0",
+  "description": "Composable editor primitives and plugins for Deweyou UI.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deweyou/design.git"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./editor": {
+      "types": "./dist/editor/index.d.ts",
+      "import": "./dist/editor/index.js",
+      "default": "./dist/editor/index.js"
+    },
+    "./core": {
+      "types": "./dist/core/index.d.ts",
+      "import": "./dist/core/index.js",
+      "default": "./dist/core/index.js"
+    },
+    "./plugins/rich-text": {
+      "types": "./dist/plugins/rich-text/index.d.ts",
+      "import": "./dist/plugins/rich-text/index.js",
+      "default": "./dist/plugins/rich-text/index.js"
+    },
+    "./plugins/markdown-shortcut": {
+      "types": "./dist/plugins/markdown-shortcut/index.d.ts",
+      "import": "./dist/plugins/markdown-shortcut/index.js",
+      "default": "./dist/plugins/markdown-shortcut/index.js"
+    },
+    "./plugins/toolbar": {
+      "types": "./dist/plugins/toolbar/index.d.ts",
+      "import": "./dist/plugins/toolbar/index.js",
+      "default": "./dist/plugins/toolbar/index.js"
+    },
+    "./adapters/markdown": {
+      "types": "./dist/adapters/markdown/index.d.ts",
+      "import": "./dist/adapters/markdown/index.js",
+      "default": "./dist/adapters/markdown/index.js"
+    },
+    "./utils": {
+      "types": "./dist/utils/index.d.ts",
+      "import": "./dist/utils/index.js",
+      "default": "./dist/utils/index.js"
+    },
+    "./style.css": "./dist/style.css",
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "directory": "dist"
+  },
+  "scripts": {
+    "build": "vp build && tsc -p tsconfig.build.json && node scripts/inject-css-imports.mjs && node scripts/concat-style.mjs && node ../infra/scripts/write-published-manifest.mjs .",
+    "dev": "vp build --watch",
+    "test": "vp test"
+  },
+  "dependencies": {
+    "@deweyou-design/react": "workspace:*",
+    "@deweyou-design/react-icons": "workspace:*",
+    "@deweyou-design/styles": "workspace:*",
+    "@lexical/code": "catalog:",
+    "@lexical/link": "catalog:",
+    "@lexical/list": "catalog:",
+    "@lexical/markdown": "catalog:",
+    "@lexical/react": "catalog:",
+    "@lexical/rich-text": "catalog:",
+    "@lexical/selection": "catalog:",
+    "@lexical/utils": "catalog:",
+    "classnames": "catalog:",
+    "lexical": "catalog:"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "catalog:",
+    "@testing-library/react": "catalog:",
+    "@testing-library/user-event": "catalog:",
+    "@tsdown/css": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "jsdom": "catalog:",
+    "less": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
+  },
+  "peerDependencies": {
+    "react": "catalog:",
+    "react-dom": "catalog:"
+  }
+}

@@ -4,6 +4,7 @@ import { defineConfig } from 'vite-plus';
 
 const componentsEntry = fileURLToPath(new URL('./packages/react/src/index.ts', import.meta.url));
 const componentsSourceDir = fileURLToPath(new URL('./packages/react/src', import.meta.url));
+const editorEntry = fileURLToPath(new URL('./packages/editor/src/index.ts', import.meta.url));
 const hooksEntry = fileURLToPath(new URL('./packages/react-hooks/src/index.ts', import.meta.url));
 const iconExportsDir = fileURLToPath(
   new URL('./packages/react-icons/src/exports', import.meta.url),
@@ -66,6 +67,10 @@ export default defineConfig({
   },
   resolve: {
     alias: [
+      {
+        find: /^@deweyou-design\/editor$/,
+        replacement: editorEntry,
+      },
       {
         find: /^@deweyou-design\/react\/(.+)$/,
         replacement: `${componentsSourceDir}/$1/index.tsx`,

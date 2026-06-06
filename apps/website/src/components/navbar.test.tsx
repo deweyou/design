@@ -98,6 +98,11 @@ test('marks Components active on /components', () => {
   expect(screen.getByRole('button', { name: 'Explore' })).toHaveAttribute('aria-current', 'page');
 });
 
+test('marks Editor active on /editor', () => {
+  renderNavbar('/editor');
+  expect(screen.getByRole('button', { name: 'Explore' })).toHaveAttribute('aria-current', 'page');
+});
+
 test('marks AI active on /ai', () => {
   renderNavbar('/ai');
   expect(screen.getByRole('link', { name: 'AI' })).toHaveAttribute('aria-current', 'page');
@@ -129,6 +134,7 @@ test('explore menu exposes grouped destinations', async () => {
   fireEvent.click(screen.getByRole('button', { name: 'Explore' }));
 
   expect(await screen.findByRole('menuitem', { name: 'Components' })).toBeInTheDocument();
+  expect(screen.getByRole('menuitem', { name: 'Editor' })).toBeInTheDocument();
   expect(screen.getByRole('menuitem', { name: 'Fonts' })).toBeInTheDocument();
   expect(screen.getByRole('menuitem', { name: 'Icons' })).toBeInTheDocument();
   expect(screen.getByRole('menuitem', { name: 'Markdown' })).toBeInTheDocument();
