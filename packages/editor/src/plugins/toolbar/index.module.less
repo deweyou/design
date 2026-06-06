@@ -1,0 +1,56 @@
+@import '@deweyou-design/styles/less/bridge';
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+  box-sizing: border-box;
+  min-block-size: 2.5rem;
+  margin-block-end: 0.5rem;
+  padding: 0.25rem;
+  border: 1px solid var(--ui-color-border);
+  border-radius: var(--ui-radius-rect);
+  background: color-mix(in srgb, var(--ui-color-surface) 98%, var(--ui-color-text) 2%);
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  block-size: 2rem;
+  inline-size: 2rem;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--ui-radius-rect);
+  background: transparent;
+  color: var(--ui-color-text-muted);
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--ui-color-text) 7%, transparent);
+    color: var(--ui-color-text);
+  }
+
+  &:focus-visible {
+    .focus-ring();
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.42;
+  }
+}
+
+.button[data-active='true'] {
+  border-color: color-mix(in srgb, var(--ui-color-brand-text) 42%, transparent);
+  background: color-mix(in srgb, var(--ui-color-brand-surface) 88%, var(--ui-color-brand-text) 12%);
+  color: var(--ui-color-brand-text);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ui-color-brand-text) 18%, transparent);
+}
+
+.textGlyph {
+  color: currentColor;
+  font: 700 0.75rem / 1 var(--ui-font-control);
+}

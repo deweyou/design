@@ -11,6 +11,7 @@ import { Navbar } from './components/navbar';
 import { ScrollToTop } from './components/scroll-to-top';
 import { AiPage } from './pages/ai';
 import { ComponentsPage } from './pages/components';
+import { EditorPage } from './pages/editor';
 import { FontsPage } from './pages/fonts';
 import { HomePage } from './pages/home';
 import { IconsPage } from './pages/icons';
@@ -39,6 +40,7 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: 'components', element: <ComponentsPage /> },
       { path: 'ai', element: <AiPage /> },
+      { path: 'editor', element: <EditorPage /> },
       { path: 'fonts', element: <FontsPage /> },
       { path: 'icons', element: <IconsPage /> },
       { path: 'markdown-render', element: <MarkdownRenderPage /> },

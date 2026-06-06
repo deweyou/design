@@ -6,6 +6,9 @@ const componentsEntry = fileURLToPath(
   new URL('../../../packages/react/src/index.ts', import.meta.url),
 );
 const componentsSourceDir = fileURLToPath(new URL('../../../packages/react/src', import.meta.url));
+const editorEntry = fileURLToPath(
+  new URL('../../../packages/editor/src/index.ts', import.meta.url),
+);
 const iconsSourceDir = fileURLToPath(new URL('../../../packages/react-icons/src', import.meta.url));
 const iconExportsDir = fileURLToPath(
   new URL('../../../packages/react-icons/src/exports', import.meta.url),
@@ -43,6 +46,10 @@ const config: StorybookConfig = {
         ...config.resolve,
         alias: [
           ...aliases,
+          {
+            find: /^@deweyou-design\/editor$/,
+            replacement: editorEntry,
+          },
           {
             find: /^@deweyou-design\/react\/(.+)$/,
             replacement: `${componentsSourceDir}/$1/index.tsx`,

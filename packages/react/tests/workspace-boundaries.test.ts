@@ -45,6 +45,13 @@ test('cross-package boundary coverage stays in top-level tests', () => {
     dependencies?: Record<string, string>;
     publishConfig?: { directory?: string };
   };
+  const editorPackage = JSON.parse(
+    readFileSync(resolve(root, 'packages/editor/package.json'), 'utf8'),
+  ) as {
+    dependencies: Record<string, string>;
+    peerDependencies?: Record<string, string>;
+    publishConfig?: { directory?: string };
+  };
 
   expect(componentPackage.dependencies).toMatchObject({
     '@deweyou-design/react-hooks': 'workspace:*',
@@ -56,6 +63,16 @@ test('cross-package boundary coverage stays in top-level tests', () => {
     'react-dom': 'catalog:',
   });
   expect(componentPackage.dependencies ?? {}).not.toHaveProperty('@storybook/react');
+  expect(componentPackage.dependencies ?? {}).not.toHaveProperty('@deweyou-design/editor');
+  expect(editorPackage.dependencies).toMatchObject({
+    '@deweyou-design/react': 'workspace:*',
+    '@deweyou-design/react-icons': 'workspace:*',
+    '@deweyou-design/styles': 'workspace:*',
+  });
+  expect(editorPackage.peerDependencies).toMatchObject({
+    react: 'catalog:',
+    'react-dom': 'catalog:',
+  });
   expect(hooksPackage.dependencies ?? {}).not.toHaveProperty('@deweyou-ui/utils');
   expect(hooksPackage.dependencies ?? {}).not.toHaveProperty('@deweyou-ui/infra');
   expect(hooksPackage.peerDependencies).toMatchObject({
@@ -79,6 +96,7 @@ test('cross-package boundary coverage stays in top-level tests', () => {
   expect(stylesPackage.publishConfig?.directory).toBe('dist');
   expect(utilsPackage.publishConfig?.directory).toBe('dist');
   expect(mcpPackage.publishConfig?.directory).toBe('dist');
+  expect(editorPackage.publishConfig?.directory).toBe('dist');
 });
 
 test('components package keeps root compatibility while exposing documented subpath entries', () => {

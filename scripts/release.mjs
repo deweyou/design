@@ -97,6 +97,11 @@ if (!dryRun) {
 
 const PUBLISHABLE_PACKAGES = [
   {
+    shortName: 'editor',
+    npmName: '@deweyou-design/editor',
+    dir: resolve(REPO_ROOT, 'packages/editor'),
+  },
+  {
     shortName: 'react',
     npmName: '@deweyou-design/react',
     dir: resolve(REPO_ROOT, 'packages/react'),

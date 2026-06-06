@@ -1,6 +1,13 @@
 import type { ReactNode } from 'react';
 
 import {
+  Editor,
+  markdownEditorAdapter,
+  markdownShortcutPlugin,
+  richTextPlugin,
+  toolbarPlugin,
+} from '@deweyou-design/editor';
+import {
   Badge,
   Breadcrumb,
   Button,
@@ -236,6 +243,23 @@ export const COMPONENT_CATALOG: ComponentCatalogItem[] = [
     dimensions: ['size', 'components', 'callbacks'],
     storyId: 'components-markdownrender--default',
     preview: <MarkdownRender size="sm" value={'### Markdown\nCompact rendering.'} />,
+  },
+  {
+    name: 'Editor',
+    category: 'content',
+    description:
+      'Editor capability surface with adapters, pluggable toolbar, and Markdown shortcuts.',
+    importSnippet: "import { Editor } from '@deweyou-design/editor';",
+    dimensions: ['adapter', 'plugins', 'state'],
+    storyId: 'components-editor--default',
+    preview: (
+      <Editor
+        adapter={markdownEditorAdapter()}
+        defaultValue="Editor preview"
+        plugins={[toolbarPlugin(), richTextPlugin(), markdownShortcutPlugin()]}
+        readOnly
+      />
+    ),
   },
   {
     name: 'Menu',

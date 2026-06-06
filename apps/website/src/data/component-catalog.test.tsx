@@ -17,6 +17,7 @@ const PUBLIC_COMPONENTS = [
   'Field',
   'Input',
   'MarkdownRender',
+  'Editor',
   'Menu',
   'ContextMenu',
   'Nav',
@@ -46,7 +47,7 @@ test('catalog covers every public React component surface', () => {
 test('catalog entries have categories, import snippets, dimensions, previews, and story links', () => {
   for (const item of COMPONENT_CATALOG) {
     expect(COMPONENT_CATEGORIES.map((category) => category.id)).toContain(item.category);
-    expect(item.importSnippet).toContain('@deweyou-design/react');
+    expect(item.importSnippet).toMatch(/@deweyou-design\/(?:react|editor)/);
     expect(item.dimensions.length).toBeGreaterThan(0);
     expect(item.storyId).toMatch(/^components-/);
     expect(item.preview).toBeDefined();

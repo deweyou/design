@@ -24,6 +24,12 @@ Install the MCP package when AI agents or MCP-capable tools need structured comp
 npm install @deweyou-design/mcp
 ```
 
+Install the editor package when rich text editing, adapters, and editor plugins are needed:
+
+```bash
+npm install @deweyou-design/editor
+```
+
 ## Quick Start
 
 **1. Import theme styles**
@@ -117,6 +123,14 @@ import { IconRocket } from '@tabler/icons-react';
 export const RocketIcon = createTablerIcon(IconRocket);
 ```
 
+## Editor
+
+`@deweyou-design/editor` provides the `Editor` component, core editor contracts,
+official plugins, adapters, and utilities. The first official adapter is
+`markdownEditorAdapter()`, and Markdown-style authoring behavior is provided by
+`markdownShortcutPlugin()`. Rich text controls stay pluggable through
+`toolbarPlugin()`.
+
 ## Components
 
 | Component     | Description                                                         |
@@ -130,6 +144,7 @@ export const RocketIcon = createTablerIcon(IconRocket);
 | `Switch`      | Switch                                                              |
 | `Badge`       | Status badge                                                        |
 | `Text`        | Typographic text                                                    |
+| `Editor`      | Rich text editor surface with adapters and plugins                  |
 | `Card`        | Card container                                                      |
 | `Separator`   | Separator                                                           |
 | `Skeleton`    | Loading placeholder                                                 |

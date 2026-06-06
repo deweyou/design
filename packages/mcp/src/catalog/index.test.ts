@@ -13,6 +13,7 @@ describe('component catalog', () => {
 
     expect(names).toContain('Button');
     expect(names).toContain('Dialog');
+    expect(names).toContain('Editor');
     expect(names).toContain('MermaidRender');
     expect(names).toContain('NavOverlay');
     expect(names).toContain('VirtualList');
@@ -50,6 +51,12 @@ describe('component catalog', () => {
     );
     expect(getComponentImportSnippet('toast', { subpath: true })).toBe(
       "import { toast } from '@deweyou-design/react/toast';",
+    );
+    expect(getComponentImportSnippet('Editor')).toBe(
+      "import { Editor } from '@deweyou-design/editor';",
+    );
+    expect(getComponentImportSnippet('Editor', { subpath: true })).toBe(
+      "import { Editor } from '@deweyou-design/editor/editor';",
     );
   });
 });
