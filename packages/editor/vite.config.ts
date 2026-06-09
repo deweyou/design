@@ -19,6 +19,7 @@ export default defineConfig({
         '@deweyou-design/styles',
         'classnames',
         'lexical',
+        'prismjs',
         'react',
         'react-dom',
         'react/jsx-runtime',
