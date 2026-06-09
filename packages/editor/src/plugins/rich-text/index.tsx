@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import '../../runtime/prism.js';
+
 import { $isCodeNode, PrismTokenizer, registerCodeHighlighting } from '@lexical/code';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';

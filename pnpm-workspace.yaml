@@ -20,6 +20,7 @@ catalog:
   '@testing-library/user-event': ^14.6.1
   '@tsdown/css': ^0.21.3
   '@types/node': ^24
+  '@types/prismjs': ^1.26.6
   '@types/react': ^19.1.13
   '@types/react-dom': ^19.1.9
   '@vitest/coverage-v8': ^4.1.0
@@ -30,6 +31,7 @@ catalog:
   less: ^4.4.1
   lexical: ^0.45.0
   mermaid: ^11.12.1
+  prismjs: ^1.30.0
   react: ^19.1.1
   react-dom: ^19.1.1
   react-markdown: ^10.1.0
