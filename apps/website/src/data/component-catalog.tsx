@@ -16,7 +16,10 @@ import {
   CodeBlock,
   Dialog,
   Field,
+  GroupedVirtualMasonry,
   IconButton,
+  ImageMasonry,
+  ImagePreview,
   Input,
   MarkdownRender,
   Menu,
@@ -41,6 +44,7 @@ import {
   Textarea,
   Tooltip,
   VirtualList,
+  VirtualMasonry,
   toast,
 } from '@deweyou-design/react';
 import { SettingsIcon } from '@deweyou-design/react-icons';
@@ -87,6 +91,44 @@ const buttonPreview = (
     </Button>
   </>
 );
+
+const catalogImages = [
+  {
+    alt: 'Teal block',
+    height: 160,
+    src: 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 160%22%3E%3Crect width=%22200%22 height=%22160%22 fill=%22%230f766e%22/%3E%3C/svg%3E',
+    width: 200,
+  },
+  {
+    alt: 'Rose block',
+    height: 220,
+    src: 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 220%22%3E%3Crect width=%22200%22 height=%22220%22 fill=%22%23be123c%22/%3E%3C/svg%3E',
+    width: 200,
+  },
+  {
+    alt: 'Indigo block',
+    height: 130,
+    src: 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 130%22%3E%3Crect width=%22200%22 height=%22130%22 fill=%22%234338ca%22/%3E%3C/svg%3E',
+    width: 200,
+  },
+];
+
+const catalogImageGroups = [
+  {
+    id: 'recent',
+    images: catalogImages,
+    title: 'Recent',
+  },
+  {
+    id: 'saved',
+    images: catalogImages.map((image, index) => ({
+      ...image,
+      alt: `Saved ${image.alt}`,
+      id: `saved-${index}`,
+    })),
+    title: 'Saved',
+  },
+];
 
 export const COMPONENT_CATALOG: ComponentCatalogItem[] = [
   {
@@ -224,6 +266,53 @@ export const COMPONENT_CATALOG: ComponentCatalogItem[] = [
         </Field.Control>
         <Field.Description>Short field hint</Field.Description>
       </Field.Root>
+    ),
+  },
+  {
+    name: 'ImagePreview',
+    category: 'overlays',
+    description: 'Modal image preview with zoom controls and gallery navigation.',
+    importSnippet: "import { ImagePreview } from '@deweyou-design/react';",
+    dimensions: ['open', 'currentIndex', 'zoom'],
+    storyId: 'components-imagepreview--default',
+    preview: (
+      <ImagePreview
+        images={catalogImages}
+        trigger={
+          <Button size="sm" variant="outlined">
+            Preview image
+          </Button>
+        }
+      />
+    ),
+  },
+  {
+    name: 'ImageMasonry',
+    category: 'content',
+    description: 'Responsive shortest-column image layout for galleries.',
+    importSnippet: "import { ImageMasonry } from '@deweyou-design/react';",
+    dimensions: ['columnCount', 'minColumnWidth', 'onItemClick'],
+    storyId: 'components-imagemasonry--default',
+    preview: (
+      <ImageMasonry columnCount={3} defaultContainerWidth={180} gap={6} images={catalogImages} />
+    ),
+  },
+  {
+    name: 'GroupedVirtualMasonry',
+    category: 'data',
+    description: 'Grouped virtual masonry renderer for long image sections.',
+    importSnippet: "import { GroupedVirtualMasonry } from '@deweyou-design/react';",
+    dimensions: ['groups', 'groupHeaderHeight', 'renderGroupHeader', 'scrollToGroup'],
+    storyId: 'components-groupedvirtualmasonry--default',
+    preview: (
+      <GroupedVirtualMasonry
+        columnCount={3}
+        defaultContainerWidth={180}
+        gap={6}
+        groupHeaderHeight={18}
+        groups={catalogImageGroups}
+        height={72}
+      />
     ),
   },
   {
@@ -511,6 +600,23 @@ export const COMPONENT_CATALOG: ComponentCatalogItem[] = [
         height={64}
         estimateSize={() => 28}
         renderItem={({ index }) => <div>Row {index + 1}</div>}
+      />
+    ),
+  },
+  {
+    name: 'VirtualMasonry',
+    category: 'data',
+    description: 'Windowed masonry renderer for long irregular image collections.',
+    importSnippet: "import { VirtualMasonry } from '@deweyou-design/react';",
+    dimensions: ['height', 'overscan', 'scrollToIndex'],
+    storyId: 'components-virtualmasonry--default',
+    preview: (
+      <VirtualMasonry
+        columnCount={3}
+        defaultContainerWidth={180}
+        gap={6}
+        height={64}
+        images={catalogImages}
       />
     ),
   },

@@ -6,38 +6,42 @@ This document is the human-readable companion to `packages/react/package.json` e
 
 ## Import Matrix
 
-| Component              | Root import              | Subpath import                          |
-| ---------------------- | ------------------------ | --------------------------------------- |
-| `Badge`                | `@deweyou-design/react`  | `@deweyou-design/react/badge`           |
-| `Breadcrumb`           | `@deweyou-design/react`  | `@deweyou-design/react/breadcrumb`      |
-| `Button`, `IconButton` | `@deweyou-design/react`  | `@deweyou-design/react/button`          |
-| `Card`                 | `@deweyou-design/react`  | `@deweyou-design/react/card`            |
-| `Checkbox`             | `@deweyou-design/react`  | `@deweyou-design/react/checkbox`        |
-| `CodeBlock`            | `@deweyou-design/react`  | `@deweyou-design/react/code-block`      |
-| `Dialog`               | `@deweyou-design/react`  | `@deweyou-design/react/dialog`          |
-| `Field`                | `@deweyou-design/react`  | `@deweyou-design/react/field`           |
-| `Input`                | `@deweyou-design/react`  | `@deweyou-design/react/input`           |
-| `MarkdownRender`       | `@deweyou-design/react`  | `@deweyou-design/react/markdown-render` |
-| `Editor`               | `@deweyou-design/editor` | `@deweyou-design/editor/editor`         |
-| `MermaidRender`        | `@deweyou-design/react`  | `@deweyou-design/react/mermaid-render`  |
-| `Menu`, `ContextMenu`  | `@deweyou-design/react`  | `@deweyou-design/react/menu`            |
-| `Nav`                  | `@deweyou-design/react`  | `@deweyou-design/react/nav`             |
-| `NavOverlay`           | `@deweyou-design/react`  | `@deweyou-design/react/nav-overlay`     |
-| `Pagination`           | `@deweyou-design/react`  | `@deweyou-design/react/pagination`      |
-| `Popover`              | `@deweyou-design/react`  | `@deweyou-design/react/popover`         |
-| `RadioGroup`           | `@deweyou-design/react`  | `@deweyou-design/react/radio-group`     |
-| `ScrollArea`           | `@deweyou-design/react`  | `@deweyou-design/react/scroll-area`     |
-| `Select`               | `@deweyou-design/react`  | `@deweyou-design/react/select`          |
-| `Separator`            | `@deweyou-design/react`  | `@deweyou-design/react/separator`       |
-| `Skeleton`             | `@deweyou-design/react`  | `@deweyou-design/react/skeleton`        |
-| `Spinner`              | `@deweyou-design/react`  | `@deweyou-design/react/spinner`         |
-| `Switch`               | `@deweyou-design/react`  | `@deweyou-design/react/switch`          |
-| `Tabs` family          | `@deweyou-design/react`  | `@deweyou-design/react/tabs`            |
-| `Text`                 | `@deweyou-design/react`  | `@deweyou-design/react/text`            |
-| `Textarea`             | `@deweyou-design/react`  | `@deweyou-design/react/textarea`        |
-| `toast`, `Toaster`     | `@deweyou-design/react`  | `@deweyou-design/react/toast`           |
-| `Tooltip`              | `@deweyou-design/react`  | `@deweyou-design/react/tooltip`         |
-| `VirtualList`          | `@deweyou-design/react`  | `@deweyou-design/react/virtual-list`    |
+| Component               | Root import              | Subpath import                                  |
+| ----------------------- | ------------------------ | ----------------------------------------------- |
+| `Badge`                 | `@deweyou-design/react`  | `@deweyou-design/react/badge`                   |
+| `Breadcrumb`            | `@deweyou-design/react`  | `@deweyou-design/react/breadcrumb`              |
+| `Button`, `IconButton`  | `@deweyou-design/react`  | `@deweyou-design/react/button`                  |
+| `Card`                  | `@deweyou-design/react`  | `@deweyou-design/react/card`                    |
+| `Checkbox`              | `@deweyou-design/react`  | `@deweyou-design/react/checkbox`                |
+| `CodeBlock`             | `@deweyou-design/react`  | `@deweyou-design/react/code-block`              |
+| `Dialog`                | `@deweyou-design/react`  | `@deweyou-design/react/dialog`                  |
+| `Field`                 | `@deweyou-design/react`  | `@deweyou-design/react/field`                   |
+| `GroupedVirtualMasonry` | `@deweyou-design/react`  | `@deweyou-design/react/grouped-virtual-masonry` |
+| `ImageMasonry`          | `@deweyou-design/react`  | `@deweyou-design/react/image-masonry`           |
+| `ImagePreview`          | `@deweyou-design/react`  | `@deweyou-design/react/image-preview`           |
+| `Input`                 | `@deweyou-design/react`  | `@deweyou-design/react/input`                   |
+| `MarkdownRender`        | `@deweyou-design/react`  | `@deweyou-design/react/markdown-render`         |
+| `Editor`                | `@deweyou-design/editor` | `@deweyou-design/editor/editor`                 |
+| `MermaidRender`         | `@deweyou-design/react`  | `@deweyou-design/react/mermaid-render`          |
+| `Menu`, `ContextMenu`   | `@deweyou-design/react`  | `@deweyou-design/react/menu`                    |
+| `Nav`                   | `@deweyou-design/react`  | `@deweyou-design/react/nav`                     |
+| `NavOverlay`            | `@deweyou-design/react`  | `@deweyou-design/react/nav-overlay`             |
+| `Pagination`            | `@deweyou-design/react`  | `@deweyou-design/react/pagination`              |
+| `Popover`               | `@deweyou-design/react`  | `@deweyou-design/react/popover`                 |
+| `RadioGroup`            | `@deweyou-design/react`  | `@deweyou-design/react/radio-group`             |
+| `ScrollArea`            | `@deweyou-design/react`  | `@deweyou-design/react/scroll-area`             |
+| `Select`                | `@deweyou-design/react`  | `@deweyou-design/react/select`                  |
+| `Separator`             | `@deweyou-design/react`  | `@deweyou-design/react/separator`               |
+| `Skeleton`              | `@deweyou-design/react`  | `@deweyou-design/react/skeleton`                |
+| `Spinner`               | `@deweyou-design/react`  | `@deweyou-design/react/spinner`                 |
+| `Switch`                | `@deweyou-design/react`  | `@deweyou-design/react/switch`                  |
+| `Tabs` family           | `@deweyou-design/react`  | `@deweyou-design/react/tabs`                    |
+| `Text`                  | `@deweyou-design/react`  | `@deweyou-design/react/text`                    |
+| `Textarea`              | `@deweyou-design/react`  | `@deweyou-design/react/textarea`                |
+| `toast`, `Toaster`      | `@deweyou-design/react`  | `@deweyou-design/react/toast`                   |
+| `Tooltip`               | `@deweyou-design/react`  | `@deweyou-design/react/tooltip`                 |
+| `VirtualList`           | `@deweyou-design/react`  | `@deweyou-design/react/virtual-list`            |
+| `VirtualMasonry`        | `@deweyou-design/react`  | `@deweyou-design/react/virtual-masonry`         |
 
 Use root imports when a file consumes several components together. Use subpath imports for examples, docs, and single-component usage so bundlers and AI agents can see the intended package boundary.
 
@@ -267,6 +271,62 @@ const listRef = useRef<VirtualListRef>(null);
 ```
 
 `VirtualList` renders a scrollable window over large one-dimensional content and uses `ScrollArea` internally so scrollbar styling stays aligned with the rest of the system. It measures rendered items with `ResizeObserver`, so long MDX feeds can start from `estimateSize(index)` and then settle into real heights as text wraps, images load, and responsive layout changes. Use `scrollElement="window"` when the page itself owns scrolling, `scrollMargin` or `scrollToIndex(index, { offset })` for sticky navigation, and `onRangeChange` for URL hash or reading progress sync. The default wrapper keeps `role="listitem"` plus positional ARIA; pass `itemRole={null}` when the rendered article should own item semantics.
+
+### Image Collections
+
+```tsx
+<ImageMasonry
+  images={photos}
+  minColumnWidth={220}
+  maxColumnCount={4}
+  onItemClick={({ index }) => openPreview(index)}
+/>
+
+<ImagePreview
+  images={photos}
+  open={previewOpen}
+  currentIndex={previewIndex}
+  onOpenChange={setPreviewOpen}
+  onIndexChange={({ index }) => setPreviewIndex(index)}
+/>
+```
+
+`ImagePreview` is the modal image-viewer surface for one image or a small gallery. It uses `Dialog` for focus and Escape behavior, exposes controlled and uncontrolled open/index state, and keeps zoom controls in an icon toolbar. Use it with `ImageMasonry` by opening the preview from `onItemClick`.
+
+`ImageMasonry` lays out fixed-column or responsive image grids with shortest-column placement. Responsive mode reads the container width with `ResizeObserver`, `minColumnWidth`, and optional `maxColumnCount`; fixed mode uses `columnCount`. Pass `aspectRatio` or positive `width` and `height` on each image so the masonry can reserve stable geometry before images load. Each item keeps list/listitem semantics by default, and custom renderers receive the computed layout item.
+
+```tsx
+const masonryRef = useRef<VirtualMasonryRef>(null);
+
+<VirtualMasonry
+  ref={masonryRef}
+  images={photos}
+  height={480}
+  minColumnWidth={220}
+  overscan={360}
+  onRangeChange={(range) => preloadAround(range.endIndex)}
+/>;
+```
+
+`VirtualMasonry` shares the same masonry layout contract but only mounts the visible image cards plus a pixel overscan window. Use it for long or unbounded image collections where mounting every image would create scroll and decoding pressure. It requires the same stable image geometry contract as `ImageMasonry`: provide `aspectRatio` or positive `width` and `height`, especially for long virtualized feeds where unmounted images cannot be measured from rendered DOM. Its ref mirrors the list virtualization contract with `scrollToIndex`, `scrollToOffset`, and `getScrollOffset`.
+
+```tsx
+const groupedMasonryRef = useRef<GroupedVirtualMasonryRef>(null);
+
+<GroupedVirtualMasonry
+  ref={groupedMasonryRef}
+  groups={[
+    { id: 'today', title: 'Today', images: todayPhotos },
+    { id: 'archive', title: 'Archive', images: archivePhotos },
+  ]}
+  groupHeaderHeight={44}
+  height={480}
+  minColumnWidth={220}
+  overscan={360}
+/>;
+```
+
+For small grouped galleries, compose multiple `ImageMasonry` instances and keep section headings in the consuming layout. Use `GroupedVirtualMasonry` when the grouped image feed itself needs virtualization; it keeps group headers and masonry cells in one scroll-height model, requires a fixed `groupHeaderHeight`, and exposes `scrollToGroup`, `scrollToItem`, `scrollToOffset`, and `getScrollOffset` through its ref. Group `title` accepts any `ReactNode`, and `renderGroupHeader` is the richer path for custom title layouts, counts, actions, or typography.
 
 ### Floating And Feedback
 

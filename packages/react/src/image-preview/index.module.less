@@ -1,0 +1,79 @@
+@import '@deweyou-design/styles/less/bridge';
+
+.content {
+  background: var(--ui-color-surface);
+  max-height: calc(100dvh - 2rem - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  max-width: calc(100vw - 2rem - env(safe-area-inset-left) - env(safe-area-inset-right));
+  overflow: hidden;
+  padding: 0;
+  width: min(72rem, calc(100vw - 2rem - env(safe-area-inset-left) - env(safe-area-inset-right)));
+}
+
+.frame {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  max-height: inherit;
+  min-height: min(42rem, calc(100dvh - 2rem));
+}
+
+.toolbar {
+  align-items: center;
+  border-bottom: 1px solid var(--ui-color-border);
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  padding: 10px 12px;
+}
+
+.toolbarGroup {
+  align-items: center;
+  display: flex;
+  gap: 4px;
+}
+
+.counter {
+  color: var(--ui-color-text-muted);
+  font: var(--ui-font-caption);
+  min-inline-size: 3.5rem;
+  text-align: center;
+}
+
+.stage {
+  align-items: center;
+  background: color-mix(in srgb, var(--ui-color-text) 3%, var(--ui-color-surface));
+  display: flex;
+  justify-content: center;
+  min-height: 0;
+  overflow: auto;
+  padding: 24px;
+}
+
+.image {
+  display: block;
+  max-height: calc(100dvh - 12rem);
+  max-width: 100%;
+  object-fit: contain;
+  transform-origin: center;
+  transition: transform var(--ui-motion-duration-fast) var(--ui-motion-ease-standard);
+  user-select: none;
+}
+
+.caption {
+  border-top: 1px solid var(--ui-color-border);
+  color: var(--ui-color-text-muted);
+  font: var(--ui-font-caption);
+  margin: 0;
+  min-height: 2.75rem;
+  padding: 10px 16px;
+}
+
+.empty {
+  color: var(--ui-color-text-muted);
+  font: var(--ui-font-body);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .image {
+    transition: none;
+  }
+}

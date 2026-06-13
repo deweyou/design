@@ -133,32 +133,36 @@ official plugins, adapters, and utilities. The first official adapter is
 
 ## Components
 
-| Component     | Description                                                         |
-| ------------- | ------------------------------------------------------------------- |
-| `Button`      | Button with multiple variants and sizes                             |
-| `Input`       | Single-line text input                                              |
-| `Textarea`    | Multi-line text input                                               |
-| `Select`      | Select dropdown                                                     |
-| `Checkbox`    | Checkbox                                                            |
-| `RadioGroup`  | Radio group                                                         |
-| `Switch`      | Switch                                                              |
-| `Badge`       | Status badge                                                        |
-| `Text`        | Typographic text                                                    |
-| `Editor`      | Rich text editor surface with adapters and plugins                  |
-| `Card`        | Card container                                                      |
-| `Separator`   | Separator                                                           |
-| `Skeleton`    | Loading placeholder                                                 |
-| `Spinner`     | Loading indicator                                                   |
-| `Breadcrumb`  | Breadcrumb navigation                                               |
-| `Tabs`        | Tabs                                                                |
-| `Pagination`  | Pagination                                                          |
-| `Menu`        | Dropdown menu / context menu                                        |
-| `Popover`     | Popover                                                             |
-| `Tooltip`     | Tooltip                                                             |
-| `Dialog`      | Modal dialog                                                        |
-| `Toast`       | Toast notification                                                  |
-| `ScrollArea`  | Custom scrollbar container                                          |
-| `VirtualList` | Virtualized list with dynamic document heights and anchor scrolling |
+| Component               | Description                                                         |
+| ----------------------- | ------------------------------------------------------------------- |
+| `Button`                | Button with multiple variants and sizes                             |
+| `Input`                 | Single-line text input                                              |
+| `Textarea`              | Multi-line text input                                               |
+| `Select`                | Select dropdown                                                     |
+| `Checkbox`              | Checkbox                                                            |
+| `RadioGroup`            | Radio group                                                         |
+| `Switch`                | Switch                                                              |
+| `Badge`                 | Status badge                                                        |
+| `Text`                  | Typographic text                                                    |
+| `Editor`                | Rich text editor surface with adapters and plugins                  |
+| `ImagePreview`          | Modal image preview with zoom and gallery navigation                |
+| `ImageMasonry`          | Responsive image masonry layout with fixed or fluid columns         |
+| `GroupedVirtualMasonry` | Grouped virtual masonry renderer for long image sections            |
+| `Card`                  | Card container                                                      |
+| `Separator`             | Separator                                                           |
+| `Skeleton`              | Loading placeholder                                                 |
+| `Spinner`               | Loading indicator                                                   |
+| `Breadcrumb`            | Breadcrumb navigation                                               |
+| `Tabs`                  | Tabs                                                                |
+| `Pagination`            | Pagination                                                          |
+| `Menu`                  | Dropdown menu / context menu                                        |
+| `Popover`               | Popover                                                             |
+| `Tooltip`               | Tooltip                                                             |
+| `Dialog`                | Modal dialog                                                        |
+| `Toast`                 | Toast notification                                                  |
+| `ScrollArea`            | Custom scrollbar container                                          |
+| `VirtualList`           | Virtualized list with dynamic document heights and anchor scrolling |
+| `VirtualMasonry`        | Virtualized masonry renderer for long irregular image collections   |
 
 ## Theme Customization
 
