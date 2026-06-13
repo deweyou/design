@@ -55,6 +55,21 @@
       "import": "./dist/dialog/index.js",
       "default": "./dist/dialog/index.js"
     },
+    "./grouped-virtual-masonry": {
+      "types": "./dist/grouped-virtual-masonry/index.d.ts",
+      "import": "./dist/grouped-virtual-masonry/index.js",
+      "default": "./dist/grouped-virtual-masonry/index.js"
+    },
+    "./image-masonry": {
+      "types": "./dist/image-masonry/index.d.ts",
+      "import": "./dist/image-masonry/index.js",
+      "default": "./dist/image-masonry/index.js"
+    },
+    "./image-preview": {
+      "types": "./dist/image-preview/index.d.ts",
+      "import": "./dist/image-preview/index.js",
+      "default": "./dist/image-preview/index.js"
+    },
     "./field": {
       "types": "./dist/field/index.d.ts",
       "import": "./dist/field/index.js",
@@ -164,6 +179,11 @@
       "types": "./dist/virtual-list/index.d.ts",
       "import": "./dist/virtual-list/index.js",
       "default": "./dist/virtual-list/index.js"
+    },
+    "./virtual-masonry": {
+      "types": "./dist/virtual-masonry/index.d.ts",
+      "import": "./dist/virtual-masonry/index.js",
+      "default": "./dist/virtual-masonry/index.js"
     },
     "./style.css": "./dist/style.css",
     "./package.json": "./package.json"

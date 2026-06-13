@@ -47,6 +47,24 @@ When adding, removing, or changing the public import or behavior contract of a c
 - `packages/mcp/src/catalog/index.ts`, style/icon MCP metadata, and regenerated `apps/website/public/llms.txt` when public AI-facing context changes
 - this repo-owned skill when the component change also changes workflow, routing, checklist, or verification guidance for future agents
 
+## Image Collection Components
+
+Use the image collection components according to the size and grouping shape:
+
+- `ImagePreview`: modal image viewing with zoom and optional gallery navigation.
+- `ImageMasonry`: normal image masonry for small or moderate galleries. For grouped non-virtual galleries, compose multiple `ImageMasonry` instances and render section headings in the consuming layout.
+- `VirtualMasonry`: long ungrouped image collections where only visible masonry cells should mount.
+- `GroupedVirtualMasonry`: long grouped image collections where headers and masonry cells need one virtual scroll-height model.
+
+Masonry inputs must include stable geometry. Require `aspectRatio` or positive `width` and `height` on every image passed to `ImageMasonry`, `VirtualMasonry`, or `GroupedVirtualMasonry`; do not add src-only natural-size probing as a default behavior. `GroupedVirtualMasonry` also requires fixed `groupHeaderHeight` so virtualization can calculate header positions before render.
+
+When documenting or testing grouped virtual masonry, include:
+
+- custom group titles through `title: ReactNode` or `renderGroupHeader`
+- grouped range positions for header and item entries
+- `scrollToGroup`, `scrollToItem`, `scrollToOffset`, and `getScrollOffset`
+- Storybook `Interaction` coverage that jumps to a far item in a later group
+
 ## MCP Resources
 
 The Deweyou Design MCP server is read-only. It exposes:

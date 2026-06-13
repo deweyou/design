@@ -2,19 +2,20 @@
 
 ## Goal
 
-Add three public React components to `@deweyou-design/react`:
+Add four public React components to `@deweyou-design/react`:
 
 - `ImagePreview` for modal image viewing with zoom controls and optional image-group navigation.
 - `ImageMasonry` for non-virtualized image masonry layouts with fixed or responsive columns.
 - `VirtualMasonry` for large uneven image collections where only the visible masonry items should be mounted.
+- `GroupedVirtualMasonry` for long grouped image sections that need headers and masonry cells inside one virtual scroll model.
 
 The components should follow Deweyou Design visual rules, keep public APIs decoupled from implementation details, and ship with unit tests, Storybook interaction coverage, package contracts, documentation, website catalog entries, MCP catalog metadata, and regenerated LLM context.
 
 ## Context
 
-The repository already has a one-dimensional `VirtualList` component. Its historical design states that masonry should not overload `VirtualList`; a future masonry component should use a two-dimensional layout strategy that returns rectangles shaped like `{ x, y, width, height }`. This design follows that direction by adding `VirtualMasonry` as an independent component instead of turning `VirtualList` into a grid engine.
+The repository already has a one-dimensional `VirtualList` component. Its historical design states that masonry should not overload `VirtualList`; a future masonry component should use a two-dimensional layout strategy that returns rectangles shaped like `{ x, y, width, height }`. This design follows that direction by adding `VirtualMasonry` as an independent component instead of turning `VirtualList` into a grid engine. Grouped virtualization is also kept separate as `GroupedVirtualMasonry`: ordinary grouped galleries can compose multiple `ImageMasonry` instances, while grouped virtual scroll needs one internal layout model for headers, item rectangles, range reporting, and scroll targets.
 
-`ImagePreview` is an overlay interaction and should delegate modal focus, Escape behavior, and ARIA dialog semantics to the existing Ark UI-backed dialog pattern. `ImageMasonry` and `VirtualMasonry` are layout/data components, so custom layout math is acceptable because Ark UI has no matching masonry or virtual-masonry primitive.
+`ImagePreview` is an overlay interaction and should delegate modal focus, Escape behavior, and ARIA dialog semantics to the existing Ark UI-backed dialog pattern. `ImageMasonry`, `VirtualMasonry`, and `GroupedVirtualMasonry` are layout/data components, so custom layout math is acceptable because Ark UI has no matching masonry or virtual-masonry primitive.
 
 ## Public Components
 
@@ -197,9 +198,72 @@ Virtualization behavior:
 - Window and custom element scrolling follow the same offset model as `VirtualList`.
 - `scrollToIndex` aligns the target rectangle rather than assuming linear row starts.
 
+### GroupedVirtualMasonry
+
+`GroupedVirtualMasonry` virtualizes long image feeds that have section headers. It is intentionally separate from `ImageMasonry` and `VirtualMasonry`: consumers can render several `ImageMasonry` components for small grouped galleries, but virtualized grouping needs one scroll-height calculation that includes headers and masonry cells together.
+
+```tsx
+const groupedMasonryRef = useRef<GroupedVirtualMasonryRef>(null);
+
+<GroupedVirtualMasonry
+  ref={groupedMasonryRef}
+  groups={[
+    { id: 'today', title: 'Today', images: todayImages },
+    { id: 'archive', title: 'Archive', images: archiveImages },
+  ]}
+  groupHeaderHeight={44}
+  height={520}
+  minColumnWidth={180}
+  overscan={320}
+  onRangeChange={(range) => syncVisibleGroupRange(range)}
+/>;
+```
+
+Public types:
+
+- `GroupedVirtualMasonry`
+- `GroupedVirtualMasonryProps`
+- `GroupedVirtualMasonryGroup`
+- `GroupedVirtualMasonryRef`
+- `GroupedVirtualMasonryRange`
+- `GroupedVirtualMasonryRangePosition`
+- `GroupedVirtualMasonryRenderDetails`
+- `GroupedVirtualMasonryHeaderDetails`
+- `GroupedVirtualMasonryClickDetails`
+- `GroupedVirtualMasonryVirtualItem`
+
+Props:
+
+- `groups: GroupedVirtualMasonryGroup[]`, where each group has `images`, optional `id`, and optional `title`.
+- `groupHeaderHeight: number`, required so the virtual scroll height stays deterministic.
+- `height: number | string`.
+- `columnCount?: number`, `minColumnWidth?: number`, `maxColumnCount?: number`, `defaultColumnCount?: number`, and `defaultContainerWidth?: number`.
+- `gap?: number` and `groupGap?: number`.
+- `overscan?: number`, measured in pixels.
+- `getGroupKey?: (group, groupIndex) => string | number`.
+- `getImageKey?: (image, imageIndex, group, groupIndex) => string | number`.
+- `renderGroupHeader?: (details) => ReactNode`.
+- `renderItem?: (details) => ReactNode`.
+- `onRangeChange?: (range: GroupedVirtualMasonryRange) => void`.
+
+Imperative ref:
+
+- `scrollToGroup(groupIndex, { align?: 'start' | 'center' | 'end' | 'auto', offset?: number })`.
+- `scrollToItem(groupIndex, imageIndex, { align?: 'start' | 'center' | 'end' | 'auto', offset?: number })`.
+- `scrollToOffset(offset)`.
+- `getScrollOffset()`.
+
+Virtualization behavior:
+
+- Each group contributes one fixed-height header rectangle and a masonry layout for its images.
+- The total scroll height is the sum of every group header, group masonry height, and inter-group gap.
+- Visible entries can be headers or items; `onRangeChange` reports range positions as `{ type: 'header', groupIndex }` or `{ type: 'item', groupIndex, imageIndex }`.
+- Item ARIA positions are global across all images; group headers default to `role="presentation"`.
+- Image geometry remains mandatory: pass `aspectRatio` or positive `width` and `height`; the component does not load images just to discover natural size.
+
 ## Shared Layout Strategy
 
-`ImageMasonry` and `VirtualMasonry` should share local pure functions under one package source unit boundary or duplicated small internal helpers only when that keeps files easier to understand. The layout strategy must remain private in the first version.
+`ImageMasonry`, `VirtualMasonry`, and `GroupedVirtualMasonry` should share local pure functions under one package source unit boundary or duplicated small internal helpers only when that keeps files easier to understand. The layout strategy must remain private in the first version.
 
 Core helpers:
 
@@ -212,7 +276,7 @@ The helpers should be unit tested through component behavior first. Direct helpe
 
 ## Data Model
 
-`ImagePreviewItem`, `ImageMasonryItem`, and `VirtualMasonryItem` intentionally share a small image shape:
+`ImagePreviewItem`, `ImageMasonryItem`, `VirtualMasonryItem`, and grouped masonry image entries intentionally share a small image shape:
 
 ```ts
 type ImageItem = {
@@ -227,13 +291,14 @@ type ImageItem = {
 };
 ```
 
-The concrete exported types may duplicate this shape per component so future component-specific fields can evolve without creating a shared public dependency too early.
+The concrete exported types may duplicate this shape per component so future component-specific fields can evolve without creating a shared public dependency too early. Masonry and virtual masonry consumers must provide `aspectRatio` or positive `width` and `height` for stable first paint and exact virtual scroll height.
 
 ## Error And Empty States
 
 - Empty image preview renders a dialog-safe empty state with a close button.
 - Empty masonry renders an empty root with the correct role and label, not an exception.
 - Invalid image ratios fall back to `1`.
+- Missing image ratios are a consumer contract error for masonry inputs; components do not probe or remeasure image natural dimensions.
 - Column counts clamp to at least `1`.
 - Out-of-range current indices and scroll targets clamp to the valid item range.
 
@@ -244,6 +309,7 @@ All component styles live in CSS Modules with Less:
 - `packages/react/src/image-preview/index.module.less`
 - `packages/react/src/image-masonry/index.module.less`
 - `packages/react/src/virtual-masonry/index.module.less`
+- `packages/react/src/grouped-virtual-masonry/index.module.less`
 
 Style rules:
 
@@ -271,6 +337,7 @@ Add:
 - `apps/storybook/src/stories/ImagePreview.stories.tsx`
 - `apps/storybook/src/stories/ImageMasonry.stories.tsx`
 - `apps/storybook/src/stories/VirtualMasonry.stories.tsx`
+- `apps/storybook/src/stories/GroupedVirtualMasonry.stories.tsx`
 
 Each story file must export `Interaction` with a `play` function.
 
@@ -279,6 +346,7 @@ Interaction coverage:
 - `ImagePreview`: open from a trigger, zoom in, zoom out, reset, next, previous, Escape close.
 - `ImageMasonry`: fixed columns render, responsive mode renders, clicking an item reports the selected image.
 - `VirtualMasonry`: only a visible subset renders, scroll or button navigation reveals a far item, and the ScrollArea scrollbar parts are present.
+- `GroupedVirtualMasonry`: group navigation reveals a far grouped item while keeping headers and cells in one virtualized scroll surface.
 
 ## Tests
 
@@ -287,6 +355,7 @@ Colocated tests:
 - `packages/react/src/image-preview/index.test.tsx`
 - `packages/react/src/image-masonry/index.test.tsx`
 - `packages/react/src/virtual-masonry/index.test.tsx`
+- `packages/react/src/grouped-virtual-masonry/index.test.tsx`
 
 Contract tests:
 
@@ -301,6 +370,7 @@ TDD expectations:
 - Add failing tests for open and zoom behavior before implementing `ImagePreview`.
 - Add failing tests for fixed and responsive shortest-column layout before implementing `ImageMasonry`.
 - Add failing tests for visibility filtering and `scrollToIndex` before implementing `VirtualMasonry`.
+- Add failing tests for group headers, grouped range positions, responsive columns, and `scrollToGroup`/`scrollToItem` before implementing `GroupedVirtualMasonry`.
 
 ## Documentation And AI Context
 
@@ -331,10 +401,11 @@ These can be added later without changing the first-version component boundaries
 
 ## Acceptance Criteria
 
-- `ImagePreview`, `ImageMasonry`, and `VirtualMasonry` are public root and subpath exports.
+- `ImagePreview`, `ImageMasonry`, `VirtualMasonry`, and `GroupedVirtualMasonry` are public root and subpath exports.
 - Image preview supports open, close, zoom in, zoom out, reset, keyboard close, and optional group navigation.
 - Image masonry supports fixed columns and responsive columns based on container width.
 - Virtual masonry mounts only the visible masonry items plus overscan for large uneven lists.
+- Grouped virtual masonry mounts visible group headers and image cells, reports grouped ranges, and scrolls to both groups and group items.
 - Unit tests, contract tests, Storybook `Interaction` stories, website catalog entries, MCP catalog entries, README updates, component docs, and regenerated LLM context are present.
 - Component styles follow Deweyou Design tokens and pass style governance tests.
 - Verification includes focused component tests, Storybook e2e, `vp check`, and `vp test` before completion is claimed.

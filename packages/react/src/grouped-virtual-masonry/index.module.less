@@ -1,0 +1,75 @@
+@import '@deweyou-design/styles/less/bridge';
+
+.root {
+  position: relative;
+  width: 100%;
+}
+
+.viewport {
+  height: 100%;
+}
+
+.spacer {
+  position: relative;
+  width: 100%;
+}
+
+.header,
+.item {
+  box-sizing: border-box;
+  left: 0;
+  position: absolute;
+  top: 0;
+}
+
+.header {
+  align-items: center;
+  color: var(--ui-color-text);
+  display: flex;
+  font: var(--ui-font-label);
+  min-width: 0;
+  overflow: hidden;
+  padding-block: 0;
+  padding-inline: 0;
+}
+
+.headerContent {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.item {
+  overflow: hidden;
+}
+
+.defaultButton {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-radius: var(--ui-radius-auto);
+  box-sizing: border-box;
+  color: inherit;
+  cursor: pointer;
+  display: block;
+  font: inherit;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  text-align: inherit;
+  width: 100%;
+
+  &:focus-visible {
+    .focus-ring-offset();
+  }
+}
+
+.defaultImage {
+  background: color-mix(in srgb, var(--ui-color-text) 4%, var(--ui-color-surface));
+  border-radius: var(--ui-radius-auto);
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}

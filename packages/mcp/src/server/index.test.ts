@@ -23,7 +23,13 @@ describe('MCP payload helpers', () => {
     ]);
 
     expect(createMcpResourcePayload('deweyou://design/components')).toContain('Button');
+    expect(createMcpResourcePayload('deweyou://design/components')).toContain(
+      'GroupedVirtualMasonry',
+    );
     expect(createMcpResourcePayload('deweyou://design/components')).toContain('MermaidRender');
+    expect(createMcpResourcePayload('deweyou://design/imports')).toContain(
+      '@deweyou-design/react/grouped-virtual-masonry',
+    );
     expect(createMcpResourcePayload('deweyou://design/imports')).toContain(
       '@deweyou-design/react/mermaid-render',
     );
@@ -44,6 +50,9 @@ describe('MCP payload helpers', () => {
 
   test('returns details and import snippets for a component', () => {
     expect(createComponentDetailPayload({ name: 'dialog' }).component?.name).toBe('Dialog');
+    expect(createComponentDetailPayload({ name: 'GroupedVirtualMasonry' }).component?.subpath).toBe(
+      'grouped-virtual-masonry',
+    );
     expect(createComponentImportPayload({ name: 'Button', subpath: true }).snippet).toBe(
       "import { Button } from '@deweyou-design/react/button';",
     );

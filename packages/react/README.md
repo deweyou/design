@@ -20,7 +20,7 @@ Every public component supports root import and a documented subpath import. The
 
 Prefer subpath imports for better tree-shaking; use the root `@deweyou-design/react` import when consuming multiple components together.
 
-Core coverage: `Button`, `IconButton`, `Field`, `Input`, `Textarea`, `Select`, `Checkbox`, `RadioGroup`, `Switch`, `Dialog`, `Menu`, `Popover`, `Tooltip`, `Toast`, `Tabs`, `Pagination`, `Breadcrumb`, `Nav`, `NavOverlay`, `ScrollArea`, `CodeBlock`, `MarkdownRender`, `MermaidRender`, `MindmapRender`, `Text`, `Badge`, `Card`, `Separator`, `Skeleton`, and `Spinner`.
+Core coverage: `Button`, `IconButton`, `Field`, `Input`, `Textarea`, `Select`, `Checkbox`, `RadioGroup`, `Switch`, `Dialog`, `Menu`, `Popover`, `Tooltip`, `Toast`, `Tabs`, `Pagination`, `Breadcrumb`, `Nav`, `NavOverlay`, `ScrollArea`, `ImagePreview`, `ImageMasonry`, `VirtualMasonry`, `GroupedVirtualMasonry`, `CodeBlock`, `MarkdownRender`, `MermaidRender`, `MindmapRender`, `Text`, `Badge`, `Card`, `Separator`, `Skeleton`, and `Spinner`.
 
 ## Button
 

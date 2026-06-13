@@ -152,6 +152,31 @@ export {
   type DialogCloseTriggerProps,
 } from './dialog/index.tsx';
 export {
+  ImagePreview,
+  type ImagePreviewImage,
+  type ImagePreviewIndexChangeDetails,
+  type ImagePreviewProps,
+} from './image-preview/index.tsx';
+export {
+  ImageMasonry,
+  type ImageMasonryClickDetails,
+  type ImageMasonryImage,
+  type ImageMasonryProps,
+  type ImageMasonryRenderDetails,
+} from './image-masonry/index.tsx';
+export {
+  GroupedVirtualMasonry,
+  type GroupedVirtualMasonryClickDetails,
+  type GroupedVirtualMasonryGroup,
+  type GroupedVirtualMasonryHeaderDetails,
+  type GroupedVirtualMasonryProps,
+  type GroupedVirtualMasonryRange,
+  type GroupedVirtualMasonryRangePosition,
+  type GroupedVirtualMasonryRef,
+  type GroupedVirtualMasonryRenderDetails,
+  type GroupedVirtualMasonryVirtualItem,
+} from './grouped-virtual-masonry/index.tsx';
+export {
   Tooltip,
   type TooltipPlacement,
   type TooltipRootProps,
@@ -185,6 +210,15 @@ export {
   type VirtualListScrollElement,
   type VirtualListScrollToIndexOptions,
 } from './virtual-list/index.tsx';
+export {
+  VirtualMasonry,
+  type VirtualMasonryProps,
+  type VirtualMasonryRange,
+  type VirtualMasonryRef,
+  type VirtualMasonryRenderDetails,
+  type VirtualMasonryScrollAlign,
+  type VirtualMasonryScrollToIndexOptions,
+} from './virtual-masonry/index.tsx';
 export { Pagination, type PaginationProps } from './pagination/index.tsx';
 export {
   Nav,

@@ -2,9 +2,9 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Build `ImagePreview`, `ImageMasonry`, and `VirtualMasonry` as public `@deweyou-design/react` components with tests, Storybook interaction coverage, docs, website catalog entries, MCP metadata, and regenerated LLM context.
+**Goal:** Build `ImagePreview`, `ImageMasonry`, `VirtualMasonry`, and `GroupedVirtualMasonry` as public `@deweyou-design/react` components with tests, Storybook interaction coverage, docs, website catalog entries, MCP metadata, and regenerated LLM context.
 
-**Architecture:** `ImagePreview` is an Ark Dialog-backed modal viewer with local zoom and image-index state. `ImageMasonry` owns non-virtual masonry layout and responsive column calculation. `VirtualMasonry` reuses the same private masonry layout helpers, composes `ScrollArea`, and renders only vertically intersecting masonry rectangles plus overscan.
+**Architecture:** `ImagePreview` is an Ark Dialog-backed modal viewer with local zoom and image-index state. `ImageMasonry` owns non-virtual masonry layout and responsive column calculation. `VirtualMasonry` reuses the same private masonry layout helpers, composes `ScrollArea`, and renders only vertically intersecting masonry rectangles plus overscan. `GroupedVirtualMasonry` keeps group headers and masonry cells inside one virtual scroll model so long grouped image sections can report grouped ranges and support group/item scrolling.
 
 **Tech Stack:** TypeScript 5, React 19, CSS Modules with Less, `@ark-ui/react`, `@deweyou-design/react-icons`, `@deweyou-design/styles`, Vite Plus, Testing Library, Storybook test runner.
 
@@ -22,19 +22,66 @@
 - Create `packages/react/src/virtual-masonry/index.tsx` - public `VirtualMasonry` component and types.
 - Create `packages/react/src/virtual-masonry/index.module.less` - virtual masonry viewport styling.
 - Create `packages/react/src/virtual-masonry/index.test.tsx` - jsdom virtualization tests.
+- Create `packages/react/src/grouped-virtual-masonry/index.tsx` - public grouped virtual masonry component and types.
+- Create `packages/react/src/grouped-virtual-masonry/index.module.less` - grouped virtual masonry viewport styling.
+- Create `packages/react/src/grouped-virtual-masonry/index.test.tsx` - jsdom grouped virtualization tests.
 - Modify `packages/react/src/index.ts` - root exports.
 - Modify `packages/react/package.json` - subpath exports.
 - Modify `packages/react/tests/package-entrypoint.test.ts` - root API contract.
 - Modify `packages/react/tests/subpath-entrypoint.test.ts` - subpath API contract.
 - Modify `packages/react/README.md`, `README.md`, `README_ZH.md`, and `docs/design/components.md` - public docs.
-- Create `apps/storybook/src/stories/ImagePreview.stories.tsx`, `ImageMasonry.stories.tsx`, and `VirtualMasonry.stories.tsx`.
+- Create `apps/storybook/src/stories/ImagePreview.stories.tsx`, `ImageMasonry.stories.tsx`, `VirtualMasonry.stories.tsx`, and `GroupedVirtualMasonry.stories.tsx`.
 - Modify `apps/website/src/data/component-catalog.tsx` and `component-catalog.test.tsx` - website catalog.
 - Modify `packages/mcp/src/catalog/index.ts`, `packages/mcp/src/catalog/index.test.ts`, `packages/mcp/src/server/index.test.ts`, and `packages/mcp/src/llms/index.test.ts` when needed.
 - Regenerate `apps/website/public/llms.txt` after MCP catalog changes.
 
+## Task 0: GroupedVirtualMasonry Extension
+
+**Files:**
+
+- Create: `packages/react/src/grouped-virtual-masonry/index.tsx`
+- Create: `packages/react/src/grouped-virtual-masonry/index.module.less`
+- Create: `packages/react/src/grouped-virtual-masonry/index.test.tsx`
+- Create: `apps/storybook/src/stories/GroupedVirtualMasonry.stories.tsx`
+- Modify: `packages/react/src/index.ts`, `packages/react/package.json`, package entrypoint tests, website catalog, MCP catalog, README files, `docs/design/components.md`, and `apps/website/public/llms.txt`
+
+- [x] **Step 1: Write failing GroupedVirtualMasonry tests**
+
+  Cover visible group headers and items, grouped range positions, `scrollToGroup`, `scrollToItem`, `scrollToOffset`, `getScrollOffset`, and responsive column recalculation.
+
+- [x] **Step 2: Run the failing tests**
+
+  Run:
+
+  ```bash
+  vp test packages/react/src/grouped-virtual-masonry/index.test.tsx
+  ```
+
+  Expected red state: fail because `packages/react/src/grouped-virtual-masonry/index.tsx` does not exist.
+
+- [x] **Step 3: Implement GroupedVirtualMasonry**
+
+  Reuse `buildMasonryLayout` and `resolveMasonryColumnCount`, add fixed-height header entries per group, offset each group layout into one global scroll-height model, render only visible/overscanned entries, and expose `scrollToGroup`, `scrollToItem`, `scrollToOffset`, and `getScrollOffset`.
+
+- [x] **Step 4: Update public contracts and docs**
+
+  Add root/subpath exports, package export metadata, entrypoint contract tests, Storybook `Interaction`, website catalog, MCP catalog, README entries, component contract docs, spec updates, and regenerated `llms.txt`.
+
+- [ ] **Step 5: Verify grouped masonry and public contract**
+
+  Run:
+
+  ```bash
+  vp test packages/react/src/grouped-virtual-masonry/index.test.tsx packages/react/tests/subpath-entrypoint.test.ts packages/react/tests/package-entrypoint.test.ts apps/website/src/data/component-catalog.test.tsx packages/mcp/src/catalog/index.test.ts packages/mcp/src/llms/index.test.ts
+  vp check
+  vp test
+  vp run storybook#test
+  ```
+
 ## Task 1: ImageMasonry Layout Helpers And Component
 
 **Files:**
+
 - Create: `packages/react/src/image-masonry/layout.ts`
 - Create: `packages/react/src/image-masonry/index.tsx`
 - Create: `packages/react/src/image-masonry/index.module.less`
@@ -297,7 +344,11 @@ export const ImageMasonry = ({
 }: ImageMasonryProps) => {
   const rootRef = useRef<HTMLDivElement>(null);
   const [measuredColumnCount] = useState(defaultColumnCount);
-  const columnCount = getColumnCount({ columns: columns ?? measuredColumnCount, defaultColumnCount, maxColumnCount });
+  const columnCount = getColumnCount({
+    columns: columns ?? measuredColumnCount,
+    defaultColumnCount,
+    maxColumnCount,
+  });
   const layout = useMemo(
     () => buildMasonryLayout({ columnCount, gap, items }),
     [columnCount, gap, items],
@@ -325,10 +376,9 @@ export const ImageMasonry = ({
             src: layoutItem.item.src,
             srcSet: layoutItem.item.srcSet,
           };
-          const content =
-            renderItem?.({ ...details, imageProps }) ?? (
-              <img className={styles.image} {...imageProps} />
-            );
+          const content = renderItem?.({ ...details, imageProps }) ?? (
+            <img className={styles.image} {...imageProps} />
+          );
 
           return (
             <div
@@ -442,6 +492,7 @@ git commit -m "feat(react): add image masonry layout"
 ## Task 2: VirtualMasonry Component
 
 **Files:**
+
 - Create: `packages/react/src/virtual-masonry/index.tsx`
 - Create: `packages/react/src/virtual-masonry/index.module.less`
 - Create: `packages/react/src/virtual-masonry/index.test.tsx`
@@ -624,12 +675,22 @@ export type VirtualMasonryRange = {
 
 export type VirtualMasonryRef = {
   getScrollOffset: () => number;
-  scrollToIndex: (index: number, options?: { align?: 'start' | 'center' | 'end' | 'auto'; offset?: number }) => void;
+  scrollToIndex: (
+    index: number,
+    options?: { align?: 'start' | 'center' | 'end' | 'auto'; offset?: number },
+  ) => void;
   scrollToOffset: (offset: number) => void;
 };
 
 export type VirtualMasonryRenderDetails = {
-  imageProps: { alt: string; decoding: 'async'; loading: 'lazy'; sizes?: string; src: string; srcSet?: string };
+  imageProps: {
+    alt: string;
+    decoding: 'async';
+    loading: 'lazy';
+    sizes?: string;
+    src: string;
+    srcSet?: string;
+  };
   index: number;
   item: VirtualMasonryItem;
 };
@@ -669,31 +730,50 @@ export const VirtualMasonry = forwardRef<VirtualMasonryRef, VirtualMasonryProps>
     const viewportRef = useRef<HTMLDivElement>(null);
     const [scrollOffset, setScrollOffset] = useState(0);
     const columnCount = Math.max(1, Math.floor(columns ?? defaultColumnCount));
-    const viewportHeight = typeof height === 'number' ? height : viewportRef.current?.clientHeight ?? 0;
+    const viewportHeight =
+      typeof height === 'number' ? height : (viewportRef.current?.clientHeight ?? 0);
     const layout = useMemo(
       () => buildMasonryLayout({ columnCount, columnWidth: 240, gap, items }),
       [columnCount, gap, items],
     );
-    const virtualItems = findVisibleMasonryItems({ layout, overscan, scrollOffset, viewportHeight });
+    const virtualItems = findVisibleMasonryItems({
+      layout,
+      overscan,
+      scrollOffset,
+      viewportHeight,
+    });
 
-    const scrollToOffset = useCallback((offset: number) => {
-      const viewport = viewportRef.current;
-      const nextOffset = Math.max(0, Math.min(offset, Math.max(0, layout.totalHeight - viewportHeight)));
+    const scrollToOffset = useCallback(
+      (offset: number) => {
+        const viewport = viewportRef.current;
+        const nextOffset = Math.max(
+          0,
+          Math.min(offset, Math.max(0, layout.totalHeight - viewportHeight)),
+        );
 
-      if (viewport) viewport.scrollTop = nextOffset;
-      setScrollOffset(nextOffset);
-    }, [layout.totalHeight, viewportHeight]);
+        if (viewport) viewport.scrollTop = nextOffset;
+        setScrollOffset(nextOffset);
+      },
+      [layout.totalHeight, viewportHeight],
+    );
 
-    const scrollToIndex = useCallback((index: number, options?: { offset?: number }) => {
-      const target = layout.items[Math.max(0, Math.min(index, layout.items.length - 1))];
-      scrollToOffset((target?.top ?? 0) - (options?.offset ?? 0));
-    }, [layout.items, scrollToOffset]);
+    const scrollToIndex = useCallback(
+      (index: number, options?: { offset?: number }) => {
+        const target = layout.items[Math.max(0, Math.min(index, layout.items.length - 1))];
+        scrollToOffset((target?.top ?? 0) - (options?.offset ?? 0));
+      },
+      [layout.items, scrollToOffset],
+    );
 
-    useImperativeHandle(ref, () => ({
-      getScrollOffset: () => viewportRef.current?.scrollTop ?? scrollOffset,
-      scrollToIndex,
-      scrollToOffset,
-    }), [scrollOffset, scrollToIndex, scrollToOffset]);
+    useImperativeHandle(
+      ref,
+      () => ({
+        getScrollOffset: () => viewportRef.current?.scrollTop ?? scrollOffset,
+        scrollToIndex,
+        scrollToOffset,
+      }),
+      [scrollOffset, scrollToIndex, scrollToOffset],
+    );
 
     const handleScroll = (event: UIEvent<HTMLDivElement>) => {
       setScrollOffset(event.currentTarget.scrollTop);
@@ -734,15 +814,19 @@ export const VirtualMasonry = forwardRef<VirtualMasonryRef, VirtualMasonryProps>
                     width: `${virtualItem.widthPercent}%`,
                   }}
                 >
-                  {renderItem?.({ imageProps, index: virtualItem.index, item: virtualItem.item }) ?? (
-                    <img className={styles.image} {...imageProps} />
-                  )}
+                  {renderItem?.({
+                    imageProps,
+                    index: virtualItem.index,
+                    item: virtualItem.item,
+                  }) ?? <img className={styles.image} {...imageProps} />}
                 </div>
               );
             })}
           </div>
         </ScrollArea.Viewport>
-        <ScrollArea.Scrollbar orientation="vertical"><ScrollArea.Thumb /></ScrollArea.Scrollbar>
+        <ScrollArea.Scrollbar orientation="vertical">
+          <ScrollArea.Thumb />
+        </ScrollArea.Scrollbar>
       </ScrollArea.Root>
     );
   },
@@ -809,6 +893,7 @@ git commit -m "feat(react): add virtual masonry"
 ## Task 3: ImagePreview Component
 
 **Files:**
+
 - Create: `packages/react/src/image-preview/index.tsx`
 - Create: `packages/react/src/image-preview/index.module.less`
 - Create: `packages/react/src/image-preview/index.test.tsx`
@@ -979,20 +1064,26 @@ export const ImagePreview = ({
   const activeIndex = clamp(currentIndex ?? uncontrolledIndex, 0, Math.max(0, items.length - 1));
   const activeItem = items[activeIndex];
 
-  const setOpen = useCallback((nextOpen: boolean) => {
-    if (open === undefined) setUncontrolledOpen(nextOpen);
-    onOpenChange?.({ open: nextOpen });
-  }, [onOpenChange, open]);
+  const setOpen = useCallback(
+    (nextOpen: boolean) => {
+      if (open === undefined) setUncontrolledOpen(nextOpen);
+      onOpenChange?.({ open: nextOpen });
+    },
+    [onOpenChange, open],
+  );
 
-  const setIndex = useCallback((nextIndex: number) => {
-    if (items.length === 0) return;
-    const safeIndex = clamp(nextIndex, 0, items.length - 1);
-    const previousIndex = activeIndex;
+  const setIndex = useCallback(
+    (nextIndex: number) => {
+      if (items.length === 0) return;
+      const safeIndex = clamp(nextIndex, 0, items.length - 1);
+      const previousIndex = activeIndex;
 
-    if (currentIndex === undefined) setUncontrolledIndex(safeIndex);
-    setZoom(defaultZoom);
-    onCurrentIndexChange?.({ index: safeIndex, item: items[safeIndex], previousIndex });
-  }, [activeIndex, currentIndex, defaultZoom, items, onCurrentIndexChange]);
+      if (currentIndex === undefined) setUncontrolledIndex(safeIndex);
+      setZoom(defaultZoom);
+      onCurrentIndexChange?.({ index: safeIndex, item: items[safeIndex], previousIndex });
+    },
+    [activeIndex, currentIndex, defaultZoom, items, onCurrentIndexChange],
+  );
 
   useEffect(() => {
     if (!isOpen || items.length <= 1) return undefined;
@@ -1010,11 +1101,38 @@ export const ImagePreview = ({
     <Dialog.Root open={isOpen} onOpenChange={setOpen}>
       <Dialog.Content aria-label={ariaLabel} className={styles.panel}>
         <div className={styles.toolbar} role="toolbar" aria-label="Image preview controls">
-          <IconButton aria-label="Previous image" disabled={activeIndex <= 0} icon={<ArrowLeftIcon />} variant="ghost" onClick={() => setIndex(activeIndex - 1)} />
-          <IconButton aria-label="Zoom out" icon={<MinusIcon />} variant="ghost" onClick={() => setZoom((value) => clamp(value - zoomStep, minZoom, maxZoom))} />
-          <IconButton aria-label="Reset zoom" icon={<RefreshIcon />} variant="ghost" onClick={() => setZoom(defaultZoom)} />
-          <IconButton aria-label="Zoom in" icon={<PlusIcon />} variant="ghost" onClick={() => setZoom((value) => clamp(value + zoomStep, minZoom, maxZoom))} />
-          <IconButton aria-label="Next image" disabled={activeIndex >= items.length - 1} icon={<ArrowRightIcon />} variant="ghost" onClick={() => setIndex(activeIndex + 1)} />
+          <IconButton
+            aria-label="Previous image"
+            disabled={activeIndex <= 0}
+            icon={<ArrowLeftIcon />}
+            variant="ghost"
+            onClick={() => setIndex(activeIndex - 1)}
+          />
+          <IconButton
+            aria-label="Zoom out"
+            icon={<MinusIcon />}
+            variant="ghost"
+            onClick={() => setZoom((value) => clamp(value - zoomStep, minZoom, maxZoom))}
+          />
+          <IconButton
+            aria-label="Reset zoom"
+            icon={<RefreshIcon />}
+            variant="ghost"
+            onClick={() => setZoom(defaultZoom)}
+          />
+          <IconButton
+            aria-label="Zoom in"
+            icon={<PlusIcon />}
+            variant="ghost"
+            onClick={() => setZoom((value) => clamp(value + zoomStep, minZoom, maxZoom))}
+          />
+          <IconButton
+            aria-label="Next image"
+            disabled={activeIndex >= items.length - 1}
+            icon={<ArrowRightIcon />}
+            variant="ghost"
+            onClick={() => setIndex(activeIndex + 1)}
+          />
           <Dialog.CloseTrigger>
             <IconButton aria-label="Close preview" icon={<XIcon />} variant="ghost" />
           </Dialog.CloseTrigger>
@@ -1120,6 +1238,7 @@ git commit -m "feat(react): add image preview"
 ## Task 4: Package Exports And Contract Tests
 
 **Files:**
+
 - Modify: `packages/react/src/index.ts`
 - Modify: `packages/react/package.json`
 - Modify: `packages/react/tests/package-entrypoint.test.ts`
@@ -1247,6 +1366,7 @@ git commit -m "feat(react): expose image components"
 ## Task 5: Storybook Interaction Coverage
 
 **Files:**
+
 - Create: `apps/storybook/src/stories/ImagePreview.stories.tsx`
 - Create: `apps/storybook/src/stories/ImageMasonry.stories.tsx`
 - Create: `apps/storybook/src/stories/VirtualMasonry.stories.tsx`
@@ -1263,8 +1383,18 @@ import { expect, userEvent, waitFor, within } from 'storybook/test';
 import { Button, ImagePreview } from '@deweyou-design/react';
 
 const images = [
-  { src: 'https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=1200', alt: 'Workspace', width: 1200, height: 800 },
-  { src: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=900', alt: 'Mountain sky', width: 900, height: 1200 },
+  {
+    src: 'https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=1200',
+    alt: 'Workspace',
+    width: 1200,
+    height: 800,
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=900',
+    alt: 'Mountain sky',
+    width: 900,
+    height: 1200,
+  },
 ];
 
 const meta: Meta<typeof ImagePreview> = {
@@ -1280,8 +1410,14 @@ export const Default: StoryObj = {
     const [open, setOpen] = useState(false);
     return (
       <>
-        <Button onClick={() => setOpen(true)} variant="outlined">Open preview</Button>
-        <ImagePreview items={images} open={open} onOpenChange={({ open: nextOpen }) => setOpen(nextOpen)} />
+        <Button onClick={() => setOpen(true)} variant="outlined">
+          Open preview
+        </Button>
+        <ImagePreview
+          items={images}
+          open={open}
+          onOpenChange={({ open: nextOpen }) => setOpen(nextOpen)}
+        />
       </>
     );
   },
@@ -1325,7 +1461,11 @@ export const Interaction: StoryObj = {
     const [selected, setSelected] = useState('None');
     return (
       <>
-        <ImageMasonry columns={3} items={images} onItemClick={({ item }) => setSelected(item.alt)} />
+        <ImageMasonry
+          columns={3}
+          items={images}
+          onItemClick={({ item }) => setSelected(item.alt)}
+        />
         <p aria-live="polite">Selected: {selected}</p>
       </>
     );
@@ -1350,7 +1490,9 @@ export const Interaction: StoryObj = {
     const ref = useRef<VirtualMasonryRef>(null);
     return (
       <>
-        <Button onClick={() => ref.current?.scrollToIndex(90)} variant="outlined">Image 91</Button>
+        <Button onClick={() => ref.current?.scrollToIndex(90)} variant="outlined">
+          Image 91
+        </Button>
         <VirtualMasonry ref={ref} columns={4} height={420} items={images} overscan={160} />
       </>
     );
@@ -1387,6 +1529,7 @@ git commit -m "test(storybook): cover image components"
 ## Task 6: Public Docs, Website Catalog, MCP Catalog, And LLM Context
 
 **Files:**
+
 - Modify: `packages/react/README.md`
 - Modify: `README.md`
 - Modify: `README_ZH.md`
@@ -1432,9 +1575,9 @@ Expected: fail because docs, website catalog, MCP catalog, and LLM text are not 
 Add import matrix rows to `docs/design/components.md`:
 
 ```md
-| `ImagePreview`        | `@deweyou-design/react`  | `@deweyou-design/react/image-preview`   |
-| `ImageMasonry`        | `@deweyou-design/react`  | `@deweyou-design/react/image-masonry`   |
-| `VirtualMasonry`      | `@deweyou-design/react`  | `@deweyou-design/react/virtual-masonry` |
+| `ImagePreview` | `@deweyou-design/react` | `@deweyou-design/react/image-preview` |
+| `ImageMasonry` | `@deweyou-design/react` | `@deweyou-design/react/image-masonry` |
+| `VirtualMasonry` | `@deweyou-design/react` | `@deweyou-design/react/virtual-masonry` |
 ```
 
 Add short composition sections for each new component, including `ImagePreview` group navigation, `ImageMasonry` fixed/responsive columns, and `VirtualMasonry` long-list scrolling.
@@ -1442,9 +1585,9 @@ Add short composition sections for each new component, including `ImagePreview` 
 Update root README component table:
 
 ```md
-| `ImagePreview`   | Modal image preview with zoom controls and optional grouped navigation |
-| `ImageMasonry`   | Image masonry layout with fixed or responsive columns                  |
-| `VirtualMasonry` | Virtualized masonry renderer for long uneven image lists               |
+| `ImagePreview` | Modal image preview with zoom controls and optional grouped navigation |
+| `ImageMasonry` | Image masonry layout with fixed or responsive columns |
+| `VirtualMasonry` | Virtualized masonry renderer for long uneven image lists |
 ```
 
 Update `README_ZH.md` with matching Chinese descriptions.
@@ -1456,11 +1599,7 @@ Update `packages/react/README.md` core coverage list and add compact usage snipp
 Modify `apps/website/src/data/component-catalog.tsx` imports:
 
 ```ts
-import {
-  ImageMasonry,
-  ImagePreview,
-  VirtualMasonry,
-} from '@deweyou-design/react';
+import { ImageMasonry, ImagePreview, VirtualMasonry } from '@deweyou-design/react';
 ```
 
 Add three entries in the data category:
@@ -1521,6 +1660,7 @@ git commit -m "docs: document image components"
 ## Task 7: Full Verification And Repo Memory
 
 **Files:**
+
 - Review all files changed since `13f9772`.
 
 - [ ] **Step 1: Run focused React package tests**

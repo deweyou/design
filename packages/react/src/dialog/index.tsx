@@ -62,8 +62,10 @@ const DialogRoot = ({ open, defaultOpen, onOpenChange, children }: DialogRootPro
     [isControlled, onOpenChange],
   );
 
-  const handleOpenChange = (details: { open: boolean }) => {
-    setOpen(details.open);
+  const handleOpenChange = (details: { open?: boolean } | boolean) => {
+    const nextOpen = typeof details === 'boolean' ? details : details.open;
+
+    setOpen(typeof nextOpen === 'boolean' ? nextOpen : !currentOpen);
   };
 
   useEffect(() => {

@@ -45,11 +45,11 @@ import { Button } from '@deweyou-design/react/button';
 
 - Actions: Button, IconButton
 - Forms: Checkbox, Field, Input, RadioGroup, Select, Switch, Textarea
-- Overlays: ContextMenu, Dialog, Menu, Popover, Tooltip
+- Overlays: ContextMenu, Dialog, ImagePreview, Menu, Popover, Tooltip
 - Navigation: Breadcrumb, Nav, NavOverlay, Pagination, Tabs
 - Feedback: Badge, Skeleton, Spinner, toast, Toaster
-- Content: Card, CodeBlock, MarkdownRender, Editor, MermaidRender, Separator, Text
-- Data: ScrollArea, VirtualList
+- Content: Card, CodeBlock, ImageMasonry, MarkdownRender, Editor, MermaidRender, Separator, Text
+- Data: GroupedVirtualMasonry, ScrollArea, VirtualList, VirtualMasonry
 
 ## Component Catalog
 
@@ -63,6 +63,9 @@ import { Button } from '@deweyou-design/react/button';
 - ContextMenu (overlays): Right-click command surface built on the menu contract. Import: `import { ContextMenu } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-menu--overview
 - Dialog (overlays): Modal decision surface for focused confirmation and details. Import: `import { Dialog } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-dialog--overview
 - Field (forms): Label, description, and validation wiring for form controls. Import: `import { Field } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-field--overview
+- ImagePreview (overlays): Modal image preview with zoom controls and gallery navigation. Import: `import { ImagePreview } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-imagepreview--overview
+- ImageMasonry (content): Responsive shortest-column image layout for galleries. Import: `import { ImageMasonry } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-imagemasonry--overview
+- GroupedVirtualMasonry (data): Grouped virtual masonry renderer for long image sections. Import: `import { GroupedVirtualMasonry } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-groupedvirtualmasonry--overview
 - Input (forms): Single-line text input with Deweyou field styling. Import: `import { Input } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-input--overview
 - MarkdownRender (content): Safe CommonMark and GFM rendering surface for product content. Import: `import { MarkdownRender } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-markdownrender--overview
 - Editor (content): Editor capability surface with adapters, pluggable toolbar, and Markdown shortcuts. Import: `import { Editor } from '@deweyou-design/editor';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-editor--overview
@@ -86,6 +89,7 @@ import { Button } from '@deweyou-design/react/button';
 - Toaster (feedback): Toast viewport renderer used once near the application root. Import: `import { Toaster } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-toast--overview
 - Tooltip (overlays): Small hover/focus label for controls that need extra naming. Import: `import { Tooltip } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-tooltip--overview
 - VirtualList (data): Windowed list renderer for dynamic-height document collections. Import: `import { VirtualList } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-virtuallist--overview
+- VirtualMasonry (data): Windowed masonry renderer for long irregular image collections. Import: `import { VirtualMasonry } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-virtualmasonry--overview
 
 ## Styles
 

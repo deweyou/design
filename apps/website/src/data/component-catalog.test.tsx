@@ -15,6 +15,9 @@ const PUBLIC_COMPONENTS = [
   'CodeBlock',
   'Dialog',
   'Field',
+  'ImagePreview',
+  'ImageMasonry',
+  'GroupedVirtualMasonry',
   'Input',
   'MarkdownRender',
   'Editor',
@@ -38,6 +41,7 @@ const PUBLIC_COMPONENTS = [
   'Toaster',
   'Tooltip',
   'VirtualList',
+  'VirtualMasonry',
 ];
 
 test('catalog covers every public React component surface', () => {
