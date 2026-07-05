@@ -19,7 +19,7 @@ This is a copied standalone snapshot of the current component-library design fac
 - Spacing rhythm: 4px base, with `xs`, `sm`, `md`, `lg`, `xl`.
 - Radius tiers: `rect`, `float`, `auto`, `pill`.
 - Interaction durations: fast 140ms, base 160ms, slow 260ms.
-- Focus ring: tokenized emerald ring through `box-shadow`, not layout-changing border.
+- Focus: tokenized emerald border/inset treatment; fields use border color, and field error borders override focus.
 - Portable token CSS is bundled at `references/design-tokens.css`.
 
 ## Component Model

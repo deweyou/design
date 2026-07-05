@@ -37,15 +37,75 @@
       "import": "./dist/plugins/rich-text/index.js",
       "default": "./dist/plugins/rich-text/index.js"
     },
+    "./plugins/history": {
+      "types": "./dist/plugins/history/index.d.ts",
+      "import": "./dist/plugins/history/index.js",
+      "default": "./dist/plugins/history/index.js"
+    },
+    "./plugins/text-format": {
+      "types": "./dist/plugins/text-format/index.d.ts",
+      "import": "./dist/plugins/text-format/index.js",
+      "default": "./dist/plugins/text-format/index.js"
+    },
+    "./plugins/heading": {
+      "types": "./dist/plugins/heading/index.d.ts",
+      "import": "./dist/plugins/heading/index.js",
+      "default": "./dist/plugins/heading/index.js"
+    },
+    "./plugins/list": {
+      "types": "./dist/plugins/list/index.d.ts",
+      "import": "./dist/plugins/list/index.js",
+      "default": "./dist/plugins/list/index.js"
+    },
+    "./plugins/quote": {
+      "types": "./dist/plugins/quote/index.d.ts",
+      "import": "./dist/plugins/quote/index.js",
+      "default": "./dist/plugins/quote/index.js"
+    },
+    "./plugins/link": {
+      "types": "./dist/plugins/link/index.d.ts",
+      "import": "./dist/plugins/link/index.js",
+      "default": "./dist/plugins/link/index.js"
+    },
+    "./plugins/code": {
+      "types": "./dist/plugins/code/index.d.ts",
+      "import": "./dist/plugins/code/index.js",
+      "default": "./dist/plugins/code/index.js"
+    },
+    "./plugins/table": {
+      "types": "./dist/plugins/table/index.d.ts",
+      "import": "./dist/plugins/table/index.js",
+      "default": "./dist/plugins/table/index.js"
+    },
     "./plugins/markdown-shortcut": {
       "types": "./dist/plugins/markdown-shortcut/index.d.ts",
       "import": "./dist/plugins/markdown-shortcut/index.js",
       "default": "./dist/plugins/markdown-shortcut/index.js"
     },
+    "./plugins/keyboard-shortcut": {
+      "types": "./dist/plugins/keyboard-shortcut/index.d.ts",
+      "import": "./dist/plugins/keyboard-shortcut/index.js",
+      "default": "./dist/plugins/keyboard-shortcut/index.js"
+    },
+    "./plugins/paste": {
+      "types": "./dist/plugins/paste/index.d.ts",
+      "import": "./dist/plugins/paste/index.js",
+      "default": "./dist/plugins/paste/index.js"
+    },
     "./plugins/toolbar": {
       "types": "./dist/plugins/toolbar/index.d.ts",
       "import": "./dist/plugins/toolbar/index.js",
       "default": "./dist/plugins/toolbar/index.js"
+    },
+    "./plugins/floating-toolbar": {
+      "types": "./dist/plugins/floating-toolbar/index.d.ts",
+      "import": "./dist/plugins/floating-toolbar/index.js",
+      "default": "./dist/plugins/floating-toolbar/index.js"
+    },
+    "./plugins/block-toolbar": {
+      "types": "./dist/plugins/block-toolbar/index.d.ts",
+      "import": "./dist/plugins/block-toolbar/index.js",
+      "default": "./dist/plugins/block-toolbar/index.js"
     },
     "./adapters/markdown": {
       "types": "./dist/adapters/markdown/index.d.ts",
@@ -79,6 +139,7 @@
     "@lexical/react": "catalog:",
     "@lexical/rich-text": "catalog:",
     "@lexical/selection": "catalog:",
+    "@lexical/table": "catalog:",
     "@lexical/utils": "catalog:",
     "classnames": "catalog:",
     "lexical": "catalog:",

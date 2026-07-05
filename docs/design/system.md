@@ -227,14 +227,15 @@ State expression must be stable, brief, and low-drama:
 | hover    | Use `color-mix()` to deepen the base color by about 8%                                                                              |
 | active   | Deepen by about 14% and apply `transform: translateY(1px)`                                                                          |
 | disabled | `[data-disabled] { opacity: 0.56; cursor: not-allowed; }`                                                                           |
-| focus    | Only `:focus-visible`; use a unified soft `box-shadow` instead of default `outline`; do not change layout borders                   |
+| focus    | Only `:focus-visible`; use the shared border/inset focus treatment instead of default `outline`; field error borders override focus |
 | loading  | Preserve the original content slot, set text `color: transparent`, and center a spinner overlay to avoid width or text-layout jumps |
 
-Standard focus ring:
+Standard focus treatment:
 
 ```less
 .root:focus-visible {
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ui-color-focus-ring) 18%, transparent);
+  border-color: var(--ui-color-focus-ring);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ui-color-focus-ring) 42%, transparent);
   outline: none;
 }
 ```
@@ -318,7 +319,8 @@ Form controls should express clear lines and quiet input areas:
 
 - Input/Textarea use `rect`; do not make pill inputs.
 - Default background is surface, and border is `--ui-color-border-strong`.
-- Focus uses the unified focus ring and does not express itself by thickening the border.
+- Focus uses `border-color: var(--ui-color-focus-ring)` without an exterior ring.
+- Error uses the danger border and keeps priority when the field is focused.
 - Placeholder uses muted text.
 - Disabled state uses `[data-disabled]` with overall opacity 0.56.
 - Checkbox/Radio/Switch selected state uses primary. Danger semantics should not appear in basic selection controls unless the business state clearly requires it.
@@ -385,7 +387,7 @@ When changing components or pages, check at least:
 - Does it preserve serif as the content/display font and sans as the control font?
 - Does the radius belong to rect / float / auto / pill?
 - Are cards border-first, with shadow reserved for floating surfaces?
-- Does focus appear only under `:focus-visible` and use the unified soft `box-shadow`?
+- Does focus appear only under `:focus-visible` and use the shared border/inset treatment?
 - Do mobile/narrow-viewport rules use `@ui-breakpoint-compact` or capability queries instead of private pixel breakpoints?
 - Does loading preserve layout without button or text jumps?
 - Do scrollable component surfaces use the shared scrollbar mixins or compose `ScrollArea`?

@@ -14,6 +14,7 @@ import { markdownEditorAdapter } from '../../adapters/markdown/index.js';
 import { createEditorPlugin } from '../../core/index.js';
 import { Editor } from '../../editor/index.js';
 import { richTextPlugin } from '../rich-text/index.js';
+import { textFormatPlugin } from '../text-format/index.js';
 import { toolbarPlugin } from './index';
 
 afterEach(() => {
@@ -76,15 +77,31 @@ test('toolbarPlugin renders an editor toolbar before the editable content', () =
   expect(screen.getByRole('button', { name: 'Bulleted list' })).toBeInTheDocument();
 });
 
+test('toolbarPlugin renders compact visual labels for text-only actions', () => {
+  render(
+    <Editor
+      adapter={markdownEditorAdapter()}
+      defaultValue="Toolbar text"
+      plugins={[richTextPlugin(), toolbarPlugin({ actions: ['heading-1'] })]}
+    />,
+  );
+
+  const headingButton = screen.getByRole('button', { name: 'Heading 1' });
+
+  expect(headingButton).toHaveAttribute('data-editor-action-kind', 'text');
+  expect(headingButton).toHaveTextContent('H1');
+});
+
 test('toolbarPlugin supports configurable actions and labels', () => {
   render(
     <Editor
       adapter={markdownEditorAdapter()}
       plugins={[
+        textFormatPlugin(),
         toolbarPlugin({
           actions: ['bold', 'italic'],
           labels: {
-            bold: 'Strong',
+            'text-format.bold': 'Strong',
           },
         }),
       ]}
@@ -147,7 +164,7 @@ test('toolbarPlugin disables actions when editor is read only', () => {
   render(
     <Editor
       adapter={markdownEditorAdapter()}
-      plugins={[toolbarPlugin({ actions: ['bold', 'italic'] })]}
+      plugins={[textFormatPlugin(), toolbarPlugin({ actions: ['bold', 'italic'] })]}
       readOnly
     />,
   );

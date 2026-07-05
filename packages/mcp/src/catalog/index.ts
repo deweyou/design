@@ -94,8 +94,9 @@ export const componentCatalog: ComponentCatalogItem[] = [
     name: 'CodeBlock',
     importName: 'CodeBlock',
     category: 'content',
-    description: 'Scrollable code block shared by MarkdownRender and product examples.',
-    dimensions: ['language', 'size', 'overflow'],
+    description:
+      'Scrollable code block with reusable chrome primitives for code actions and language UI.',
+    dimensions: ['language', 'size', 'overflow', 'chrome'],
     storyId: 'components-codeblock--default',
     subpath: 'code-block',
     importSnippet: rootImport('CodeBlock'),
@@ -185,7 +186,7 @@ export const componentCatalog: ComponentCatalogItem[] = [
     importName: 'Editor',
     category: 'content',
     description:
-      'Editor capability surface with adapters, pluggable toolbar, and Markdown shortcuts.',
+      'Editor capability surface with adapters, feature plugins, and Markdown shortcuts.',
     dimensions: ['adapter', 'plugins', 'state'],
     storyId: 'components-editor--default',
     subpath: 'editor',

@@ -14,13 +14,36 @@
   background: color-mix(in srgb, var(--ui-color-surface) 98%, var(--ui-color-text) 2%);
 }
 
+.toolbar[data-editor-toolbar-surface='floating'] {
+  position: fixed;
+  z-index: 40;
+  inset-block-start: var(--editor-floating-toolbar-top, 0.5rem);
+  inset-inline-start: var(--editor-floating-toolbar-left, 50%);
+  inline-size: max-content;
+  max-inline-size: calc(100vw - 1rem);
+  margin: 0;
+  box-shadow: var(--ui-shadow-floating);
+  transform: translateX(-50%);
+}
+
+.toolbar[data-editor-toolbar-surface='floating'][data-editor-floating-placement='above'] {
+  transform: translate(-50%, -100%);
+}
+
+.toolbar[data-editor-toolbar-surface='block'] {
+  margin-block: 0.5rem 0;
+  border-style: dashed;
+}
+
 .button {
   display: inline-flex;
+  flex: 0 0 auto;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
   block-size: 2rem;
   inline-size: 2rem;
+  max-inline-size: 100%;
   padding: 0;
   border: 1px solid transparent;
   border-radius: var(--ui-radius-rect);
@@ -43,6 +66,12 @@
   }
 }
 
+.button[data-editor-action-kind='text'] {
+  inline-size: auto;
+  min-inline-size: 2rem;
+  padding-inline: 0.5rem;
+}
+
 .button[data-active='true'] {
   border-color: color-mix(in srgb, var(--ui-color-brand-text) 42%, transparent);
   background: color-mix(in srgb, var(--ui-color-brand-surface) 88%, var(--ui-color-brand-text) 12%);
@@ -51,6 +80,124 @@
 }
 
 .textGlyph {
+  overflow: hidden;
+  max-inline-size: 12rem;
   color: currentColor;
   font: 700 0.75rem / 1 var(--ui-font-control);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.linkPrompt {
+  display: grid;
+  position: fixed;
+  z-index: 50;
+  inset-block-start: var(--editor-link-prompt-top);
+  inset-inline-start: var(--editor-link-prompt-left);
+  grid-template-columns: minmax(0, 1fr);
+  align-items: stretch;
+  gap: 0.45rem;
+  box-sizing: border-box;
+  inline-size: min(22rem, calc(100vw - 1.5rem));
+  padding: 0.55rem;
+  border: 1px solid var(--ui-color-border);
+  border-radius: var(--ui-radius-rect);
+  background: var(--ui-color-surface-raised);
+  box-shadow: var(--ui-shadow-floating);
+  transform: translateX(-50%);
+}
+
+.linkPromptActions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.35rem;
+}
+
+.linkField {
+  display: grid;
+  gap: 0.25rem;
+  min-inline-size: 0;
+}
+
+.linkLabel {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  min-block-size: 0.68rem;
+  min-inline-size: 0;
+  color: var(--ui-color-text-muted);
+  font: 700 0.68rem / 1 var(--ui-font-control);
+}
+
+.linkFieldError {
+  overflow: hidden;
+  min-inline-size: 0;
+  color: var(--ui-color-danger-text);
+  font: 600 0.68rem / 1 var(--ui-font-control);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.linkInput {
+  inline-size: 100%;
+  min-inline-size: 0;
+  flex: 1;
+  box-sizing: border-box;
+  block-size: 2rem;
+  padding-inline: 0.65rem;
+  border: 1px solid var(--ui-color-border);
+  border-radius: var(--ui-radius-rect);
+  background: var(--ui-color-surface);
+  color: var(--ui-color-text);
+  font: 500 0.86rem / 1.2 var(--ui-font-control);
+  outline: none;
+
+  &:focus-visible {
+    border-color: var(--ui-color-focus-ring);
+  }
+
+  &[aria-invalid='true'] {
+    border-color: color-mix(in srgb, var(--ui-color-danger-text) 72%, var(--ui-color-border));
+  }
+}
+
+.linkPromptButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  block-size: 2rem;
+  inline-size: 2rem;
+  padding: 0;
+  border: 1px solid var(--ui-color-border);
+  border-radius: var(--ui-radius-rect);
+  background: var(--ui-color-surface);
+  color: var(--ui-color-text);
+  font: 600 0.78rem / 1 var(--ui-font-control);
+  white-space: nowrap;
+  cursor: pointer;
+
+  &:hover {
+    border-color: var(--ui-color-border-strong);
+    background: var(--ui-color-surface-hover);
+  }
+
+  &:focus-visible {
+    .focus-ring();
+  }
+
+  &[data-editor-link-action='apply'] {
+    color: var(--ui-color-brand-text);
+  }
+
+  &[data-editor-link-action='unlink'] {
+    margin-inline-end: auto;
+    color: var(--ui-color-text-muted);
+
+    &:hover {
+      border-color: color-mix(in srgb, var(--ui-color-danger-text) 34%, var(--ui-color-border));
+      background: color-mix(in srgb, var(--ui-color-danger-text) 8%, var(--ui-color-surface));
+      color: var(--ui-color-danger-text);
+    }
+  }
 }

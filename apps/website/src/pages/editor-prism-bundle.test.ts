@@ -11,7 +11,9 @@ const richTextPluginEntry = join(repoRoot, 'packages/editor/src/plugins/rich-tex
 
 type RichTextBundleGlobal = typeof globalThis & {
   __richTextPluginName?: string;
-  Prism?: unknown;
+  Prism?: {
+    languages?: Record<string, unknown>;
+  };
 };
 
 test('website production bundle can load editor rich text syntax highlighting', async () => {
@@ -69,6 +71,7 @@ test('website production bundle can load editor rich text syntax highlighting', 
     await import(`${pathToFileURL(scriptPath).href}?${Date.now()}`);
 
     expect(testGlobal.__richTextPluginName).toBe('rich-text');
+    expect(testGlobal.Prism?.languages?.json).toBeDefined();
   } finally {
     Reflect.deleteProperty(globalThis, '__richTextPluginName');
     Reflect.deleteProperty(globalThis, 'Prism');
@@ -78,4 +81,4 @@ test('website production bundle can load editor rich text syntax highlighting', 
     Reflect.deleteProperty(globalThis, 'window');
     await rm(fixtureDir, { force: true, recursive: true });
   }
-});
+}, 20_000);

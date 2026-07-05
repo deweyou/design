@@ -474,6 +474,7 @@ const createMarkdownPre =
     return (
       <MarkdownCodeBlock
         className={styles.codeBlock}
+        copy
         data-testid="markdown-code-scroll-area"
         language={language}
         languageLabelProps={{ 'data-markdown-code-language-label': 'true' }}

@@ -23,8 +23,21 @@ type CodeBlockDataAttributes = {
   [key: `data-${string}`]: string | number | boolean | undefined;
 };
 type CodeBlockCodeProps = ComponentPropsWithoutRef<'code'> & CodeBlockDataAttributes;
-type CodeBlockLanguageLabelProps = ComponentPropsWithoutRef<'span'> & CodeBlockDataAttributes;
 type CodeBlockPreProps = ComponentPropsWithoutRef<'pre'> & CodeBlockDataAttributes;
+export type CodeBlockToolbarVariant = 'floating' | 'header';
+export type CodeBlockToolbarProps = ComponentPropsWithoutRef<'div'> &
+  CodeBlockDataAttributes & {
+    variant?: CodeBlockToolbarVariant;
+  };
+export type CodeBlockActionButtonProps = ComponentPropsWithoutRef<'button'> &
+  CodeBlockDataAttributes & {
+    active?: boolean;
+    feedback?: boolean;
+  };
+export type CodeBlockLanguageButtonProps = ComponentPropsWithoutRef<'button'> &
+  CodeBlockDataAttributes;
+export type CodeBlockLanguageLabelProps = ComponentPropsWithoutRef<'span'> &
+  CodeBlockDataAttributes;
 
 export type CodeBlockCommonLanguage =
   | 'bash'
@@ -75,6 +88,79 @@ type CodeBlockInternalProps = {
   languageLabelProps?: CodeBlockLanguageLabelProps;
   preProps?: CodeBlockPreProps;
 };
+
+export const CodeBlockToolbar = ({
+  children,
+  className,
+  role = 'toolbar',
+  variant = 'header',
+  ...props
+}: CodeBlockToolbarProps) => (
+  <div
+    {...props}
+    className={classNames(
+      styles.toolbar,
+      variant === 'header' ? styles.headerToolbar : styles.floatingToolbar,
+      className,
+    )}
+    data-code-block-actions="true"
+    data-code-block-toolbar={variant}
+    role={role}
+  >
+    {children}
+  </div>
+);
+
+export const CodeBlockActionButton = ({
+  active,
+  children,
+  className,
+  feedback,
+  type = 'button',
+  ...props
+}: CodeBlockActionButtonProps) => (
+  <button
+    {...props}
+    className={classNames(styles.actionPill, styles.actionButton, className)}
+    data-active={active ? 'true' : props['data-active']}
+    data-code-block-action-button="true"
+    data-feedback={feedback ? 'true' : props['data-feedback']}
+    type={type}
+  >
+    {children}
+  </button>
+);
+
+export const CodeBlockLanguageButton = ({
+  children,
+  className,
+  type = 'button',
+  ...props
+}: CodeBlockLanguageButtonProps) => (
+  <button
+    {...props}
+    className={classNames(styles.actionPill, styles.languageButton, className)}
+    data-code-block-language-button="true"
+    type={type}
+  >
+    {children}
+  </button>
+);
+
+export const CodeBlockLanguageLabel = ({
+  children,
+  className,
+  ...props
+}: CodeBlockLanguageLabelProps) => (
+  <span
+    {...props}
+    aria-hidden={props['aria-hidden'] ?? true}
+    className={classNames(styles.actionPill, styles.language, className)}
+    data-code-block-language-label="true"
+  >
+    {children}
+  </span>
+);
 
 const isCodeElement = (node: ReactNode): node is ReactElement<CodeBlockCodeProps> =>
   isValidElement<CodeBlockCodeProps>(node);
@@ -212,43 +298,43 @@ const CodeBlockBase = ({
   };
 
   const hasActions = language !== undefined || copy;
+  const toolbarVariant: CodeBlockToolbarVariant = 'header';
 
   return (
     <ScrollArea.Root
       {...props}
       className={classNames(styles.root, styles[size], className)}
       data-language={language}
+      data-code-block-toolbar={hasActions ? toolbarVariant : undefined}
       data-ui-code-block="true"
     >
       {hasActions && (
-        <div className={styles.actions} data-code-block-actions="true">
-          {language !== undefined && (
-            <span
+        <CodeBlockToolbar variant={toolbarVariant}>
+          {language !== undefined ? (
+            <CodeBlockLanguageLabel
               {...languageLabelProps}
-              aria-hidden="true"
-              className={classNames(
-                styles.actionPill,
-                styles.language,
-                languageLabelProps?.className,
-              )}
-              data-code-block-language-label="true"
+              className={languageLabelProps?.className}
             >
               {language}
-            </span>
+            </CodeBlockLanguageLabel>
+          ) : (
+            <span />
           )}
           {copy && (
-            <button
-              aria-label={copied ? 'Copied code' : 'Copy code'}
-              className={classNames(styles.actionPill, styles.copyButton)}
-              data-code-block-copy="true"
-              data-copied={copied ? 'true' : undefined}
-              onClick={handleCopy}
-              type="button"
-            >
-              {copied ? <CheckIcon size="xs" /> : <CopyIcon size="xs" />}
-            </button>
+            <span className={styles.headerActions}>
+              <CodeBlockActionButton
+                aria-label={copied ? 'Copied code' : 'Copy code'}
+                className={styles.copyButton}
+                data-code-block-copy="true"
+                data-copied={copied ? 'true' : undefined}
+                feedback={copied}
+                onClick={handleCopy}
+              >
+                {copied ? <CheckIcon size="xs" /> : <CopyIcon size="xs" />}
+              </CodeBlockActionButton>
+            </span>
           )}
-        </div>
+        </CodeBlockToolbar>
       )}
       {copy && (
         <span aria-live="polite" className={styles.copyStatus}>
@@ -275,7 +361,15 @@ const CodeBlockBase = ({
 };
 
 export const CodeBlock = CodeBlockBase as ((props: CodeBlockProps) => ReactElement) & {
+  ActionButton: typeof CodeBlockActionButton;
   displayName?: string;
+  LanguageButton: typeof CodeBlockLanguageButton;
+  LanguageLabel: typeof CodeBlockLanguageLabel;
+  Toolbar: typeof CodeBlockToolbar;
 };
 
+CodeBlock.ActionButton = CodeBlockActionButton;
 CodeBlock.displayName = 'CodeBlock';
+CodeBlock.LanguageButton = CodeBlockLanguageButton;
+CodeBlock.LanguageLabel = CodeBlockLanguageLabel;
+CodeBlock.Toolbar = CodeBlockToolbar;

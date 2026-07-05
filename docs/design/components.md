@@ -204,15 +204,26 @@ an item from the overflow menu follows the same route or command.
 ```tsx
 <Editor
   adapter={markdownEditorAdapter()}
-  plugins={[toolbarPlugin(), richTextPlugin(), markdownShortcutPlugin()]}
+  plugins={[
+    historyPlugin(),
+    textFormatPlugin(),
+    headingPlugin(),
+    listPlugin(),
+    toolbarPlugin(),
+    markdownShortcutPlugin(),
+    keyboardShortcutPlugin(),
+  ]}
 />
 ```
 
 `Editor` is the editor capability surface for Deweyou Design. Keep content
 formats behind adapters; do not add a `format` prop to the component. Use
-`markdownEditorAdapter()` for Markdown strings, `toolbarPlugin()` for pluggable
-rich text controls, and `markdownShortcutPlugin()` for Markdown-style authoring
-shortcuts.
+`markdownEditorAdapter()` for Markdown strings. Prefer focused feature plugins
+for text, heading, list, quote, link, code, and table behavior; entrypoint plugins
+such as `toolbarPlugin()`, `floatingToolbarPlugin()`, `blockToolbarPlugin()`,
+`markdownShortcutPlugin()`, `keyboardShortcutPlugin()`, and `pastePlugin()` should
+consume feature contributions from the registry instead of hardcoding feature
+logic. `richTextPlugin()` remains a compatibility preset.
 
 ### MermaidRender
 
@@ -231,6 +242,12 @@ shortcuts.
 ```
 
 `CodeBlock` is the shared scrollable block-code primitive. Use it for standalone snippets in product surfaces and documentation so they visually match fenced code rendered by `MarkdownRender`. Pass `language` when the label adds useful context; it supports common ids such as `ts`, `tsx`, `js`, `jsx`, `json`, `css`, `html`, `bash`, and `markdown`, while still accepting custom strings. Set `copy` to show the compact copy icon button; `onCopy` receives the copied plain text after the Clipboard API write succeeds.
+
+Use `CodeBlockToolbar`, `CodeBlockActionButton`, `CodeBlockLanguageButton`, and
+`CodeBlockLanguageLabel` when another surface owns the code DOM but needs the
+same code-block chrome. This keeps editable code blocks and display code blocks
+visually aligned without forcing consumers to adopt `CodeBlock`'s read-only
+`pre/code` structure.
 
 ### Navigation
 

@@ -1,24 +1,145 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 
 import {
+  codePlugin,
   Editor,
+  formatJsonPreservingDuplicateKeys,
+  type EditorPlugin,
   type EditorProps,
+  floatingToolbarPlugin,
+  headingPlugin,
+  historyPlugin,
+  keyboardShortcutPlugin,
+  linkPlugin,
+  listPlugin,
   markdownEditorAdapter,
   markdownShortcutPlugin,
-  richTextPlugin,
+  pastePlugin,
+  quotePlugin,
+  tablePlugin,
+  textFormatPlugin,
   toolbarPlugin,
 } from '@deweyou-design/editor';
 
 const markdownAdapter = markdownEditorAdapter();
-const basePlugins = [toolbarPlugin(), richTextPlugin(), markdownShortcutPlugin()];
+
+const textPlugins = [
+  historyPlugin(),
+  textFormatPlugin(),
+  headingPlugin({ levels: [1, 2, 3] }),
+  listPlugin(),
+  quotePlugin(),
+];
+const codePlugins = [
+  codePlugin({
+    format: { formatters: { json: formatJsonPreservingDuplicateKeys } },
+    wrap: true,
+  }),
+];
+const tablePlugins = [tablePlugin()];
+const linkPlugins = [linkPlugin()];
+const fullPlugins = [
+  ...textPlugins,
+  ...linkPlugins,
+  ...codePlugins,
+  ...tablePlugins,
+  toolbarPlugin(),
+  floatingToolbarPlugin(),
+  markdownShortcutPlugin(),
+  keyboardShortcutPlugin(),
+  pastePlugin(),
+];
 
 type MarkdownEditorProps = Omit<EditorProps<string>, 'adapter' | 'plugins'>;
 
 const MarkdownEditor = (props: MarkdownEditorProps) => (
-  <Editor adapter={markdownAdapter} plugins={basePlugins} {...props} />
+  <Editor adapter={markdownAdapter} plugins={fullPlugins} {...props} />
 );
+
+type PluginToggle = 'code' | 'floating' | 'link' | 'markdown' | 'table' | 'toolbar';
+
+const pluginToggleOptions: Array<{ label: string; value: PluginToggle }> = [
+  { label: 'Toolbar', value: 'toolbar' },
+  { label: 'Floating', value: 'floating' },
+  { label: 'Markdown', value: 'markdown' },
+  { label: 'Link', value: 'link' },
+  { label: 'Code', value: 'code' },
+  { label: 'Table', value: 'table' },
+];
+
+const createPlugins = (enabled: Record<PluginToggle, boolean>): EditorPlugin[] => [
+  ...textPlugins,
+  ...(enabled.link ? linkPlugins : []),
+  ...(enabled.code ? codePlugins : []),
+  ...(enabled.table ? tablePlugins : []),
+  ...(enabled.toolbar ? [toolbarPlugin()] : []),
+  ...(enabled.floating ? [floatingToolbarPlugin()] : []),
+  ...(enabled.markdown ? [markdownShortcutPlugin()] : []),
+  keyboardShortcutPlugin(),
+  pastePlugin(),
+];
+
+const PluginPlaygroundExample = () => {
+  const [enabled, setEnabled] = useState<Record<PluginToggle, boolean>>({
+    code: true,
+    floating: true,
+    link: true,
+    markdown: true,
+    table: true,
+    toolbar: true,
+  });
+  const plugins = useMemo(() => createPlugins(enabled), [enabled]);
+
+  return (
+    <div style={{ display: 'grid', gap: '0.75rem' }}>
+      <div
+        aria-label="Editor plugins"
+        role="group"
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '0.75rem',
+          font: '600 0.78rem / 1.4 var(--ui-font-control)',
+        }}
+      >
+        {pluginToggleOptions.map((option) => (
+          <label
+            key={option.value}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}
+          >
+            <input
+              checked={enabled[option.value]}
+              onChange={(event) =>
+                setEnabled((current) => ({
+                  ...current,
+                  [option.value]: event.currentTarget.checked,
+                }))
+              }
+              type="checkbox"
+            />
+            {option.label}
+          </label>
+        ))}
+      </div>
+      <Editor
+        adapter={markdownAdapter}
+        defaultValue={[
+          '# Plugin playground',
+          '',
+          'Toggle plugin groups and keep editing the same content.',
+          '',
+          '```json',
+          '{"active":true}',
+          '```',
+        ].join('\n')}
+        plugins={plugins}
+        placeholder="Write a note..."
+      />
+    </div>
+  );
+};
 
 const meta = {
   title: 'Components/Editor',
@@ -44,7 +165,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    defaultValue: 'Start with plain Markdown, then type shortcuts like #, -, or **bold**.',
+    defaultValue: 'Start with plain Markdown, then type with the full editor plugin set.',
   },
 };
 
@@ -61,7 +182,7 @@ const ControlledExample = () => {
     <div style={{ display: 'grid', gap: '1rem' }}>
       <Editor
         adapter={markdownAdapter}
-        plugins={basePlugins}
+        plugins={fullPlugins}
         value={value}
         onChange={({ value: nextValue }: { value: string }) => setValue(nextValue)}
       />
@@ -88,20 +209,57 @@ export const Disabled: Story = {
   },
 };
 
+export const PluginPlayground: Story = {
+  render: () => <PluginPlaygroundExample />,
+};
+
 export const Interaction: Story = {
-  args: {
-    placeholder: 'Write a comment...',
-  },
+  render: () => <PluginPlaygroundExample />,
   play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
     const canvas = within(canvasElement);
+    const codeToggle = canvas.getByRole('checkbox', { name: 'Code' });
     const textbox = canvas.getByRole('textbox');
+    const getCodeBlock = () => {
+      const codeBlock = canvasElement.querySelector('code[data-language="json"]');
 
-    await userEvent.click(textbox);
-    await userEvent.type(textbox, '# Heading{enter}{enter}Hello **bold** text');
+      if (!(codeBlock instanceof HTMLElement)) {
+        throw new Error('Expected the playground code block to be rendered.');
+      }
+
+      return codeBlock;
+    };
+
+    await expect(canvas.getByRole('toolbar', { name: 'Editor formatting toolbar' })).toBeTruthy();
+    await expect(canvas.queryByRole('toolbar', { name: 'Editor block toolbar' })).toBeNull();
+
+    await userEvent.click(getCodeBlock());
 
     await waitFor(() => {
-      void expect(textbox).toHaveTextContent('Heading');
-      void expect(textbox).toHaveTextContent('Hello bold text');
+      const codeToolbar = canvas.getByRole('toolbar', { name: 'Code block actions' });
+
+      void expect(within(codeToolbar).getByRole('button', { name: 'Code language' })).toBeTruthy();
+    });
+
+    await userEvent.click(codeToggle);
+
+    await waitFor(() => {
+      void expect(canvas.queryByRole('button', { name: 'Code language' })).toBeNull();
+    });
+
+    await userEvent.click(codeToggle);
+    await userEvent.click(getCodeBlock());
+
+    await waitFor(() => {
+      const codeToolbar = canvas.getByRole('toolbar', { name: 'Code block actions' });
+
+      void expect(within(codeToolbar).getByRole('button', { name: 'Code language' })).toBeTruthy();
+    });
+
+    await userEvent.click(textbox);
+    await userEvent.type(textbox, '{enter}Storybook e2e text');
+
+    await waitFor(() => {
+      void expect(textbox).toHaveTextContent('Storybook e2e text');
     });
   },
 };

@@ -208,16 +208,28 @@ test('focus mixins keep visible keyboard focus without native outline styling', 
   const bridgeStylesheet = readFileSync(bridgeStylesPath, 'utf8');
   const legacyMixinsStylesheet = readFileSync(legacyMixinsStylesPath, 'utf8');
 
+  expect(bridgeStylesheet).toContain('border-color: var(--ui-color-focus-ring);');
   expect(bridgeStylesheet).toContain(
-    'color-mix(in srgb, var(--ui-color-focus-ring) 24%, transparent)',
-  );
-  expect(bridgeStylesheet).toContain(
-    'color-mix(in srgb, var(--ui-color-focus-ring) 18%, transparent)',
+    'box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ui-color-focus-ring) 42%, transparent);',
   );
   expect(bridgeStylesheet).toContain('outline: none;');
-  expect(bridgeStylesheet).not.toContain('0 0 0 4px var(--ui-color-focus-ring)');
+  expect(bridgeStylesheet).not.toMatch(/box-shadow:\s*0 0 0 [234]px/);
   expect(legacyMixinsStylesheet).not.toContain('outline: 2px solid var(--ui-color-focus-ring);');
-  expect(legacyMixinsStylesheet).toContain('box-shadow: 0 0 0 3px');
+  expect(legacyMixinsStylesheet).toContain('border-color: var(--ui-color-focus-ring);');
+  expect(legacyMixinsStylesheet).not.toMatch(/box-shadow:\s*0 0 0 [234]px/);
+});
+
+test('field focus states use border color while invalid state keeps priority', () => {
+  const inputStylesheet = readFileSync(inputStylesPath, 'utf8');
+  const textareaStylesheet = readFileSync(textareaStylesPath, 'utf8');
+
+  for (const stylesheet of [inputStylesheet, textareaStylesheet]) {
+    expect(stylesheet).toContain('&:focus-visible');
+    expect(stylesheet).toContain('border-color: var(--ui-color-focus-ring);');
+    expect(stylesheet).toContain('.fieldError');
+    expect(stylesheet).toContain('border-color: var(--ui-color-danger-bg);');
+    expect(stylesheet).not.toContain('box-shadow: 0 0 0 2px');
+  }
 });
 
 test('responsive styles use the shared compact breakpoint standard', () => {
@@ -345,6 +357,11 @@ test('markdown render styles consume semantic typography and surface tokens', ()
   expect(codeBlockStylesheet).toContain('border: 1px solid var(--code-block-border);');
   expect(codeBlockStylesheet).toContain('background: var(--code-block-actions-bg);');
   expect(codeBlockStylesheet).toContain('border: 1px solid var(--code-block-actions-border);');
+  expect(codeBlockStylesheet).toContain('.toolbar');
+  expect(codeBlockStylesheet).toContain('position: relative;');
+  expect(codeBlockStylesheet).toContain('.headerToolbar');
+  expect(codeBlockStylesheet).toContain('background: var(--code-block-bg);');
+  expect(codeBlockStylesheet).toContain('border-block-end: 1px solid var(--code-block-border);');
   expect(stylesheet).toContain('--markdown-code-keyword');
   expect(stylesheet).toContain(":global([data-theme='dark']) .root");
   expect(stylesheet).toContain('--code-block-keyword: var(--markdown-code-keyword);');

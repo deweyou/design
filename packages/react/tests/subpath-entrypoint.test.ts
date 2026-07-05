@@ -110,6 +110,10 @@ test('components subpath entries match the root entry public contract', () => {
   expect(buttonEntry.Button).toBe(rootEntry.Button);
   expect(buttonEntry.IconButton).toBe(rootEntry.IconButton);
   expect(codeBlockEntry.CodeBlock).toBe(rootEntry.CodeBlock);
+  expect(codeBlockEntry.CodeBlockActionButton).toBe(rootEntry.CodeBlockActionButton);
+  expect(codeBlockEntry.CodeBlockLanguageButton).toBe(rootEntry.CodeBlockLanguageButton);
+  expect(codeBlockEntry.CodeBlockLanguageLabel).toBe(rootEntry.CodeBlockLanguageLabel);
+  expect(codeBlockEntry.CodeBlockToolbar).toBe(rootEntry.CodeBlockToolbar);
   expect(fieldEntry.Field).toBe(rootEntry.Field);
   expect(groupedVirtualMasonryEntry.GroupedVirtualMasonry).toBe(rootEntry.GroupedVirtualMasonry);
   expect(imageMasonryEntry.ImageMasonry).toBe(rootEntry.ImageMasonry);
@@ -139,7 +143,13 @@ test('components subpath entries expose their public API without requiring the p
     'buttonVariantOptions',
     'iconButtonVariantOptions',
   ]);
-  expect(Object.keys(codeBlockEntry).sort()).toEqual(['CodeBlock']);
+  expect(Object.keys(codeBlockEntry).sort()).toEqual([
+    'CodeBlock',
+    'CodeBlockActionButton',
+    'CodeBlockLanguageButton',
+    'CodeBlockLanguageLabel',
+    'CodeBlockToolbar',
+  ]);
   expect(Object.keys(fieldEntry).sort()).toEqual([
     'Field',
     'useFieldContext',
