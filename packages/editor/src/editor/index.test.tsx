@@ -183,9 +183,11 @@ test('applies table theme classes to inserted tables', async () => {
   expect(styles.table).toBeTruthy();
   expect(styles.tableCell).toBeTruthy();
   expect(styles.tableCellHeader).toBeTruthy();
+  expect(styles.tableCellSelected).toBeTruthy();
+  expect(styles.tableSelection).toBeTruthy();
   expect(table).toHaveClass(styles.table);
   expect(firstCell).toHaveClass(styles.tableCell);
-  expect(firstCell).toHaveClass(styles.tableCellHeader);
+  expect(firstCell).not.toHaveClass(styles.tableCellHeader);
 });
 
 test('readOnly and disabled prevent editing', () => {

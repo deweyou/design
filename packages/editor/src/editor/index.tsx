@@ -206,7 +206,9 @@ const EditorInner = <TValue,>(
         table: styles.table,
         tableCell: styles.tableCell,
         tableCellHeader: styles.tableCellHeader,
+        tableCellSelected: styles.tableCellSelected,
         tableRow: styles.tableRow,
+        tableSelection: styles.tableSelection,
         text: {
           bold: styles.bold,
           code: styles.inlineCode,

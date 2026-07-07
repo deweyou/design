@@ -5,8 +5,9 @@ import {
   ArrowUpIcon,
   Delete1Icon,
   PlusIcon,
+  Table1Icon,
+  Table2Icon,
   TableIcon,
-  TrashIcon,
 } from '@deweyou-design/react-icons';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { TablePlugin } from '@lexical/react/LexicalTablePlugin';
@@ -22,9 +23,12 @@ import {
   $isTableRowNode,
   $isTableSelection,
   INSERT_TABLE_COMMAND,
+  TableCellHeaderStates,
   TableCellNode,
   TableNode,
   TableRowNode,
+  $getTableCellNodeRect,
+  type TableSelection,
 } from '@lexical/table';
 import {
   $createParagraphNode,
@@ -84,6 +88,8 @@ type TableInteractionTarget = {
   cellKey?: string;
   columnIndex?: number;
   rowIndex?: number;
+  selectedColumnIndices?: number[];
+  selectedRowIndices?: number[];
   tableKey: string;
 };
 
@@ -95,6 +101,7 @@ type TableBoundaryPosition = {
 
 type TableHandlePosition = TableBoundaryPosition & {
   cellKey?: string;
+  headerActive?: boolean;
   size: number;
 };
 
@@ -113,6 +120,8 @@ type TableOverlayState = {
   nodeKey: string;
   rowBoundaries: TableBoundaryPosition[];
   rowHandles: TableHandlePosition[];
+  selectedColumnIndices: number[];
+  selectedRowIndices: number[];
   targetColumnIndex?: number;
   targetCellKey?: string;
   targetRowIndex?: number;
@@ -122,7 +131,6 @@ type TableOverlayState = {
 
 const defaultTableColumns = 3;
 const defaultTableRows = 3;
-const viewportPadding = 8;
 
 const getEditor = ({ runtime }: EditorCommandContext) => {
   if (!isLexicalRuntime(runtime)) {
@@ -200,7 +208,7 @@ const appendTable = (payload: TableInsertCommandPayload | undefined) => {
   const table = $createTableNodeWithDimensions(
     getTableRowCount(payload),
     getTableColumnCount(payload),
-    payload?.includeHeaders ?? true,
+    payload?.includeHeaders ?? false,
   );
 
   seedTableCells(table, payload?.cells);
@@ -228,7 +236,7 @@ const runInsertTable = (context: EditorCommandContext, payload: unknown) => {
 
   editor.dispatchCommand(INSERT_TABLE_COMMAND, {
     columns: String(normalizeTableDimension(tablePayload?.columns, defaultTableColumns)),
-    includeHeaders: tablePayload?.includeHeaders ?? true,
+    includeHeaders: tablePayload?.includeHeaders ?? false,
     rows: String(normalizeTableDimension(tablePayload?.rows, defaultTableRows)),
   });
 };
@@ -251,6 +259,38 @@ const getTableFromCell = (cell: TableCellNode) => {
   const table = cell.getParent()?.getParent();
 
   return $isTableNode(table) ? table : undefined;
+};
+
+type TableHeaderAxis = 'column' | 'row';
+type TableHeaderState = (typeof TableCellHeaderStates)[keyof typeof TableCellHeaderStates];
+
+const getTableHeaderMask = (axis: TableHeaderAxis) =>
+  axis === 'row' ? TableCellHeaderStates.ROW : TableCellHeaderStates.COLUMN;
+
+const hasTableCellHeaderState = (cell: TableCellNode, headerState: TableHeaderState) =>
+  (cell.getHeaderStyles() & headerState) === headerState;
+
+const getTableHeaderAxisActive = (table: TableNode, axis: TableHeaderAxis) => {
+  const rows = getTableRows(table);
+  const headerMask = getTableHeaderMask(axis);
+
+  if (axis === 'row') {
+    const firstRowCells = rows[0]?.getChildren().filter($isTableCellNode) ?? [];
+
+    return (
+      firstRowCells.length > 0 &&
+      firstRowCells.every((cell) => hasTableCellHeaderState(cell, headerMask))
+    );
+  }
+
+  return (
+    rows.length > 0 &&
+    rows.every((row) => {
+      const firstCell = row.getFirstChild();
+
+      return $isTableCellNode(firstCell) && hasTableCellHeaderState(firstCell, headerMask);
+    })
+  );
 };
 
 const getRowTargetCell = (table: TableNode, boundaryIndex: number) => {
@@ -294,6 +334,75 @@ const getPayloadTargetCell = (payload: unknown) => {
   const table = payload.tableKey ? $getNodeByKey(payload.tableKey as NodeKey) : undefined;
 
   return $isTableNode(table) ? getRowTargetCell(table, 0) : undefined;
+};
+
+const getPayloadTargetTable = (payload: unknown) => {
+  if (!isTableTargetCommandPayload(payload)) {
+    return undefined;
+  }
+
+  const table = payload.tableKey ? $getNodeByKey(payload.tableKey as NodeKey) : undefined;
+
+  if ($isTableNode(table)) {
+    return table;
+  }
+
+  const cell = getPayloadTargetCell(payload);
+
+  return cell ? getTableFromCell(cell) : undefined;
+};
+
+const getTableHeaderCommandValue = (table: TableNode, axis: TableHeaderAxis, payload: unknown) => {
+  if (typeof (payload as { header?: unknown } | null)?.header === 'boolean') {
+    return (payload as { header: boolean }).header;
+  }
+
+  return !getTableHeaderAxisActive(table, axis);
+};
+
+const runToggleTableHeader = (
+  context: EditorCommandContext,
+  payload: unknown,
+  axis: TableHeaderAxis,
+) => {
+  const editor = getEditor(context);
+
+  if (!editor) {
+    return;
+  }
+
+  editor.update(
+    () => {
+      const table = getPayloadTargetTable(payload);
+
+      if (!table) {
+        return;
+      }
+
+      const rows = getTableRows(table);
+      const headerMask = getTableHeaderMask(axis);
+      const headerState = getTableHeaderCommandValue(table, axis, payload)
+        ? headerMask
+        : TableCellHeaderStates.NO_STATUS;
+
+      if (axis === 'row') {
+        rows[0]
+          ?.getChildren()
+          .filter($isTableCellNode)
+          .forEach((cell) => cell.setHeaderStyles(headerState, headerMask));
+        return;
+      }
+
+      rows.forEach((row) => {
+        const firstCell = row.getFirstChild();
+
+        if ($isTableCellNode(firstCell)) {
+          firstCell.setHeaderStyles(headerState, headerMask);
+        }
+      });
+    },
+    { discrete: true },
+  );
 };
 
 const selectPayloadTargetCell = (payload: unknown) => {
@@ -430,6 +539,36 @@ const getInitialTablePayload = (
   return { ...initialTable, placement: 'end' };
 };
 
+const addTableCellRangeIndices = (indices: Set<number>, startIndex: number, span: number) => {
+  for (let index = startIndex; index < startIndex + span; index++) {
+    indices.add(index);
+  }
+};
+
+const getTableSelectionAxisIndices = (selection: TableSelection) => {
+  const selectedColumnIndices = new Set<number>();
+  const selectedRowIndices = new Set<number>();
+
+  selection
+    .getNodes()
+    .filter($isTableCellNode)
+    .forEach((cell) => {
+      const rect = $getTableCellNodeRect(cell);
+
+      if (!rect) {
+        return;
+      }
+
+      addTableCellRangeIndices(selectedColumnIndices, rect.columnIndex, rect.colSpan);
+      addTableCellRangeIndices(selectedRowIndices, rect.rowIndex, rect.rowSpan);
+    });
+
+  return {
+    selectedColumnIndices: [...selectedColumnIndices],
+    selectedRowIndices: [...selectedRowIndices],
+  };
+};
+
 const getSelectedTableContext = (): TableInteractionTarget | undefined => {
   const selection = $getSelection();
   const getContextFromNode = (node: LexicalNode) => {
@@ -445,7 +584,9 @@ const getSelectedTableContext = (): TableInteractionTarget | undefined => {
   };
 
   if ($isTableSelection(selection)) {
-    return getContextFromNode(selection.anchor.getNode());
+    const context = getContextFromNode(selection.anchor.getNode());
+
+    return context ? { ...context, ...getTableSelectionAxisIndices(selection) } : undefined;
   }
 
   if (!$isRangeSelection(selection)) {
@@ -475,14 +616,48 @@ const getTableNodeKeyFromElement = (tableElement: HTMLTableElement) => {
   return $isTableNode(node) ? node.getKey() : undefined;
 };
 
-const getTableCellKeyFromElement = (cellElement: HTMLTableCellElement | undefined) => {
+const getTableCellFromElement = (cellElement: HTMLTableCellElement | undefined) => {
   if (!cellElement) {
     return undefined;
   }
 
   const node = $getNearestNodeFromDOMNode(cellElement);
 
-  return $isTableCellNode(node) ? node.getKey() : undefined;
+  return $isTableCellNode(node) ? node : undefined;
+};
+
+const getTableCellKeyFromElement = (cellElement: HTMLTableCellElement | undefined) =>
+  getTableCellFromElement(cellElement)?.getKey();
+
+const getTableCellHeaderActiveFromElement = (
+  cellElement: HTMLTableCellElement | undefined,
+  headerState: TableHeaderState,
+) => {
+  const cell = getTableCellFromElement(cellElement);
+
+  return cell ? hasTableCellHeaderState(cell, headerState) : false;
+};
+
+const getRowHeaderActiveFromElement = (rowElement: HTMLTableRowElement, rowIndex: number) => {
+  const cells = Array.from(rowElement.cells);
+
+  return (
+    rowIndex === 0 &&
+    cells.length > 0 &&
+    cells.every((cell) => getTableCellHeaderActiveFromElement(cell, TableCellHeaderStates.ROW))
+  );
+};
+
+const getColumnHeaderActiveFromElement = (tableElement: HTMLTableElement, columnIndex: number) => {
+  const rows = Array.from(tableElement.rows);
+
+  return (
+    columnIndex === 0 &&
+    rows.length > 0 &&
+    rows.every((row) =>
+      getTableCellHeaderActiveFromElement(row.cells[columnIndex], TableCellHeaderStates.COLUMN),
+    )
+  );
 };
 
 const getTableCellPositionFromElement = (
@@ -635,6 +810,7 @@ const getRowHandles = (tableElement: HTMLTableElement, tableRect: DOMRect): Tabl
 
     return {
       cellKey: getTableCellKeyFromElement(row.cells[0]),
+      headerActive: getRowHeaderActiveFromElement(row, index),
       index,
       label: `Row ${index + 1} actions`,
       offset: rowRect.top - tableRect.top,
@@ -651,6 +827,7 @@ const getColumnHandles = (
 
     return {
       cellKey: getTableCellKeyFromElement(cell),
+      headerActive: getColumnHeaderActiveFromElement(tableElement, index),
       index,
       label: `Column ${index + 1} actions`,
       offset: cellRect.left - tableRect.left,
@@ -658,15 +835,57 @@ const getColumnHandles = (
     };
   });
 
+const getDomTableColumnCount = (tableElement: HTMLTableElement) =>
+  Array.from(tableElement.rows[0]?.cells ?? []).reduce(
+    (columnCount, cell) => columnCount + Math.max(1, cell.colSpan),
+    0,
+  );
+
+const syncTableColgroup = (tableElement: HTMLTableElement) => {
+  const colGroup = tableElement.querySelector('colgroup');
+
+  if (!colGroup) {
+    return;
+  }
+
+  const columnCount = getDomTableColumnCount(tableElement);
+  const existingCols = Array.from(colGroup.querySelectorAll('col'));
+
+  if (existingCols.length === columnCount) {
+    return;
+  }
+
+  const nextCols = Array.from({ length: columnCount }, (_, index) => {
+    const existingCol = existingCols[index];
+
+    return existingCol
+      ? (existingCol.cloneNode(false) as HTMLTableColElement)
+      : document.createElement('col');
+  });
+
+  colGroup.replaceChildren(...nextCols);
+};
+
+const syncTableColgroups = (rootElement: HTMLElement) => {
+  rootElement.querySelectorAll('table').forEach((tableElement) => {
+    if (tableElement instanceof HTMLTableElement) {
+      syncTableColgroup(tableElement);
+    }
+  });
+};
+
 const getTableOverlayStates = (
   editor: LexicalEditor,
   hoveredTable: TableInteractionTarget | undefined,
 ): TableOverlayState[] => {
   const rootElement = editor.getRootElement();
+  const chromeRootElement = rootElement?.closest('[data-editor-root]');
 
-  if (!rootElement) {
+  if (!rootElement || !(chromeRootElement instanceof HTMLElement)) {
     return [];
   }
+
+  const chromeRootRect = chromeRootElement.getBoundingClientRect();
 
   const tableElements = Array.from(rootElement.querySelectorAll('table')).filter(
     (element): element is HTMLTableElement => element instanceof HTMLTableElement,
@@ -700,14 +919,16 @@ const getTableOverlayStates = (
             columnHandles: getColumnHandles(tableElement, rect),
             height: rect.height,
             isActive: Boolean(target),
-            left: Math.max(viewportPadding, rect.left),
+            left: rect.left - chromeRootRect.left,
             nodeKey,
             rowBoundaries: getRowBoundaries(tableElement, rect),
             rowHandles: getRowHandles(tableElement, rect),
+            selectedColumnIndices: target?.selectedColumnIndices ?? [],
+            selectedRowIndices: target?.selectedRowIndices ?? [],
             targetCellKey: target?.cellKey,
             targetColumnIndex: target?.columnIndex,
             targetRowIndex: target?.rowIndex,
-            top: Math.max(viewportPadding, rect.top),
+            top: rect.top - chromeRootRect.top,
             width: rect.width,
           },
         ];
@@ -781,6 +1002,7 @@ const TableAxisToolbar = ({
     tableKey,
   };
   const isRow = kind === 'row';
+  const headerLabel = isRow ? 'Header row' : 'Header column';
   const closeAndRun = (command: string, payload: unknown) => {
     setActiveTool(undefined);
     runCommand(command, payload);
@@ -803,6 +1025,27 @@ const TableAxisToolbar = ({
       role="toolbar"
       style={toolbarStyle}
     >
+      {handle.index === 0 ? (
+        <>
+          <button
+            aria-label={headerLabel}
+            aria-pressed={Boolean(handle.headerActive)}
+            className={styles.tableAxisToolButton}
+            data-active={handle.headerActive ? 'true' : undefined}
+            onClick={() =>
+              closeAndRun(isRow ? 'table.toggle-header-row' : 'table.toggle-header-column', {
+                ...tableTargetPayload,
+                header: !handle.headerActive,
+              })
+            }
+            title={headerLabel}
+            type="button"
+          >
+            {isRow ? <Table1Icon size="xs" /> : <Table2Icon size="xs" />}
+          </button>
+          <span className={styles.tableAxisToolbarSeparator} />
+        </>
+      ) : null}
       <button
         aria-label={isRow ? 'Insert row above' : 'Insert column left'}
         className={styles.tableAxisToolButton}
@@ -844,17 +1087,6 @@ const TableAxisToolbar = ({
       >
         <Delete1Icon size="xs" />
       </button>
-      <span className={styles.tableAxisToolbarSeparator} />
-      <button
-        aria-label="Delete table"
-        className={styles.tableAxisToolButton}
-        data-danger="true"
-        onClick={() => closeAndRun('table.delete-table', tableTargetPayload)}
-        title="Delete table"
-        type="button"
-      >
-        <TrashIcon size="xs" />
-      </button>
     </div>
   );
 };
@@ -866,6 +1098,12 @@ const TableToolsPlugin = ({ registry }: TableToolsPluginProps) => {
   const [overlays, setOverlays] = useState<TableOverlayState[]>([]);
 
   const syncTables = useCallback(() => {
+    const rootElement = editor.getRootElement();
+
+    if (rootElement) {
+      syncTableColgroups(rootElement);
+    }
+
     setOverlays(getTableOverlayStates(editor, hoveredTable));
   }, [editor, hoveredTable]);
 
@@ -963,7 +1201,7 @@ const TableToolsPlugin = ({ registry }: TableToolsPluginProps) => {
     const handleDocumentPointerDown = (event: PointerEvent) => {
       const target = event.target;
 
-      if (target instanceof HTMLElement && target.closest('[data-editor-table-tools]')) {
+      if (target instanceof Element && target.closest('[data-editor-table-tools]')) {
         return;
       }
 
@@ -1057,6 +1295,7 @@ const TableToolsPlugin = ({ registry }: TableToolsPluginProps) => {
                   <div
                     className={styles.rowControlSegment}
                     data-active={
+                      overlay.selectedRowIndices.includes(handle.index) ||
                       handle.index === overlay.targetRowIndex ||
                       (activeTool?.kind === 'row' &&
                         activeTool.tableKey === overlay.nodeKey &&
@@ -1092,6 +1331,7 @@ const TableToolsPlugin = ({ registry }: TableToolsPluginProps) => {
                   <div
                     className={styles.columnControlSegment}
                     data-active={
+                      overlay.selectedColumnIndices.includes(handle.index) ||
                       handle.index === overlay.targetColumnIndex ||
                       (activeTool?.kind === 'column' &&
                         activeTool.tableKey === overlay.nodeKey &&
@@ -1224,6 +1464,14 @@ export const tablePlugin = ({ initialTable }: TablePluginOptions = {}) => {
           runTableSelectionUpdate(context, payload, () =>
             $insertTableColumnAtSelection(getTargetInsertAfter(payload, true)),
           ),
+      },
+      {
+        id: 'table.toggle-header-row',
+        run: (context, payload) => runToggleTableHeader(context, payload, 'row'),
+      },
+      {
+        id: 'table.toggle-header-column',
+        run: (context, payload) => runToggleTableHeader(context, payload, 'column'),
       },
       {
         id: 'table.delete-row',

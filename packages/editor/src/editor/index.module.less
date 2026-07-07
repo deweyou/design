@@ -1,6 +1,7 @@
 @import '@deweyou-design/styles/less/bridge';
 
 .root {
+  position: relative;
   --editor-block-gap: max(var(--markdown-block-gap, 0rem), 1.4rem);
   --code-block-attribute: color-mix(
     in srgb,
@@ -198,6 +199,15 @@
 .tableCellHeader {
   background: color-mix(in srgb, var(--ui-color-surface) 96%, var(--ui-color-text) 4%);
   font-weight: var(--ui-font-weight-strong);
+}
+
+.tableSelection {
+  user-select: none;
+}
+
+.tableCellSelected {
+  background: color-mix(in srgb, var(--ui-color-brand-text) 18%, var(--ui-color-surface));
+  border-color: color-mix(in srgb, var(--ui-color-brand-text) 30%, var(--ui-color-surface));
 }
 
 .tableCell :where(.paragraph) {

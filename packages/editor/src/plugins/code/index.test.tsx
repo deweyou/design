@@ -19,6 +19,19 @@ import { codePlugin } from './index';
 
 const codeStyles = readFileSync(resolve(import.meta.dirname, './index.module.less'), 'utf8');
 
+const rect = ({ height = 0, left = 0, top = 0, width = 0 }: Partial<DOMRect>) =>
+  ({
+    bottom: top + height,
+    height,
+    left,
+    right: left + width,
+    top,
+    width,
+    x: left,
+    y: top,
+    toJSON: () => ({}),
+  }) as DOMRect;
+
 afterEach(() => {
   cleanup();
   vi.restoreAllMocks();
@@ -119,6 +132,43 @@ test('codePlugin layers code block actions above editor overlays', () => {
   expect(codeStyles).toContain('user-select: none;');
   expect(codeStyles).toContain('.languageMenu');
   expect(codeStyles).toContain('z-index: 50;');
+});
+
+test('codePlugin anchors code block actions in editor scroll space', async () => {
+  vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(
+    function (this: HTMLElement) {
+      if (this.matches('[data-editor-root]')) {
+        return rect({ height: 500, left: 100, top: 200, width: 600 });
+      }
+
+      if (this.tagName === 'CODE') {
+        return rect({ height: 120, left: 150, top: 260, width: 420 });
+      }
+
+      return rect({});
+    },
+  );
+
+  render(
+    <Editor
+      adapter={markdownEditorAdapter()}
+      plugins={[
+        codePlugin(),
+        {
+          name: 'insert-code-block',
+          setup: () => <InsertCodeBlockPlugin />,
+          slot: 'after-content',
+        },
+      ]}
+    />,
+  );
+
+  const toolbar = await screen.findByRole('toolbar', { name: 'Code block actions' });
+
+  expect(codeStyles).toMatch(/\.codeActions \{[\s\S]*?position: absolute;/);
+  expect(toolbar.style.insetBlockStart).toBe('61px');
+  expect(toolbar.style.insetInlineStart).toBe('51px');
+  expect(toolbar.style.inlineSize).toBe('418px');
 });
 
 test('codePlugin exposes tooltips for icon-only code block actions', async () => {

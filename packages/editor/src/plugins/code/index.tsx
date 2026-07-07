@@ -179,20 +179,22 @@ const CodeHighlightRegistrationPlugin = () => {
   return null;
 };
 
-const getCodeActionPosition = (element: HTMLElement) => {
+const getCodeActionPosition = (element: HTMLElement, rootElement: HTMLElement) => {
   const rect = element.getBoundingClientRect();
+  const rootRect = rootElement.getBoundingClientRect();
 
   return {
-    left: Math.max(8, rect.left + 1),
-    top: Math.max(8, rect.top + 1),
+    left: Math.max(0, rect.left - rootRect.left + 1),
+    top: Math.max(0, rect.top - rootRect.top + 1),
     width: Math.max(0, rect.width - 2),
   };
 };
 
 const getCodeBlockStates = (editor: LexicalEditor) => {
   const rootElement = editor.getRootElement();
+  const chromeRootElement = getLexicalEditorRootElement(editor);
 
-  if (!rootElement) {
+  if (!rootElement || !chromeRootElement) {
     return [];
   }
 
@@ -214,7 +216,7 @@ const getCodeBlockStates = (editor: LexicalEditor) => {
             code: node.getTextContent(),
             currentLanguage: node.getLanguage() ?? '',
             nodeKey: node.getKey(),
-            ...getCodeActionPosition(element),
+            ...getCodeActionPosition(element, chromeRootElement),
           },
         ];
       }),

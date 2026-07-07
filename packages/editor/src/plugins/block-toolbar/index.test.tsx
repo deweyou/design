@@ -153,6 +153,8 @@ test('blockToolbarPlugin does not render table actions because tablePlugin owns 
   await user.click(screen.getByRole('button', { name: 'Row 1 actions' }));
 
   expect(await screen.findByRole('toolbar', { name: 'Row 1 tools' })).toBeInTheDocument();
-  expect(screen.getByRole('button', { name: 'Delete table' })).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: 'Header row' })).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: 'Delete row' })).toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: 'Delete table' })).not.toBeInTheDocument();
   expect(screen.queryByRole('button', { name: 'Code language' })).not.toBeInTheDocument();
 });

@@ -6,6 +6,7 @@ import { expect, test } from 'vite-plus/test';
 const styles = readFileSync(resolve(import.meta.dirname, './index.module.less'), 'utf8');
 
 test('empty editor paragraph aligns placeholder with the caret baseline', () => {
+  expect(styles).toMatch(/\.root \{[\s\S]*?position: relative;/);
   expect(styles).toContain('.contentFrame');
   expect(styles).toContain('position: relative;');
   expect(styles).toContain('--editor-block-gap: max(var(--markdown-block-gap, 0rem), 1.4rem);');
@@ -41,6 +42,16 @@ test('tables render visible cells inside the editing surface', () => {
   expect(styles).toContain(
     'background: color-mix(in srgb, var(--ui-color-surface) 96%, var(--ui-color-text) 4%);',
   );
+  expect(styles).toContain('.tableSelection');
+  expect(styles).toContain('user-select: none;');
+  expect(styles).toContain('.tableCellSelected');
+  expect(styles).toContain(
+    'background: color-mix(in srgb, var(--ui-color-brand-text) 18%, var(--ui-color-surface));',
+  );
+  expect(styles).toContain(
+    'border-color: color-mix(in srgb, var(--ui-color-brand-text) 30%, var(--ui-color-surface));',
+  );
+  expect(styles).not.toContain('box-shadow: inset 0 0 0 1px color-mix');
 });
 
 test('code blocks render as full width editing blocks', () => {

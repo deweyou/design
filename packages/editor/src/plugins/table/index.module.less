@@ -1,11 +1,11 @@
 @import '@deweyou-design/styles/less/bridge';
 
 .tableOverlay {
-  --table-control-rail-size: 0.9rem;
-  --table-insert-button-size: 1.55rem;
+  --table-control-rail-size: 0.625rem;
+  --table-insert-button-size: 0.9rem;
   --table-insert-line-size: 2px;
 
-  position: fixed;
+  position: absolute;
   z-index: 12;
   box-sizing: border-box;
   pointer-events: none;
@@ -169,6 +169,11 @@
     outline: none;
   }
 
+  &[data-active='true'] {
+    background: color-mix(in srgb, var(--ui-color-brand) 12%, var(--ui-color-surface));
+    color: var(--ui-color-brand);
+  }
+
   &[data-danger='true'] {
     color: var(--ui-color-text-muted);
 
@@ -190,7 +195,7 @@
 .columnBoundary {
   position: absolute;
   z-index: 5;
-  pointer-events: auto;
+  pointer-events: none;
 }
 
 .rowBoundary {
@@ -245,6 +250,7 @@
   color: var(--ui-color-surface);
   opacity: 0;
   box-shadow: var(--ui-shadow-floating);
+  pointer-events: auto;
   cursor: pointer;
   transform: scale(0.92);
   transition:
@@ -268,12 +274,12 @@
 
 .rowBoundary .boundaryButton {
   inset-block-start: 50%;
-  inset-inline-start: 0;
+  inset-inline-start: calc(var(--table-control-rail-size) / 2);
   transform: translate(-50%, -50%) scale(0.92);
 }
 
 .columnBoundary .boundaryButton {
-  inset-block-start: 0;
+  inset-block-start: calc(var(--table-control-rail-size) / 2);
   inset-inline-start: 50%;
   transform: translate(-50%, -50%) scale(0.92);
 }
