@@ -15,11 +15,14 @@ export default defineConfig({
     rollupOptions: {
       external: [
         '@deweyou-design/react-hooks',
+        '@deweyou-design/react-icons',
         '@deweyou-design/styles',
         'beautiful-mermaid',
         'classnames',
         'highlight.js/lib/common',
+        'lexical',
         'mermaid',
+        'prismjs',
         'react',
         'react-dom',
         'react/jsx-runtime',
@@ -28,6 +31,7 @@ export default defineConfig({
         'rehype-highlight',
         'remark-gfm',
         /^@ark-ui\/react(\/|$)/,
+        /^@lexical\//,
       ],
       output: {
         preserveModules: true,

@@ -15,15 +15,14 @@ flowchart TD
 
 These packages are published to npm and consumed externally.
 
-| Package                       | Path                    | Purpose                                               |
-| ----------------------------- | ----------------------- | ----------------------------------------------------- |
-| `@deweyou-design/react`       | `packages/react/`       | React component library — primary consumer entrypoint |
-| `@deweyou-design/react-hooks` | `packages/react-hooks/` | Reusable React hooks, independent of components       |
-| `@deweyou-design/react-icons` | `packages/react-icons/` | Curated generated React icon components               |
-| `@deweyou-design/styles`      | `packages/styles/`      | Design tokens, theme CSS, Less bridge                 |
-| `@deweyou-design/utils`       | `packages/utils/`       | Runtime utilities for external consumers              |
-| `@deweyou-design/mcp`         | `packages/mcp/`         | MCP server and AI context for components/styles/icons |
-| `@deweyou-design/editor`      | `packages/editor/`      | Editor surface, adapters, and editor runtime plugins  |
+| Package                       | Path                    | Purpose                                                     |
+| ----------------------------- | ----------------------- | ----------------------------------------------------------- |
+| `@deweyou-design/react`       | `packages/react/`       | React components plus editor surface, adapters, and plugins |
+| `@deweyou-design/react-hooks` | `packages/react-hooks/` | Reusable React hooks, independent of components             |
+| `@deweyou-design/react-icons` | `packages/react-icons/` | Curated generated React icon components                     |
+| `@deweyou-design/styles`      | `packages/styles/`      | Design tokens, theme CSS, Less bridge                       |
+| `@deweyou-design/utils`       | `packages/utils/`       | Runtime utilities for external consumers                    |
+| `@deweyou-design/mcp`         | `packages/mcp/`         | MCP server and AI context for components/styles/icons       |
 
 All published packages must:
 
@@ -31,7 +30,7 @@ All published packages must:
 - Have a `repository` field pointing at `git+https://github.com/deweyou/design.git`; npm Trusted Publishing validates the package repository against the GitHub Actions publisher.
 - Run `write-published-manifest.mjs` in their build script to resolve `workspace:*` and `catalog:` specifiers to concrete version numbers in `dist/package.json`
 - Not reference `@deweyou-ui/infra` in runtime `dependencies`
-- Declare runtime side-effect initializers in `sideEffects` and keep their backing libraries as explicit runtime dependencies. For example, `@deweyou-design/editor` keeps `packages/editor/src/runtime/prism.ts` as a side-effectful Prism initializer before Lexical code highlighting loads.
+- Declare runtime side-effect initializers in `sideEffects` and keep their backing libraries as explicit runtime dependencies. For example, `@deweyou-design/react` keeps `packages/react/src/editor/runtime/prism.ts` as a side-effectful Prism initializer before Lexical code highlighting loads.
 
 Release CI publishes with npm Trusted Publishing from `.github/workflows/release.yml` through `scripts/release.mjs`. The workflow grants `id-token: write` and does not pass a long-lived npm publish token; `npm whoami` is skipped in GitHub OIDC runs because OIDC authentication is exchanged only during `npm publish`.
 
@@ -52,16 +51,15 @@ Key scripts in `packages/infra/scripts/`:
 
 ```
 apps/*            → @deweyou-design/* (workspace:*)
-@deweyou-design/react   → @deweyou-design/react-hooks, @deweyou-design/react-icons, @deweyou-design/styles
+@deweyou-design/react   → @deweyou-design/react-hooks, @deweyou-design/react-icons, @deweyou-design/styles, lexical, @lexical/*, prismjs
 @deweyou-design/react-hooks → @deweyou-design/utils (optional, runtime)
 @deweyou-design/react-icons → (generated icons; tdesign-icons-svg is build-only)
 @deweyou-design/styles  → (no deps)
 @deweyou-design/utils   → (no deps)
 @deweyou-design/mcp     → @modelcontextprotocol/sdk, zod; bundles component/style/icon metadata
-@deweyou-design/editor  → @deweyou-design/react, @deweyou-design/react-icons, @deweyou-design/styles, lexical, @lexical/*, prismjs
 @deweyou-ui/infra       → (build-only, never in published deps)
 ```
 
 Cross-layer violations are caught by `packages/react/tests/workspace-boundaries.test.ts`.
 
-_Last updated: 2026-06-09 | Reason: document editor package runtime dependency and side-effect publishing rules_
+_Last updated: 2026-07-07 | Reason: editor capability moved into the react package to avoid a separate first publish_

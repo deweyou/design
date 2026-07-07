@@ -1,17 +1,6 @@
 import type { ReactNode } from 'react';
 
 import {
-  Editor,
-  headingPlugin,
-  historyPlugin,
-  keyboardShortcutPlugin,
-  listPlugin,
-  markdownEditorAdapter,
-  markdownShortcutPlugin,
-  textFormatPlugin,
-  toolbarPlugin,
-} from '@deweyou-design/editor';
-import {
   Badge,
   Breadcrumb,
   Button,
@@ -19,13 +8,20 @@ import {
   Checkbox,
   CodeBlock,
   Dialog,
+  Editor,
   Field,
   GroupedVirtualMasonry,
+  headingPlugin,
+  historyPlugin,
   IconButton,
   ImageMasonry,
   ImagePreview,
   Input,
+  keyboardShortcutPlugin,
+  listPlugin,
+  markdownEditorAdapter,
   MarkdownRender,
+  markdownShortcutPlugin,
   Menu,
   MenuContent,
   MenuItem,
@@ -46,7 +42,9 @@ import {
   TabTrigger,
   Text,
   Textarea,
+  textFormatPlugin,
   Tooltip,
+  toolbarPlugin,
   VirtualList,
   VirtualMasonry,
   toast,
@@ -343,7 +341,7 @@ export const COMPONENT_CATALOG: ComponentCatalogItem[] = [
     category: 'content',
     description:
       'Editor capability surface with adapters, feature plugins, and Markdown shortcuts.',
-    importSnippet: "import { Editor } from '@deweyou-design/editor';",
+    importSnippet: "import { Editor } from '@deweyou-design/react';",
     dimensions: ['adapter', 'plugins', 'state'],
     storyId: 'components-editor--default',
     preview: (

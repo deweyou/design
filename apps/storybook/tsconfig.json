@@ -5,11 +5,14 @@
     "moduleResolution": "bundler",
     "jsx": "react-jsx",
     "paths": {
-      "@deweyou-design/editor": ["../../packages/editor/src/index.ts"],
-      "@deweyou-design/editor/*": ["../../packages/editor/src/*/index.tsx"],
       "@deweyou-design/react-icons": ["../../packages/react-icons/src/index.ts"],
       "@deweyou-design/react-icons/*": ["../../packages/react-icons/src/exports/*.ts"],
       "@deweyou-design/react": ["../../packages/react/src/index.ts"],
+      "@deweyou-design/react/editor": ["../../packages/react/src/editor/index.ts"],
+      "@deweyou-design/react/editor/*": [
+        "../../packages/react/src/editor/*/index.ts",
+        "../../packages/react/src/editor/*/index.tsx"
+      ],
       "@deweyou-design/react/*": ["../../packages/react/src/*/index.tsx"],
       "@deweyou-design/styles": ["../../packages/styles/src/index.ts"],
       "@deweyou-design/styles/*": ["../../packages/styles/src/*"]

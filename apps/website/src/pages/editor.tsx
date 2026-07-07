@@ -13,10 +13,10 @@ import {
   quotePlugin,
   tablePlugin,
   textFormatPlugin,
+  Text,
   toolbarPlugin,
   formatJsonPreservingDuplicateKeys,
-} from '@deweyou-design/editor';
-import { Text } from '@deweyou-design/react';
+} from '@deweyou-design/react';
 
 import styles from './editor.module.less';
 

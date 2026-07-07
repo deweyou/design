@@ -21,7 +21,7 @@ import {
   tablePlugin,
   textFormatPlugin,
   toolbarPlugin,
-} from '@deweyou-design/editor';
+} from '@deweyou-design/react';
 
 const markdownAdapter = markdownEditorAdapter();
 

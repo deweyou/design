@@ -6,21 +6,56 @@ import { afterAll, afterEach, beforeAll, test, vi } from 'vite-plus/test';
 
 import { expect } from '../test-setup';
 
-vi.mock('@deweyou-design/react-icons', () => ({
-  CheckIcon: () => <span aria-hidden data-testid="mock-check-icon" />,
-  ChevronDownIcon: () => <span aria-hidden data-testid="mock-chevron-down-icon" />,
-  ExternalLinkIcon: () => <span aria-hidden data-testid="mock-external-link-icon" />,
-  EyeIcon: () => <span aria-hidden data-testid="mock-eye-icon" />,
-  EditIcon: () => <span aria-hidden data-testid="mock-edit-icon" />,
-  FileMarkdownIcon: () => <span aria-hidden data-testid="mock-file-markdown-icon" />,
-  LogoGithubIcon: () => <span aria-hidden data-testid="mock-github-icon" />,
-  MenuApplicationIcon: () => <span aria-hidden data-testid="mock-menu-icon" />,
-  MenuIcon: () => <span aria-hidden data-testid="mock-nav-menu-icon" />,
-  MinusIcon: () => <span aria-hidden data-testid="mock-minus-icon" />,
-  MoonIcon: () => <span aria-hidden data-testid="mock-moon-icon" />,
-  SunnyIcon: () => <span aria-hidden data-testid="mock-sunny-icon" />,
-  XIcon: () => <span aria-hidden data-testid="mock-x-icon" />,
-}));
+vi.mock('@deweyou-design/react-icons', () => {
+  const icons = {
+    CheckIcon: () => <span aria-hidden data-testid="mock-check-icon" />,
+    ChevronDownIcon: () => <span aria-hidden data-testid="mock-chevron-down-icon" />,
+    ExternalLinkIcon: () => <span aria-hidden data-testid="mock-external-link-icon" />,
+    EyeIcon: () => <span aria-hidden data-testid="mock-eye-icon" />,
+    EditIcon: () => <span aria-hidden data-testid="mock-edit-icon" />,
+    FileMarkdownIcon: () => <span aria-hidden data-testid="mock-file-markdown-icon" />,
+    LogoGithubIcon: () => <span aria-hidden data-testid="mock-github-icon" />,
+    MenuApplicationIcon: () => <span aria-hidden data-testid="mock-menu-icon" />,
+    MenuIcon: () => <span aria-hidden data-testid="mock-nav-menu-icon" />,
+    MinusIcon: () => <span aria-hidden data-testid="mock-minus-icon" />,
+    MoonIcon: () => <span aria-hidden data-testid="mock-moon-icon" />,
+    SunnyIcon: () => <span aria-hidden data-testid="mock-sunny-icon" />,
+    XIcon: () => <span aria-hidden data-testid="mock-x-icon" />,
+  };
+
+  return new Proxy(icons, {
+    get: (target, property) => {
+      if (property === '__esModule') {
+        return true;
+      }
+
+      if (property === 'then' || typeof property !== 'string') {
+        return undefined;
+      }
+
+      return (
+        Reflect.get(target, property) ??
+        (property.endsWith('Icon')
+          ? () => <span aria-hidden data-testid={`mock-${property}`} />
+          : undefined)
+      );
+    },
+    getOwnPropertyDescriptor: (target, property) => {
+      const descriptor = Reflect.getOwnPropertyDescriptor(target, property);
+      if (descriptor || typeof property !== 'string' || !property.endsWith('Icon')) {
+        return descriptor;
+      }
+
+      return {
+        configurable: true,
+        enumerable: false,
+        value: () => <span aria-hidden data-testid={`mock-${property}`} />,
+      };
+    },
+    has: (target, property) =>
+      Reflect.has(target, property) || (typeof property === 'string' && property.endsWith('Icon')),
+  });
+});
 
 import { Navbar } from './navbar';
 

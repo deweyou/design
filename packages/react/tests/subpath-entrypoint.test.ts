@@ -13,6 +13,10 @@ import * as markdownRenderEntry from '../src/markdown-render/index.tsx';
 import * as mermaidRenderEntry from '../src/mermaid-render/index.tsx';
 import * as navEntry from '../src/nav/index.tsx';
 import * as navOverlayEntry from '../src/nav-overlay/index.tsx';
+import * as editorEntry from '../src/editor/index.ts';
+import * as editorCoreEntry from '../src/editor/core/index.ts';
+import * as editorMarkdownAdapterEntry from '../src/editor/adapters/markdown/index.ts';
+import * as editorRichTextPluginEntry from '../src/editor/plugins/rich-text/index.tsx';
 import * as rootEntry from '../src';
 import * as popoverEntry from '../src/popover/index.tsx';
 import * as textEntry from '../src/text/index.tsx';
@@ -47,6 +51,101 @@ test('components package exposes button, popover, and text subpath exports in pa
       default: './dist/field/index.js',
       import: './dist/field/index.js',
       types: './dist/field/index.d.ts',
+    },
+    './editor': {
+      default: './dist/editor/index.js',
+      import: './dist/editor/index.js',
+      types: './dist/editor/index.d.ts',
+    },
+    './editor/core': {
+      default: './dist/editor/core/index.js',
+      import: './dist/editor/core/index.js',
+      types: './dist/editor/core/index.d.ts',
+    },
+    './editor/adapters/markdown': {
+      default: './dist/editor/adapters/markdown/index.js',
+      import: './dist/editor/adapters/markdown/index.js',
+      types: './dist/editor/adapters/markdown/index.d.ts',
+    },
+    './editor/plugins/block-toolbar': {
+      default: './dist/editor/plugins/block-toolbar/index.js',
+      import: './dist/editor/plugins/block-toolbar/index.js',
+      types: './dist/editor/plugins/block-toolbar/index.d.ts',
+    },
+    './editor/plugins/code': {
+      default: './dist/editor/plugins/code/index.js',
+      import: './dist/editor/plugins/code/index.js',
+      types: './dist/editor/plugins/code/index.d.ts',
+    },
+    './editor/plugins/floating-toolbar': {
+      default: './dist/editor/plugins/floating-toolbar/index.js',
+      import: './dist/editor/plugins/floating-toolbar/index.js',
+      types: './dist/editor/plugins/floating-toolbar/index.d.ts',
+    },
+    './editor/plugins/heading': {
+      default: './dist/editor/plugins/heading/index.js',
+      import: './dist/editor/plugins/heading/index.js',
+      types: './dist/editor/plugins/heading/index.d.ts',
+    },
+    './editor/plugins/history': {
+      default: './dist/editor/plugins/history/index.js',
+      import: './dist/editor/plugins/history/index.js',
+      types: './dist/editor/plugins/history/index.d.ts',
+    },
+    './editor/plugins/keyboard-shortcut': {
+      default: './dist/editor/plugins/keyboard-shortcut/index.js',
+      import: './dist/editor/plugins/keyboard-shortcut/index.js',
+      types: './dist/editor/plugins/keyboard-shortcut/index.d.ts',
+    },
+    './editor/plugins/link': {
+      default: './dist/editor/plugins/link/index.js',
+      import: './dist/editor/plugins/link/index.js',
+      types: './dist/editor/plugins/link/index.d.ts',
+    },
+    './editor/plugins/list': {
+      default: './dist/editor/plugins/list/index.js',
+      import: './dist/editor/plugins/list/index.js',
+      types: './dist/editor/plugins/list/index.d.ts',
+    },
+    './editor/plugins/markdown-shortcut': {
+      default: './dist/editor/plugins/markdown-shortcut/index.js',
+      import: './dist/editor/plugins/markdown-shortcut/index.js',
+      types: './dist/editor/plugins/markdown-shortcut/index.d.ts',
+    },
+    './editor/plugins/paste': {
+      default: './dist/editor/plugins/paste/index.js',
+      import: './dist/editor/plugins/paste/index.js',
+      types: './dist/editor/plugins/paste/index.d.ts',
+    },
+    './editor/plugins/quote': {
+      default: './dist/editor/plugins/quote/index.js',
+      import: './dist/editor/plugins/quote/index.js',
+      types: './dist/editor/plugins/quote/index.d.ts',
+    },
+    './editor/plugins/rich-text': {
+      default: './dist/editor/plugins/rich-text/index.js',
+      import: './dist/editor/plugins/rich-text/index.js',
+      types: './dist/editor/plugins/rich-text/index.d.ts',
+    },
+    './editor/plugins/table': {
+      default: './dist/editor/plugins/table/index.js',
+      import: './dist/editor/plugins/table/index.js',
+      types: './dist/editor/plugins/table/index.d.ts',
+    },
+    './editor/plugins/text-format': {
+      default: './dist/editor/plugins/text-format/index.js',
+      import: './dist/editor/plugins/text-format/index.js',
+      types: './dist/editor/plugins/text-format/index.d.ts',
+    },
+    './editor/plugins/toolbar': {
+      default: './dist/editor/plugins/toolbar/index.js',
+      import: './dist/editor/plugins/toolbar/index.js',
+      types: './dist/editor/plugins/toolbar/index.d.ts',
+    },
+    './editor/utils': {
+      default: './dist/editor/utils/index.js',
+      import: './dist/editor/utils/index.js',
+      types: './dist/editor/utils/index.d.ts',
     },
     './grouped-virtual-masonry': {
       default: './dist/grouped-virtual-masonry/index.js',
@@ -115,6 +214,12 @@ test('components subpath entries match the root entry public contract', () => {
   expect(codeBlockEntry.CodeBlockLanguageLabel).toBe(rootEntry.CodeBlockLanguageLabel);
   expect(codeBlockEntry.CodeBlockToolbar).toBe(rootEntry.CodeBlockToolbar);
   expect(fieldEntry.Field).toBe(rootEntry.Field);
+  expect(editorEntry.Editor).toBe(rootEntry.Editor);
+  expect(editorEntry.markdownEditorAdapter).toBe(rootEntry.markdownEditorAdapter);
+  expect(editorEntry.richTextPlugin).toBe(rootEntry.richTextPlugin);
+  expect(editorCoreEntry.createEditorPlugin).toBe(rootEntry.createEditorPlugin);
+  expect(editorMarkdownAdapterEntry.markdownEditorAdapter).toBe(rootEntry.markdownEditorAdapter);
+  expect(editorRichTextPluginEntry.richTextPlugin).toBe(rootEntry.richTextPlugin);
   expect(groupedVirtualMasonryEntry.GroupedVirtualMasonry).toBe(rootEntry.GroupedVirtualMasonry);
   expect(imageMasonryEntry.ImageMasonry).toBe(rootEntry.ImageMasonry);
   expect(imagePreviewEntry.ImagePreview).toBe(rootEntry.ImagePreview);
@@ -154,6 +259,32 @@ test('components subpath entries expose their public API without requiring the p
     'Field',
     'useFieldContext',
     'useFieldControlProps',
+  ]);
+  expect(Object.keys(editorEntry).sort()).toEqual([
+    'Editor',
+    'EditorPluginCompatibilityError',
+    'blockToolbarPlugin',
+    'codePlugin',
+    'composeEditorPlugins',
+    'createEditorPlugin',
+    'createEditorPluginCompatibilityError',
+    'floatingToolbarPlugin',
+    'formatJsonPreservingDuplicateKeys',
+    'hasDuplicateJsonObjectKeys',
+    'headingPlugin',
+    'historyPlugin',
+    'isEditorPluginCompatibilityError',
+    'keyboardShortcutPlugin',
+    'linkPlugin',
+    'listPlugin',
+    'markdownEditorAdapter',
+    'markdownShortcutPlugin',
+    'pastePlugin',
+    'quotePlugin',
+    'richTextPlugin',
+    'tablePlugin',
+    'textFormatPlugin',
+    'toolbarPlugin',
   ]);
   expect(Object.keys(groupedVirtualMasonryEntry).sort()).toEqual(['GroupedVirtualMasonry']);
   expect(Object.keys(imageMasonryEntry).sort()).toEqual(['ImageMasonry']);
