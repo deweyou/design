@@ -23,7 +23,6 @@
   min-height: 88px;
   transition:
     border-color var(--ui-motion-duration-fast) var(--ui-motion-ease-exit),
-    box-shadow var(--ui-motion-duration-fast) var(--ui-motion-ease-exit),
     background var(--ui-motion-duration-fast) var(--ui-motion-ease-exit);
 
   &::placeholder {
@@ -31,8 +30,7 @@
   }
 
   &:focus-visible {
-    border-color: color-mix(in srgb, var(--ui-color-focus-ring) 72%, var(--ui-color-border));
-    box-shadow: 0 0 0 2px color-mix(in srgb, var(--ui-color-focus-ring) 14%, transparent);
+    border-color: var(--ui-color-focus-ring);
   }
 }
 
@@ -60,7 +58,6 @@
 
   &:focus-visible {
     border-color: var(--ui-color-danger-bg);
-    box-shadow: 0 0 0 2px color-mix(in srgb, var(--ui-color-danger-bg) 14%, transparent);
   }
 }
 

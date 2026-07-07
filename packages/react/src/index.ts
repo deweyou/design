@@ -13,11 +13,20 @@ export {
 export { Text, type TextProps } from './text/index.tsx';
 export {
   CodeBlock,
+  CodeBlockActionButton,
+  CodeBlockLanguageButton,
+  CodeBlockLanguageLabel,
+  CodeBlockToolbar,
+  type CodeBlockActionButtonProps,
   type CodeBlockCommonLanguage,
   type CodeBlockCopyDetails,
   type CodeBlockLanguage,
+  type CodeBlockLanguageButtonProps,
+  type CodeBlockLanguageLabelProps,
   type CodeBlockProps,
   type CodeBlockSize,
+  type CodeBlockToolbarProps,
+  type CodeBlockToolbarVariant,
 } from './code-block/index.tsx';
 export {
   Tabs,

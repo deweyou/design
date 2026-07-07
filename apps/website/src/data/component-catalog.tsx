@@ -2,9 +2,13 @@ import type { ReactNode } from 'react';
 
 import {
   Editor,
+  headingPlugin,
+  historyPlugin,
+  keyboardShortcutPlugin,
+  listPlugin,
   markdownEditorAdapter,
   markdownShortcutPlugin,
-  richTextPlugin,
+  textFormatPlugin,
   toolbarPlugin,
 } from '@deweyou-design/editor';
 import {
@@ -202,9 +206,10 @@ export const COMPONENT_CATALOG: ComponentCatalogItem[] = [
   {
     name: 'CodeBlock',
     category: 'content',
-    description: 'Scrollable code block shared by MarkdownRender and product examples.',
+    description:
+      'Scrollable code block with reusable chrome primitives for code actions and language UI.',
     importSnippet: "import { CodeBlock } from '@deweyou-design/react';",
-    dimensions: ['language', 'size', 'overflow'],
+    dimensions: ['language', 'size', 'overflow', 'chrome'],
     storyId: 'components-codeblock--default',
     preview: (
       <CodeBlock language="tsx" size="sm">
@@ -337,7 +342,7 @@ export const COMPONENT_CATALOG: ComponentCatalogItem[] = [
     name: 'Editor',
     category: 'content',
     description:
-      'Editor capability surface with adapters, pluggable toolbar, and Markdown shortcuts.',
+      'Editor capability surface with adapters, feature plugins, and Markdown shortcuts.',
     importSnippet: "import { Editor } from '@deweyou-design/editor';",
     dimensions: ['adapter', 'plugins', 'state'],
     storyId: 'components-editor--default',
@@ -345,7 +350,15 @@ export const COMPONENT_CATALOG: ComponentCatalogItem[] = [
       <Editor
         adapter={markdownEditorAdapter()}
         defaultValue="Editor preview"
-        plugins={[toolbarPlugin(), richTextPlugin(), markdownShortcutPlugin()]}
+        plugins={[
+          historyPlugin(),
+          textFormatPlugin(),
+          headingPlugin(),
+          listPlugin(),
+          toolbarPlugin(),
+          markdownShortcutPlugin(),
+          keyboardShortcutPlugin(),
+        ]}
         readOnly
       />
     ),

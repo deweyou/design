@@ -1,12 +1,28 @@
-import { Fragment, useEffect, useMemo, useRef } from 'react';
+import {
+  Fragment,
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  type ForwardedRef,
+  type ReactElement,
+  type RefAttributes,
+} from 'react';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
-import { LexicalComposer } from '@lexical/react/LexicalComposer';
+import { LexicalComposer, type InitialConfigType } from '@lexical/react/LexicalComposer';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import classNames from 'classnames';
 
-import { composeEditorPlugins, type EditorAdapter, type EditorProps } from '../core/index.js';
+import {
+  composeEditorPlugins,
+  type EditorAdapter,
+  type EditorHandle,
+  type EditorPluginRegistry,
+  type EditorProps,
+} from '../core/index.js';
 import { createLexicalRuntime, lexicalEditorNodes } from '../runtime/lexical.js';
 
 import styles from './index.module.less';
@@ -73,27 +89,96 @@ const EditorEditablePlugin = ({ editable }: EditorEditablePluginProps) => {
   return null;
 };
 
-export const Editor = <TValue,>({
+type EditorImperativeHandlePluginProps<TValue> = {
+  adapter: EditorAdapter<TValue>;
+  forwardedRef: ForwardedRef<EditorHandle<TValue>>;
+  registry: EditorPluginRegistry;
+};
+
+const EditorImperativeHandlePlugin = <TValue,>({
   adapter,
-  className,
-  defaultValue,
-  disabled = false,
-  onChange,
-  placeholder,
-  plugins = [],
-  readOnly = false,
-  style,
-  value,
-}: EditorProps<TValue>) => {
+  forwardedRef,
+  registry,
+}: EditorImperativeHandlePluginProps<TValue>) => {
+  const [editor] = useLexicalComposerContext();
+
+  useImperativeHandle(
+    forwardedRef,
+    () => ({
+      blur: () => {
+        editor.getRootElement()?.blur();
+      },
+      focus: () => {
+        editor.getRootElement()?.focus();
+        editor.focus();
+      },
+      getValue: () =>
+        editor
+          .getEditorState()
+          .read(() => adapter.readValue({ runtime: createLexicalRuntime(editor) })),
+      insertContent: (content) => {
+        editor.update(() => {
+          adapter.applyValue?.({ runtime: createLexicalRuntime(editor), value: content });
+        });
+      },
+      runCommand: (command, payload) => {
+        const editorCommand = registry.commands.get(command);
+
+        if (!editorCommand) {
+          return undefined;
+        }
+
+        return editorCommand.run({ registry, runtime: createLexicalRuntime(editor) }, payload);
+      },
+      setValue: (nextValue) => {
+        editor.update(() => {
+          adapter.applyValue?.({ runtime: createLexicalRuntime(editor), value: nextValue });
+        });
+      },
+    }),
+    [adapter, editor, registry],
+  );
+
+  return null;
+};
+
+const EditorInner = <TValue,>(
+  {
+    adapter,
+    autoCapitalize,
+    autoCorrect,
+    className,
+    defaultValue,
+    disabled = false,
+    onChange,
+    placeholder,
+    plugins = [],
+    readOnly = false,
+    spellCheck,
+    style,
+    value,
+  }: EditorProps<TValue>,
+  forwardedRef: ForwardedRef<EditorHandle<TValue>>,
+) => {
   const editable = !disabled && !readOnly;
-  const composedPlugins = useMemo(() => composeEditorPlugins(plugins), [plugins]);
-  const beforeContentPlugins = composedPlugins.filter((plugin) => plugin.slot === 'before-content');
-  const afterContentPlugins = composedPlugins.filter((plugin) => plugin.slot === 'after-content');
-  const initialConfig = useMemo(
+  const registry = useMemo(() => composeEditorPlugins(plugins), [plugins]);
+  const beforeContentPlugins = registry.plugins.filter(
+    (plugin) => plugin.slot === 'before-content',
+  );
+  const afterContentPlugins = registry.plugins.filter((plugin) => plugin.slot === 'after-content');
+  const editorNodes = useMemo(
+    () => [...new Set([...lexicalEditorNodes, ...registry.nodes])] as InitialConfigType['nodes'],
+    [registry.nodes],
+  );
+  const setupContext = useMemo(
+    () => ({ registry, runtime: createLexicalRuntime(null) }),
+    [registry],
+  );
+  const initialConfig = useMemo<InitialConfigType>(
     () => ({
       editable,
       namespace: 'DeweyouEditor',
-      nodes: lexicalEditorNodes,
+      nodes: editorNodes,
       onError: (error: Error) => {
         throw error;
       },
@@ -117,6 +202,13 @@ export const Editor = <TValue,>({
           ol: styles.list,
           listitem: styles.listItem,
         },
+        link: styles.link,
+        table: styles.table,
+        tableCell: styles.tableCell,
+        tableCellHeader: styles.tableCellHeader,
+        tableCellSelected: styles.tableCellSelected,
+        tableRow: styles.tableRow,
+        tableSelection: styles.tableSelection,
         text: {
           bold: styles.bold,
           code: styles.inlineCode,
@@ -153,9 +245,8 @@ export const Editor = <TValue,>({
         },
       },
     }),
-    [adapter, defaultValue, editable, value],
+    [adapter, defaultValue, editable, editorNodes, value],
   );
-  const runtime = createLexicalRuntime(null);
 
   return (
     <div
@@ -168,18 +259,21 @@ export const Editor = <TValue,>({
     >
       <LexicalComposer initialConfig={initialConfig}>
         {beforeContentPlugins.map((plugin) => (
-          <Fragment key={plugin.name}>{plugin.setup({ runtime })}</Fragment>
+          <Fragment key={plugin.name}>{plugin.setup(setupContext)}</Fragment>
         ))}
         <div className={styles.contentFrame} data-editor-content-frame="true">
           <RichTextPlugin
             contentEditable={
               <ContentEditable
                 aria-label={placeholder ?? 'Editor'}
+                autoCapitalize={autoCapitalize}
+                autoCorrect={autoCorrect}
                 className={styles.contentEditable}
                 data-editor-content="true"
                 data-editor-size="md"
                 data-testid="editor-content"
                 role="textbox"
+                spellCheck={spellCheck}
               />
             }
             ErrorBoundary={LexicalErrorBoundary}
@@ -191,12 +285,23 @@ export const Editor = <TValue,>({
         <EditorEditablePlugin editable={editable} />
         <EditorChangePlugin adapter={adapter} onChange={onChange} />
         <EditorValueSyncPlugin adapter={adapter} value={value} />
+        <EditorImperativeHandlePlugin
+          adapter={adapter}
+          forwardedRef={forwardedRef}
+          registry={registry}
+        />
         {afterContentPlugins.map((plugin) => (
-          <Fragment key={plugin.name}>{plugin.setup({ runtime })}</Fragment>
+          <Fragment key={plugin.name}>{plugin.setup(setupContext)}</Fragment>
         ))}
       </LexicalComposer>
     </div>
   );
+};
+
+export const Editor = forwardRef(EditorInner) as (<TValue>(
+  props: EditorProps<TValue> & RefAttributes<EditorHandle<TValue>>,
+) => ReactElement | null) & {
+  displayName?: string;
 };
 
 Editor.displayName = 'Editor';

@@ -41,15 +41,75 @@ test('editor package publishes explicit root and subpath exports', () => {
       import: './dist/plugins/rich-text/index.js',
       types: './dist/plugins/rich-text/index.d.ts',
     },
+    './plugins/history': {
+      default: './dist/plugins/history/index.js',
+      import: './dist/plugins/history/index.js',
+      types: './dist/plugins/history/index.d.ts',
+    },
+    './plugins/text-format': {
+      default: './dist/plugins/text-format/index.js',
+      import: './dist/plugins/text-format/index.js',
+      types: './dist/plugins/text-format/index.d.ts',
+    },
+    './plugins/heading': {
+      default: './dist/plugins/heading/index.js',
+      import: './dist/plugins/heading/index.js',
+      types: './dist/plugins/heading/index.d.ts',
+    },
+    './plugins/list': {
+      default: './dist/plugins/list/index.js',
+      import: './dist/plugins/list/index.js',
+      types: './dist/plugins/list/index.d.ts',
+    },
+    './plugins/quote': {
+      default: './dist/plugins/quote/index.js',
+      import: './dist/plugins/quote/index.js',
+      types: './dist/plugins/quote/index.d.ts',
+    },
+    './plugins/link': {
+      default: './dist/plugins/link/index.js',
+      import: './dist/plugins/link/index.js',
+      types: './dist/plugins/link/index.d.ts',
+    },
+    './plugins/code': {
+      default: './dist/plugins/code/index.js',
+      import: './dist/plugins/code/index.js',
+      types: './dist/plugins/code/index.d.ts',
+    },
+    './plugins/table': {
+      default: './dist/plugins/table/index.js',
+      import: './dist/plugins/table/index.js',
+      types: './dist/plugins/table/index.d.ts',
+    },
     './plugins/markdown-shortcut': {
       default: './dist/plugins/markdown-shortcut/index.js',
       import: './dist/plugins/markdown-shortcut/index.js',
       types: './dist/plugins/markdown-shortcut/index.d.ts',
     },
+    './plugins/keyboard-shortcut': {
+      default: './dist/plugins/keyboard-shortcut/index.js',
+      import: './dist/plugins/keyboard-shortcut/index.js',
+      types: './dist/plugins/keyboard-shortcut/index.d.ts',
+    },
+    './plugins/paste': {
+      default: './dist/plugins/paste/index.js',
+      import: './dist/plugins/paste/index.js',
+      types: './dist/plugins/paste/index.d.ts',
+    },
     './plugins/toolbar': {
       default: './dist/plugins/toolbar/index.js',
       import: './dist/plugins/toolbar/index.js',
       types: './dist/plugins/toolbar/index.d.ts',
+    },
+    './plugins/floating-toolbar': {
+      default: './dist/plugins/floating-toolbar/index.js',
+      import: './dist/plugins/floating-toolbar/index.js',
+      types: './dist/plugins/floating-toolbar/index.d.ts',
+    },
+    './plugins/block-toolbar': {
+      default: './dist/plugins/block-toolbar/index.js',
+      import: './dist/plugins/block-toolbar/index.js',
+      types: './dist/plugins/block-toolbar/index.d.ts',
     },
     './adapters/markdown': {
       default: './dist/adapters/markdown/index.js',
@@ -76,6 +136,7 @@ test('editor package publishes explicit root and subpath exports', () => {
     '@lexical/react': 'catalog:',
     '@lexical/rich-text': 'catalog:',
     '@lexical/selection': 'catalog:',
+    '@lexical/table': 'catalog:',
     '@lexical/utils': 'catalog:',
     classnames: 'catalog:',
     lexical: 'catalog:',

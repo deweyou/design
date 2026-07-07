@@ -319,6 +319,19 @@ describe('MarkdownRender', () => {
     expect(plainMarkup).not.toContain('data-markdown-code-language-label="true"');
   });
 
+  it('renders copy actions for fenced code blocks', () => {
+    const markup = renderMarkdown({
+      value: ['```tsx', 'const value = <MarkdownRender value={content} />;', '```'].join('\n'),
+    });
+    const plainMarkup = renderMarkdown({
+      value: ['```', 'plain text', '```'].join('\n'),
+    });
+
+    expect(markup).toContain('data-code-block-copy="true"');
+    expect(markup).toContain('aria-label="Copy code"');
+    expect(plainMarkup).toContain('data-code-block-copy="true"');
+  });
+
   it('wraps fenced code overflow with ScrollArea while preserving pre and code semantics', () => {
     const markup = renderMarkdown({
       value: ['```ts', 'const value = "x".repeat(200);', '```'].join('\n'),

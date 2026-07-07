@@ -30,6 +30,9 @@ catalogs:
     '@lexical/selection':
       specifier: ^0.45.0
       version: 0.45.0
+    '@lexical/table':
+      specifier: ^0.45.0
+      version: 0.45.0
     '@lexical/utils':
       specifier: ^0.45.0
       version: 0.45.0
@@ -282,6 +285,9 @@ importers:
         specifier: 'catalog:'
         version: 0.45.0
       '@lexical/selection':
+        specifier: 'catalog:'
+        version: 0.45.0
+      '@lexical/table':
         specifier: 'catalog:'
         version: 0.45.0
       '@lexical/utils':

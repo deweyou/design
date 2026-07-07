@@ -9,6 +9,7 @@ import { MarkdownRenderPage } from './markdown-render';
 
 vi.mock('@deweyou-design/react-icons', () => ({
   CheckIcon: () => <span aria-hidden data-testid="mock-check-icon" />,
+  CopyIcon: () => <span aria-hidden data-testid="mock-copy-icon" />,
   EditIcon: () => <span aria-hidden data-testid="mock-edit-icon" />,
   EyeIcon: () => <span aria-hidden data-testid="mock-eye-icon" />,
   MinusIcon: () => <span aria-hidden data-testid="mock-minus-icon" />,

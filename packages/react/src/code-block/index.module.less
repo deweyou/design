@@ -32,6 +32,7 @@
   margin-block: var(--code-block-margin-block);
   max-block-size: var(--code-block-max-height);
   max-inline-size: 100%;
+  position: relative;
 }
 
 :global([data-theme='dark']) .root {
@@ -54,6 +55,10 @@
   max-block-size: var(--code-block-max-height);
 }
 
+.root[data-code-block-toolbar='header'] .viewport {
+  max-block-size: calc(var(--code-block-max-height) - 2.25rem);
+}
+
 .pre {
   box-sizing: border-box;
   inline-size: max-content;
@@ -61,6 +66,10 @@
   min-inline-size: 100%;
   padding: var(--code-block-padding-block) var(--code-block-padding-inline);
   padding-inline-end: 5.75rem;
+}
+
+.root[data-code-block-toolbar='header'] .pre {
+  padding-inline-end: var(--code-block-padding-inline);
 }
 
 .code {
@@ -93,8 +102,14 @@
   --code-block-padding-inline: 0.92rem;
 }
 
-.actions {
+.toolbar {
   align-items: center;
+  gap: 0.12rem;
+  position: relative;
+  z-index: 1;
+}
+
+.floatingToolbar {
   background: var(--code-block-actions-bg);
   border: 1px solid var(--code-block-actions-border);
   border-radius: 999px;
@@ -102,12 +117,30 @@
     inset 0 1px 0 var(--code-block-actions-highlight),
     0 1px 2px var(--code-block-actions-shadow);
   display: inline-flex;
-  gap: 0.12rem;
   inset-block-start: 0.55rem;
   inset-inline-end: 0.55rem;
   padding: 0.12rem;
   position: absolute;
-  z-index: 1;
+}
+
+.headerToolbar {
+  background: var(--code-block-bg);
+  border-block-end: 1px solid var(--code-block-border);
+  border-start-end-radius: calc(var(--ui-radius-rect) - 1px);
+  border-start-start-radius: calc(var(--ui-radius-rect) - 1px);
+  box-shadow: inset 0 1px 0 var(--code-block-highlight);
+  box-sizing: border-box;
+  block-size: 2.25rem;
+  display: flex;
+  inline-size: 100%;
+  justify-content: space-between;
+  padding: 0.25rem 0.4rem 0.25rem 0.55rem;
+}
+
+.headerActions {
+  align-items: center;
+  display: inline-flex;
+  gap: 0.12rem;
 }
 
 .actionPill {
@@ -142,19 +175,35 @@
   padding-inline-end: 0.3rem;
 }
 
-.copyButton {
+.actionButton,
+.languageButton {
   appearance: none;
-  block-size: 1.75rem;
+  border: 0;
   border-radius: 999px;
+  background: transparent;
+  color: var(--ui-color-text-muted);
   cursor: pointer;
-  inline-size: 1.75rem;
   position: relative;
   transition:
     background-color var(--ui-motion-duration-fast) var(--ui-motion-ease-exit),
     color var(--ui-motion-duration-fast) var(--ui-motion-ease-exit);
 }
 
-.copyButton::before {
+.actionButton {
+  block-size: 1.75rem;
+  inline-size: 1.75rem;
+}
+
+.languageButton {
+  gap: 0.18rem;
+  max-inline-size: 7.5rem;
+  min-block-size: 1.75rem;
+  padding-inline: 0.44rem 0.3rem;
+  text-transform: uppercase;
+}
+
+.actionButton::before,
+.languageButton::before {
   content: '';
   inset: calc((1.75rem - var(--ui-touch-target-min)) / 2);
   position: absolute;
@@ -172,21 +221,26 @@
   white-space: nowrap;
 }
 
-.copyButton:hover {
+.actionButton:hover,
+.languageButton:hover {
   background: color-mix(in srgb, var(--ui-color-text) 7%, transparent);
   color: var(--ui-color-text);
 }
 
-.copyButton:active {
+.actionButton:active,
+.languageButton:active {
   background: color-mix(in srgb, var(--ui-color-text) 10%, transparent);
 }
 
-.copyButton:focus-visible {
+.actionButton:focus-visible,
+.languageButton:focus-visible {
   .focus-ring();
   color: var(--ui-color-text);
 }
 
-.copyButton[data-copied='true'] {
+.actionButton[data-active='true'],
+.actionButton[data-copied='true'],
+.actionButton[data-feedback='true'] {
   background: color-mix(in srgb, var(--ui-color-brand-bg) 12%, transparent);
   color: var(--ui-color-brand-text);
 }

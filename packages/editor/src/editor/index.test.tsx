@@ -2,17 +2,19 @@
 
 import '../test-setup';
 
-import { useEffect } from 'react';
+import { createRef, useEffect } from 'react';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import { cleanup, render, screen, waitFor } from '@testing-library/react';
+import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
 import { $createParagraphNode, $createTextNode, $getRoot } from 'lexical';
 import { afterEach, expect, test, vi } from 'vite-plus/test';
 
 import { markdownEditorAdapter } from '../adapters/markdown/index.js';
-import { createEditorPlugin } from '../core/index.js';
+import { createEditorPlugin, type EditorHandle, type EditorPluginRegistry } from '../core/index.js';
 import { markdownShortcutPlugin } from '../plugins/markdown-shortcut/index.js';
 import { richTextPlugin } from '../plugins/rich-text/index.js';
+import { tablePlugin } from '../plugins/table/index.js';
 import { Editor } from './index';
+import styles from './index.module.less';
 
 afterEach(() => {
   cleanup();
@@ -77,6 +79,59 @@ test('emits markdown value when editor content changes', async () => {
   });
 });
 
+test('passes the composed registry to plugin setup', () => {
+  let receivedRegistry: EditorPluginRegistry | undefined;
+
+  render(
+    <Editor
+      adapter={markdownEditorAdapter()}
+      plugins={[
+        createEditorPlugin({
+          name: 'registry-aware',
+          commands: [{ id: 'registry-aware.run', run: () => undefined }],
+          setup: ({ registry }) => {
+            receivedRegistry = registry;
+            return null;
+          },
+        }),
+      ]}
+    />,
+  );
+
+  expect(receivedRegistry?.commands.has('registry-aware.run')).toBe(true);
+});
+
+test('exposes imperative editor handle for value and focus operations', async () => {
+  const ref = createRef<EditorHandle<string>>();
+
+  render(<Editor adapter={markdownEditorAdapter()} defaultValue="Initial markdown" ref={ref} />);
+
+  await waitFor(() => {
+    expect(ref.current?.getValue()).toContain('Initial markdown');
+  });
+
+  act(() => {
+    ref.current?.setValue('Next markdown');
+  });
+
+  await waitFor(() => {
+    expect(ref.current?.getValue()).toContain('Next markdown');
+    expect(screen.getByText('Next markdown')).toBeInTheDocument();
+  });
+
+  act(() => {
+    ref.current?.focus();
+  });
+
+  expect(screen.getByRole('textbox')).toHaveFocus();
+
+  act(() => {
+    ref.current?.blur();
+  });
+
+  expect(screen.getByRole('textbox')).not.toHaveFocus();
+});
+
 test('uses defaultValue as initial content', () => {
   render(
     <Editor
@@ -87,6 +142,52 @@ test('uses defaultValue as initial content', () => {
   );
 
   expect(screen.getByText('Initial markdown')).toBeInTheDocument();
+});
+
+test('passes browser correction controls to the editable surface', () => {
+  render(
+    <Editor
+      adapter={markdownEditorAdapter()}
+      autoCapitalize="off"
+      autoCorrect="off"
+      spellCheck={false}
+    />,
+  );
+
+  expect(screen.getByRole('textbox')).toHaveAttribute('autocapitalize', 'off');
+  expect(screen.getByRole('textbox')).toHaveAttribute('autocorrect', 'off');
+  expect(screen.getByRole('textbox')).toHaveAttribute('spellcheck', 'false');
+});
+
+test('applies the editor link theme class to markdown links', async () => {
+  render(
+    <Editor
+      adapter={markdownEditorAdapter()}
+      defaultValue="[Deweyou](https://deweyou.com)"
+      plugins={[richTextPlugin(), markdownShortcutPlugin()]}
+    />,
+  );
+
+  expect(styles.link).toBeTruthy();
+  expect(await screen.findByRole('link', { name: 'Deweyou' })).toHaveClass(styles.link);
+});
+
+test('applies table theme classes to inserted tables', async () => {
+  render(
+    <Editor adapter={markdownEditorAdapter()} plugins={[tablePlugin({ initialTable: true })]} />,
+  );
+
+  const table = await screen.findByRole('table');
+  const firstCell = table.querySelector('th, td');
+
+  expect(styles.table).toBeTruthy();
+  expect(styles.tableCell).toBeTruthy();
+  expect(styles.tableCellHeader).toBeTruthy();
+  expect(styles.tableCellSelected).toBeTruthy();
+  expect(styles.tableSelection).toBeTruthy();
+  expect(table).toHaveClass(styles.table);
+  expect(firstCell).toHaveClass(styles.tableCell);
+  expect(firstCell).not.toHaveClass(styles.tableCellHeader);
 });
 
 test('readOnly and disabled prevent editing', () => {

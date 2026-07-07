@@ -1,17 +1,23 @@
-import { TRANSFORMERS } from '@lexical/markdown';
+import { TRANSFORMERS, type Transformer } from '@lexical/markdown';
 import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPlugin';
 
 import { createEditorPlugin } from '../../core/index.js';
-import { isLexicalRuntime } from '../../runtime/lexical.js';
 
-export const markdownShortcutPlugin = () =>
+export type MarkdownShortcutPluginOptions = {
+  shortcuts?: string[];
+};
+
+export const markdownShortcutPlugin = ({ shortcuts }: MarkdownShortcutPluginOptions = {}) =>
   createEditorPlugin({
     name: 'markdown-shortcut',
-    setup: ({ runtime }) => {
-      if (!isLexicalRuntime(runtime)) {
-        return null;
-      }
+    setup: ({ registry }) => {
+      const enabledShortcuts = shortcuts ? new Set(shortcuts) : undefined;
+      const transformers: Transformer[] = registry
+        ? (registry.markdownShortcuts
+            .filter((shortcut) => !enabledShortcuts || enabledShortcuts.has(shortcut.feature))
+            .flatMap((shortcut) => shortcut.transformers) as Transformer[])
+        : TRANSFORMERS;
 
-      return <MarkdownShortcutPlugin transformers={TRANSFORMERS} />;
+      return <MarkdownShortcutPlugin transformers={transformers} />;
     },
   });

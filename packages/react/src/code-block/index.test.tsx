@@ -31,6 +31,7 @@ describe('CodeBlock', () => {
 
     expect(markup).toContain('data-ui-code-block="true"');
     expect(markup).toContain('data-language="ts"');
+    expect(markup).toContain('data-code-block-toolbar="header"');
     expect(markup).toContain('data-code-block-language-label="true"');
     expect(markup).toContain('>ts</span>');
     expect(markup).toContain('<pre');
@@ -89,6 +90,16 @@ describe('CodeBlock', () => {
     });
   });
 
+  it('keeps copy-only actions in the header action slot', () => {
+    render(<CodeBlock copy>plain text</CodeBlock>);
+
+    const toolbar = screen.getByRole('toolbar');
+    const copyButton = screen.getByRole('button', { name: 'Copy code' });
+
+    expect(toolbar.getAttribute('data-code-block-toolbar')).toBe('header');
+    expect(copyButton.parentElement?.className).toContain('headerActions');
+  });
+
   it('announces copy failures without calling onCopy', async () => {
     const writeText = vi.fn().mockRejectedValue(new Error('denied'));
     const onCopy = vi.fn();
@@ -115,5 +126,40 @@ describe('CodeBlock', () => {
     render(<CodeBlock language="ts">const value = 1;</CodeBlock>);
 
     expect(screen.queryByRole('button', { name: 'Copy code' })).toBeNull();
+  });
+
+  it('exposes reusable code block chrome primitives', () => {
+    render(
+      <CodeBlock.Toolbar aria-label="Code block actions">
+        <CodeBlock.LanguageButton aria-label="Code language">JSON</CodeBlock.LanguageButton>
+        <CodeBlock.ActionButton active aria-label="Wrap code">
+          Wrap
+        </CodeBlock.ActionButton>
+      </CodeBlock.Toolbar>,
+    );
+
+    expect(
+      screen
+        .getByRole('toolbar', { name: 'Code block actions' })
+        .getAttribute('data-code-block-toolbar'),
+    ).toBe('header');
+    expect(
+      screen
+        .getByRole('button', { name: 'Code language' })
+        .getAttribute('data-code-block-language-button'),
+    ).toBe('true');
+    expect(screen.getByRole('button', { name: 'Wrap code' }).getAttribute('data-active')).toBe(
+      'true',
+    );
+  });
+
+  it('keeps floating chrome available as an explicit toolbar variant', () => {
+    render(<CodeBlock.Toolbar aria-label="Floating code actions" variant="floating" />);
+
+    expect(
+      screen
+        .getByRole('toolbar', { name: 'Floating code actions' })
+        .getAttribute('data-code-block-toolbar'),
+    ).toBe('floating');
   });
 });

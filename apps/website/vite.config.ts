@@ -372,6 +372,10 @@ export default defineConfig({
         replacement: `${stylesCssDir}/base.css`,
       },
       {
+        find: /^@deweyou-design\/styles\/less\/bridge(?:\.less)?$/,
+        replacement: stylesLessBridge,
+      },
+      {
         find: /^@deweyou-design\/styles$/,
         replacement: stylesEntry,
       },
