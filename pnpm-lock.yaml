@@ -153,9 +153,6 @@ importers:
 
   apps/storybook:
     dependencies:
-      '@deweyou-design/editor':
-        specifier: workspace:*
-        version: link:../../packages/editor/dist
       '@deweyou-design/react':
         specifier: workspace:*
         version: link:../../packages/react/dist
@@ -202,9 +199,6 @@ importers:
 
   apps/website:
     dependencies:
-      '@deweyou-design/editor':
-        specifier: workspace:*
-        version: link:../../packages/editor/dist
       '@deweyou-design/react':
         specifier: workspace:*
         version: link:../../packages/react/dist
@@ -255,95 +249,6 @@ importers:
         specifier: 'catalog:'
         version: 0.1.11(@types/node@25.5.0)(@voidzero-dev/vite-plus-core@0.1.12(@types/node@25.5.0)(jiti@2.6.1)(less@4.6.4)(typescript@5.9.3)(yaml@2.8.2))(jiti@2.6.1)(jsdom@29.0.1)(less@4.6.4)(typescript@5.9.3)(yaml@2.8.2)
 
-  packages/editor:
-    dependencies:
-      '@deweyou-design/react':
-        specifier: workspace:*
-        version: link:../react/dist
-      '@deweyou-design/react-icons':
-        specifier: workspace:*
-        version: link:../react-icons/dist
-      '@deweyou-design/styles':
-        specifier: workspace:*
-        version: link:../styles/dist
-      '@lexical/code':
-        specifier: 'catalog:'
-        version: 0.45.0
-      '@lexical/link':
-        specifier: 'catalog:'
-        version: 0.45.0
-      '@lexical/list':
-        specifier: 'catalog:'
-        version: 0.45.0
-      '@lexical/markdown':
-        specifier: 'catalog:'
-        version: 0.45.0
-      '@lexical/react':
-        specifier: 'catalog:'
-        version: 0.45.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(yjs@13.6.31)
-      '@lexical/rich-text':
-        specifier: 'catalog:'
-        version: 0.45.0
-      '@lexical/selection':
-        specifier: 'catalog:'
-        version: 0.45.0
-      '@lexical/table':
-        specifier: 'catalog:'
-        version: 0.45.0
-      '@lexical/utils':
-        specifier: 'catalog:'
-        version: 0.45.0
-      classnames:
-        specifier: 'catalog:'
-        version: 2.5.1
-      lexical:
-        specifier: 'catalog:'
-        version: 0.45.0
-      prismjs:
-        specifier: 'catalog:'
-        version: 1.30.0
-      react:
-        specifier: 'catalog:'
-        version: 19.2.4
-      react-dom:
-        specifier: 'catalog:'
-        version: 19.2.4(react@19.2.4)
-    devDependencies:
-      '@testing-library/jest-dom':
-        specifier: 'catalog:'
-        version: 6.9.1
-      '@testing-library/react':
-        specifier: 'catalog:'
-        version: 16.3.2(@testing-library/dom@10.4.0)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      '@testing-library/user-event':
-        specifier: 'catalog:'
-        version: 14.6.1(@testing-library/dom@10.4.0)
-      '@tsdown/css':
-        specifier: 'catalog:'
-        version: 0.21.3(jiti@2.6.1)(postcss@8.5.8)(tsdown@0.21.3)(yaml@2.8.2)
-      '@types/prismjs':
-        specifier: 'catalog:'
-        version: 1.26.6
-      '@types/react':
-        specifier: 'catalog:'
-        version: 19.2.14
-      '@types/react-dom':
-        specifier: 'catalog:'
-        version: 19.2.3(@types/react@19.2.14)
-      jsdom:
-        specifier: 'catalog:'
-        version: 29.0.1
-      less:
-        specifier: 'catalog:'
-        version: 4.6.4
-      typescript:
-        specifier: 'catalog:'
-        version: 5.9.3
-      vite-plus:
-        specifier: 'catalog:'
-        version: 0.1.11(@tsdown/css@0.21.3)(@types/node@25.5.0)(jiti@2.6.1)(jsdom@29.0.1)(less@4.6.4)(typescript@5.9.3)(vite@8.0.0(@types/node@25.5.0)(jiti@2.6.1)(less@4.6.4)(yaml@2.8.2))(yaml@2.8.2)
-    publishDirectory: dist
-
   packages/infra:
     devDependencies:
       '@types/node':
@@ -393,6 +298,33 @@ importers:
       '@deweyou-design/styles':
         specifier: workspace:*
         version: link:../styles/dist
+      '@lexical/code':
+        specifier: 'catalog:'
+        version: 0.45.0
+      '@lexical/link':
+        specifier: 'catalog:'
+        version: 0.45.0
+      '@lexical/list':
+        specifier: 'catalog:'
+        version: 0.45.0
+      '@lexical/markdown':
+        specifier: 'catalog:'
+        version: 0.45.0
+      '@lexical/react':
+        specifier: 'catalog:'
+        version: 0.45.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(yjs@13.6.31)
+      '@lexical/rich-text':
+        specifier: 'catalog:'
+        version: 0.45.0
+      '@lexical/selection':
+        specifier: 'catalog:'
+        version: 0.45.0
+      '@lexical/table':
+        specifier: 'catalog:'
+        version: 0.45.0
+      '@lexical/utils':
+        specifier: 'catalog:'
+        version: 0.45.0
       beautiful-mermaid:
         specifier: 'catalog:'
         version: 1.1.3
@@ -402,9 +334,15 @@ importers:
       highlight.js:
         specifier: 'catalog:'
         version: 11.11.1
+      lexical:
+        specifier: 'catalog:'
+        version: 0.45.0
       mermaid:
         specifier: 'catalog:'
         version: 11.15.0
+      prismjs:
+        specifier: 'catalog:'
+        version: 1.30.0
       react:
         specifier: 'catalog:'
         version: 19.2.4
@@ -433,6 +371,9 @@ importers:
       '@tsdown/css':
         specifier: 'catalog:'
         version: 0.21.3(jiti@2.6.1)(postcss@8.5.8)(tsdown@0.21.3)(yaml@2.8.2)
+      '@types/prismjs':
+        specifier: 'catalog:'
+        version: 1.26.6
       '@types/react':
         specifier: 'catalog:'
         version: 19.2.14

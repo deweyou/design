@@ -7,13 +7,48 @@ import { expect } from '../test-setup';
 
 import { MermaidRenderPage } from './mermaid-render';
 
-vi.mock('@deweyou-design/react-icons', () => ({
-  EditIcon: () => <span aria-hidden data-testid="mock-edit-icon" />,
-  EyeIcon: () => <span aria-hidden data-testid="mock-eye-icon" />,
-  RefreshIcon: () => <span aria-hidden data-testid="mock-refresh-icon" />,
-  ZoomInIcon: () => <span aria-hidden data-testid="mock-zoom-in-icon" />,
-  ZoomOutIcon: () => <span aria-hidden data-testid="mock-zoom-out-icon" />,
-}));
+vi.mock('@deweyou-design/react-icons', () => {
+  const icons = {
+    EditIcon: () => <span aria-hidden data-testid="mock-edit-icon" />,
+    EyeIcon: () => <span aria-hidden data-testid="mock-eye-icon" />,
+    RefreshIcon: () => <span aria-hidden data-testid="mock-refresh-icon" />,
+    ZoomInIcon: () => <span aria-hidden data-testid="mock-zoom-in-icon" />,
+    ZoomOutIcon: () => <span aria-hidden data-testid="mock-zoom-out-icon" />,
+  };
+
+  return new Proxy(icons, {
+    get: (target, property) => {
+      if (property === '__esModule') {
+        return true;
+      }
+
+      if (property === 'then' || typeof property !== 'string') {
+        return undefined;
+      }
+
+      return (
+        Reflect.get(target, property) ??
+        (property.endsWith('Icon')
+          ? () => <span aria-hidden data-testid={`mock-${property}`} />
+          : undefined)
+      );
+    },
+    getOwnPropertyDescriptor: (target, property) => {
+      const descriptor = Reflect.getOwnPropertyDescriptor(target, property);
+      if (descriptor || typeof property !== 'string' || !property.endsWith('Icon')) {
+        return descriptor;
+      }
+
+      return {
+        configurable: true,
+        enumerable: false,
+        value: () => <span aria-hidden data-testid={`mock-${property}`} />,
+      };
+    },
+    has: (target, property) =>
+      Reflect.has(target, property) || (typeof property === 'string' && property.endsWith('Icon')),
+  });
+});
 
 afterEach(() => {
   cleanup();

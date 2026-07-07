@@ -9,7 +9,6 @@
     "preview": "vp preview"
   },
   "dependencies": {
-    "@deweyou-design/editor": "workspace:*",
     "@deweyou-design/react": "workspace:*",
     "@deweyou-design/react-hooks": "workspace:*",
     "@deweyou-design/react-icons": "workspace:*",

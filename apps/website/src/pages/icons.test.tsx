@@ -41,13 +41,50 @@ vi.mock('../../../../packages/react-icons/src/icon-registry', () => ({
   iconRegistry: mockIconRegistry,
 }));
 
-vi.mock('@deweyou-design/react-icons', () =>
-  Object.fromEntries(
-    mockIconRegistry.map(({ exportName }) => [
-      exportName,
-      () => <span aria-hidden data-testid={`mock-${exportName}`} />,
-    ]),
-  ),
+vi.mock(
+  '@deweyou-design/react-icons',
+  () =>
+    new Proxy(
+      Object.fromEntries(
+        mockIconRegistry.map(({ exportName }) => [
+          exportName,
+          () => <span aria-hidden data-testid={`mock-${exportName}`} />,
+        ]),
+      ),
+      {
+        get: (target, property) => {
+          if (property === '__esModule') {
+            return true;
+          }
+
+          if (property === 'then' || typeof property !== 'string') {
+            return undefined;
+          }
+
+          return (
+            Reflect.get(target, property) ??
+            (property.endsWith('Icon')
+              ? () => <span aria-hidden data-testid={`mock-${property}`} />
+              : undefined)
+          );
+        },
+        getOwnPropertyDescriptor: (target, property) => {
+          const descriptor = Reflect.getOwnPropertyDescriptor(target, property);
+          if (descriptor || typeof property !== 'string' || !property.endsWith('Icon')) {
+            return descriptor;
+          }
+
+          return {
+            configurable: true,
+            enumerable: false,
+            value: () => <span aria-hidden data-testid={`mock-${property}`} />,
+          };
+        },
+        has: (target, property) =>
+          Reflect.has(target, property) ||
+          (typeof property === 'string' && property.endsWith('Icon')),
+      },
+    ),
 );
 
 const originalClipboardDescriptor = Object.getOwnPropertyDescriptor(navigator, 'clipboard');

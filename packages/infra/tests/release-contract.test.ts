@@ -40,7 +40,6 @@ test('release script includes every public Deweyou Design package with a dist pu
     .sort((left, right) => left.localeCompare(right));
 
   expect(publishablePackageNames).toEqual([
-    '@deweyou-design/editor',
     '@deweyou-design/mcp',
     '@deweyou-design/react',
     '@deweyou-design/react-hooks',
@@ -99,7 +98,7 @@ test('publishable package manifests identify the trusted publishing repository',
         manifest.publishConfig?.directory === 'dist',
     );
 
-  expect(publishableManifests).toHaveLength(7);
+  expect(publishableManifests).toHaveLength(6);
   for (const manifest of publishableManifests) {
     expect(manifest.repository).toEqual({
       type: 'git',

@@ -69,10 +69,10 @@ describe('component catalog', () => {
       "import { toast } from '@deweyou-design/react/toast';",
     );
     expect(getComponentImportSnippet('Editor')).toBe(
-      "import { Editor } from '@deweyou-design/editor';",
+      "import { Editor } from '@deweyou-design/react';",
     );
     expect(getComponentImportSnippet('Editor', { subpath: true })).toBe(
-      "import { Editor } from '@deweyou-design/editor/editor';",
+      "import { Editor } from '@deweyou-design/react/editor';",
     );
   });
 });

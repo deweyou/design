@@ -42,8 +42,8 @@ import {
   CodeBlockActionButton,
   CodeBlockLanguageButton,
   CodeBlockToolbar,
-} from '@deweyou-design/react/code-block';
-import { Tooltip } from '@deweyou-design/react/tooltip';
+} from '../../../code-block/index.js';
+import { Tooltip } from '../../../tooltip/index.js';
 import classNames from 'classnames';
 
 import {

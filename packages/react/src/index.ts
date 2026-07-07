@@ -117,6 +117,7 @@ export {
   type FieldLabelProps,
   type FieldRootProps,
 } from './field/index.tsx';
+export * from './editor/index.ts';
 export {
   Badge,
   type BadgeProps,

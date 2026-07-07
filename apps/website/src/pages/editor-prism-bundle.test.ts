@@ -7,7 +7,8 @@ import { build } from 'vite';
 import { expect, test } from 'vite-plus/test';
 
 const repoRoot = join(import.meta.dirname, '../../../../');
-const richTextPluginEntry = join(repoRoot, 'packages/editor/src/plugins/rich-text/index.tsx');
+const richTextPluginEntry = join(repoRoot, 'packages/react/src/editor/plugins/rich-text/index.tsx');
+const stylesLessBridge = join(repoRoot, 'packages/styles/src/less/bridge.less');
 
 type RichTextBundleGlobal = typeof globalThis & {
   __richTextPluginName?: string;
@@ -34,6 +35,13 @@ test('website production bundle can load editor rich text syntax highlighting', 
         outDir: outputDir,
         rollupOptions: {
           input: join(fixtureDir, 'entry.ts'),
+        },
+      },
+      css: {
+        preprocessorOptions: {
+          less: {
+            additionalData: `@import "${stylesLessBridge}";\n`,
+          },
         },
       },
       logLevel: 'silent',

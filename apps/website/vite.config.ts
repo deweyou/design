@@ -9,7 +9,6 @@ import type { Plugin, ViteDevServer } from 'vite';
 const componentsEntry = fileURLToPath(
   new URL('../../packages/react/src/index.ts', import.meta.url),
 );
-const editorEntry = fileURLToPath(new URL('../../packages/editor/src/index.ts', import.meta.url));
 const websiteSourceDir = fileURLToPath(new URL('./src', import.meta.url));
 const componentsSourceDir = fileURLToPath(new URL('../../packages/react/src', import.meta.url));
 const hooksEntry = fileURLToPath(
@@ -328,8 +327,12 @@ export default defineConfig({
   resolve: {
     alias: [
       {
-        find: /^@deweyou-design\/editor$/,
-        replacement: editorEntry,
+        find: /^@deweyou-design\/react\/editor$/,
+        replacement: `${componentsSourceDir}/editor/index.ts`,
+      },
+      {
+        find: /^@deweyou-design\/react\/editor\/(.+)$/,
+        replacement: `${componentsSourceDir}/editor/$1/index.ts`,
       },
       {
         find: /^@deweyou-design\/react\/(.+)$/,

@@ -6,42 +6,42 @@ This document is the human-readable companion to `packages/react/package.json` e
 
 ## Import Matrix
 
-| Component               | Root import              | Subpath import                                  |
-| ----------------------- | ------------------------ | ----------------------------------------------- |
-| `Badge`                 | `@deweyou-design/react`  | `@deweyou-design/react/badge`                   |
-| `Breadcrumb`            | `@deweyou-design/react`  | `@deweyou-design/react/breadcrumb`              |
-| `Button`, `IconButton`  | `@deweyou-design/react`  | `@deweyou-design/react/button`                  |
-| `Card`                  | `@deweyou-design/react`  | `@deweyou-design/react/card`                    |
-| `Checkbox`              | `@deweyou-design/react`  | `@deweyou-design/react/checkbox`                |
-| `CodeBlock`             | `@deweyou-design/react`  | `@deweyou-design/react/code-block`              |
-| `Dialog`                | `@deweyou-design/react`  | `@deweyou-design/react/dialog`                  |
-| `Field`                 | `@deweyou-design/react`  | `@deweyou-design/react/field`                   |
-| `GroupedVirtualMasonry` | `@deweyou-design/react`  | `@deweyou-design/react/grouped-virtual-masonry` |
-| `ImageMasonry`          | `@deweyou-design/react`  | `@deweyou-design/react/image-masonry`           |
-| `ImagePreview`          | `@deweyou-design/react`  | `@deweyou-design/react/image-preview`           |
-| `Input`                 | `@deweyou-design/react`  | `@deweyou-design/react/input`                   |
-| `MarkdownRender`        | `@deweyou-design/react`  | `@deweyou-design/react/markdown-render`         |
-| `Editor`                | `@deweyou-design/editor` | `@deweyou-design/editor/editor`                 |
-| `MermaidRender`         | `@deweyou-design/react`  | `@deweyou-design/react/mermaid-render`          |
-| `Menu`, `ContextMenu`   | `@deweyou-design/react`  | `@deweyou-design/react/menu`                    |
-| `Nav`                   | `@deweyou-design/react`  | `@deweyou-design/react/nav`                     |
-| `NavOverlay`            | `@deweyou-design/react`  | `@deweyou-design/react/nav-overlay`             |
-| `Pagination`            | `@deweyou-design/react`  | `@deweyou-design/react/pagination`              |
-| `Popover`               | `@deweyou-design/react`  | `@deweyou-design/react/popover`                 |
-| `RadioGroup`            | `@deweyou-design/react`  | `@deweyou-design/react/radio-group`             |
-| `ScrollArea`            | `@deweyou-design/react`  | `@deweyou-design/react/scroll-area`             |
-| `Select`                | `@deweyou-design/react`  | `@deweyou-design/react/select`                  |
-| `Separator`             | `@deweyou-design/react`  | `@deweyou-design/react/separator`               |
-| `Skeleton`              | `@deweyou-design/react`  | `@deweyou-design/react/skeleton`                |
-| `Spinner`               | `@deweyou-design/react`  | `@deweyou-design/react/spinner`                 |
-| `Switch`                | `@deweyou-design/react`  | `@deweyou-design/react/switch`                  |
-| `Tabs` family           | `@deweyou-design/react`  | `@deweyou-design/react/tabs`                    |
-| `Text`                  | `@deweyou-design/react`  | `@deweyou-design/react/text`                    |
-| `Textarea`              | `@deweyou-design/react`  | `@deweyou-design/react/textarea`                |
-| `toast`, `Toaster`      | `@deweyou-design/react`  | `@deweyou-design/react/toast`                   |
-| `Tooltip`               | `@deweyou-design/react`  | `@deweyou-design/react/tooltip`                 |
-| `VirtualList`           | `@deweyou-design/react`  | `@deweyou-design/react/virtual-list`            |
-| `VirtualMasonry`        | `@deweyou-design/react`  | `@deweyou-design/react/virtual-masonry`         |
+| Component               | Root import             | Subpath import                                  |
+| ----------------------- | ----------------------- | ----------------------------------------------- |
+| `Badge`                 | `@deweyou-design/react` | `@deweyou-design/react/badge`                   |
+| `Breadcrumb`            | `@deweyou-design/react` | `@deweyou-design/react/breadcrumb`              |
+| `Button`, `IconButton`  | `@deweyou-design/react` | `@deweyou-design/react/button`                  |
+| `Card`                  | `@deweyou-design/react` | `@deweyou-design/react/card`                    |
+| `Checkbox`              | `@deweyou-design/react` | `@deweyou-design/react/checkbox`                |
+| `CodeBlock`             | `@deweyou-design/react` | `@deweyou-design/react/code-block`              |
+| `Dialog`                | `@deweyou-design/react` | `@deweyou-design/react/dialog`                  |
+| `Field`                 | `@deweyou-design/react` | `@deweyou-design/react/field`                   |
+| `GroupedVirtualMasonry` | `@deweyou-design/react` | `@deweyou-design/react/grouped-virtual-masonry` |
+| `ImageMasonry`          | `@deweyou-design/react` | `@deweyou-design/react/image-masonry`           |
+| `ImagePreview`          | `@deweyou-design/react` | `@deweyou-design/react/image-preview`           |
+| `Input`                 | `@deweyou-design/react` | `@deweyou-design/react/input`                   |
+| `MarkdownRender`        | `@deweyou-design/react` | `@deweyou-design/react/markdown-render`         |
+| `Editor`                | `@deweyou-design/react` | `@deweyou-design/react/editor`                  |
+| `MermaidRender`         | `@deweyou-design/react` | `@deweyou-design/react/mermaid-render`          |
+| `Menu`, `ContextMenu`   | `@deweyou-design/react` | `@deweyou-design/react/menu`                    |
+| `Nav`                   | `@deweyou-design/react` | `@deweyou-design/react/nav`                     |
+| `NavOverlay`            | `@deweyou-design/react` | `@deweyou-design/react/nav-overlay`             |
+| `Pagination`            | `@deweyou-design/react` | `@deweyou-design/react/pagination`              |
+| `Popover`               | `@deweyou-design/react` | `@deweyou-design/react/popover`                 |
+| `RadioGroup`            | `@deweyou-design/react` | `@deweyou-design/react/radio-group`             |
+| `ScrollArea`            | `@deweyou-design/react` | `@deweyou-design/react/scroll-area`             |
+| `Select`                | `@deweyou-design/react` | `@deweyou-design/react/select`                  |
+| `Separator`             | `@deweyou-design/react` | `@deweyou-design/react/separator`               |
+| `Skeleton`              | `@deweyou-design/react` | `@deweyou-design/react/skeleton`                |
+| `Spinner`               | `@deweyou-design/react` | `@deweyou-design/react/spinner`                 |
+| `Switch`                | `@deweyou-design/react` | `@deweyou-design/react/switch`                  |
+| `Tabs` family           | `@deweyou-design/react` | `@deweyou-design/react/tabs`                    |
+| `Text`                  | `@deweyou-design/react` | `@deweyou-design/react/text`                    |
+| `Textarea`              | `@deweyou-design/react` | `@deweyou-design/react/textarea`                |
+| `toast`, `Toaster`      | `@deweyou-design/react` | `@deweyou-design/react/toast`                   |
+| `Tooltip`               | `@deweyou-design/react` | `@deweyou-design/react/tooltip`                 |
+| `VirtualList`           | `@deweyou-design/react` | `@deweyou-design/react/virtual-list`            |
+| `VirtualMasonry`        | `@deweyou-design/react` | `@deweyou-design/react/virtual-masonry`         |
 
 Use root imports when a file consumes several components together. Use subpath imports for examples, docs, and single-component usage so bundlers and AI agents can see the intended package boundary.
 
@@ -224,6 +224,28 @@ such as `toolbarPlugin()`, `floatingToolbarPlugin()`, `blockToolbarPlugin()`,
 `markdownShortcutPlugin()`, `keyboardShortcutPlugin()`, and `pastePlugin()` should
 consume feature contributions from the registry instead of hardcoding feature
 logic. `richTextPlugin()` remains a compatibility preset.
+
+Editor subpath exports:
+
+- `@deweyou-design/react/editor`
+- `@deweyou-design/react/editor/core`
+- `@deweyou-design/react/editor/adapters/markdown`
+- `@deweyou-design/react/editor/plugins/block-toolbar`
+- `@deweyou-design/react/editor/plugins/code`
+- `@deweyou-design/react/editor/plugins/floating-toolbar`
+- `@deweyou-design/react/editor/plugins/heading`
+- `@deweyou-design/react/editor/plugins/history`
+- `@deweyou-design/react/editor/plugins/keyboard-shortcut`
+- `@deweyou-design/react/editor/plugins/link`
+- `@deweyou-design/react/editor/plugins/list`
+- `@deweyou-design/react/editor/plugins/markdown-shortcut`
+- `@deweyou-design/react/editor/plugins/paste`
+- `@deweyou-design/react/editor/plugins/quote`
+- `@deweyou-design/react/editor/plugins/rich-text`
+- `@deweyou-design/react/editor/plugins/table`
+- `@deweyou-design/react/editor/plugins/text-format`
+- `@deweyou-design/react/editor/plugins/toolbar`
+- `@deweyou-design/react/editor/utils`
 
 ### MermaidRender
 

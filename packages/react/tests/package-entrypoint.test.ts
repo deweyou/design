@@ -74,7 +74,14 @@ const exampleMermaidRenderProps: import('../src').MermaidRenderProps = {
   value: 'flowchart TD\n  A --> B',
 };
 
+const exampleEditorProps: import('../src').EditorProps<string> = {
+  adapter: components.markdownEditorAdapter(),
+  defaultValue: '# Editor',
+  plugins: [components.richTextPlugin(), components.markdownShortcutPlugin()],
+};
+
 void exampleButtonProps;
+void exampleEditorProps;
 void exampleIconButtonProps;
 void exampleMarkdownRenderProps;
 void exampleMermaidRenderProps;
@@ -95,6 +102,8 @@ test('components root entry exposes Button, IconButton, Popover, Text, Menu fami
     'CodeBlockToolbar',
     'ContextMenu',
     'Dialog',
+    'Editor',
+    'EditorPluginCompatibilityError',
     'Field',
     'GroupedVirtualMasonry',
     'IconButton',
@@ -137,9 +146,31 @@ test('components root entry exposes Button, IconButton, Popover, Text, Menu fami
     'Tooltip',
     'VirtualList',
     'VirtualMasonry',
+    'blockToolbarPlugin',
+    'codePlugin',
+    'composeEditorPlugins',
+    'createEditorPlugin',
+    'createEditorPluginCompatibilityError',
     'detectMermaidDiagramType',
+    'floatingToolbarPlugin',
+    'formatJsonPreservingDuplicateKeys',
+    'hasDuplicateJsonObjectKeys',
+    'headingPlugin',
+    'historyPlugin',
+    'isEditorPluginCompatibilityError',
+    'keyboardShortcutPlugin',
+    'linkPlugin',
+    'listPlugin',
+    'markdownEditorAdapter',
     'markdownRenderSizeOptions',
+    'markdownShortcutPlugin',
+    'pastePlugin',
+    'quotePlugin',
+    'richTextPlugin',
+    'tablePlugin',
+    'textFormatPlugin',
     'toast',
+    'toolbarPlugin',
     'useFieldContext',
     'useFieldControlProps',
   ]);

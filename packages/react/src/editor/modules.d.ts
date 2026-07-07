@@ -3,6 +3,6 @@ declare module '*.module.less' {
   export default classes;
 }
 
-declare module '@deweyou-design/editor/editor' {
-  export * from './editor/index.tsx';
+declare module '@deweyou-design/react/editor' {
+  export * from './index.ts';
 }

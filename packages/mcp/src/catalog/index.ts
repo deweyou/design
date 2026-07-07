@@ -190,8 +190,8 @@ export const componentCatalog: ComponentCatalogItem[] = [
     dimensions: ['adapter', 'plugins', 'state'],
     storyId: 'components-editor--default',
     subpath: 'editor',
-    packageName: '@deweyou-design/editor',
-    importSnippet: rootImport('Editor', '@deweyou-design/editor'),
+    packageName: '@deweyou-design/react',
+    importSnippet: rootImport('Editor', '@deweyou-design/react'),
   },
   {
     name: 'MermaidRender',

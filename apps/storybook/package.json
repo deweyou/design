@@ -9,7 +9,6 @@
     "test": "test-storybook --url http://localhost:6106 --ci --index-json --maxWorkers=1"
   },
   "dependencies": {
-    "@deweyou-design/editor": "workspace:*",
     "@deweyou-design/react": "workspace:*",
     "@deweyou-design/react-icons": "workspace:*",
     "@deweyou-design/styles": "workspace:*",

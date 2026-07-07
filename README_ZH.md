@@ -24,10 +24,10 @@ npm install @deweyou-design/react-icons
 npm install @deweyou-design/mcp
 ```
 
-如需富文本编辑、适配器和编辑器插件能力，可安装 editor 包：
+如需富文本编辑、适配器和编辑器插件能力，可安装 React 包：
 
 ```bash
-npm install @deweyou-design/editor
+npm install @deweyou-design/react
 ```
 
 ## 快速上手
@@ -125,7 +125,7 @@ export const RocketIcon = createTablerIcon(IconRocket);
 
 ## Editor
 
-`@deweyou-design/editor` 提供 `Editor` 组件、编辑器核心协议、官方插件、适配器和工具函数。
+`@deweyou-design/react` 提供 `Editor` 组件、编辑器核心协议、官方插件、适配器和工具函数。
 首个官方适配器是 `markdownEditorAdapter()`，Markdown 风格快捷输入由
 `markdownShortcutPlugin()` 提供，富文本工具栏通过 `toolbarPlugin()` 插拔接入。
 

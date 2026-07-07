@@ -37,3 +37,10 @@ if (typeof globalThis.ResizeObserver === 'undefined') {
 if (typeof window !== 'undefined' && typeof window.ResizeObserver === 'undefined') {
   window.ResizeObserver = globalThis.ResizeObserver;
 }
+
+if (typeof Element !== 'undefined' && !Reflect.has(Element.prototype, 'scrollTo')) {
+  Object.defineProperty(Element.prototype, 'scrollTo', {
+    configurable: true,
+    value: () => undefined,
+  });
+}

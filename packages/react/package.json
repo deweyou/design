@@ -11,6 +11,8 @@
   ],
   "type": "module",
   "sideEffects": [
+    "src/editor/runtime/prism.ts",
+    "dist/editor/runtime/prism.js",
     "**/*.css"
   ],
   "types": "./dist/index.d.ts",
@@ -74,6 +76,101 @@
       "types": "./dist/field/index.d.ts",
       "import": "./dist/field/index.js",
       "default": "./dist/field/index.js"
+    },
+    "./editor": {
+      "types": "./dist/editor/index.d.ts",
+      "import": "./dist/editor/index.js",
+      "default": "./dist/editor/index.js"
+    },
+    "./editor/core": {
+      "types": "./dist/editor/core/index.d.ts",
+      "import": "./dist/editor/core/index.js",
+      "default": "./dist/editor/core/index.js"
+    },
+    "./editor/adapters/markdown": {
+      "types": "./dist/editor/adapters/markdown/index.d.ts",
+      "import": "./dist/editor/adapters/markdown/index.js",
+      "default": "./dist/editor/adapters/markdown/index.js"
+    },
+    "./editor/plugins/block-toolbar": {
+      "types": "./dist/editor/plugins/block-toolbar/index.d.ts",
+      "import": "./dist/editor/plugins/block-toolbar/index.js",
+      "default": "./dist/editor/plugins/block-toolbar/index.js"
+    },
+    "./editor/plugins/code": {
+      "types": "./dist/editor/plugins/code/index.d.ts",
+      "import": "./dist/editor/plugins/code/index.js",
+      "default": "./dist/editor/plugins/code/index.js"
+    },
+    "./editor/plugins/floating-toolbar": {
+      "types": "./dist/editor/plugins/floating-toolbar/index.d.ts",
+      "import": "./dist/editor/plugins/floating-toolbar/index.js",
+      "default": "./dist/editor/plugins/floating-toolbar/index.js"
+    },
+    "./editor/plugins/heading": {
+      "types": "./dist/editor/plugins/heading/index.d.ts",
+      "import": "./dist/editor/plugins/heading/index.js",
+      "default": "./dist/editor/plugins/heading/index.js"
+    },
+    "./editor/plugins/history": {
+      "types": "./dist/editor/plugins/history/index.d.ts",
+      "import": "./dist/editor/plugins/history/index.js",
+      "default": "./dist/editor/plugins/history/index.js"
+    },
+    "./editor/plugins/keyboard-shortcut": {
+      "types": "./dist/editor/plugins/keyboard-shortcut/index.d.ts",
+      "import": "./dist/editor/plugins/keyboard-shortcut/index.js",
+      "default": "./dist/editor/plugins/keyboard-shortcut/index.js"
+    },
+    "./editor/plugins/link": {
+      "types": "./dist/editor/plugins/link/index.d.ts",
+      "import": "./dist/editor/plugins/link/index.js",
+      "default": "./dist/editor/plugins/link/index.js"
+    },
+    "./editor/plugins/list": {
+      "types": "./dist/editor/plugins/list/index.d.ts",
+      "import": "./dist/editor/plugins/list/index.js",
+      "default": "./dist/editor/plugins/list/index.js"
+    },
+    "./editor/plugins/markdown-shortcut": {
+      "types": "./dist/editor/plugins/markdown-shortcut/index.d.ts",
+      "import": "./dist/editor/plugins/markdown-shortcut/index.js",
+      "default": "./dist/editor/plugins/markdown-shortcut/index.js"
+    },
+    "./editor/plugins/paste": {
+      "types": "./dist/editor/plugins/paste/index.d.ts",
+      "import": "./dist/editor/plugins/paste/index.js",
+      "default": "./dist/editor/plugins/paste/index.js"
+    },
+    "./editor/plugins/quote": {
+      "types": "./dist/editor/plugins/quote/index.d.ts",
+      "import": "./dist/editor/plugins/quote/index.js",
+      "default": "./dist/editor/plugins/quote/index.js"
+    },
+    "./editor/plugins/rich-text": {
+      "types": "./dist/editor/plugins/rich-text/index.d.ts",
+      "import": "./dist/editor/plugins/rich-text/index.js",
+      "default": "./dist/editor/plugins/rich-text/index.js"
+    },
+    "./editor/plugins/table": {
+      "types": "./dist/editor/plugins/table/index.d.ts",
+      "import": "./dist/editor/plugins/table/index.js",
+      "default": "./dist/editor/plugins/table/index.js"
+    },
+    "./editor/plugins/text-format": {
+      "types": "./dist/editor/plugins/text-format/index.d.ts",
+      "import": "./dist/editor/plugins/text-format/index.js",
+      "default": "./dist/editor/plugins/text-format/index.js"
+    },
+    "./editor/plugins/toolbar": {
+      "types": "./dist/editor/plugins/toolbar/index.d.ts",
+      "import": "./dist/editor/plugins/toolbar/index.js",
+      "default": "./dist/editor/plugins/toolbar/index.js"
+    },
+    "./editor/utils": {
+      "types": "./dist/editor/utils/index.d.ts",
+      "import": "./dist/editor/utils/index.js",
+      "default": "./dist/editor/utils/index.js"
     },
     "./input": {
       "types": "./dist/input/index.d.ts",
@@ -201,10 +298,21 @@
     "@deweyou-design/react-hooks": "workspace:*",
     "@deweyou-design/react-icons": "workspace:*",
     "@deweyou-design/styles": "workspace:*",
+    "@lexical/code": "catalog:",
+    "@lexical/link": "catalog:",
+    "@lexical/list": "catalog:",
+    "@lexical/markdown": "catalog:",
+    "@lexical/react": "catalog:",
+    "@lexical/rich-text": "catalog:",
+    "@lexical/selection": "catalog:",
+    "@lexical/table": "catalog:",
+    "@lexical/utils": "catalog:",
     "beautiful-mermaid": "catalog:",
     "classnames": "catalog:",
     "highlight.js": "catalog:",
+    "lexical": "catalog:",
     "mermaid": "catalog:",
+    "prismjs": "catalog:",
     "react-markdown": "catalog:",
     "rehype-highlight": "catalog:",
     "remark-gfm": "catalog:"
@@ -214,6 +322,7 @@
     "@testing-library/react": "catalog:",
     "@testing-library/user-event": "catalog:",
     "@tsdown/css": "catalog:",
+    "@types/prismjs": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "jsdom": "catalog:",
