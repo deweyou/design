@@ -1,6 +1,6 @@
 {
   "name": "@deweyou-design/editor",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Composable editor primitives and plugins for Deweyou UI.",
   "repository": {
     "type": "git",
