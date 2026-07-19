@@ -20,6 +20,7 @@ This document is the human-readable companion to `packages/react/package.json` e
 | `ImageMasonry`          | `@deweyou-design/react` | `@deweyou-design/react/image-masonry`           |
 | `ImagePreview`          | `@deweyou-design/react` | `@deweyou-design/react/image-preview`           |
 | `Input`                 | `@deweyou-design/react` | `@deweyou-design/react/input`                   |
+| `NumberInput`           | `@deweyou-design/react` | `@deweyou-design/react/number-input`            |
 | `MarkdownRender`        | `@deweyou-design/react` | `@deweyou-design/react/markdown-render`         |
 | `Editor`                | `@deweyou-design/react` | `@deweyou-design/react/editor`                  |
 | `MermaidRender`         | `@deweyou-design/react` | `@deweyou-design/react/mermaid-render`          |
@@ -72,6 +73,28 @@ Icon-only actions must use `IconButton`, `Button.Icon`, or `Button` with the exp
 ```
 
 `Field` owns the label/control/description/error id wiring. `Input`, `Textarea`, and `Select` use it internally.
+
+### NumberInput
+
+```tsx
+<NumberInput
+  defaultValue="2"
+  label="Quantity"
+  hint="Choose from 1 to 10."
+  min={1}
+  max={10}
+  step={1}
+/>
+
+<NumberInput
+  defaultValue="1280"
+  label="Budget"
+  locale="zh-CN"
+  formatOptions={{ style: 'currency', currency: 'CNY' }}
+/>
+```
+
+`NumberInput` combines direct text editing with decrement/increment controls. Ark UI owns parsing, keyboard stepping, press-and-hold, clamping, and spinbutton semantics. `precision` supplies default fraction-digit bounds while explicit `formatOptions` values take precedence.
 
 ### Dialog
 
@@ -393,6 +416,7 @@ Toast
 | `Button`                           | Text buttons render visible content. Icon-only buttons require `aria-label` or `aria-labelledby`. Loading buttons set `aria-busy` and block repeated activation.        |
 | `Field`                            | `Field.Label` points at the control id. `Field.Description` and `Field.ErrorText` provide `aria-describedby`; errors set `role="alert"` and take precedence over hints. |
 | `Input`, `Textarea`                | Label, hint, error, `required`, `disabled`, and invalid state are wired through `Field`.                                                                                |
+| `NumberInput`                      | Ark UI owns spinbutton semantics, keyboard and press stepping, boundary-disabled triggers, parsing, and clamping; `Field` owns label, hint, and error relationships.    |
 | `Checkbox`, `RadioGroup`, `Switch` | Ark UI owns native hidden inputs, checked state, disabled state, and keyboard behavior.                                                                                 |
 | `Select`                           | Trigger uses `role="combobox"`, listbox/options come from Ark UI, and field copy is exposed through label and description ids.                                          |
 | `Dialog`, `NavOverlay`             | Modal focus management and Escape handling come from Ark UI. Content is SSR-safe and portals to `document.body` only in the browser.                                    |

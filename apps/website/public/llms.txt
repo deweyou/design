@@ -44,7 +44,7 @@ import { Button } from '@deweyou-design/react/button';
 ## Component Categories
 
 - Actions: Button, IconButton
-- Forms: Checkbox, Field, Input, RadioGroup, Select, Switch, Textarea
+- Forms: Checkbox, Field, Input, NumberInput, RadioGroup, Select, Switch, Textarea
 - Overlays: ContextMenu, Dialog, ImagePreview, Menu, Popover, Tooltip
 - Navigation: Breadcrumb, Nav, NavOverlay, Pagination, Tabs
 - Feedback: Badge, Skeleton, Spinner, toast, Toaster
@@ -67,6 +67,7 @@ import { Button } from '@deweyou-design/react/button';
 - ImageMasonry (content): Responsive shortest-column image layout for galleries. Import: `import { ImageMasonry } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-imagemasonry--overview
 - GroupedVirtualMasonry (data): Grouped virtual masonry renderer for long image sections. Import: `import { GroupedVirtualMasonry } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-groupedvirtualmasonry--overview
 - Input (forms): Single-line text input with Deweyou field styling. Import: `import { Input } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-input--overview
+- NumberInput (forms): Numeric input with direct editing, accessible step controls, locale formatting, and range constraints. Import: `import { NumberInput } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-numberinput--overview
 - MarkdownRender (content): Safe CommonMark and GFM rendering surface for product content. Import: `import { MarkdownRender } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-markdownrender--overview
 - Editor (content): Editor capability surface with adapters, feature plugins, and Markdown shortcuts. Import: `import { Editor } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-editor--overview
 - MermaidRender (content): Read-only Mermaid diagram renderer with beautiful-mermaid, mindmap, and native fallback routes. Import: `import { MermaidRender } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-mermaidrender--overview

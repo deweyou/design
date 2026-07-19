@@ -74,6 +74,18 @@ const exampleMermaidRenderProps: import('../src').MermaidRenderProps = {
   value: 'flowchart TD\n  A --> B',
 };
 
+const exampleNumberInputProps: import('../src').NumberInputProps = {
+  defaultValue: '2',
+  label: 'Quantity',
+  max: 10,
+  min: 1,
+  onValueChange: ({ value, valueAsNumber }) => {
+    void value;
+    void valueAsNumber;
+  },
+  step: 1,
+};
+
 const exampleEditorProps: import('../src').EditorProps<string> = {
   adapter: components.markdownEditorAdapter(),
   defaultValue: '# Editor',
@@ -85,6 +97,7 @@ void exampleEditorProps;
 void exampleIconButtonProps;
 void exampleMarkdownRenderProps;
 void exampleMermaidRenderProps;
+void exampleNumberInputProps;
 void examplePopoverProps;
 void exampleTextProps;
 
@@ -126,6 +139,7 @@ test('components root entry exposes Button, IconButton, Popover, Text, Menu fami
     'MindmapRender',
     'Nav',
     'NavOverlay',
+    'NumberInput',
     'Pagination',
     'Popover',
     'RadioGroup',

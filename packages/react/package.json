@@ -177,6 +177,11 @@
       "import": "./dist/input/index.js",
       "default": "./dist/input/index.js"
     },
+    "./number-input": {
+      "types": "./dist/number-input/index.d.ts",
+      "import": "./dist/number-input/index.js",
+      "default": "./dist/number-input/index.js"
+    },
     "./markdown-render": {
       "types": "./dist/markdown-render/index.d.ts",
       "import": "./dist/markdown-render/index.js",

@@ -112,6 +112,11 @@ test('components package keeps root compatibility while exposing documented subp
       import: './dist/popover/index.js',
       types: './dist/popover/index.d.ts',
     },
+    './number-input': {
+      default: './dist/number-input/index.js',
+      import: './dist/number-input/index.js',
+      types: './dist/number-input/index.d.ts',
+    },
     './text': {
       default: './dist/text/index.js',
       import: './dist/text/index.js',

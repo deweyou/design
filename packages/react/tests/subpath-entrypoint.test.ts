@@ -13,6 +13,7 @@ import * as markdownRenderEntry from '../src/markdown-render/index.tsx';
 import * as mermaidRenderEntry from '../src/mermaid-render/index.tsx';
 import * as navEntry from '../src/nav/index.tsx';
 import * as navOverlayEntry from '../src/nav-overlay/index.tsx';
+import * as numberInputEntry from '../src/number-input/index.tsx';
 import * as editorEntry from '../src/editor/index.ts';
 import * as editorCoreEntry from '../src/editor/core/index.ts';
 import * as editorMarkdownAdapterEntry from '../src/editor/adapters/markdown/index.ts';
@@ -202,6 +203,11 @@ test('components package exposes button, popover, and text subpath exports in pa
       import: './dist/nav-overlay/index.js',
       types: './dist/nav-overlay/index.d.ts',
     },
+    './number-input': {
+      default: './dist/number-input/index.js',
+      import: './dist/number-input/index.js',
+      types: './dist/number-input/index.d.ts',
+    },
   });
 });
 
@@ -229,6 +235,7 @@ test('components subpath entries match the root entry public contract', () => {
   expect(mermaidRenderEntry.MindmapRender).toBe(rootEntry.MindmapRender);
   expect(navEntry.Nav).toBe(rootEntry.Nav);
   expect(navOverlayEntry.NavOverlay).toBe(rootEntry.NavOverlay);
+  expect(numberInputEntry.NumberInput).toBe(rootEntry.NumberInput);
   expect(popoverEntry.Popover).toBe(rootEntry.Popover);
   expect(textEntry.Text).toBe(rootEntry.Text);
   expect(virtualListEntry.VirtualList).toBe(rootEntry.VirtualList);
@@ -298,6 +305,7 @@ test('components subpath entries expose their public API without requiring the p
     'MindmapRender',
     'detectMermaidDiagramType',
   ]);
+  expect(Object.keys(numberInputEntry).sort()).toEqual(['NumberInput']);
   expect(Object.keys(popoverEntry).sort()).toEqual([
     'Popover',
     'popoverModeOptions',

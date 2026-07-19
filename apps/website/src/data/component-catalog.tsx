@@ -27,6 +27,7 @@ import {
   MenuItem,
   MenuTrigger,
   Nav,
+  NumberInput,
   Pagination,
   Popover,
   RadioGroup,
@@ -326,6 +327,16 @@ export const COMPONENT_CATALOG: ComponentCatalogItem[] = [
     dimensions: ['size', 'disabled', 'invalid'],
     storyId: 'components-input--default',
     preview: <Input hint="Filters the component catalog." label="Search" placeholder="Search…" />,
+  },
+  {
+    name: 'NumberInput',
+    category: 'forms',
+    description:
+      'Numeric input with direct editing, step controls, formatting, and range feedback.',
+    importSnippet: "import { NumberInput } from '@deweyou-design/react';",
+    dimensions: ['size', 'variant', 'range', 'formatting'],
+    storyId: 'components-numberinput--default',
+    preview: <NumberInput defaultValue="4" label="Quantity" max={10} min={0} />,
   },
   {
     name: 'MarkdownRender',

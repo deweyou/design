@@ -81,6 +81,7 @@ import { Button, Input } from '@deweyou-design/react';
 ```ts
 import { Button } from '@deweyou-design/react/button';
 import { Input } from '@deweyou-design/react/input';
+import { NumberInput } from '@deweyou-design/react/number-input';
 ```
 
 每个组件的样式会随 JS 导入自动加载，无需单独引入 CSS 文件。如果需要一次性加载所有样式（如 SSR 场景）：
@@ -135,6 +136,7 @@ export const RocketIcon = createTablerIcon(IconRocket);
 | ----------------------- | ------------------------------------------ |
 | `Button`                | 按钮，支持多种变体和尺寸                   |
 | `Input`                 | 单行文本输入框                             |
+| `NumberInput`           | 支持步进、格式化和范围约束的数字输入框     |
 | `Textarea`              | 多行文本输入框                             |
 | `Select`                | 下拉选择器                                 |
 | `Checkbox`              | 复选框                                     |
