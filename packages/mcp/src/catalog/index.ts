@@ -172,6 +172,17 @@ export const componentCatalog: ComponentCatalogItem[] = [
     importSnippet: rootImport('Input'),
   },
   {
+    name: 'NumberInput',
+    importName: 'NumberInput',
+    category: 'forms',
+    description:
+      'Numeric input with direct editing, accessible step controls, locale formatting, and range constraints.',
+    dimensions: ['size', 'variant', 'range', 'formatting'],
+    storyId: 'components-numberinput--default',
+    subpath: 'number-input',
+    importSnippet: rootImport('NumberInput'),
+  },
+  {
     name: 'MarkdownRender',
     importName: 'MarkdownRender',
     category: 'content',

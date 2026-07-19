@@ -85,6 +85,14 @@ export {
   type MenuCheckedChangeDetails,
 } from './menu/index.tsx';
 export { Input, type InputProps, type InputSize } from './input/index.tsx';
+export {
+  NumberInput,
+  type NumberInputInvalidDetails,
+  type NumberInputProps,
+  type NumberInputSize,
+  type NumberInputValueChangeDetails,
+  type NumberInputVariant,
+} from './number-input/index.tsx';
 export { Textarea, type TextareaProps, type TextareaSize } from './textarea/index.tsx';
 export {
   MarkdownRender,

@@ -19,6 +19,7 @@ const PUBLIC_COMPONENTS = [
   'ImageMasonry',
   'GroupedVirtualMasonry',
   'Input',
+  'NumberInput',
   'MarkdownRender',
   'Editor',
   'Menu',

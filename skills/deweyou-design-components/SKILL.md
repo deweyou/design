@@ -65,6 +65,29 @@ When documenting or testing grouped virtual masonry, include:
 - `scrollToGroup`, `scrollToItem`, `scrollToOffset`, and `getScrollOffset`
 - Storybook `Interaction` coverage that jumps to a far item in a later group
 
+## Numeric Input
+
+Use `NumberInput` for quantities, counts, percentages, prices, measurements, and
+other values where direct typing and step controls should remain available
+together.
+
+- Import a standalone usage from `@deweyou-design/react/number-input`; prefer the
+  root package import when an example composes several components.
+- Use `min`, `max`, and `step` to define the numeric contract. Use `precision`
+  for convenient fraction-digit defaults; explicit `formatOptions` fraction
+  settings take precedence.
+- Pass human-readable percentage values such as `37.5` with
+  `formatOptions={{ style: 'percent' }}`; the component normalizes the value for
+  `Intl.NumberFormat` display.
+- Use `label`, `hint`, `error`, and `required` on `NumberInput` instead of
+  manually recreating field semantics. Supply `aria-label` or `aria-labelledby`
+  when no visible label is appropriate.
+- Use `onValueChange` for live state, `onValueCommit` for blur/Enter workflows,
+  and `onValueInvalid` when consumers need underflow or overflow feedback.
+- Verify keyboard stepping, trigger boundaries, direct typing, formatting,
+  disabled/read-only behavior, and narrow coarse-pointer layouts in component
+  tests and Storybook Interaction coverage.
+
 ## MCP Resources
 
 The Deweyou Design MCP server is read-only. It exposes:

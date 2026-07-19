@@ -1,0 +1,175 @@
+@import '@deweyou-design/styles/less/bridge';
+
+.root {
+  --number-input-height: var(--ui-control-height-md);
+  --number-input-font-size: 0.9375rem;
+  --number-input-padding-inline: 0.75rem;
+  --number-input-trigger-size: var(--number-input-height);
+
+  display: grid;
+  gap: 6px;
+}
+
+.label {
+  font-size: 0.875rem;
+}
+
+.machine {
+  min-width: 0;
+}
+
+.control {
+  display: grid;
+  grid-template-columns: var(--number-input-trigger-size) minmax(3.5rem, 1fr) var(
+      --number-input-trigger-size
+    );
+  min-block-size: var(--number-input-height);
+  overflow: hidden;
+  border: 1px solid transparent;
+  border-radius: var(--ui-radius-float);
+  transition:
+    border-color var(--ui-motion-duration-fast) var(--ui-motion-ease-exit),
+    background var(--ui-motion-duration-fast) var(--ui-motion-ease-exit),
+    box-shadow var(--ui-motion-duration-fast) var(--ui-motion-ease-exit);
+}
+
+.control:focus-within {
+  .focus-ring();
+}
+
+.input {
+  appearance: textfield;
+  min-width: 0;
+  min-block-size: calc(var(--number-input-height) - 2px);
+  box-sizing: border-box;
+  padding: 0 var(--number-input-padding-inline);
+  border: 0;
+  border-inline: 1px solid color-mix(in srgb, var(--ui-color-border) 72%, transparent);
+  border-radius: 0;
+  outline: none;
+  background: transparent;
+  color: var(--ui-color-text);
+  font: 500 var(--number-input-font-size) / 1.5 var(--ui-font-control);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+
+  &::placeholder {
+    color: color-mix(in srgb, var(--ui-color-text-muted) 64%, transparent);
+  }
+
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    appearance: none;
+    margin: 0;
+  }
+}
+
+.trigger {
+  display: inline-grid;
+  place-items: center;
+  min-width: 0;
+  min-block-size: calc(var(--number-input-height) - 2px);
+  border: 0;
+  border-radius: 0;
+  outline: none;
+  background: transparent;
+  color: var(--ui-color-text-muted);
+  cursor: pointer;
+  touch-action: manipulation;
+  transition:
+    background var(--ui-motion-duration-fast) var(--ui-motion-ease-exit),
+    color var(--ui-motion-duration-fast) var(--ui-motion-ease-exit),
+    opacity var(--ui-motion-duration-fast) var(--ui-motion-ease-exit);
+
+  &:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--ui-color-text) 6%, transparent);
+    color: var(--ui-color-text);
+  }
+
+  &:active:not(:disabled) {
+    background: color-mix(in srgb, var(--ui-color-text) 10%, transparent);
+  }
+
+  &:focus-visible {
+    background: color-mix(in srgb, var(--ui-color-focus-ring) 10%, transparent);
+    color: var(--ui-color-focus-ring);
+  }
+
+  &:disabled {
+    color: var(--ui-color-text-muted);
+    cursor: not-allowed;
+    opacity: 0.4;
+  }
+}
+
+.variantOutlined .control {
+  border-color: color-mix(in srgb, var(--ui-color-border-strong) 82%, var(--ui-color-border));
+  background: color-mix(in srgb, var(--ui-color-surface) 96%, var(--ui-color-canvas));
+}
+
+.variantGhost .control {
+  background: transparent;
+
+  &:hover {
+    background: color-mix(in srgb, var(--ui-color-text) 4%, transparent);
+  }
+}
+
+.root[data-invalid='true'] .control,
+.root[data-invalid='true'] .control:focus-within {
+  border-color: var(--ui-color-danger-bg);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ui-color-danger-bg) 28%, transparent);
+}
+
+.root[data-disabled='true'] .control {
+  cursor: not-allowed;
+  opacity: 0.56;
+}
+
+.root[data-readonly='true'] .control {
+  background: color-mix(in srgb, var(--ui-color-text) 3%, var(--ui-color-surface));
+}
+
+.hint,
+.error {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.sizeSm {
+  --number-input-height: var(--ui-control-height-sm);
+  --number-input-font-size: 0.875rem;
+  --number-input-padding-inline: 0.625rem;
+
+  .label {
+    font-size: 0.8rem;
+  }
+}
+
+.sizeLg {
+  --number-input-height: var(--ui-control-height-lg);
+  --number-input-font-size: 1rem;
+  --number-input-padding-inline: 0.875rem;
+
+  .label {
+    font-size: 1rem;
+  }
+}
+
+@media (pointer: coarse) {
+  .control {
+    --number-input-trigger-size: max(var(--number-input-height), var(--ui-touch-target-min));
+  }
+
+  .trigger {
+    min-block-size: var(--ui-touch-target-min);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .control,
+  .trigger {
+    transition-duration: 0.01ms;
+  }
+}

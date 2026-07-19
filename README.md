@@ -81,6 +81,7 @@ import { Button, Input } from '@deweyou-design/react';
 ```ts
 import { Button } from '@deweyou-design/react/button';
 import { Input } from '@deweyou-design/react/input';
+import { NumberInput } from '@deweyou-design/react/number-input';
 ```
 
 Each component's styles load automatically with its JS import, so no separate CSS import is needed. To load all component styles at once, such as in SSR:
@@ -137,6 +138,7 @@ official plugins, adapters, and utilities. The first official adapter is
 | ----------------------- | ------------------------------------------------------------------- |
 | `Button`                | Button with multiple variants and sizes                             |
 | `Input`                 | Single-line text input                                              |
+| `NumberInput`           | Numeric input with step controls, formatting, and range constraints |
 | `Textarea`              | Multi-line text input                                               |
 | `Select`                | Select dropdown                                                     |
 | `Checkbox`              | Checkbox                                                            |

@@ -19,6 +19,7 @@ describe('component catalog', () => {
     expect(names).toContain('ImagePreview');
     expect(names).toContain('MermaidRender');
     expect(names).toContain('NavOverlay');
+    expect(names).toContain('NumberInput');
     expect(names).toContain('VirtualList');
     expect(names).toContain('VirtualMasonry');
     expect(names).toContain('toast');
@@ -58,6 +59,9 @@ describe('component catalog', () => {
     );
     expect(getComponentImportSnippet('MermaidRender', { subpath: true })).toBe(
       "import { MermaidRender } from '@deweyou-design/react/mermaid-render';",
+    );
+    expect(getComponentImportSnippet('NumberInput', { subpath: true })).toBe(
+      "import { NumberInput } from '@deweyou-design/react/number-input';",
     );
     expect(getComponentImportSnippet('ImageMasonry', { subpath: true })).toBe(
       "import { ImageMasonry } from '@deweyou-design/react/image-masonry';",

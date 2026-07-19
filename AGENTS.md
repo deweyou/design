@@ -90,3 +90,15 @@ This repository uses Dewey's personal agent workflow. Inspect `.agents/` before 
 If a root `DESIGN.md` exists, read it before making UI, UX, or visual design changes.
 
 <!-- deweyou-agent:end -->
+
+<!-- deweyou-codex-rules:start -->
+
+## Dewey Rules for Codex
+
+Follow these selected Dewey rules. Read a rule only when its description is relevant to the current task.
+
+- code-style - Code expression preferences for naming, functions, comments, errors, and tests.
+  Path: ../../../../.deweyou/agents/assets/rules/code-style.md
+- engineering-principles - Design preferences for module boundaries, abstraction, dependencies, state, and easy-to-delete code.
+Path: ../../../../.deweyou/agents/assets/rules/engineering-principles.md
+<!-- deweyou-codex-rules:end -->
