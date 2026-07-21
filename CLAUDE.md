@@ -71,3 +71,13 @@ AI-assisted development context and repository memory:
 - **Feature specs index**: [docs/specs/index.md](docs/specs/index.md)
 
 > Topic knowledge files, such as `docs/design/system.md`, are added by archive steps when reusable patterns appear.
+
+<!-- deweyou-agent:start -->
+
+## Dewey Workflow
+
+Use the globally installed `ddev` skill as the default lifecycle owner for non-trivial development tasks in this repository. Do not run `deweyou-cli agent init` or install workflow skills in the repository. DDev resolves its product, UI, coding, delivery, and memory modules from the global Dewey asset cache when needed.
+
+If a root `DESIGN.md` exists, read it before making UI, UX, or visual design changes.
+
+<!-- deweyou-agent:end -->
