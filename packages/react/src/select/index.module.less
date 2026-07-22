@@ -8,6 +8,10 @@
 }
 
 .trigger {
+  .coarse-pointer-block-target();
+
+  --select-trigger-height: var(--ui-control-height-md);
+
   align-items: center;
   background: var(--ui-color-surface);
   border: 1px solid var(--ui-color-border-strong);
@@ -18,7 +22,7 @@
   font-size: 0.875rem;
   gap: 0.5rem;
   inline-size: 100%;
-  min-block-size: var(--ui-touch-target-min);
+  min-block-size: var(--select-trigger-height);
   min-width: 10rem;
   max-inline-size: 100%;
   outline: none;
@@ -72,6 +76,8 @@
 .content {
   .native-scrollbar();
 
+  --select-item-height: var(--ui-control-height-md);
+
   background: var(--ui-color-surface);
   border: 1px solid var(--ui-color-border);
   border-radius: var(--ui-radius-auto);
@@ -86,10 +92,6 @@
   overscroll-behavior: contain;
   padding-block: 0.25rem;
   z-index: var(--ui-z-dropdown);
-}
-
-.content:focus-visible {
-  .focus-ring();
 }
 
 .content[data-state='open'] {
@@ -130,6 +132,8 @@
 }
 
 .item {
+  .coarse-pointer-block-target();
+
   align-items: center;
   border-radius: var(--ui-radius-float);
   color: var(--ui-color-text);
@@ -138,7 +142,7 @@
   font-size: 0.875rem;
   gap: 0.5rem;
   margin-inline: 0.25rem;
-  min-block-size: var(--ui-touch-target-min);
+  min-block-size: var(--select-item-height);
   outline: none;
   padding-block: 0.35rem;
   padding-inline: 0.625rem;
@@ -171,4 +175,48 @@
 .item[data-disabled] {
   cursor: not-allowed;
   opacity: 0.56;
+}
+
+.trigger.sizeSm {
+  --select-trigger-height: var(--ui-control-height-sm);
+
+  font-size: 0.8125rem;
+  padding: 0.25rem 0.5rem 0.25rem 0.625rem;
+}
+
+.trigger.sizeMd {
+  --select-trigger-height: var(--ui-control-height-md);
+}
+
+.trigger.sizeLg {
+  --select-trigger-height: var(--ui-control-height-lg);
+
+  font-size: 1rem;
+  padding: 0.5rem 0.75rem 0.5rem 0.875rem;
+}
+
+.content.sizeSm {
+  --select-item-height: var(--ui-control-height-sm);
+
+  padding-block: 0.2rem;
+
+  .item {
+    font-size: 0.8125rem;
+    padding-block: 0.25rem;
+    padding-inline: 0.5rem;
+  }
+}
+
+.content.sizeMd {
+  --select-item-height: var(--ui-control-height-md);
+}
+
+.content.sizeLg {
+  --select-item-height: var(--ui-control-height-lg);
+
+  .item {
+    font-size: 1rem;
+    padding-block: 0.5rem;
+    padding-inline: 0.75rem;
+  }
 }

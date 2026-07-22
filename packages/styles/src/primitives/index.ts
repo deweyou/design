@@ -165,7 +165,7 @@ export const internalPrimitives = {
     warningText: colorPalette.amber['900'],
     textOnWarning: baseMonochrome.black,
     // 焦点
-    focusRing: colorPalette.emerald['600'],
+    focusRing: colorPalette.emerald['800'],
     // 调色板引用
     palette: colorPalette,
     textPalette: colorPalette,
@@ -183,9 +183,9 @@ export const internalPrimitives = {
     xl: '2.5rem',
   },
   control: {
-    heightXs: '2rem',
-    heightSm: '2.5rem',
-    heightMd: '2.75rem',
+    heightXs: '1.5rem',
+    heightSm: '2rem',
+    heightMd: '2.5rem',
     heightLg: '3rem',
     heightXl: '3.5rem',
     touchTargetMin: '2.75rem',

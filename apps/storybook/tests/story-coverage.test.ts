@@ -61,6 +61,15 @@ test('preview can render full viewport stories outside the centered layout frame
   expect(preview).toContain("layout: 'fullscreen'");
 });
 
+test('preview exposes the component locale through a global toolbar and provider', () => {
+  const preview = readStorybookFile('.storybook/preview.ts');
+
+  expect(preview).toContain('context.globals.locale');
+  expect(preview).toContain('configLocales.map');
+  expect(preview).toContain('ConfigProvider');
+  expect(preview).toContain('Suspense');
+});
+
 test('controls-oriented stories expose an args-driven Default playground', () => {
   const storyFiles = readdirSync(storiesRoot)
     .filter((file) => file.endsWith('.stories.tsx'))

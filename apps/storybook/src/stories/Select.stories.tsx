@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 
-import { Select } from '@deweyou-design/react/select';
+import { Select, type SelectSize } from '@deweyou-design/react/select';
 
 const fruits = [
   { value: 'apple', label: 'Apple' },
@@ -38,6 +38,38 @@ export const Default: StoryObj = {
       </Select.Content>
     </Select.Root>
   ),
+};
+
+export const Sizes: StoryObj = {
+  render: () => (
+    <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'flex-start' }}>
+      {(['sm', 'md', 'lg'] as const satisfies readonly SelectSize[]).map((size) => (
+        <Select.Root
+          key={size}
+          label={`Size ${size}`}
+          name={`size-${size}`}
+          placeholder="Select a fruit"
+          size={size}
+        >
+          <Select.Trigger />
+          <Select.Content>
+            {fruits.map((fruit) => (
+              <Select.Item key={fruit.value} value={fruit.value} label={fruit.label} />
+            ))}
+          </Select.Content>
+        </Select.Root>
+      ))}
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const expectedHeights = { sm: '32px', md: '40px', lg: '48px' } as const;
+
+    for (const [size, expectedHeight] of Object.entries(expectedHeights)) {
+      const trigger = canvas.getByRole('combobox', { name: `Size ${size}` });
+      await expect(getComputedStyle(trigger).blockSize).toBe(expectedHeight);
+    }
+  },
 };
 
 export const Variants: StoryObj = {

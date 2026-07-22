@@ -3,6 +3,10 @@ import { Pagination as ArkPagination } from '@ark-ui/react/pagination';
 import classNames from 'classnames';
 
 import styles from './index.module.less';
+import { usePaginationLocaleText } from './locale/loader.ts';
+import type { PaginationLocaleText } from './locale/types.ts';
+
+export type PaginationSize = 'sm' | 'md' | 'lg';
 
 export type PaginationProps = {
   count: number;
@@ -11,6 +15,8 @@ export type PaginationProps = {
   defaultPage?: number;
   siblingCount?: number;
   onPageChange?: (details: { page: number }) => void;
+  localeText?: Partial<PaginationLocaleText>;
+  size?: PaginationSize;
   variant?: 'button' | 'link';
   className?: string;
   style?: CSSProperties;
@@ -23,10 +29,14 @@ export const Pagination = ({
   defaultPage = 1,
   siblingCount = 1,
   onPageChange,
+  localeText,
+  size = 'md',
   variant = 'button',
   className,
   style,
 }: PaginationProps) => {
+  const text = usePaginationLocaleText(localeText);
+
   return (
     <ArkPagination.Root
       count={count}
@@ -36,9 +46,12 @@ export const Pagination = ({
       siblingCount={siblingCount}
       onPageChange={onPageChange}
       className={classNames(styles.root, variant === 'link' && styles.linkVariant, className)}
+      data-size={size}
       style={style}
     >
-      <ArkPagination.PrevTrigger className={styles.prevNext}>Prev</ArkPagination.PrevTrigger>
+      <ArkPagination.PrevTrigger className={styles.prevNext}>
+        {text.previous}
+      </ArkPagination.PrevTrigger>
       <ArkPagination.Context>
         {({ pages }) =>
           pages.map((pageItem, index) =>
@@ -54,7 +67,9 @@ export const Pagination = ({
           )
         }
       </ArkPagination.Context>
-      <ArkPagination.NextTrigger className={styles.prevNext}>Next</ArkPagination.NextTrigger>
+      <ArkPagination.NextTrigger className={styles.prevNext}>{text.next}</ArkPagination.NextTrigger>
     </ArkPagination.Root>
   );
 };
+
+export type { PaginationLocaleText } from './locale/types.ts';

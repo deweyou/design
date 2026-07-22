@@ -13,6 +13,7 @@ const PUBLIC_COMPONENTS = [
   'Card',
   'Checkbox',
   'CodeBlock',
+  'ConfigProvider',
   'Dialog',
   'Field',
   'ImagePreview',

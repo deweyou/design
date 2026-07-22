@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { Suspense, useState, type ReactNode } from 'react';
 
 import {
   Badge,
@@ -7,6 +7,9 @@ import {
   Card,
   Checkbox,
   CodeBlock,
+  ConfigProvider,
+  configLocales,
+  type ConfigLocale,
   Dialog,
   Editor,
   Field,
@@ -57,6 +60,7 @@ import styles from '../pages/components.module.less';
 const STORYBOOK_URL = 'https://design-storybook-deweyous-projects.vercel.app';
 
 export const COMPONENT_CATEGORIES = [
+  { id: 'foundations', label: 'Foundations' },
   { id: 'actions', label: 'Actions' },
   { id: 'forms', label: 'Forms' },
   { id: 'overlays', label: 'Overlays' },
@@ -94,6 +98,39 @@ const buttonPreview = (
     </Button>
   </>
 );
+
+const ConfigProviderPreview = () => {
+  const [locale, setLocale] = useState<ConfigLocale>('en-US');
+
+  return (
+    <div className={styles.configPreview}>
+      <div aria-label="Locale" className={styles.localeSwitcher} role="group">
+        {configLocales.map((option) => {
+          const isSelected = option === locale;
+
+          return (
+            <Button
+              aria-pressed={isSelected}
+              color={isSelected ? 'primary' : 'neutral'}
+              key={option}
+              size="xs"
+              variant={isSelected ? 'filled' : 'outlined'}
+              onClick={() => setLocale(option)}
+            >
+              {option}
+            </Button>
+          );
+        })}
+      </div>
+      <span className={styles.localePolicy}>Nested provider demo · Back overrides localeText</span>
+      <Suspense fallback={<span className={styles.localePolicy}>Loading locale…</span>}>
+        <ConfigProvider locale={locale}>
+          <Pagination count={30} localeText={{ previous: 'Back' }} pageSize={10} />
+        </ConfigProvider>
+      </Suspense>
+    </div>
+  );
+};
 
 const catalogImages = [
   {
@@ -215,6 +252,16 @@ export const COMPONENT_CATALOG: ComponentCatalogItem[] = [
         {'const active = true;'}
       </CodeBlock>
     ),
+  },
+  {
+    name: 'ConfigProvider',
+    category: 'foundations',
+    description:
+      'Typed global locale boundary with synchronous en-US fallback and component-local lazy dictionaries.',
+    importSnippet: "import { ConfigProvider } from '@deweyou-design/react';",
+    dimensions: ['locale', 'nested inheritance', 'component localeText'],
+    storyId: 'components-configprovider--default',
+    preview: <ConfigProviderPreview />,
   },
   {
     name: 'Dialog',
@@ -438,7 +485,7 @@ export const COMPONENT_CATALOG: ComponentCatalogItem[] = [
     category: 'navigation',
     description: 'Paged navigation for lists and document sets.',
     importSnippet: "import { Pagination } from '@deweyou-design/react';",
-    dimensions: ['page', 'count', 'link'],
+    dimensions: ['page', 'count', 'size', 'link'],
     storyId: 'components-pagination--default',
     preview: <Pagination count={50} page={2} />,
   },
@@ -488,7 +535,7 @@ export const COMPONENT_CATALOG: ComponentCatalogItem[] = [
     category: 'forms',
     description: 'Listbox selection field with trigger, content, and item primitives.',
     importSnippet: "import { Select } from '@deweyou-design/react';",
-    dimensions: ['value', 'placeholder', 'disabled'],
+    dimensions: ['value', 'placeholder', 'size', 'disabled'],
     storyId: 'components-select--default',
     preview: (
       <Select.Root label="Choice" name="catalog-select" placeholder="Choose">

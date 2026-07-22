@@ -24,6 +24,8 @@
 .content {
   .native-scrollbar();
 
+  --menu-item-height: var(--ui-control-height-md);
+
   background: var(--ui-color-surface);
   border: 1px solid var(--ui-color-border);
   box-shadow: var(--ui-shadow-md);
@@ -35,10 +37,6 @@
   overscroll-behavior: contain;
   position: relative;
   z-index: @menu-z-index;
-}
-
-.content:focus-visible {
-  .focus-ring();
 }
 
 // Enter animation (default: top/bottom)
@@ -175,6 +173,8 @@
 // ---------------------------------------------------------------------------
 
 .item {
+  .coarse-pointer-block-target();
+
   align-items: center;
   color: var(--ui-color-text);
   cursor: pointer;
@@ -182,7 +182,7 @@
   gap: @menu-item-gap;
   line-height: 1.4;
   margin-inline: 0.25rem;
-  min-block-size: var(--ui-touch-target-min);
+  min-block-size: var(--menu-item-height);
   outline: none;
   transition:
     background var(--ui-motion-duration-fast) var(--ui-motion-ease-exit),
@@ -344,13 +344,14 @@
 // ---------------------------------------------------------------------------
 
 .sizeSm {
+  --menu-item-height: var(--ui-control-height-sm);
+
   min-inline-size: 8rem;
   padding-block: 0.2rem;
 
   .item {
     border-radius: var(--ui-radius-float);
     font-size: 0.8125rem;
-    min-block-size: var(--ui-touch-target-min);
     padding-block: 0.28rem;
     padding-inline: 0.5rem;
   }
@@ -363,13 +364,14 @@
 }
 
 .sizeMd {
+  --menu-item-height: var(--ui-control-height-md);
+
   min-inline-size: 9.5rem;
   padding-block: 0.25rem;
 
   .item {
     border-radius: var(--ui-radius-float);
     font-size: 0.875rem;
-    min-block-size: var(--ui-touch-target-min);
     padding-block: 0.35rem;
     padding-inline: 0.625rem;
   }
@@ -382,13 +384,14 @@
 }
 
 .sizeLg {
+  --menu-item-height: var(--ui-control-height-lg);
+
   min-inline-size: 10rem;
   padding-block: 0.25rem;
 
   .item {
     border-radius: var(--ui-radius-float);
     font-size: 1rem;
-    min-block-size: var(--ui-touch-target-min);
     padding-block: 0.45rem;
     padding-inline: 0.75rem;
   }

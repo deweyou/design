@@ -52,6 +52,8 @@ import {
   type EditorRuntime,
 } from '../../core/index.js';
 import { isLexicalRuntime } from '../../runtime/lexical.js';
+import { useCodePluginLocaleText } from './locale/loader.ts';
+import type { CodePluginLocaleText } from './locale/types.ts';
 
 import styles from './index.module.less';
 
@@ -72,6 +74,7 @@ export type CodePluginOptions = {
   copy?: boolean;
   highlight?: boolean;
   languageMenu?: boolean;
+  localeText?: Partial<CodePluginLocaleText>;
   wrap?: boolean;
   format?:
     | false
@@ -233,20 +236,32 @@ const CodeBlockActionsPlugin = ({
   format,
   languageMenu,
   languages,
+  localeText,
+  localizePlainText,
   wrap,
 }: {
   copy: boolean;
   format: CodePluginOptions['format'];
   languageMenu: boolean;
   languages: readonly CodeLanguageOption[];
+  localeText?: Partial<CodePluginLocaleText>;
+  localizePlainText: boolean;
   wrap: boolean;
 }) => {
+  const resolvedLocaleText = useCodePluginLocaleText(localeText);
+  const resolvedLanguages = localizePlainText
+    ? languages.map((language) =>
+        language.value === undefined
+          ? { ...language, label: resolvedLocaleText.plainText }
+          : language,
+      )
+    : languages;
   const [editor] = useLexicalComposerContext();
   const resetCopiedTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const resetFormattedTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const [actions, setActions] = useState<CodeBlockActionsState[]>([]);
   const [copiedNodeKey, setCopiedNodeKey] = useState<string | undefined>(undefined);
-  const [copyStatus, setCopyStatus] = useState('');
+  const [copyStatus, setCopyStatus] = useState<'copied' | 'error' | undefined>(undefined);
   const [formattedNodeKey, setFormattedNodeKey] = useState<string | undefined>(undefined);
   const [wrapEnabled, setWrapEnabled] = useState(wrap);
   const [menu, setMenu] = useState<CodeLanguageMenuState | undefined>(undefined);
@@ -431,17 +446,17 @@ const CodeBlockActionsPlugin = ({
   const copyCode = async (action: CodeBlockActionsState) => {
     if (!action.code || !navigator.clipboard?.writeText) {
       setCopiedNodeKey(undefined);
-      setCopyStatus('Unable to copy code');
+      setCopyStatus('error');
       return;
     }
 
     try {
       await navigator.clipboard.writeText(action.code);
       setCopiedNodeKey(action.nodeKey);
-      setCopyStatus('Code copied');
+      setCopyStatus('copied');
     } catch {
       setCopiedNodeKey(undefined);
-      setCopyStatus('Unable to copy code');
+      setCopyStatus('error');
     }
 
     if (resetCopiedTimer.current) {
@@ -450,7 +465,7 @@ const CodeBlockActionsPlugin = ({
 
     resetCopiedTimer.current = setTimeout(() => {
       setCopiedNodeKey(undefined);
-      setCopyStatus('');
+      setCopyStatus(undefined);
     }, 1200);
   };
 
@@ -459,8 +474,10 @@ const CodeBlockActionsPlugin = ({
       {actions.map((action) => {
         const copied = copiedNodeKey === action.nodeKey;
         const formatted = formattedNodeKey === action.nodeKey;
-        const copyLabel = copied ? 'Copied code' : 'Copy code';
-        const formatLabel = formatted ? 'Formatted code' : 'Format code';
+        const copyLabel = copied ? resolvedLocaleText.copiedCode : resolvedLocaleText.copyCode;
+        const formatLabel = formatted
+          ? resolvedLocaleText.formattedCode
+          : resolvedLocaleText.formatCode;
         const toolbarStyle = {
           inlineSize: action.width,
           insetBlockStart: action.top,
@@ -469,7 +486,7 @@ const CodeBlockActionsPlugin = ({
 
         return (
           <CodeBlockToolbar
-            aria-label="Code block actions"
+            aria-label={resolvedLocaleText.codeBlockActions}
             className={styles.codeActions}
             data-editor-code-block-actions="true"
             data-editor-code-block-header="true"
@@ -480,9 +497,9 @@ const CodeBlockActionsPlugin = ({
             variant="header"
           >
             {languageMenu ? (
-              <CodeActionTooltip label="Code language">
+              <CodeActionTooltip label={resolvedLocaleText.codeLanguage}>
                 <CodeBlockLanguageButton
-                  aria-label="Code language"
+                  aria-label={resolvedLocaleText.codeLanguage}
                   className={styles.codeLanguageButton}
                   data-editor-code-language-trigger="true"
                   onClick={() => openLanguageMenu(action)}
@@ -509,11 +526,11 @@ const CodeBlockActionsPlugin = ({
                 </CodeActionTooltip>
               ) : null}
               {wrap ? (
-                <CodeActionTooltip label="Wrap code">
+                <CodeActionTooltip label={resolvedLocaleText.wrapCode}>
                   <CodeBlockActionButton
                     active={wrapEnabled}
                     aria-pressed={wrapEnabled}
-                    aria-label="Wrap code"
+                    aria-label={resolvedLocaleText.wrapCode}
                     className={styles.codeActionButton}
                     onClick={toggleWrap}
                   >
@@ -540,18 +557,22 @@ const CodeBlockActionsPlugin = ({
       })}
       {copy ? (
         <span aria-live="polite" className={styles.codeStatus}>
-          {copyStatus}
+          {copyStatus === 'copied'
+            ? resolvedLocaleText.codeCopied
+            : copyStatus === 'error'
+              ? resolvedLocaleText.unableToCopyCode
+              : null}
         </span>
       ) : null}
       {menu ? (
         <div
-          aria-label="Code language"
+          aria-label={resolvedLocaleText.codeLanguage}
           className={styles.languageMenu}
           data-editor-code-language-menu="true"
           role="listbox"
           style={{ insetBlockStart: menu.top, insetInlineStart: menu.left }}
         >
-          {languages.map((option) => (
+          {resolvedLanguages.map((option) => (
             <button
               aria-selected={(option.value ?? '') === menu.currentLanguage}
               className={classNames(styles.languageOption)}
@@ -725,9 +746,11 @@ export const codePlugin = ({
   format = false,
   highlight = true,
   languageMenu = true,
-  languages = [...defaultCodeLanguageOptions],
+  languages,
+  localeText,
   wrap = false,
 }: CodePluginOptions = {}) => {
+  const resolvedLanguages = languages ?? [...defaultCodeLanguageOptions];
   const hasCodeActions = copy || languageMenu || wrap || Boolean(format);
 
   return createEditorPlugin({
@@ -736,7 +759,7 @@ export const codePlugin = ({
     nodes: highlight ? [CodeNode, CodeHighlightNode] : [CodeNode],
     commands: [
       { id: 'code.toggle-block', run: runToggleCodeBlock },
-      { id: 'code.set-language', run: runSetLanguage(languages) },
+      { id: 'code.set-language', run: runSetLanguage(resolvedLanguages) },
       { id: 'code.toggle-wrap', run: runToggleWrap },
       ...(format
         ? [
@@ -763,7 +786,9 @@ export const codePlugin = ({
             copy={copy}
             format={format}
             languageMenu={languageMenu}
-            languages={languages}
+            languages={resolvedLanguages}
+            localeText={localeText}
+            localizePlainText={languages === undefined}
             wrap={wrap}
           />
         ) : null}
@@ -771,3 +796,5 @@ export const codePlugin = ({
     ),
   });
 };
+
+export type { CodePluginLocaleText } from './locale/types.ts';

@@ -24,6 +24,7 @@ import {
   type EditorProps,
 } from '../core/index.js';
 import { createLexicalRuntime, lexicalEditorNodes } from '../runtime/lexical.js';
+import { useEditorLocaleText } from './locale/loader.ts';
 
 import styles from './index.module.less';
 
@@ -150,6 +151,7 @@ const EditorInner = <TValue,>(
     className,
     defaultValue,
     disabled = false,
+    localeText,
     onChange,
     placeholder,
     plugins = [],
@@ -160,6 +162,7 @@ const EditorInner = <TValue,>(
   }: EditorProps<TValue>,
   forwardedRef: ForwardedRef<EditorHandle<TValue>>,
 ) => {
+  const resolvedLocaleText = useEditorLocaleText(localeText);
   const editable = !disabled && !readOnly;
   const registry = useMemo(() => composeEditorPlugins(plugins), [plugins]);
   const beforeContentPlugins = registry.plugins.filter(
@@ -265,7 +268,7 @@ const EditorInner = <TValue,>(
           <RichTextPlugin
             contentEditable={
               <ContentEditable
-                aria-label={placeholder ?? 'Editor'}
+                aria-label={placeholder ?? resolvedLocaleText.editor}
                 autoCapitalize={autoCapitalize}
                 autoCorrect={autoCorrect}
                 className={styles.contentEditable}
@@ -305,3 +308,5 @@ export const Editor = forwardRef(EditorInner) as (<TValue>(
 };
 
 Editor.displayName = 'Editor';
+
+export type { EditorLocaleText } from './locale/types.ts';

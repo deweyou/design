@@ -32,7 +32,6 @@ const MOBILE_ROUTE_ITEMS = [
   ...EXPLORE_ROUTE_ITEMS,
   PRIMARY_ROUTE_ITEMS[1],
 ] as const;
-
 type NavbarProps = {
   mode: 'light' | 'dark';
   onToggleMode: () => void;
@@ -196,7 +195,7 @@ export const Navbar = ({ mode, onToggleMode }: NavbarProps) => {
           href={GITHUB_URL}
           icon={<LogoGithubIcon />}
           rel="noopener noreferrer"
-          size="sm"
+          size="xs"
           target="_blank"
           variant="ghost"
         />
@@ -204,7 +203,7 @@ export const Navbar = ({ mode, onToggleMode }: NavbarProps) => {
           aria-label={mode === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
           className={styles.actionButton}
           icon={mode === 'light' ? <MoonIcon /> : <SunnyIcon />}
-          size="sm"
+          size="xs"
           variant="ghost"
           onClick={onToggleMode}
         />

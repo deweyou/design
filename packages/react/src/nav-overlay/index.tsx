@@ -11,6 +11,8 @@ import classNames from 'classnames';
 
 import { IconButton } from '../button/index.tsx';
 import styles from './index.module.less';
+import { useNavOverlayLocaleText } from './locale/loader.ts';
+import type { NavOverlayLocaleText } from './locale/types.ts';
 
 const getDefaultPortalContainer = () => {
   return typeof document === 'undefined' ? null : document.body;
@@ -40,6 +42,7 @@ export type NavOverlayContentProps = {
   style?: CSSProperties;
   /** Accessible label for the fullscreen navigation dialog. */
   'aria-label'?: string;
+  localeText?: Partial<NavOverlayLocaleText>;
 };
 
 export type NavOverlayCloseButtonProps = {
@@ -48,6 +51,7 @@ export type NavOverlayCloseButtonProps = {
   style?: CSSProperties;
   /** Accessible label for the close button. Defaults to 'Close navigation'. */
   'aria-label'?: string;
+  localeText?: Partial<NavOverlayLocaleText>;
 };
 
 // ── Sub-components ────────────────────────────────────────────────────────
@@ -76,12 +80,14 @@ const NavOverlayTrigger = ({ children }: NavOverlayTriggerProps) => (
 const NavOverlayContent = ({
   children,
   className,
+  localeText,
   style,
-  'aria-label': ariaLabel = 'Navigation',
+  'aria-label': ariaLabel,
 }: NavOverlayContentProps) => {
+  const text = useNavOverlayLocaleText(localeText);
   const content = (
     <ArkDialogContent
-      aria-label={ariaLabel}
+      aria-label={ariaLabel ?? text.navigation}
       className={classNames(styles.content, className)}
       style={style}
     >
@@ -95,19 +101,24 @@ const NavOverlayContent = ({
 
 const NavOverlayCloseButton = ({
   className,
+  localeText,
   style,
-  'aria-label': ariaLabel = 'Close navigation',
-}: NavOverlayCloseButtonProps) => (
-  <ArkDialogCloseTrigger asChild>
-    <IconButton
-      aria-label={ariaLabel}
-      className={classNames(styles.closeButton, className)}
-      icon={<XIcon />}
-      style={style}
-      variant="ghost"
-    />
-  </ArkDialogCloseTrigger>
-);
+  'aria-label': ariaLabel,
+}: NavOverlayCloseButtonProps) => {
+  const text = useNavOverlayLocaleText(localeText);
+
+  return (
+    <ArkDialogCloseTrigger asChild>
+      <IconButton
+        aria-label={ariaLabel ?? text.closeNavigation}
+        className={classNames(styles.closeButton, className)}
+        icon={<XIcon />}
+        style={style}
+        variant="ghost"
+      />
+    </ArkDialogCloseTrigger>
+  );
+};
 
 // ── Compound export ───────────────────────────────────────────────────────
 
@@ -117,3 +128,5 @@ export const NavOverlay = {
   Content: NavOverlayContent,
   CloseButton: NavOverlayCloseButton,
 };
+
+export type { NavOverlayLocaleText } from './locale/types.ts';

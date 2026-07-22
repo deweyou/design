@@ -1,4 +1,11 @@
 // Keep the shared component primitives on the package root surface.
+export {
+  ConfigProvider,
+  configLocales,
+  defaultConfigLocale,
+  type ConfigLocale,
+  type ConfigProviderProps,
+} from './config-provider/index.tsx';
 export { Button, IconButton, type ButtonProps, type IconButtonProps } from './button/index.tsx';
 export {
   Popover,
@@ -23,6 +30,7 @@ export {
   type CodeBlockLanguage,
   type CodeBlockLanguageButtonProps,
   type CodeBlockLanguageLabelProps,
+  type CodeBlockLocaleText,
   type CodeBlockProps,
   type CodeBlockSize,
   type CodeBlockToolbarProps,
@@ -44,6 +52,7 @@ export {
   type TabsValueChangeDetails,
   type TabsFocusChangeDetails,
   type TabsProps,
+  type TabsLocaleText,
   type TabListProps,
   type TabTriggerProps,
   type TabContentProps,
@@ -89,6 +98,7 @@ export {
   NumberInput,
   type NumberInputInvalidDetails,
   type NumberInputProps,
+  type NumberInputLocaleText,
   type NumberInputSize,
   type NumberInputValueChangeDetails,
   type NumberInputVariant,
@@ -104,6 +114,7 @@ export {
   type MarkdownRenderNodeAttributeValue,
   type MarkdownRenderNodeName,
   type MarkdownRenderProps,
+  type MarkdownRenderLocaleText,
   type MarkdownRenderResolveNodeAttributes,
   type MarkdownRenderSize,
 } from './markdown-render/index.tsx';
@@ -113,6 +124,7 @@ export {
   detectMermaidDiagramType,
   type MermaidDiagramType,
   type MermaidRenderProps,
+  type MermaidRenderLocaleText,
   type MindmapRenderProps,
 } from './mermaid-render/index.tsx';
 export {
@@ -139,6 +151,7 @@ export { Card, type CardProps, type CardPadding, type CardShape } from './card/i
 export {
   Breadcrumb,
   type BreadcrumbRootProps,
+  type BreadcrumbLocaleText,
   type BreadcrumbListProps,
   type BreadcrumbItemProps,
   type BreadcrumbLinkProps,
@@ -168,18 +181,22 @@ export {
   type DialogTitleProps,
   type DialogDescriptionProps,
   type DialogCloseTriggerProps,
+  type DialogCloseButtonProps,
+  type DialogLocaleText,
 } from './dialog/index.tsx';
 export {
   ImagePreview,
   type ImagePreviewImage,
   type ImagePreviewIndexChangeDetails,
   type ImagePreviewProps,
+  type ImagePreviewLocaleText,
 } from './image-preview/index.tsx';
 export {
   ImageMasonry,
   type ImageMasonryClickDetails,
   type ImageMasonryImage,
   type ImageMasonryProps,
+  type ImageMasonryLocaleText,
   type ImageMasonryRenderDetails,
 } from './image-masonry/index.tsx';
 export {
@@ -188,6 +205,7 @@ export {
   type GroupedVirtualMasonryGroup,
   type GroupedVirtualMasonryHeaderDetails,
   type GroupedVirtualMasonryProps,
+  type GroupedVirtualMasonryLocaleText,
   type GroupedVirtualMasonryRange,
   type GroupedVirtualMasonryRangePosition,
   type GroupedVirtualMasonryRef,
@@ -208,6 +226,7 @@ export {
   type ToastPosition,
   type ToastOptions,
   type ToasterProps,
+  type ToastLocaleText,
 } from './toast/index.tsx';
 export {
   ScrollArea,
@@ -221,6 +240,7 @@ export {
   VirtualList,
   type VirtualItem,
   type VirtualListProps,
+  type VirtualListLocaleText,
   type VirtualListRange,
   type VirtualListRef,
   type VirtualListRenderDetails,
@@ -231,13 +251,18 @@ export {
 export {
   VirtualMasonry,
   type VirtualMasonryProps,
+  type VirtualMasonryLocaleText,
   type VirtualMasonryRange,
   type VirtualMasonryRef,
   type VirtualMasonryRenderDetails,
   type VirtualMasonryScrollAlign,
   type VirtualMasonryScrollToIndexOptions,
 } from './virtual-masonry/index.tsx';
-export { Pagination, type PaginationProps } from './pagination/index.tsx';
+export {
+  Pagination,
+  type PaginationLocaleText,
+  type PaginationProps,
+} from './pagination/index.tsx';
 export {
   Nav,
   type NavRootProps,
@@ -246,6 +271,7 @@ export {
   type NavResponsiveBreakpoint,
   type NavResponsiveItem,
   type NavResponsiveProps,
+  type NavLocaleText,
   type NavResponsiveSelectDetails,
   type NavSize,
 } from './nav/index.tsx';
@@ -255,4 +281,5 @@ export {
   type NavOverlayTriggerProps,
   type NavOverlayContentProps,
   type NavOverlayCloseButtonProps,
+  type NavOverlayLocaleText,
 } from './nav-overlay/index.tsx';

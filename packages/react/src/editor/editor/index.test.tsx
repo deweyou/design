@@ -2,13 +2,14 @@
 
 import '../test-setup';
 
-import { createRef, useEffect } from 'react';
+import { Suspense, createRef, useEffect } from 'react';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
 import { $createParagraphNode, $createTextNode, $getRoot } from 'lexical';
 import { afterEach, expect, test, vi } from 'vite-plus/test';
 
 import { markdownEditorAdapter } from '../adapters/markdown/index.js';
+import { ConfigProvider } from '../../config-provider/index.tsx';
 import { createEditorPlugin, type EditorHandle, type EditorPluginRegistry } from '../core/index.js';
 import { markdownShortcutPlugin } from '../plugins/markdown-shortcut/index.js';
 import { richTextPlugin } from '../plugins/rich-text/index.js';
@@ -36,6 +37,18 @@ test('renders editable editor with stable data attributes and placeholder', () =
     'true',
   );
   expect(screen.getByText('Write a comment...')).toBeInTheDocument();
+});
+
+test('loads the provider locale for the default accessible name', async () => {
+  render(
+    <Suspense fallback={<span>Loading locale</span>}>
+      <ConfigProvider locale="zh-CN">
+        <Editor adapter={markdownEditorAdapter()} />
+      </ConfigProvider>
+    </Suspense>,
+  );
+
+  expect(await screen.findByRole('textbox', { name: '编辑器' })).toBeInTheDocument();
 });
 
 const InsertTextOnMountPlugin = ({ text }: { text: string }) => {

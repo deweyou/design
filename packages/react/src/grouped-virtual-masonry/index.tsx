@@ -25,6 +25,8 @@ import type {
   VirtualMasonryScrollToIndexOptions,
 } from '../virtual-masonry/index.tsx';
 import styles from './index.module.less';
+import { useGroupedVirtualMasonryLocaleText } from './locale/loader.ts';
+import type { GroupedVirtualMasonryLocaleText } from './locale/types.ts';
 
 export type GroupedVirtualMasonryGroup<TImage extends ImageMasonryImage = ImageMasonryImage> = {
   images: TImage[];
@@ -141,6 +143,7 @@ export type GroupedVirtualMasonryProps<TImage extends ImageMasonryImage = ImageM
   viewportStyle?: CSSProperties;
   'aria-label'?: string;
   'aria-labelledby'?: string;
+  localeText?: Partial<GroupedVirtualMasonryLocaleText>;
 };
 
 type GroupedVirtualMasonryHeaderEntry<TImage extends ImageMasonryImage> = {
@@ -307,20 +310,22 @@ const findVisibleEntries = <TImage extends ImageMasonryImage>({
   return entries.filter((entry) => entry.y + entry.height >= visibleStart && entry.y <= visibleEnd);
 };
 
-const renderDefaultHeader = <TImage extends ImageMasonryImage>({
-  group,
-  groupIndex,
-}: GroupedVirtualMasonryHeaderDetails<TImage>) => (
+const renderDefaultHeader = <TImage extends ImageMasonryImage>(
+  { group, groupIndex }: GroupedVirtualMasonryHeaderDetails<TImage>,
+  localeText: GroupedVirtualMasonryLocaleText,
+) => (
   <span className={styles.headerContent}>
-    {group.title ?? group.id ?? `Group ${groupIndex + 1}`}
+    {group.title ?? group.id ?? localeText.defaultGroup(groupIndex + 1)}
   </span>
 );
 
 const renderDefaultItem = <TImage extends ImageMasonryImage>({
   details,
+  localeText,
   onItemClick,
 }: {
   details: GroupedVirtualMasonryRenderDetails<TImage>;
+  localeText: GroupedVirtualMasonryLocaleText;
   onItemClick?: (details: GroupedVirtualMasonryClickDetails<TImage>) => void;
 }) => {
   const imageNode = (
@@ -339,7 +344,7 @@ const renderDefaultItem = <TImage extends ImageMasonryImage>({
 
   return (
     <button
-      aria-label={`Preview ${details.image.alt ?? details.globalIndex + 1}`}
+      aria-label={localeText.previewImage(details.image.alt ?? details.globalIndex + 1)}
       className={styles.defaultButton}
       onClick={() =>
         onItemClick({
@@ -391,11 +396,13 @@ export const GroupedVirtualMasonry = forwardRef<
       style,
       viewportClassName,
       viewportStyle,
-      'aria-label': ariaLabel = 'Grouped virtual masonry',
+      'aria-label': ariaLabel,
       'aria-labelledby': ariaLabelledBy,
+      localeText,
     },
     ref,
   ) => {
+    const text = useGroupedVirtualMasonryLocaleText(localeText);
     const viewportRef = useRef<HTMLDivElement>(null);
     const lastRangeRef = useRef<GroupedVirtualMasonryRange | null>(null);
     const [scrollOffset, setScrollOffset] = useState(0);
@@ -677,7 +684,7 @@ export const GroupedVirtualMasonry = forwardRef<
           role={resolvedRole ?? undefined}
           style={{ ...entry.style, ...resolvedStyle }}
         >
-          {renderGroupHeader ? renderGroupHeader(details) : renderDefaultHeader(details)}
+          {renderGroupHeader ? renderGroupHeader(details) : renderDefaultHeader(details, text)}
         </div>
       );
     };
@@ -715,6 +722,7 @@ export const GroupedVirtualMasonry = forwardRef<
             ? renderItem(details)
             : renderDefaultItem({
                 details,
+                localeText: text,
                 onItemClick,
               })}
         </div>
@@ -730,7 +738,7 @@ export const GroupedVirtualMasonry = forwardRef<
       >
         <ScrollArea.Viewport
           ref={viewportRef}
-          aria-label={ariaLabelledBy ? undefined : ariaLabel}
+          aria-label={ariaLabelledBy ? undefined : (ariaLabel ?? text.groupedVirtualMasonry)}
           aria-labelledby={ariaLabelledBy}
           className={classNames(styles.viewport, viewportClassName)}
           data-testid="grouped-virtual-masonry-viewport"
@@ -753,3 +761,5 @@ export const GroupedVirtualMasonry = forwardRef<
 );
 
 GroupedVirtualMasonry.displayName = 'GroupedVirtualMasonry';
+
+export type { GroupedVirtualMasonryLocaleText } from './locale/types.ts';

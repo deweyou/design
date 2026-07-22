@@ -14,6 +14,7 @@ This document is the human-readable companion to `packages/react/package.json` e
 | `Card`                  | `@deweyou-design/react` | `@deweyou-design/react/card`                    |
 | `Checkbox`              | `@deweyou-design/react` | `@deweyou-design/react/checkbox`                |
 | `CodeBlock`             | `@deweyou-design/react` | `@deweyou-design/react/code-block`              |
+| `ConfigProvider`        | `@deweyou-design/react` | `@deweyou-design/react/config-provider`         |
 | `Dialog`                | `@deweyou-design/react` | `@deweyou-design/react/dialog`                  |
 | `Field`                 | `@deweyou-design/react` | `@deweyou-design/react/field`                   |
 | `GroupedVirtualMasonry` | `@deweyou-design/react` | `@deweyou-design/react/grouped-virtual-masonry` |
@@ -48,6 +49,32 @@ Use root imports when a file consumes several components together. Use subpath i
 
 ## Composition Trees
 
+### ConfigProvider and localization
+
+```tsx
+import { Suspense } from 'react';
+import { ConfigProvider, Pagination } from '@deweyou-design/react';
+
+<Suspense fallback={<span>Loading locale…</span>}>
+  <ConfigProvider locale="ja-JP">
+    <Pagination count={100} localeText={{ previous: 'Back' }} />
+  </ConfigProvider>
+</Suspense>;
+```
+
+`ConfigProvider` owns the global locale code and is the extension point for future shared
+configuration. It accepts `en-US`, `zh-CN`, `zh-TW`, `ja-JP`, and `ko-KR`; a nested provider
+inherits an omitted locale and overrides an explicit locale. There is no browser auto-detection.
+
+`en-US` is the synchronous default and fallback. Other dictionaries live in each component or
+Editor plugin and load through literal dynamic imports. The caller owns the nearest `Suspense`
+boundary for first-time non-English loads. Runtime switches defer replacement so revealed content
+stays visible while the next dictionary loads. `localeText` is deliberately absent from
+`ConfigProvider`; each copy-owning component or plugin accepts its own typed partial override.
+
+The package does not expose a central dictionary or a preload-all API. This preserves component and
+locale chunk boundaries for tree-shaking.
+
 ### Button
 
 ```tsx
@@ -60,7 +87,7 @@ Use root imports when a file consumes several components together. Use subpath i
 
 Icon-only actions must use `IconButton`, `Button.Icon`, or `Button` with the explicit `icon` prop and an accessible name.
 
-Button shape stays orthogonal to variant, mode, and size: `rect` is 0, `auto`/`float` is 8px, and `pill` is 999px. Filled, outlined, ghost, and IconButton modes share the same float radius. IconButton surfaces follow the 32/40/44/48/56px control-height ladder with 16/20/24/28/32px icons; coarse pointers expand the target to at least 44px without inflating the visible surface. See the [Button visual density design](../superpowers/specs/2026-07-22-button-visual-density-design.md).
+Button shape stays orthogonal to variant, mode, and size: `rect` is 0, `auto`/`float` is 8px, and `pill` is 999px. Filled, outlined, ghost, and IconButton modes share the same float radius. Visible surfaces follow the 24/32/40/48/56px control-height ladder with 16/20/24/28/32px icons; coarse pointers expand the target to at least 44px without inflating fine-pointer layout. See the [Button visual density design](../superpowers/specs/2026-07-22-button-visual-density-design.md) and the [component density contract](../superpowers/specs/2026-07-22-component-density-contract.md).
 
 ### Field
 
@@ -142,7 +169,7 @@ Menu
     └── MenuCheckboxItem
 ```
 
-Use `ContextMenu` for right-click surfaces. Use `MenuTrigger asChild` when the trigger should be an existing button.
+Use `ContextMenu` for right-click surfaces. Use `MenuTrigger asChild` when the trigger should be an existing button. `Menu` maps `sm`, `md`, and `lg` to 32px, 40px, and 48px visible rows; coarse pointers retain a 44px minimum target.
 
 ### Select
 
@@ -164,7 +191,7 @@ Select
 </Select.Root>
 ```
 
-`Select.Root` accepts `label`, `hint`, `error`, `required`, and `disabled`; `Select.Trigger` receives the field aria contract.
+`Select.Root` accepts `label`, `hint`, `error`, `required`, `disabled`, and `size`; `Select.Trigger` receives the field aria contract. `sm`, `md`, and `lg` map to 32px, 40px, and 48px visible trigger and option rows, with `md` as the default.
 
 ### Tabs
 
@@ -178,6 +205,7 @@ Tabs
 ```
 
 `Tabs` can be controlled with `value` / `onValueChange` or uncontrolled with `defaultValue`.
+Its `sm`, `md`, and `lg` triggers follow the same 32px, 40px, and 48px visible density ladder.
 Use `hideContent` for route-backed tab bars where panels are owned by the router. In that pattern,
 keep `Tabs` controlled by the current route and handle visible-tab navigation through `TabTrigger`
 `onClick`. When `overflowMode="collapse"` is used, mirror the same action in `onSelect` so selecting
@@ -313,6 +341,7 @@ NavOverlay
 
 Use `Nav` for visible navigation landmarks. Use `NavOverlay` for responsive fullscreen navigation.
 Use `Nav.Responsive` when the same navigation destinations should render inline on wide screens and collapse into a fullscreen overlay on small screens. Keep route or section destinations inside `Nav.Responsive`; keep global actions such as theme toggles, GitHub links, and account controls outside the nav as adjacent `IconButton` actions. Do not use `Tabs` for this pattern unless the component also owns tab panels and tab activation semantics.
+`Nav` uses 32px, 40px, and 48px visible links for `sm`, `md`, and `lg`. `Pagination` exposes the same three-size ladder and defaults to `md`.
 
 ### Virtualized Content
 
@@ -416,6 +445,7 @@ Toast
 | Component                          | Contract                                                                                                                                                                |
 | ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `Button`                           | Text buttons render visible content. Icon-only buttons require `aria-label` or `aria-labelledby`. Loading buttons set `aria-busy` and block repeated activation.        |
+| `ConfigProvider`                   | Defaults to `en-US`; non-English descendants suspend only for their own uncached locale chunks, and application-owned boundaries provide loading UI.                    |
 | `Field`                            | `Field.Label` points at the control id. `Field.Description` and `Field.ErrorText` provide `aria-describedby`; errors set `role="alert"` and take precedence over hints. |
 | `Input`, `Textarea`                | Label, hint, error, `required`, `disabled`, and invalid state are wired through `Field`.                                                                                |
 | `NumberInput`                      | Ark UI owns spinbutton semantics, keyboard and press stepping, boundary-disabled triggers, parsing, and clamping; `Field` owns label, hint, and error relationships.    |
@@ -436,3 +466,5 @@ Toast
 - Public component props should stay decoupled from Ark UI prop names unless the Ark term is already the common component vocabulary.
 - New public components must include source, CSS module, colocated unit tests, Storybook `Interaction`, README entry, this component contract entry, root and subpath exports, and package/docs contract coverage.
 - New component designs with non-obvious trade-offs or future extension paths must be recorded in `docs/superpowers/specs/` and `docs/superpowers/plans/` before implementation continues.
+
+_Last updated: 2026-07-22 | Reason: document ConfigProvider localization ownership and lazy-loading contracts_

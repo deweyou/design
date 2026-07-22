@@ -5,6 +5,7 @@ import { expect, test } from 'vite-plus/test';
 
 import * as buttonEntry from '../src/button/index.tsx';
 import * as codeBlockEntry from '../src/code-block/index.tsx';
+import * as configProviderEntry from '../src/config-provider/index.tsx';
 import * as fieldEntry from '../src/field/index.tsx';
 import * as groupedVirtualMasonryEntry from '../src/grouped-virtual-masonry/index.tsx';
 import * as imageMasonryEntry from '../src/image-masonry/index.tsx';
@@ -47,6 +48,11 @@ test('components package exposes button, popover, and text subpath exports in pa
       default: './dist/code-block/index.js',
       import: './dist/code-block/index.js',
       types: './dist/code-block/index.d.ts',
+    },
+    './config-provider': {
+      default: './dist/config-provider/index.js',
+      import: './dist/config-provider/index.js',
+      types: './dist/config-provider/index.d.ts',
     },
     './field': {
       default: './dist/field/index.js',
@@ -219,6 +225,9 @@ test('components subpath entries match the root entry public contract', () => {
   expect(codeBlockEntry.CodeBlockLanguageButton).toBe(rootEntry.CodeBlockLanguageButton);
   expect(codeBlockEntry.CodeBlockLanguageLabel).toBe(rootEntry.CodeBlockLanguageLabel);
   expect(codeBlockEntry.CodeBlockToolbar).toBe(rootEntry.CodeBlockToolbar);
+  expect(configProviderEntry.ConfigProvider).toBe(rootEntry.ConfigProvider);
+  expect(configProviderEntry.configLocales).toBe(rootEntry.configLocales);
+  expect(configProviderEntry.defaultConfigLocale).toBe(rootEntry.defaultConfigLocale);
   expect(fieldEntry.Field).toBe(rootEntry.Field);
   expect(editorEntry.Editor).toBe(rootEntry.Editor);
   expect(editorEntry.markdownEditorAdapter).toBe(rootEntry.markdownEditorAdapter);
@@ -261,6 +270,11 @@ test('components subpath entries expose their public API without requiring the p
     'CodeBlockLanguageButton',
     'CodeBlockLanguageLabel',
     'CodeBlockToolbar',
+  ]);
+  expect(Object.keys(configProviderEntry).sort()).toEqual([
+    'ConfigProvider',
+    'configLocales',
+    'defaultConfigLocale',
   ]);
   expect(Object.keys(fieldEntry).sort()).toEqual([
     'Field',

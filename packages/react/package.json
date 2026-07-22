@@ -52,6 +52,11 @@
       "import": "./dist/code-block/index.js",
       "default": "./dist/code-block/index.js"
     },
+    "./config-provider": {
+      "types": "./dist/config-provider/index.d.ts",
+      "import": "./dist/config-provider/index.js",
+      "default": "./dist/config-provider/index.js"
+    },
     "./dialog": {
       "types": "./dist/dialog/index.d.ts",
       "import": "./dist/dialog/index.js",

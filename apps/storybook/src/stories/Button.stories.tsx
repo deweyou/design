@@ -456,6 +456,9 @@ const SizeGallery = () => {
             <Button color="primary" size={size} variant="outlined">
               Review
             </Button>
+            <Button size={size} variant="ghost">
+              Ghost {size}
+            </Button>
             <IconButton
               aria-label={`Open search at ${size}`}
               color="primary"
@@ -685,9 +688,9 @@ export const Sizes: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const expectedSizes = {
-      xs: '32px',
-      sm: '40px',
-      md: '44px',
+      xs: '24px',
+      sm: '32px',
+      md: '40px',
       lg: '48px',
       xl: '56px',
     } as const;
@@ -700,10 +703,15 @@ export const Sizes: Story = {
     } as const;
 
     for (const [size, expectedSize] of Object.entries(expectedSizes)) {
+      const ghostButton = canvas.getByRole('button', { name: `Ghost ${size}` });
       const iconButton = canvas.getByRole('button', { name: `Open search at ${size}` });
       const icon = iconButton.querySelector('svg');
+      const ghostStyle = getComputedStyle(ghostButton);
       const computedStyle = getComputedStyle(iconButton);
 
+      await expect(ghostButton.getBoundingClientRect().height).toBe(Number.parseInt(expectedSize));
+      await expect(ghostStyle.paddingBlockStart).toBe('0px');
+      await expect(ghostStyle.paddingBlockEnd).toBe('0px');
       await expect(icon).not.toBeNull();
       await expect(computedStyle.inlineSize).toBe(expectedSize);
       await expect(computedStyle.blockSize).toBe(expectedSize);

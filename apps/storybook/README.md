@@ -14,4 +14,5 @@ development. Public installation and theming guidance belongs in `apps/website`.
 
 - Storybook is aligned on the 10.2.19 release line.
 - The preview shell keeps its explicit global style import from `@deweyou-ui/styles/theme.css`.
+- The preview toolbar exposes the five supported component locales and supplies the selection through the global `ConfigProvider`; `en-US` remains the default.
 - Stories remain scoped to internal review rather than public documentation ownership.

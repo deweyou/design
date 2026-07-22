@@ -273,6 +273,15 @@ export const Size: StoryObj = {
     </div>
   ),
   name: 'Size',
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const expectedHeights = ['32px', '40px', '48px'];
+    const firstTabInEachGroup = canvas.getAllByRole('tab', { name: 'Alpha' });
+
+    for (const [index, tab] of firstTabInEachGroup.entries()) {
+      await expect(getComputedStyle(tab).blockSize).toBe(expectedHeights[index]);
+    }
+  },
 };
 
 // ---------------------------------------------------------------------------

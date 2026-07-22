@@ -21,15 +21,16 @@ IconButton visual surfaces continue to follow the Button control-height ladder:
 
 | Size | Surface | Icon |
 | ---- | ------: | ---: |
-| `xs` |    32px | 16px |
-| `sm` |    40px | 20px |
-| `md` |    44px | 24px |
+| `xs` |    24px | 16px |
+| `sm` |    32px | 20px |
+| `md` |    40px | 24px |
 | `lg` |    48px | 28px |
 | `xl` |    56px | 32px |
 
 - IconButton has no internal padding; the surface and icon variables define its optical spacing.
 - On coarse pointers, the interactive area expands to at least 44px without changing the visible surface or document layout.
 - Text Button icon sizing remains unchanged.
+- This ladder supersedes the earlier 32/40/44 compact values after the component-wide density audit exposed the same inflation across multiple controls.
 
 ## Shape Contract
 

@@ -18,6 +18,8 @@ import classNames from 'classnames';
 
 import { Menu, MenuContent, MenuItem, MenuTrigger, MenuTriggerItem } from '../menu/index.tsx';
 import styles from './index.module.less';
+import { useTabsLocaleText } from './locale/loader.ts';
+import type { TabsLocaleText } from './locale/types.ts';
 
 // ─── Type exports ─────────────────────────────────────────────────────────────
 
@@ -114,6 +116,7 @@ export type TabsProps = {
   unmountOnExit?: boolean;
   className?: string;
   style?: CSSProperties;
+  localeText?: Partial<TabsLocaleText>;
   children: ReactNode;
 };
 
@@ -164,6 +167,7 @@ type TabsContextValue = {
   registerTab: (tab: TabRegistration) => void;
   unregisterTab: (value: string) => void;
   tabs: TabRegistration[];
+  localeText: TabsLocaleText;
 };
 
 const TabsContext = createContext<TabsContextValue>({
@@ -178,6 +182,7 @@ const TabsContext = createContext<TabsContextValue>({
   registerTab: () => {},
   unregisterTab: () => {},
   tabs: [],
+  localeText: { more: 'More' },
 });
 
 const scrollTabIntoListView = (
@@ -232,8 +237,10 @@ export const Tabs = ({
   unmountOnExit = false,
   className,
   style,
+  localeText,
   children,
 }: TabsProps) => {
+  const text = useTabsLocaleText(localeText);
   const isControlled = value !== undefined;
   // Always manage an internal value so menu-tab selections can be applied programmatically.
   // Note: when neither value nor defaultValue is provided, internalValue starts as '' and
@@ -281,6 +288,7 @@ export const Tabs = ({
         color,
         currentValue: resolvedValue,
         hideContent,
+        localeText: text,
         onTabMenuSelect: handleTabMenuSelect,
         orientation,
         overflowMode,
@@ -327,7 +335,7 @@ const TAB_GAP = 8; // px gap between tabs (matches @tabs-tab-gap in CSS)
 const TAB_ROLE_SELECTOR = '[role="tab"]';
 
 export const TabList = ({ className, style, children }: TabListProps) => {
-  const { variant, overflowMode, orientation, tabs, currentValue, onTabMenuSelect } =
+  const { currentValue, localeText, onTabMenuSelect, orientation, overflowMode, tabs, variant } =
     useContext(TabsContext);
 
   // Outer wrapper ref — used for ResizeObserver in collapse mode.
@@ -595,7 +603,7 @@ export const TabList = ({ className, style, children }: TabListProps) => {
                 data-part="overflow-trigger"
                 type="button"
               >
-                <span className={styles.triggerLabel}>More</span>
+                <span className={styles.triggerLabel}>{localeText.more}</span>
                 <span aria-hidden className={styles.moreButtonArrow}>
                   <ChevronDownIcon size="xs" />
                 </span>
@@ -751,3 +759,5 @@ export const TabContent = ({ value, className, style, children }: TabContentProp
 export const TabIndicator = ({ className, style }: TabIndicatorProps) => (
   <ArkTabs.Indicator className={classNames(styles.indicator, className)} style={style} />
 );
+
+export type { TabsLocaleText } from './locale/types.ts';

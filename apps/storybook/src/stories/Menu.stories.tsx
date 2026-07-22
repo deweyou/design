@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 
 import { Button } from '@deweyou-design/react/button';
 import {
@@ -464,6 +465,25 @@ export const SizeVariants: StoryObj = {
       ))}
     </div>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const expectedHeights = { sm: '32px', md: '40px', lg: '48px' } as const;
+
+    for (const [size, expectedHeight] of Object.entries(expectedHeights)) {
+      const trigger = canvas.getByRole('button', { name: `${size.toUpperCase()} menu` });
+      await userEvent.click(trigger);
+      await waitFor(async () => {
+        await expect(trigger.getAttribute('data-state')).toBe('open');
+      });
+
+      const menuId = trigger.getAttribute('aria-controls');
+      const menu = menuId ? document.getElementById(menuId) : null;
+      const menuItem = menu?.querySelector('[role="menuitem"]');
+      await expect(menu).not.toBeNull();
+      await expect(menuItem).not.toBeNull();
+      await expect(getComputedStyle(menuItem!).blockSize).toBe(expectedHeight);
+    }
+  },
 };
 
 // ---------------------------------------------------------------------------
@@ -501,8 +521,6 @@ export const ShapeVariants: StoryObj = {
 // ---------------------------------------------------------------------------
 // Story: Interaction — play function tests
 // ---------------------------------------------------------------------------
-
-import { expect, userEvent, waitFor, within } from 'storybook/test';
 
 export const Interaction: StoryObj = {
   name: 'Interaction',

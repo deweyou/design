@@ -22,6 +22,8 @@ import {
 } from '../image-masonry/layout.ts';
 import type { ImageMasonryClickDetails, ImageMasonryImage } from '../image-masonry/index.tsx';
 import styles from './index.module.less';
+import { useVirtualMasonryLocaleText } from './locale/loader.ts';
+import type { VirtualMasonryLocaleText } from './locale/types.ts';
 
 export type VirtualMasonryRenderDetails<TImage extends ImageMasonryImage = ImageMasonryImage> = {
   image: TImage;
@@ -75,6 +77,7 @@ export type VirtualMasonryProps<TImage extends ImageMasonryImage = ImageMasonryI
   viewportStyle?: CSSProperties;
   'aria-label'?: string;
   'aria-labelledby'?: string;
+  localeText?: Partial<VirtualMasonryLocaleText>;
 };
 
 const DEFAULT_GAP = 16;
@@ -151,10 +154,12 @@ const getScrollOffsetForItem = <TImage extends ImageMasonryImage>({
 const renderDefaultItem = <TImage extends ImageMasonryImage>({
   image,
   index,
+  localeText,
   onItemClick,
 }: {
   image: TImage;
   index: number;
+  localeText: VirtualMasonryLocaleText;
   onItemClick?: (details: ImageMasonryClickDetails<TImage>) => void;
 }) => {
   const imageNode = (
@@ -173,7 +178,7 @@ const renderDefaultItem = <TImage extends ImageMasonryImage>({
 
   return (
     <button
-      aria-label={`Preview ${image.alt ?? index + 1}`}
+      aria-label={localeText.previewImage(image.alt ?? index + 1)}
       className={styles.defaultButton}
       onClick={() => onItemClick({ image, index })}
       type="button"
@@ -207,11 +212,13 @@ export const VirtualMasonry = forwardRef<VirtualMasonryRef, VirtualMasonryProps>
       style,
       viewportClassName,
       viewportStyle,
-      'aria-label': ariaLabel = 'Virtual masonry',
+      'aria-label': ariaLabel,
       'aria-labelledby': ariaLabelledBy,
+      localeText,
     },
     ref,
   ) => {
+    const text = useVirtualMasonryLocaleText(localeText);
     const viewportRef = useRef<HTMLDivElement>(null);
     const lastRangeRef = useRef<VirtualMasonryRange | null>(null);
     const [scrollOffset, setScrollOffset] = useState(0);
@@ -394,6 +401,7 @@ export const VirtualMasonry = forwardRef<VirtualMasonryRef, VirtualMasonryProps>
               : renderDefaultItem({
                   image: virtualItem.item,
                   index: virtualItem.index,
+                  localeText: text,
                   onItemClick,
                 })}
           </div>
@@ -409,7 +417,7 @@ export const VirtualMasonry = forwardRef<VirtualMasonryRef, VirtualMasonryProps>
       >
         <ScrollArea.Viewport
           ref={viewportRef}
-          aria-label={ariaLabelledBy ? undefined : ariaLabel}
+          aria-label={ariaLabelledBy ? undefined : (ariaLabel ?? text.virtualMasonry)}
           aria-labelledby={ariaLabelledBy}
           className={classNames(styles.viewport, viewportClassName)}
           data-testid="virtual-masonry-viewport"
@@ -430,3 +438,5 @@ export const VirtualMasonry = forwardRef<VirtualMasonryRef, VirtualMasonryProps>
 );
 
 VirtualMasonry.displayName = 'VirtualMasonry';
+
+export type { VirtualMasonryLocaleText } from './locale/types.ts';

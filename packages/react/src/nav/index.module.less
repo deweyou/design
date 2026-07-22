@@ -3,6 +3,8 @@
 // ── Root ──────────────────────────────────────────────────────────────────
 
 .root {
+  --nav-link-height: var(--ui-control-height-md);
+
   display: flex;
   font-family: var(--ui-font-control);
   margin: 0;
@@ -23,20 +25,28 @@
 // ── Size scale ────────────────────────────────────────────────────────────
 
 .sizeSm {
+  --nav-link-height: var(--ui-control-height-sm);
+
   font-size: 0.875rem;
 }
 
 .sizeMd {
+  --nav-link-height: var(--ui-control-height-md);
+
   font-size: 1rem;
 }
 
 .sizeLg {
+  --nav-link-height: var(--ui-control-height-lg);
+
   font-size: 1.0625rem;
 }
 
 // ── Link ──────────────────────────────────────────────────────────────────
 
 .link {
+  .coarse-pointer-block-target();
+
   align-items: center;
   border-radius: var(--ui-radius-float);
   color: var(--ui-color-text-muted);
@@ -46,7 +56,7 @@
   font: inherit;
   gap: 6px;
   max-inline-size: min(18rem, 100%);
-  min-block-size: var(--ui-touch-target-min);
+  min-block-size: var(--nav-link-height);
   min-inline-size: 0;
   padding: 6px 10px;
   position: relative;

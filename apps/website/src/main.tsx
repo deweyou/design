@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 
-import { Toaster } from '@deweyou-design/react';
+import { ConfigProvider, Toaster } from '@deweyou-design/react';
 import { useThemeMode } from '@deweyou-design/react-hooks';
 import '@deweyou-design/styles/theme.css';
 import 'virtual:deweyou-website-fonts.css';
@@ -23,12 +23,12 @@ const Layout = () => {
   const { mode, toggleMode } = useThemeMode('light');
 
   return (
-    <>
+    <ConfigProvider locale="en-US">
       <ScrollToTop />
       <Navbar mode={mode} onToggleMode={toggleMode} />
       <Outlet />
       <Toaster />
-    </>
+    </ConfigProvider>
   );
 };
 

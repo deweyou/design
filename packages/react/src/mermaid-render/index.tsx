@@ -17,6 +17,8 @@ import { CodeBlock } from '../code-block/index.tsx';
 import { ScrollArea } from '../scroll-area/index.tsx';
 
 import styles from './index.module.less';
+import { useMermaidRenderLocaleText } from './locale/loader.ts';
+import type { MermaidRenderLocaleText } from './locale/types.ts';
 
 export type MermaidDiagramType =
   | 'architecture'
@@ -45,10 +47,15 @@ export type MermaidDiagramType =
 export type MermaidRenderProps = {
   value: string;
   className?: string;
+  localeText?: Partial<MermaidRenderLocaleText>;
   style?: CSSProperties;
 };
 
 export type MindmapRenderProps = MermaidRenderProps;
+
+type ResolvedMermaidRenderProps = Omit<MermaidRenderProps, 'localeText'> & {
+  localeText: MermaidRenderLocaleText;
+};
 
 type MindmapNode = {
   id: string;
@@ -394,7 +401,7 @@ const renderNodeText = (label: string, nodeHeight: number) => {
   ));
 };
 
-export const MindmapRender = ({ className, style, value }: MindmapRenderProps) => {
+const MindmapRenderBase = ({ className, localeText, style, value }: ResolvedMermaidRenderProps) => {
   const [collapsedNodeIds, setCollapsedNodeIds] = useState(() => new Set<string>());
   const canvasLayout = useMemo(() => buildMindmapLayout(value, expandedMindmapNodeIds), [value]);
   const layout = useMemo(
@@ -420,9 +427,9 @@ export const MindmapRender = ({ className, style, value }: MindmapRenderProps) =
   }, [value]);
 
   return (
-    <MermaidFrame className={className} renderer="mindmap" style={style}>
+    <MermaidFrame className={className} localeText={localeText} renderer="mindmap" style={style}>
       <svg
-        aria-label="Mermaid mindmap diagram"
+        aria-label={localeText.mindmapDiagram}
         className={styles.mindmapSvg}
         data-mindmap-root="true"
         height={canvasLayout.height}
@@ -454,8 +461,8 @@ export const MindmapRender = ({ className, style, value }: MindmapRenderProps) =
             const isRoot = node.depth === 0;
             const isLeaf = !node.hasChildren;
             const toggleLabel = node.isCollapsed
-              ? `Expand ${node.label} mindmap branch`
-              : `Collapse ${node.label} mindmap branch`;
+              ? localeText.expandMindmapBranch(node.label)
+              : localeText.collapseMindmapBranch(node.label);
             const handleToggleKeyDown = (event: KeyboardEvent<SVGGElement>) => {
               if (event.key !== 'Enter' && event.key !== ' ') {
                 return;
@@ -526,14 +533,21 @@ export const MindmapRender = ({ className, style, value }: MindmapRenderProps) =
   );
 };
 
+export const MindmapRender = ({ localeText, ...props }: MindmapRenderProps) => {
+  const text = useMermaidRenderLocaleText(localeText);
+  return <MindmapRenderBase {...props} localeText={text} />;
+};
+
 const MermaidFrame = ({
   children,
   className,
+  localeText,
   renderer,
   style,
 }: {
   children: ReactNode;
   className?: string;
+  localeText: MermaidRenderLocaleText;
   renderer: 'beautiful' | 'mindmap' | 'native';
   style?: CSSProperties;
 }) => {
@@ -713,9 +727,9 @@ const MermaidFrame = ({
       data-zoom-dragging={isDragging ? 'true' : undefined}
       style={style}
     >
-      <div className={styles.toolbar} aria-label="Mermaid zoom controls" role="toolbar">
+      <div className={styles.toolbar} aria-label={localeText.zoomControls} role="toolbar">
         <button
-          aria-label="Zoom out"
+          aria-label={localeText.zoomOut}
           className={styles.toolbarButton}
           disabled={!canZoomOut}
           type="button"
@@ -725,7 +739,7 @@ const MermaidFrame = ({
         </button>
         <span className={styles.zoomValue}>{formatZoom(zoom)}</span>
         <button
-          aria-label="Zoom in"
+          aria-label={localeText.zoomIn}
           className={styles.toolbarButton}
           disabled={!canZoomIn}
           type="button"
@@ -734,7 +748,7 @@ const MermaidFrame = ({
           <ZoomInIcon aria-hidden size="xs" />
         </button>
         <button
-          aria-label="Reset zoom"
+          aria-label={localeText.resetZoom}
           className={styles.toolbarButton}
           disabled={zoom === 1}
           type="button"
@@ -788,7 +802,12 @@ const MermaidFrame = ({
   );
 };
 
-const NativeMermaidRender = ({ className, style, value }: MermaidRenderProps) => {
+const NativeMermaidRender = ({
+  className,
+  localeText,
+  style,
+  value,
+}: ResolvedMermaidRenderProps) => {
   const hostRef = useRef<HTMLDivElement>(null);
   const [error, setError] = useState<string>();
   const [svg, setSvg] = useState('');
@@ -815,7 +834,9 @@ const NativeMermaidRender = ({ className, style, value }: MermaidRenderProps) =>
         }
       } catch (renderError) {
         if (isMounted) {
-          setError(renderError instanceof Error ? renderError.message : 'Unable to render diagram');
+          setError(
+            renderError instanceof Error ? renderError.message : localeText.unableToRenderDiagram,
+          );
         }
       }
     };
@@ -825,7 +846,7 @@ const NativeMermaidRender = ({ className, style, value }: MermaidRenderProps) =>
     return () => {
       isMounted = false;
     };
-  }, [value]);
+  }, [localeText.unableToRenderDiagram, value]);
 
   useEffect(() => {
     if (hostRef.current) {
@@ -834,14 +855,14 @@ const NativeMermaidRender = ({ className, style, value }: MermaidRenderProps) =>
   }, [svg]);
 
   return (
-    <MermaidFrame className={className} renderer="native" style={style}>
+    <MermaidFrame className={className} localeText={localeText} renderer="native" style={style}>
       {error ? (
         <CodeBlock className={styles.error} language="mermaid">
           {`${error}\n\n${value}`}
         </CodeBlock>
       ) : (
         <>
-          {svg === '' && <p className={styles.status}>Rendering diagram...</p>}
+          {svg === '' && <p className={styles.status}>{localeText.renderingDiagram}</p>}
           <div ref={hostRef} className={styles.svgHost} />
         </>
       )}
@@ -849,7 +870,12 @@ const NativeMermaidRender = ({ className, style, value }: MermaidRenderProps) =>
   );
 };
 
-const BeautifulMermaidRender = ({ className, style, value }: MermaidRenderProps) => {
+const BeautifulMermaidRender = ({
+  className,
+  localeText,
+  style,
+  value,
+}: ResolvedMermaidRenderProps) => {
   const [svg, setSvg] = useState('');
   const [shouldUseNative, setShouldUseNative] = useState(false);
 
@@ -888,13 +914,20 @@ const BeautifulMermaidRender = ({ className, style, value }: MermaidRenderProps)
   }, [value]);
 
   if (shouldUseNative) {
-    return <NativeMermaidRender className={className} style={style} value={value} />;
+    return (
+      <NativeMermaidRender
+        className={className}
+        localeText={localeText}
+        style={style}
+        value={value}
+      />
+    );
   }
 
   return (
-    <MermaidFrame className={className} renderer="beautiful" style={style}>
+    <MermaidFrame className={className} localeText={localeText} renderer="beautiful" style={style}>
       {svg === '' ? (
-        <p className={styles.status}>Rendering diagram...</p>
+        <p className={styles.status}>{localeText.renderingDiagram}</p>
       ) : (
         <div className={styles.svgHost} dangerouslySetInnerHTML={{ __html: svg }} />
       )}
@@ -902,19 +935,28 @@ const BeautifulMermaidRender = ({ className, style, value }: MermaidRenderProps)
   );
 };
 
-export const MermaidRender = ({ className, style, value }: MermaidRenderProps) => {
+export const MermaidRender = ({ className, localeText, style, value }: MermaidRenderProps) => {
+  const text = useMermaidRenderLocaleText(localeText);
   const diagramType = detectMermaidDiagramType(value);
 
   if (diagramType === 'mindmap') {
-    return <MindmapRender className={className} style={style} value={value} />;
+    return (
+      <MindmapRenderBase className={className} localeText={text} style={style} value={value} />
+    );
   }
 
   if (beautifulMermaidTypes.has(diagramType)) {
-    return <BeautifulMermaidRender className={className} style={style} value={value} />;
+    return (
+      <BeautifulMermaidRender className={className} localeText={text} style={style} value={value} />
+    );
   }
 
-  return <NativeMermaidRender className={className} style={style} value={value} />;
+  return (
+    <NativeMermaidRender className={className} localeText={text} style={style} value={value} />
+  );
 };
 
 MermaidRender.displayName = 'MermaidRender';
 MindmapRender.displayName = 'MindmapRender';
+
+export type { MermaidRenderLocaleText } from './locale/types.ts';

@@ -11,6 +11,8 @@ import classNames from 'classnames';
 
 import { buildMasonryLayout, resolveMasonryColumnCount, type MasonryLayoutItem } from './layout.ts';
 import styles from './index.module.less';
+import { useImageMasonryLocaleText } from './locale/loader.ts';
+import type { ImageMasonryLocaleText } from './locale/types.ts';
 
 export type ImageMasonryImageGeometry =
   | {
@@ -63,6 +65,7 @@ export type ImageMasonryProps<TImage extends ImageMasonryImage = ImageMasonryIma
   style?: CSSProperties;
   'aria-label'?: string;
   'aria-labelledby'?: string;
+  localeText?: Partial<ImageMasonryLocaleText>;
 };
 
 const DEFAULT_GAP = 16;
@@ -93,10 +96,12 @@ const getFallbackWidth = ({
 const renderDefaultItem = <TImage extends ImageMasonryImage>({
   image,
   index,
+  localeText,
   onItemClick,
 }: {
   image: TImage;
   index: number;
+  localeText: ImageMasonryLocaleText;
   onItemClick?: (details: ImageMasonryClickDetails<TImage>) => void;
 }) => {
   const imageNode = (
@@ -123,7 +128,7 @@ const renderDefaultItem = <TImage extends ImageMasonryImage>({
 
   return (
     <button
-      aria-label={`Preview ${image.alt ?? index + 1}`}
+      aria-label={localeText.previewImage(image.alt ?? index + 1)}
       className={styles.defaultButton}
       onClick={() => onItemClick({ image, index })}
       type="button"
@@ -151,9 +156,11 @@ export const ImageMasonry = <TImage extends ImageMasonryImage = ImageMasonryImag
   renderItem,
   role = 'list',
   style,
-  'aria-label': ariaLabel = 'Image masonry',
+  'aria-label': ariaLabel,
   'aria-labelledby': ariaLabelledBy,
+  localeText,
 }: ImageMasonryProps<TImage>) => {
+  const text = useImageMasonryLocaleText(localeText);
   const rootRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(defaultContainerWidth ?? 0);
 
@@ -237,7 +244,12 @@ export const ImageMasonry = <TImage extends ImageMasonryImage = ImageMasonryImag
         >
           {renderItem
             ? renderItem(details)
-            : renderDefaultItem({ image: layoutItem.item, index: layoutItem.index, onItemClick })}
+            : renderDefaultItem({
+                image: layoutItem.item,
+                index: layoutItem.index,
+                localeText: text,
+                onItemClick,
+              })}
         </div>
       );
     });
@@ -245,7 +257,7 @@ export const ImageMasonry = <TImage extends ImageMasonryImage = ImageMasonryImag
   return (
     <div
       ref={rootRef}
-      aria-label={ariaLabelledBy ? undefined : ariaLabel}
+      aria-label={ariaLabelledBy ? undefined : (ariaLabel ?? text.imageMasonry)}
       aria-labelledby={ariaLabelledBy}
       className={classNames(styles.root, className)}
       data-columns={layout.columnCount}
@@ -259,3 +271,5 @@ export const ImageMasonry = <TImage extends ImageMasonryImage = ImageMasonryImag
     </div>
   );
 };
+
+export type { ImageMasonryLocaleText } from './locale/types.ts';

@@ -12,6 +12,7 @@ describe('component catalog', () => {
     const names = componentCatalog.map((component) => component.name);
 
     expect(names).toContain('Button');
+    expect(names).toContain('ConfigProvider');
     expect(names).toContain('Dialog');
     expect(names).toContain('Editor');
     expect(names).toContain('GroupedVirtualMasonry');
@@ -34,6 +35,7 @@ describe('component catalog', () => {
 
   test('keeps catalog categories aligned with website navigation', () => {
     expect(componentCategories.map((category) => category.id)).toEqual([
+      'foundations',
       'actions',
       'forms',
       'overlays',
@@ -56,6 +58,9 @@ describe('component catalog', () => {
     );
     expect(getComponentImportSnippet('Button', { subpath: true })).toBe(
       "import { Button } from '@deweyou-design/react/button';",
+    );
+    expect(getComponentImportSnippet('ConfigProvider', { subpath: true })).toBe(
+      "import { ConfigProvider } from '@deweyou-design/react/config-provider';",
     );
     expect(getComponentImportSnippet('MermaidRender', { subpath: true })).toBe(
       "import { MermaidRender } from '@deweyou-design/react/mermaid-render';",

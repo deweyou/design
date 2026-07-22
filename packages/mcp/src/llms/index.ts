@@ -106,6 +106,8 @@ Example icon exports: ${iconExamples}
 - Follow docs/architecture/package-layers.md before adding packages or dependencies.
 - React components must live in TSX files and use CSS Modules plus @deweyou-design/styles tokens.
 - Interactive icons should be wrapped in IconButton, Button.Icon, or a native button.
+- ConfigProvider owns typed locale selection only. Keep localeText on the component or Editor plugin that owns the copy.
+- Keep en-US synchronous and colocate lazily imported zh-CN, zh-TW, ja-JP, and ko-KR dictionaries with each localized source unit.
 - New public components should update package exports, docs, README files, website catalog, unit tests, Storybook stories, and contract tests.
 
 ## MCP And Skill

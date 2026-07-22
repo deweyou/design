@@ -121,6 +121,22 @@ test('field catalog preview uses the design-system input surface', () => {
   expect(within(card).getByText('Short field hint')).toBeInTheDocument();
 });
 
+test('config provider preview switches locale and preserves its component override', async () => {
+  render(<ComponentsPage />);
+
+  const card = screen.getByRole('article', { name: 'ConfigProvider' });
+
+  expect(within(card).getByText('Next')).toBeInTheDocument();
+  expect(within(card).getByText('Back')).toBeInTheDocument();
+
+  fireEvent.click(within(card).getByRole('button', { name: 'zh-CN' }));
+
+  await waitFor(() => {
+    expect(within(card).getByText('下一页')).toBeInTheDocument();
+  });
+  expect(within(card).getByText('Back')).toBeInTheDocument();
+});
+
 test('shows empty state when component search has no results', () => {
   render(<ComponentsPage />);
 

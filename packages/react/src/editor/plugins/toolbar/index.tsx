@@ -1,16 +1,19 @@
 import { createEditorPlugin, type EditorPluginRegistry } from '../../core/index.js';
 import { EditorActionToolbar } from '../action-toolbar/index.js';
+import type { EditorActionToolbarLocaleText } from '../action-toolbar/locale/types.ts';
 
 export type EditorToolbarAction = string;
 
 export type EditorToolbarPluginOptions = {
   actions?: EditorToolbarAction[];
   labels?: Partial<Record<EditorToolbarAction, string>>;
+  localeText?: Partial<EditorActionToolbarLocaleText>;
   className?: string;
 };
 
 type EditorToolbarProps = Required<Pick<EditorToolbarPluginOptions, 'actions' | 'labels'>> &
   Pick<EditorToolbarPluginOptions, 'className'> & {
+    localeText?: Partial<EditorActionToolbarLocaleText>;
     registry: EditorPluginRegistry;
   };
 
@@ -29,14 +32,20 @@ const legacyActionAliases: Record<string, string> = {
 
 const normalizeActionId = (action: string) => legacyActionAliases[action] ?? action;
 
-const EditorToolbar = ({ actions, className, labels, registry }: EditorToolbarProps) => {
+const EditorToolbar = ({
+  actions,
+  className,
+  labels,
+  localeText,
+  registry,
+}: EditorToolbarProps) => {
   return (
     <EditorActionToolbar
       actionIds={actions}
-      ariaLabel="Editor formatting toolbar"
       actions={registry.toolbarActions}
       className={className}
       labels={labels}
+      localeText={localeText}
       normalizeActionId={normalizeActionId}
       registry={registry}
       surface="toolbar"
@@ -48,6 +57,7 @@ export const toolbarPlugin = ({
   actions = [],
   className,
   labels = {},
+  localeText,
 }: EditorToolbarPluginOptions = {}) =>
   createEditorPlugin({
     name: 'toolbar',
@@ -62,8 +72,11 @@ export const toolbarPlugin = ({
           actions={actions}
           className={className}
           labels={labels}
+          localeText={localeText}
           registry={registry}
         />
       );
     },
   });
+
+export type { EditorActionToolbarLocaleText as EditorToolbarLocaleText } from '../action-toolbar/locale/types.ts';

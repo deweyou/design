@@ -37,7 +37,7 @@ test('button typography and height scale follows the design-system size ladder',
   expect(stylesheet).toContain('--button-height: var(--ui-control-height-xl);');
 });
 
-test('icon buttons keep their visual size while expanding coarse-pointer hit areas', () => {
+test('buttons keep their visual size while expanding coarse-pointer hit areas', () => {
   const textMarkup = renderToStaticMarkup(
     createElement(Button, { icon: createElement(SearchIcon) }, 'Search'),
   );
@@ -47,7 +47,7 @@ test('icon buttons keep their visual size while expanding coarse-pointer hit are
 
   expect(textMarkup).toContain('data-content-mode="text-with-icon"');
   expect(iconMarkup).toContain('data-content-mode="icon-button"');
-  expect(stylesheet).toContain('.modeIconButton');
+  expect(stylesheet).toContain('.root::before');
   expect(stylesheet).toContain('inline-size: var(--button-square-size);');
   expect(stylesheet).toContain('block-size: var(--button-square-size);');
   expect(stylesheet).toContain('@media (pointer: coarse)');
@@ -76,4 +76,16 @@ test('icon buttons keep balanced optical spacing across the size ladder', () => 
   expect(stylesheet).toContain('.modeIconButton .contentGraphic > svg');
   expect(stylesheet).toContain('inline-size: var(--button-icon-size);');
   expect(stylesheet).toContain('block-size: var(--button-icon-size);');
+});
+
+test('xs content buttons keep icon and text spacing compact', () => {
+  expect(stylesheet).toMatch(/\.sizeXs\s*{[^}]*--button-gap: 0\.25rem;/);
+  expect(stylesheet).toMatch(/\.sizeXs\s*{[^}]*--button-padding-inline: 0\.375rem;/);
+});
+
+test('ghost buttons do not override size-owned padding', () => {
+  const ghostRule = stylesheet.match(/(?:^|\n)\.ghost\s*{[^}]*}/)?.[0] ?? '';
+
+  expect(ghostRule).not.toMatch(/\bpadding-block:/);
+  expect(ghostRule).not.toMatch(/\bpadding-inline:/);
 });

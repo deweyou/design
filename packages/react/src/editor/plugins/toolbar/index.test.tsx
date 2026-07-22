@@ -2,7 +2,7 @@
 
 import '../../test-setup';
 
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { $createHeadingNode } from '@lexical/rich-text';
 import { cleanup, render, screen } from '@testing-library/react';
@@ -11,6 +11,7 @@ import { $createParagraphNode, $createTextNode, $getRoot } from 'lexical';
 import { afterEach, expect, test } from 'vite-plus/test';
 
 import { markdownEditorAdapter } from '../../adapters/markdown/index.js';
+import { ConfigProvider } from '../../../config-provider/index.tsx';
 import { createEditorPlugin } from '../../core/index.js';
 import { Editor } from '../../editor/index.js';
 import { richTextPlugin } from '../rich-text/index.js';
@@ -111,6 +112,23 @@ test('toolbarPlugin supports configurable actions and labels', () => {
   expect(screen.getByRole('button', { name: 'Strong' })).toBeInTheDocument();
   expect(screen.getByRole('button', { name: 'Italic' })).toBeInTheDocument();
   expect(screen.queryByRole('button', { name: 'Undo' })).not.toBeInTheDocument();
+});
+
+test('toolbarPlugin loads built-in action copy and keeps localeText local to the plugin', async () => {
+  render(
+    <Suspense fallback={<span>Loading locale</span>}>
+      <ConfigProvider locale="zh-CN">
+        <Editor
+          adapter={markdownEditorAdapter()}
+          plugins={[richTextPlugin(), toolbarPlugin({ localeText: { bold: '强调' } })]}
+        />
+      </ConfigProvider>
+    </Suspense>,
+  );
+
+  expect(await screen.findByRole('toolbar', { name: '编辑器格式工具栏' })).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: '强调' })).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: '斜体' })).toBeInTheDocument();
 });
 
 test('toolbarPlugin marks selected inline formats as active', async () => {

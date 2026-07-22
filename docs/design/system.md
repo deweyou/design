@@ -1,5 +1,12 @@
 # Deweyou Design System Knowledge
 
+```mermaid
+flowchart LR
+    A[Semantic tokens] --> B[Reusable components]
+    B --> C[Website and product surfaces]
+    D[Interaction and accessibility rules] --> B
+```
+
 > Audience: AI-assisted development, component implementation, website/mobile UI design review
 > Sources: existing repository components and Claude Design handoff for Deweyou Design System
 > Goal: preserve design intent and judgment rules that are not easy to infer from code, instead of restating every component implementation.
@@ -96,17 +103,19 @@ If the answers show that it expands the system language, update design documenta
 
 ### Semantic Roles
 
-| Role    | Visual source | Usage                                            |
-| ------- | ------------- | ------------------------------------------------ |
-| neutral | stone         | default text, borders, surfaces, neutral actions |
-| primary | emerald       | brand emphasis, primary actions, selected, focus |
-| danger  | red           | destructive actions and error states             |
+| Role    | Visual source | Usage                                                            |
+| ------- | ------------- | ---------------------------------------------------------------- |
+| neutral | stone         | default text, borders, surfaces, neutral actions                 |
+| primary | emerald       | brand emphasis, primary actions, selected, compact-control focus |
+| danger  | red           | destructive actions and error states                             |
 
 `warning` may exist as a supporting feedback role in components such as Toast, but do not expand it into a general component color. Regular components such as Badge, Button, Tabs, Menu, and form controls should expose only the three semantic colors.
 
 ### Brand Green
 
 The UI primary color is deep emerald, not the bright mint gradient from the logo. The logo gradient belongs only to the wordmark; do not use it for buttons, backgrounds, cards, or floating-surface decoration.
+
+Compact controls follow the same restrained direction. `--ui-color-focus-ring` resolves to `emerald-800` in the light theme and `emerald-700` in the dark theme. Do not use the brighter mint steps for focus feedback. Application chrome and large clickable content surfaces use neutral focus feedback so brand color does not become a decorative frame.
 
 ### Canvas And Surfaces
 
@@ -222,15 +231,15 @@ Complex interactive components can have domain abilities such as Tabs overflow, 
 
 State expression must be stable, brief, and low-drama:
 
-| State    | Rule                                                                                                                                |
-| -------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| hover    | Use `color-mix()` to deepen the base color by about 8%                                                                              |
-| active   | Deepen by about 14% and apply `transform: translateY(1px)`                                                                          |
-| disabled | `[data-disabled] { opacity: 0.56; cursor: not-allowed; }`                                                                           |
-| focus    | Only `:focus-visible`; use the shared border/inset focus treatment instead of default `outline`; field error borders override focus |
-| loading  | Preserve the original content slot, set text `color: transparent`, and center a spinner overlay to avoid width or text-layout jumps |
+| State    | Rule                                                                                                                                        |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| hover    | Use `color-mix()` to deepen the base color by about 8%                                                                                      |
+| active   | Deepen by about 14% and apply `transform: translateY(1px)`                                                                                  |
+| disabled | `[data-disabled] { opacity: 0.56; cursor: not-allowed; }`                                                                                   |
+| focus    | Only `:focus-visible`; choose the shared compact-control or neutral large-target border/inset treatment; field error borders override focus |
+| loading  | Preserve the original content slot, set text `color: transparent`, and center a spinner overlay to avoid width or text-layout jumps         |
 
-Standard focus treatment:
+Standard compact-control focus treatment:
 
 ```less
 .root:focus-visible {
@@ -239,6 +248,20 @@ Standard focus treatment:
   outline: none;
 }
 ```
+
+Use the shared neutral treatment for application chrome, navigation utilities, icon or canvas tiles, clickable cards, and masonry items:
+
+```less
+.largeTarget:focus-visible {
+  border-color: var(--ui-color-border-strong);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ui-color-text) 32%, transparent);
+  outline: none;
+}
+```
+
+In package and Website Less files, consume these rules through `.focus-ring()`, `.focus-ring-offset()`, or `.focus-ring-neutral()` from `@deweyou-design/styles/less/bridge`. Apply the treatment to the interactive target that the user is operating. Do not draw a brand-colored frame around application chrome, a large content surface, an entire menu, select list, dialog, navigation overlay, popover, editor canvas, scroll area, or tab panel when focus is already communicated by a neutral local frame, active control, highlighted item, caret, or focused descendant.
+
+The shared implementation lives in [the Less bridge](../../packages/styles/src/less/bridge.less#L17), and [component style contracts](../../packages/react/tests/component-style-contract.test.ts#L233) protect the compact-control versus large-target boundary.
 
 All interactive disabled styling should be expressed through attribute selectors. Do not use React inline styles to control color, opacity, or cursor.
 
@@ -280,7 +303,7 @@ Respect `prefers-reduced-motion`:
 The component library does not use internal `isMobile` checks and does not invent different breakpoints in different components. Mobile-specific behavior is expressed through capability and space constraints:
 
 - Narrow viewports use the shared `@ui-breakpoint-compact: 30rem` from `@deweyou-design/styles/less/bridge`; size-oriented styles may consume the matching token `--ui-breakpoint-compact`.
-- Touch targets use `--ui-touch-target-min`, defaulting to 44px. The visual control may be smaller, but the clickable root cannot be smaller.
+- Touch targets use `--ui-touch-target-min`, defaulting to 44px. Fine pointers keep the 24/32/40/48/56px visible size ladder; coarse pointers expand the interactive target to at least 44px through capability-scoped sizing or a layout-neutral pseudo-element.
 - Input-mode behavior uses capability queries such as `(pointer: coarse)` and `(hover: none)`. Do not treat them as phone detection.
 - Safe areas use `env(safe-area-inset-*)`; do not override them with fixed top/bottom offsets.
 - Storybook and website examples use `width: min(30rem, 100%)`, `max-width: 100%`, wrapping, or scroll rails instead of one-off `480px` / `500px` breakpoints.
@@ -387,7 +410,7 @@ When changing components or pages, check at least:
 - Does it preserve serif as the content/display font and sans as the control font?
 - Does the radius belong to rect / float / auto / pill?
 - Are cards border-first, with shadow reserved for floating surfaces?
-- Does focus appear only under `:focus-visible` and use the shared border/inset treatment?
+- Does focus appear only under `:focus-visible`, using deep emerald for compact controls and neutral feedback for app chrome or large content targets?
 - Do mobile/narrow-viewport rules use `@ui-breakpoint-compact` or capability queries instead of private pixel breakpoints?
 - Does loading preserve layout without button or text jumps?
 - Do scrollable component surfaces use the shared scrollbar mixins or compose `ScrollArea`?
@@ -395,4 +418,4 @@ When changing components or pages, check at least:
 - Is product copy factual, technical, restrained, and emoji-free?
 - Do website and H5 reuse the same principles instead of creating a separate mobile visual language?
 
-_Last updated: 2026-06-01 | Reason: documented the shared scrollbar contract for component and content surfaces._
+_Last updated: 2026-07-22 | Reason: documented component density and the coarse-pointer touch-target boundary._

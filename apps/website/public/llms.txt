@@ -43,6 +43,7 @@ import { Button } from '@deweyou-design/react/button';
 
 ## Component Categories
 
+- Foundations: ConfigProvider
 - Actions: Button, IconButton
 - Forms: Checkbox, Field, Input, NumberInput, RadioGroup, Select, Switch, Textarea
 - Overlays: ContextMenu, Dialog, ImagePreview, Menu, Popover, Tooltip
@@ -60,6 +61,7 @@ import { Button } from '@deweyou-design/react/button';
 - Card (content): Border-led content container for small grouped surfaces. Import: `import { Card } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-card--overview
 - Checkbox (forms): Binary choice control with checked, unchecked, and disabled states. Import: `import { Checkbox } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-checkbox--overview
 - CodeBlock (content): Scrollable code block with reusable chrome primitives for code actions and language UI. Import: `import { CodeBlock } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-codeblock--overview
+- ConfigProvider (foundations): Shared configuration boundary for typed locale selection and future global settings. Import: `import { ConfigProvider } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-configprovider--overview
 - ContextMenu (overlays): Right-click command surface built on the menu contract. Import: `import { ContextMenu } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-menu--overview
 - Dialog (overlays): Modal decision surface for focused confirmation and details. Import: `import { Dialog } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-dialog--overview
 - Field (forms): Label, description, and validation wiring for form controls. Import: `import { Field } from '@deweyou-design/react';` Storybook: https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-field--overview
@@ -123,6 +125,8 @@ Example icon exports: AbilityOpenIcon, AbstractIcon, AbstractFilledIcon, Accessi
 - Follow docs/architecture/package-layers.md before adding packages or dependencies.
 - React components must live in TSX files and use CSS Modules plus @deweyou-design/styles tokens.
 - Interactive icons should be wrapped in IconButton, Button.Icon, or a native button.
+- ConfigProvider owns typed locale selection only. Keep localeText on the component or Editor plugin that owns the copy.
+- Keep en-US synchronous and colocate lazily imported zh-CN, zh-TW, ja-JP, and ko-KR dictionaries with each localized source unit.
 - New public components should update package exports, docs, README files, website catalog, unit tests, Storybook stories, and contract tests.
 
 ## MCP And Skill

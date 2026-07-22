@@ -31,6 +31,12 @@ test('tablePlugin contributes basic table commands and block actions', () => {
   expect(plugin.blockToolbarActions).toEqual([]);
 });
 
+test('tablePlugin applies its component-owned localeText to action metadata', () => {
+  const plugin = tablePlugin({ localeText: { insertTable: 'Add grid' } });
+
+  expect(plugin.toolbarActions?.[0]?.label).toBe('Add grid');
+});
+
 test('table header row command toggles only the first row header state', () => {
   const plugin = tablePlugin();
   const editor = createEditor({

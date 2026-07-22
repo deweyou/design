@@ -15,6 +15,8 @@ import classNames from 'classnames';
 
 import { IconButton } from '../button/index.tsx';
 import styles from './index.module.less';
+import { useDialogLocaleText } from './locale/loader.ts';
+import type { DialogLocaleText } from './locale/types.ts';
 
 const getDefaultPortalContainer = () => {
   return typeof document === 'undefined' ? null : document.body;
@@ -43,6 +45,7 @@ export type DialogDescriptionProps = {
 export type DialogCloseTriggerProps = { children: ReactNode };
 export type DialogCloseButtonProps = {
   className?: string;
+  localeText?: Partial<DialogLocaleText>;
   style?: CSSProperties;
   'aria-label'?: string;
 };
@@ -140,19 +143,24 @@ const DialogCloseTrigger = ({ children }: DialogCloseTriggerProps) => (
 
 const DialogCloseButton = ({
   className,
+  localeText,
   style,
-  'aria-label': ariaLabel = 'Close dialog',
-}: DialogCloseButtonProps) => (
-  <ArkDialogCloseTrigger asChild>
-    <IconButton
-      aria-label={ariaLabel}
-      className={classNames(styles.closeButton, className)}
-      icon={<XIcon />}
-      style={style}
-      variant="ghost"
-    />
-  </ArkDialogCloseTrigger>
-);
+  'aria-label': ariaLabel,
+}: DialogCloseButtonProps) => {
+  const text = useDialogLocaleText(localeText);
+
+  return (
+    <ArkDialogCloseTrigger asChild>
+      <IconButton
+        aria-label={ariaLabel ?? text.closeDialog}
+        className={classNames(styles.closeButton, className)}
+        icon={<XIcon />}
+        style={style}
+        variant="ghost"
+      />
+    </ArkDialogCloseTrigger>
+  );
+};
 
 export const Dialog = {
   Root: DialogRoot,
@@ -163,3 +171,5 @@ export const Dialog = {
   CloseTrigger: DialogCloseTrigger,
   CloseButton: DialogCloseButton,
 };
+
+export type { DialogLocaleText } from './locale/types.ts';

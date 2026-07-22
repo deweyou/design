@@ -82,6 +82,7 @@ import { Button, Input } from '@deweyou-design/react';
 import { Button } from '@deweyou-design/react/button';
 import { Input } from '@deweyou-design/react/input';
 import { NumberInput } from '@deweyou-design/react/number-input';
+import { ConfigProvider } from '@deweyou-design/react/config-provider';
 ```
 
 每个组件的样式会随 JS 导入自动加载，无需单独引入 CSS 文件。如果需要一次性加载所有样式（如 SSR 场景）：
@@ -130,6 +131,29 @@ export const RocketIcon = createTablerIcon(IconRocket);
 首个官方适配器是 `markdownEditorAdapter()`，Markdown 风格快捷输入由
 `markdownShortcutPlugin()` 提供，富文本工具栏通过 `toolbarPlugin()` 插拔接入。
 
+## 国际化
+
+`ConfigProvider` 为下层组件提供类型安全的语言代码。默认和兜底语言均为 `en-US`，组件库
+不会自动读取浏览器语言；本期同时支持 `zh-CN`、`zh-TW`、`ja-JP` 和 `ko-KR`。
+
+英文文案同步内置，其他语言的文案按组件放置并懒加载。首次渲染尚未缓存的非英文语言时，
+应用需要提供自己的 `Suspense` fallback；运行时切换语言时，已展示的内容会保留到新文案加载完成。
+
+```tsx
+import { Suspense } from 'react';
+import { ConfigProvider, Pagination } from '@deweyou-design/react';
+
+<Suspense fallback={<span>正在加载语言…</span>}>
+  <ConfigProvider locale="zh-CN">
+    <Pagination count={100} />
+    <Pagination count={100} localeText={{ previous: '返回' }} />
+  </ConfigProvider>
+</Suspense>;
+```
+
+`ConfigProvider` 不暴露 `localeText`。文案覆盖由对应组件或 Editor 插件单独提供，例如
+`Pagination`、`codePlugin()` 和 `toolbarPlugin()`。
+
 ## 组件
 
 | 组件                    | 说明                                       |
@@ -144,6 +168,7 @@ export const RocketIcon = createTablerIcon(IconRocket);
 | `Switch`                | 开关                                       |
 | `Badge`                 | 状态标签                                   |
 | `Text`                  | 排版文本                                   |
+| `ConfigProvider`        | 全局语言等配置的上下文边界                 |
 | `Editor`                | 支持适配器和插件的富文本编辑器             |
 | `ImagePreview`          | 图片预览，支持缩放和组图切换               |
 | `ImageMasonry`          | 图片瀑布流，支持固定列和响应式列           |
@@ -163,6 +188,9 @@ export const RocketIcon = createTablerIcon(IconRocket);
 | `ScrollArea`            | 自定义滚动条容器                           |
 | `VirtualList`           | 虚拟列表，支持动态正文高度和长文档锚点滚动 |
 | `VirtualMasonry`        | 虚拟瀑布流，用于长图片列表和不规则图片集合 |
+
+交互组件统一使用 `24 / 32 / 40 / 48 / 56px` 可见高度阶梯。组件的 `sm / md / lg` 分别对应
+`32 / 40 / 48px`；粗指针环境仍保留最小 `44px` 点击区域，不再因此放大桌面端组件外观。
 
 ## 主题定制
 

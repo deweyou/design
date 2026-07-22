@@ -1,3 +1,5 @@
+@import '@deweyou-design/styles/less/bridge';
+
 .navbar {
   --website-line: color-mix(in srgb, var(--ui-color-text) 14%, transparent);
 
@@ -29,6 +31,10 @@
   line-height: 1;
   text-decoration: none;
   white-space: nowrap;
+
+  &:focus-visible {
+    .focus-ring-neutral();
+  }
 }
 
 .links {
@@ -88,8 +94,7 @@
   }
 
   &:focus-visible {
-    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ui-color-focus-ring) 42%, transparent);
-    outline: none;
+    .focus-ring-neutral();
   }
 
   &[data-active]::after {
@@ -140,8 +145,7 @@
   }
 
   &:focus-visible {
-    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ui-color-focus-ring) 42%, transparent);
-    outline: none;
+    .focus-ring-neutral();
   }
 }
 
@@ -197,6 +201,10 @@
   &[data-active] {
     color: var(--ui-color-text);
   }
+
+  &:focus-visible {
+    .focus-ring-neutral();
+  }
 }
 
 .mobileNavCloseButton {
@@ -208,6 +216,10 @@
   right: auto;
   top: auto;
   transform: translateX(-50%);
+
+  &:focus-visible {
+    .focus-ring-neutral();
+  }
 }
 
 .actions {
@@ -220,8 +232,9 @@
 .actionButton {
   --button-ghost-text-color: var(--ui-color-text-muted);
 
-  block-size: var(--ui-touch-target-min);
-  inline-size: var(--ui-touch-target-min);
+  &:focus-visible {
+    .focus-ring-neutral();
+  }
 
   &:hover {
     --button-ghost-text-color: var(--ui-color-text);
@@ -260,5 +273,6 @@
 
   .actions {
     grid-column: 3;
+    gap: 4px;
   }
 }

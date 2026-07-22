@@ -15,8 +15,11 @@ import {
 import { MinusIcon, PlusIcon } from '@deweyou-design/react-icons';
 import classNames from 'classnames';
 
+import { useConfigLocale } from '../config-provider/context.ts';
 import { Field, useFieldControlProps } from '../field/index.tsx';
 import styles from './index.module.less';
+import { useNumberInputLocaleText } from './locale/loader.ts';
+import type { NumberInputLocaleText } from './locale/types.ts';
 
 export type NumberInputSize = 'sm' | 'md' | 'lg';
 
@@ -70,6 +73,7 @@ export type NumberInputProps = {
   'aria-labelledby'?: string;
   incrementLabel?: string;
   decrementLabel?: string;
+  localeText?: Partial<NumberInputLocaleText>;
   size?: NumberInputSize;
   variant?: NumberInputVariant;
   className?: string;
@@ -188,13 +192,18 @@ export const NumberInput = ({
   autoComplete,
   'aria-label': ariaLabel,
   'aria-labelledby': ariaLabelledBy,
-  incrementLabel = 'Increase value',
-  decrementLabel = 'Decrease value',
+  incrementLabel,
+  decrementLabel,
+  localeText,
   size = 'md',
   variant = 'outlined',
   className,
   style,
 }: NumberInputProps) => {
+  const providerLocale = useConfigLocale();
+  const text = useNumberInputLocaleText(localeText);
+  const resolvedIncrementLabel = incrementLabel ?? text.increaseValue;
+  const resolvedDecrementLabel = decrementLabel ?? text.decreaseValue;
   const reactId = useId();
   const fieldId = id?.length ? id : `number-input-field-${reactId.replace(/[^a-zA-Z0-9_-]/g, '')}`;
   const hasError = Boolean(error);
@@ -236,7 +245,7 @@ export const NumberInput = ({
         ids={{ input: fieldId }}
         inputMode={inputMode}
         invalid={hasError}
-        locale={locale}
+        locale={locale ?? providerLocale}
         max={max}
         min={min}
         name={name}
@@ -247,16 +256,19 @@ export const NumberInput = ({
         step={step}
         value={value}
         className={classNames(styles.machine, variantClassMap[variant])}
-        translations={{ decrementLabel, incrementLabel }}
+        translations={{
+          decrementLabel: resolvedDecrementLabel,
+          incrementLabel: resolvedIncrementLabel,
+        }}
       >
         <NumberInputControl
           aria-label={ariaLabel}
           aria-labelledby={ariaLabelledBy}
           autoComplete={autoComplete}
           autoFocus={autoFocus}
-          decrementLabel={decrementLabel}
+          decrementLabel={resolvedDecrementLabel}
           disabled={disabled}
-          incrementLabel={incrementLabel}
+          incrementLabel={resolvedIncrementLabel}
           placeholder={placeholder}
           readOnly={readOnly}
         />
@@ -266,3 +278,5 @@ export const NumberInput = ({
     </Field.Root>
   );
 };
+
+export type { NumberInputLocaleText } from './locale/types.ts';

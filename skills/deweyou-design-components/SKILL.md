@@ -47,6 +47,51 @@ When adding, removing, or changing the public import or behavior contract of a c
 - `packages/mcp/src/catalog/index.ts`, style/icon MCP metadata, and regenerated `apps/website/public/llms.txt` when public AI-facing context changes
 - this repo-owned skill when the component change also changes workflow, routing, checklist, or verification guidance for future agents
 
+## Localization
+
+Use `ConfigProvider` for shared locale selection. Its public configuration is a
+typed locale code only; do not add `localeText` or a central translation object
+to the provider.
+
+- The supported locale codes are `en-US`, `zh-CN`, `zh-TW`, `ja-JP`, and
+  `ko-KR`. `en-US` is the default and fallback; do not add browser locale
+  detection inside the component package.
+- A source unit that owns built-in copy also owns `locale/types.ts`,
+  `locale/en-us.ts`, `locale/zh-cn.ts`, `locale/zh-tw.ts`, `locale/ja-jp.ts`,
+  `locale/ko-kr.ts`, and `locale/loader.ts`.
+- Keep `en-US` synchronously imported. Load the other dictionaries with literal
+  dynamic imports through `createComponentLocaleText` so build tools preserve
+  component-and-locale chunk boundaries.
+- Expose `localeText?: Partial<ComponentLocaleText>` on the component or Editor
+  plugin that owns the copy. Explicit semantic props such as `aria-label` keep
+  precedence over the locale dictionary.
+- First-time non-English rendering may suspend to the consumer's nearest
+  `Suspense` boundary. Runtime switches should keep revealed content visible
+  until the new dictionary resolves.
+- Verify provider inheritance, local overrides, lazy-load caching, runtime
+  switching, Storybook interaction, and emitted bundle chunk boundaries.
+- Keep the Storybook preview and website shell wrapped by one root
+  `ConfigProvider`. Their global locale controls must use `configLocales`,
+  default to `en-US`, and change component-owned copy without translating
+  caller-authored story or website content.
+
+## Component Density
+
+Keep visible control density separate from touch accessibility:
+
+- The shared visible control-height ladder is `xs` 24px, `sm` 32px, `md` 40px,
+  `lg` 48px, and `xl` 56px.
+- `--ui-touch-target-min` remains 44px, but it is a coarse-pointer hit-target
+  contract, not a universal fine-pointer visual height.
+- Use `(pointer: coarse)` plus the shared coarse-pointer Less mixins, or a safe
+  layout-neutral pseudo-element, to preserve the 44px target without inflating
+  desktop hover and focus surfaces.
+- Components that expose `sm`, `md`, and `lg` map them to 32px, 40px, and 48px
+  visible controls unless their documented domain contract says otherwise.
+- Verify computed dimensions in Storybook as well as source-level style
+  contracts. Do not compensate for component density by changing Website
+  preview-card spacing.
+
 ## Image Collection Components
 
 Use the image collection components according to the size and grouping shape:

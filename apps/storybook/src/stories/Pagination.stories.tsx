@@ -24,6 +24,12 @@ const meta: Meta<typeof Pagination> = {
       control: { type: 'number' },
       table: { type: { summary: 'number' }, defaultValue: { summary: '1' } },
     },
+    size: {
+      description: 'Visible control density. Coarse pointers retain a 44px minimum target.',
+      control: { type: 'select' },
+      options: ['sm', 'md', 'lg'],
+      table: { type: { summary: "'sm' | 'md' | 'lg'" }, defaultValue: { summary: 'md' } },
+    },
     variant: {
       description: 'Visual treatment for page controls.',
       control: { type: 'select' },
@@ -78,6 +84,30 @@ export const Controlled: StoryObj = {
 
 export const ManyPages: StoryObj = {
   render: () => <Pagination count={500} pageSize={10} siblingCount={0} />,
+};
+
+export const Sizes: StoryObj = {
+  render: () => (
+    <div style={{ display: 'grid', gap: '16px' }}>
+      {(['sm', 'md', 'lg'] as const).map((size) => (
+        <div key={size}>
+          <p style={{ margin: '0 0 6px', fontSize: '0.8125rem' }}>{size}</p>
+          <Pagination count={50} pageSize={10} size={size} />
+        </div>
+      ))}
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const expectedHeights = { sm: '32px', md: '40px', lg: '48px' } as const;
+
+    for (const [size, expectedHeight] of Object.entries(expectedHeights)) {
+      const root = canvasElement.querySelector(`[data-size="${size}"]`);
+      const pageButton = root?.querySelector('[data-part="item"]');
+      await expect(root).not.toBeNull();
+      await expect(pageButton).not.toBeNull();
+      await expect(getComputedStyle(pageButton!).blockSize).toBe(expectedHeight);
+    }
+  },
 };
 
 export const LinkVariant: StoryObj = {

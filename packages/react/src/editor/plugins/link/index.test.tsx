@@ -79,6 +79,13 @@ test('linkPlugin contributes link commands and floating toolbar actions', () => 
   ]);
 });
 
+test('linkPlugin applies its component-owned localeText to action metadata', () => {
+  const plugin = linkPlugin({ localeText: { link: 'Add reference', unlink: 'Remove reference' } });
+
+  expect(plugin.toolbarActions?.[0]?.label).toBe('Add reference');
+  expect(plugin.floatingToolbarActions?.[1]?.label).toBe('Remove reference');
+});
+
 test('linkPlugin inserts and removes links from selected text', async () => {
   const editorRef = createRef<EditorHandle<string>>();
 

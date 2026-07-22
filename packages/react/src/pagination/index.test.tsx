@@ -1,9 +1,13 @@
 // @vitest-environment jsdom
 
+import { Suspense, act } from 'react';
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vite-plus/test';
 
 import { Pagination } from './index.tsx';
+import { ConfigProvider } from '../config-provider/index.tsx';
+
+(globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
 
 beforeEach(() => {
   if (!window.ResizeObserver) {
@@ -32,6 +36,31 @@ describe('Pagination — default render', () => {
     render(<Pagination count={50} pageSize={10} />);
     expect(screen.getByText('Prev')).toBeDefined();
     expect(screen.getByText('Next')).toBeDefined();
+  });
+
+  it('uses md density by default and supports an explicit compact size', () => {
+    const { container, rerender } = render(<Pagination count={50} pageSize={10} />);
+    expect(container.firstElementChild?.getAttribute('data-size')).toBe('md');
+
+    rerender(<Pagination count={50} pageSize={10} size="sm" />);
+    expect(container.firstElementChild?.getAttribute('data-size')).toBe('sm');
+  });
+
+  it('loads provider locale text and supports a component-level override', async () => {
+    render(
+      <Suspense fallback={<span>Loading locale</span>}>
+        <ConfigProvider locale="zh-CN">
+          <Pagination count={50} localeText={{ previous: '往前' }} pageSize={10} />
+        </ConfigProvider>
+      </Suspense>,
+    );
+
+    expect(screen.getByText('Loading locale')).toBeDefined();
+    await act(async () => {});
+    await waitFor(() => {
+      expect(screen.getByText('往前')).toBeDefined();
+      expect(screen.getByText('下一页')).toBeDefined();
+    });
   });
 
   it('selected page has data-selected attribute', () => {
