@@ -30,12 +30,21 @@ import styles from './index.module.less';
 
 type ItemData = { value: string; label: string; disabled?: boolean };
 
+export type SelectSize = 'sm' | 'md' | 'lg';
+
 type SelectContextValue = {
   placeholder?: string;
   disabled?: boolean;
+  size: SelectSize;
 };
 
-const SelectContext = createContext<SelectContextValue>({});
+const SelectContext = createContext<SelectContextValue>({ size: 'md' });
+
+const selectSizeClassMap: Record<SelectSize, string> = {
+  sm: styles.sizeSm,
+  md: styles.sizeMd,
+  lg: styles.sizeLg,
+};
 
 /** Recursively extract SelectItem data from children tree at render time. */
 const extractItems = (children: ReactNode): ItemData[] => {
@@ -71,6 +80,7 @@ export type SelectRootProps = {
   name?: string;
   placeholder?: string;
   required?: boolean;
+  size?: SelectSize;
   children: ReactNode;
   className?: string;
   style?: CSSProperties;
@@ -110,6 +120,7 @@ const SelectRoot = ({
   name,
   placeholder,
   required,
+  size = 'md',
   children,
   className,
   style,
@@ -134,7 +145,7 @@ const SelectRoot = ({
     [onValueChange],
   );
 
-  const ctxValue = useMemo(() => ({ placeholder, disabled }), [placeholder, disabled]);
+  const ctxValue = useMemo(() => ({ placeholder, disabled, size }), [placeholder, disabled, size]);
 
   return (
     <Field.Root
@@ -170,13 +181,13 @@ const SelectRoot = ({
 };
 
 const SelectTrigger = ({ className, style }: SelectTriggerProps) => {
-  const { placeholder, disabled } = useContext(SelectContext);
+  const { placeholder, disabled, size } = useContext(SelectContext);
   const fieldControlProps = useFieldControlProps();
 
   return (
     <ArkSelectTrigger
       {...fieldControlProps}
-      className={classNames(styles.trigger, className)}
+      className={classNames(styles.trigger, selectSizeClassMap[size], className)}
       style={style}
       aria-disabled={disabled ? 'true' : undefined}
     >
@@ -189,6 +200,7 @@ const SelectTrigger = ({ className, style }: SelectTriggerProps) => {
 };
 
 const SelectContent = ({ children, className, style, portalContainer }: SelectContentProps) => {
+  const { size } = useContext(SelectContext);
   const contentRef = useRef<HTMLDivElement>(null);
 
   // jsdom does not implement Element.scrollTo — patch the content element after
@@ -212,7 +224,7 @@ const SelectContent = ({ children, className, style, portalContainer }: SelectCo
     <ArkSelectPositioner>
       <ArkSelectContent
         ref={contentRef}
-        className={classNames(styles.content, className)}
+        className={classNames(styles.content, selectSizeClassMap[size], className)}
         style={style}
       >
         {children}

@@ -2,30 +2,38 @@ import type { AnchorHTMLAttributes, CSSProperties, HTMLAttributes, ReactNode } f
 import classNames from 'classnames';
 
 import styles from './index.module.less';
+import { useBreadcrumbLocaleText } from './locale/loader.ts';
+import type { BreadcrumbLocaleText } from './locale/types.ts';
 
 export type BreadcrumbRootProps = HTMLAttributes<HTMLElement> & {
   'aria-label'?: string;
   children?: ReactNode;
   className?: string;
+  localeText?: Partial<BreadcrumbLocaleText>;
   style?: CSSProperties;
 };
 
 const BreadcrumbRoot = ({
-  'aria-label': ariaLabel = 'Breadcrumb',
+  'aria-label': ariaLabel,
   children,
   className,
+  localeText,
   style,
   ...props
-}: BreadcrumbRootProps) => (
-  <nav
-    {...props}
-    aria-label={ariaLabel}
-    className={classNames(styles.root, className)}
-    style={style}
-  >
-    {children}
-  </nav>
-);
+}: BreadcrumbRootProps) => {
+  const text = useBreadcrumbLocaleText(localeText);
+
+  return (
+    <nav
+      {...props}
+      aria-label={ariaLabel ?? text.breadcrumb}
+      className={classNames(styles.root, className)}
+      style={style}
+    >
+      {children}
+    </nav>
+  );
+};
 
 export type BreadcrumbListProps = HTMLAttributes<HTMLOListElement> & {
   children?: ReactNode;
@@ -110,3 +118,5 @@ export const Breadcrumb = {
   Current: BreadcrumbCurrent,
   Separator: BreadcrumbSeparator,
 };
+
+export type { BreadcrumbLocaleText } from './locale/types.ts';

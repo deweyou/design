@@ -12,6 +12,8 @@ import { XIcon } from '@deweyou-design/react-icons';
 import classNames from 'classnames';
 
 import styles from './index.module.less';
+import { useToastLocaleText } from './locale/loader.ts';
+import type { ToastLocaleText } from './locale/types.ts';
 
 export type ToastVariant = 'info' | 'success' | 'warning' | 'danger';
 export type ToastPosition = 'top' | 'bottom';
@@ -53,10 +55,12 @@ export type ToasterProps = {
   /** Toast 出现的位置，默认 'top'（顶部居中）*/
   position?: ToastPosition;
   className?: string;
+  localeText?: Partial<ToastLocaleText>;
   style?: CSSProperties;
 };
 
-export const Toaster = ({ position = 'top', className, style }: ToasterProps) => {
+export const Toaster = ({ position = 'top', className, localeText, style }: ToasterProps) => {
+  const text = useToastLocaleText(localeText);
   _mountedPosition = position;
   const toaster = toasters[position];
 
@@ -98,7 +102,7 @@ export const Toaster = ({ position = 'top', className, style }: ToasterProps) =>
                 <ToastDescription className={styles.description}>{t.description}</ToastDescription>
               )}
             </div>
-            <ToastCloseTrigger className={styles.close} aria-label="Dismiss notification">
+            <ToastCloseTrigger className={styles.close} aria-label={text.dismissNotification}>
               <XIcon size={14} />
             </ToastCloseTrigger>
           </ToastRoot>
@@ -108,3 +112,5 @@ export const Toaster = ({ position = 'top', className, style }: ToasterProps) =>
     document.body,
   );
 };
+
+export type { ToastLocaleText } from './locale/types.ts';

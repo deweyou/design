@@ -82,6 +82,7 @@ import { Button, Input } from '@deweyou-design/react';
 import { Button } from '@deweyou-design/react/button';
 import { Input } from '@deweyou-design/react/input';
 import { NumberInput } from '@deweyou-design/react/number-input';
+import { ConfigProvider } from '@deweyou-design/react/config-provider';
 ```
 
 Each component's styles load automatically with its JS import, so no separate CSS import is needed. To load all component styles at once, such as in SSR:
@@ -132,6 +133,31 @@ official plugins, adapters, and utilities. The first official adapter is
 `markdownShortcutPlugin()`. Rich text controls stay pluggable through
 `toolbarPlugin()`.
 
+## Localization
+
+`ConfigProvider` supplies a typed locale code to descendant components. The default and fallback
+locale is `en-US`; browser locale detection is intentionally left to the application. This release
+also supports `zh-CN`, `zh-TW`, `ja-JP`, and `ko-KR`.
+
+English dictionaries are synchronous. Every other dictionary is colocated with its component and
+loaded lazily, so applications should own the `Suspense` fallback for the first uncached render.
+Already revealed content remains visible while a runtime locale switch loads.
+
+```tsx
+import { Suspense } from 'react';
+import { ConfigProvider, Pagination } from '@deweyou-design/react';
+
+<Suspense fallback={<span>Loading locale…</span>}>
+  <ConfigProvider locale="zh-CN">
+    <Pagination count={100} />
+    <Pagination count={100} localeText={{ previous: 'Back' }} />
+  </ConfigProvider>
+</Suspense>;
+```
+
+`ConfigProvider` does not expose `localeText`. Override copy on the component or Editor plugin that
+owns it, such as `Pagination`, `codePlugin()`, or `toolbarPlugin()`.
+
 ## Components
 
 | Component               | Description                                                         |
@@ -146,6 +172,7 @@ official plugins, adapters, and utilities. The first official adapter is
 | `Switch`                | Switch                                                              |
 | `Badge`                 | Status badge                                                        |
 | `Text`                  | Typographic text                                                    |
+| `ConfigProvider`        | Shared locale configuration boundary                                |
 | `Editor`                | Rich text editor surface with adapters and plugins                  |
 | `ImagePreview`          | Modal image preview with zoom and gallery navigation                |
 | `ImageMasonry`          | Responsive image masonry layout with fixed or fluid columns         |
@@ -165,6 +192,10 @@ official plugins, adapters, and utilities. The first official adapter is
 | `ScrollArea`            | Custom scrollbar container                                          |
 | `VirtualList`           | Virtualized list with dynamic document heights and anchor scrolling |
 | `VirtualMasonry`        | Virtualized masonry renderer for long irregular image collections   |
+
+Interactive controls use the shared visible-height ladder `24 / 32 / 40 / 48 / 56px`.
+Component `sm / md / lg` sizes map to `32 / 40 / 48px`; coarse-pointer environments retain a
+minimum `44px` target without forcing desktop controls to look oversized.
 
 ## Theme Customization
 

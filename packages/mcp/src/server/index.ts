@@ -221,7 +221,16 @@ export const createDesignMcpServer = () => {
       description: 'List public Deweyou Design components, optionally filtered by category.',
       inputSchema: {
         category: z
-          .enum(['actions', 'forms', 'overlays', 'navigation', 'feedback', 'content', 'data'])
+          .enum([
+            'foundations',
+            'actions',
+            'forms',
+            'overlays',
+            'navigation',
+            'feedback',
+            'content',
+            'data',
+          ])
           .optional(),
       },
       annotations: {

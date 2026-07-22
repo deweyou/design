@@ -4,6 +4,7 @@ import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/re
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vite-plus/test';
 
 import { Select } from './index.tsx';
+import styles from './index.module.less';
 
 beforeEach(() => {
   if (!window.ResizeObserver) {
@@ -39,6 +40,27 @@ describe('Select — default render', () => {
     );
     const trigger = screen.getByRole('combobox');
     expect(trigger).toBeDefined();
+  });
+
+  it('applies the selected size to the trigger and portalled content', async () => {
+    render(
+      <Select.Root placeholder="Pick a fruit" size="sm">
+        <Select.Trigger />
+        <Select.Content>
+          {options.map((option) => (
+            <Select.Item key={option.value} value={option.value} label={option.label} />
+          ))}
+        </Select.Content>
+      </Select.Root>,
+    );
+
+    const trigger = screen.getByRole('combobox');
+    expect(trigger.classList.contains(styles.sizeSm)).toBe(true);
+    fireEvent.click(trigger);
+
+    await waitFor(() => {
+      expect(screen.getByRole('listbox').classList.contains(styles.sizeSm)).toBe(true);
+    });
   });
 
   it('shows placeholder when no value is selected', () => {

@@ -17,6 +17,8 @@ import hljs from 'highlight.js/lib/common';
 import { ScrollArea } from '../scroll-area/index.tsx';
 
 import styles from './index.module.less';
+import { useCodeBlockLocaleText } from './locale/loader.ts';
+import type { CodeBlockLocaleText } from './locale/types.ts';
 
 export type CodeBlockSize = 'sm' | 'md';
 type CodeBlockDataAttributes = {
@@ -75,6 +77,7 @@ export type CodeBlockProps = Omit<ComponentPropsWithoutRef<'div'>, 'children'> &
    * Language id used for the visible label and syntax highlighting.
    */
   language?: CodeBlockLanguage;
+  localeText?: Partial<CodeBlockLocaleText>;
   /**
    * Called after the copy button writes code text to the Clipboard API.
    */
@@ -221,6 +224,7 @@ const CodeBlockBase = ({
   copy = false,
   language,
   languageLabelProps,
+  localeText,
   onCopy,
   preClassName,
   preProps,
@@ -228,9 +232,10 @@ const CodeBlockBase = ({
   viewportClassName,
   ...props
 }: CodeBlockProps & CodeBlockInternalProps) => {
+  const text = useCodeBlockLocaleText(localeText);
   const resetCopiedTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const [copied, setCopied] = useState(false);
-  const [copyStatus, setCopyStatus] = useState('');
+  const [copyStatus, setCopyStatus] = useState<'copied' | 'error' | undefined>();
   const copyText = useMemo(() => getTextContent(children), [children]);
   const highlightedCode =
     typeof children === 'string' ? highlightCode(children, language) : undefined;
@@ -280,11 +285,11 @@ const CodeBlockBase = ({
     try {
       await navigator.clipboard.writeText(copyText);
       setCopied(true);
-      setCopyStatus('Code copied');
+      setCopyStatus('copied');
       onCopy?.({ language, text: copyText });
     } catch {
       setCopied(false);
-      setCopyStatus('Unable to copy code');
+      setCopyStatus('error');
     }
 
     if (resetCopiedTimer.current) {
@@ -293,7 +298,7 @@ const CodeBlockBase = ({
 
     resetCopiedTimer.current = setTimeout(() => {
       setCopied(false);
-      setCopyStatus('');
+      setCopyStatus(undefined);
     }, 1200);
   };
 
@@ -323,7 +328,7 @@ const CodeBlockBase = ({
           {copy && (
             <span className={styles.headerActions}>
               <CodeBlockActionButton
-                aria-label={copied ? 'Copied code' : 'Copy code'}
+                aria-label={copied ? text.copiedCode : text.copyCode}
                 className={styles.copyButton}
                 data-code-block-copy="true"
                 data-copied={copied ? 'true' : undefined}
@@ -338,7 +343,11 @@ const CodeBlockBase = ({
       )}
       {copy && (
         <span aria-live="polite" className={styles.copyStatus}>
-          {copyStatus}
+          {copyStatus === 'copied'
+            ? text.codeCopied
+            : copyStatus === 'error'
+              ? text.unableToCopyCode
+              : null}
         </span>
       )}
       <ScrollArea.Viewport className={classNames(styles.viewport, viewportClassName)}>
@@ -373,3 +382,5 @@ CodeBlock.displayName = 'CodeBlock';
 CodeBlock.LanguageButton = CodeBlockLanguageButton;
 CodeBlock.LanguageLabel = CodeBlockLanguageLabel;
 CodeBlock.Toolbar = CodeBlockToolbar;
+
+export type { CodeBlockLocaleText } from './locale/types.ts';

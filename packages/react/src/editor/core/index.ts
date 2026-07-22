@@ -1,5 +1,7 @@
 import type { AllHTMLAttributes, CSSProperties, ReactNode } from 'react';
 
+import type { EditorLocaleText } from '../editor/locale/types.ts';
+
 export type EditorRuntime = {
   kind: string;
   handle: unknown;
@@ -139,6 +141,7 @@ export type EditorProps<TValue = unknown> = {
   adapter: EditorAdapter<TValue>;
   plugins?: EditorPlugin[];
   placeholder?: string;
+  localeText?: Partial<EditorLocaleText>;
   autoCapitalize?: AllHTMLAttributes<HTMLDivElement>['autoCapitalize'];
   autoCorrect?: AllHTMLAttributes<HTMLDivElement>['autoCorrect'];
   spellCheck?: AllHTMLAttributes<HTMLDivElement>['spellCheck'];

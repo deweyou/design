@@ -59,6 +59,8 @@ import {
   type EditorPluginRegistry,
 } from '../../core/index.js';
 import { createLexicalRuntime, isLexicalRuntime } from '../../runtime/lexical.js';
+import { useTablePluginLocaleText } from './locale/loader.ts';
+import type { TablePluginLocaleText } from './locale/types.ts';
 
 import styles from './index.module.less';
 
@@ -72,6 +74,7 @@ export type TableInsertCommandPayload = {
 
 export type TablePluginOptions = {
   initialTable?: boolean | TableInsertCommandPayload;
+  localeText?: Partial<TablePluginLocaleText>;
 };
 
 type TableBoundaryCommandPayload = {
@@ -722,33 +725,42 @@ const getTableContextWithPosition = (
   };
 };
 
-const getRowBoundaryLabel = (index: number, rowCount: number) => {
+const getRowBoundaryLabel = (
+  index: number,
+  rowCount: number,
+  localeText: TablePluginLocaleText,
+) => {
   if (index === 0) {
-    return 'Insert row before row 1';
+    return localeText.insertRowBefore(1);
   }
 
   if (index === rowCount) {
-    return `Insert row after row ${rowCount}`;
+    return localeText.insertRowAfter(rowCount);
   }
 
-  return `Insert row between rows ${index} and ${index + 1}`;
+  return localeText.insertRowBetween(index, index + 1);
 };
 
-const getColumnBoundaryLabel = (index: number, columnCount: number) => {
+const getColumnBoundaryLabel = (
+  index: number,
+  columnCount: number,
+  localeText: TablePluginLocaleText,
+) => {
   if (index === 0) {
-    return 'Insert column before column 1';
+    return localeText.insertColumnBefore(1);
   }
 
   if (index === columnCount) {
-    return `Insert column after column ${columnCount}`;
+    return localeText.insertColumnAfter(columnCount);
   }
 
-  return `Insert column between columns ${index} and ${index + 1}`;
+  return localeText.insertColumnBetween(index, index + 1);
 };
 
 const getRowBoundaries = (
   tableElement: HTMLTableElement,
   tableRect: DOMRect,
+  localeText: TablePluginLocaleText,
 ): TableBoundaryPosition[] => {
   const rows = Array.from(tableElement.rows);
 
@@ -758,7 +770,7 @@ const getRowBoundaries = (
 
       return {
         index,
-        label: getRowBoundaryLabel(index, rows.length),
+        label: getRowBoundaryLabel(index, rows.length, localeText),
         offset: rowRect.top - tableRect.top,
       };
     })
@@ -767,7 +779,7 @@ const getRowBoundaries = (
         ? [
             {
               index: rows.length,
-              label: getRowBoundaryLabel(rows.length, rows.length),
+              label: getRowBoundaryLabel(rows.length, rows.length, localeText),
               offset: rows[rows.length - 1].getBoundingClientRect().bottom - tableRect.top,
             },
           ]
@@ -778,6 +790,7 @@ const getRowBoundaries = (
 const getColumnBoundaries = (
   tableElement: HTMLTableElement,
   tableRect: DOMRect,
+  localeText: TablePluginLocaleText,
 ): TableBoundaryPosition[] => {
   const cells = Array.from(tableElement.rows[0]?.cells ?? []);
 
@@ -787,7 +800,7 @@ const getColumnBoundaries = (
 
       return {
         index,
-        label: getColumnBoundaryLabel(index, cells.length),
+        label: getColumnBoundaryLabel(index, cells.length, localeText),
         offset: cellRect.left - tableRect.left,
       };
     })
@@ -796,7 +809,7 @@ const getColumnBoundaries = (
         ? [
             {
               index: cells.length,
-              label: getColumnBoundaryLabel(cells.length, cells.length),
+              label: getColumnBoundaryLabel(cells.length, cells.length, localeText),
               offset: cells[cells.length - 1].getBoundingClientRect().right - tableRect.left,
             },
           ]
@@ -804,7 +817,11 @@ const getColumnBoundaries = (
     );
 };
 
-const getRowHandles = (tableElement: HTMLTableElement, tableRect: DOMRect): TableHandlePosition[] =>
+const getRowHandles = (
+  tableElement: HTMLTableElement,
+  tableRect: DOMRect,
+  localeText: TablePluginLocaleText,
+): TableHandlePosition[] =>
   Array.from(tableElement.rows).map((row, index) => {
     const rowRect = row.getBoundingClientRect();
 
@@ -812,7 +829,7 @@ const getRowHandles = (tableElement: HTMLTableElement, tableRect: DOMRect): Tabl
       cellKey: getTableCellKeyFromElement(row.cells[0]),
       headerActive: getRowHeaderActiveFromElement(row, index),
       index,
-      label: `Row ${index + 1} actions`,
+      label: localeText.rowActions(index + 1),
       offset: rowRect.top - tableRect.top,
       size: rowRect.height,
     };
@@ -821,6 +838,7 @@ const getRowHandles = (tableElement: HTMLTableElement, tableRect: DOMRect): Tabl
 const getColumnHandles = (
   tableElement: HTMLTableElement,
   tableRect: DOMRect,
+  localeText: TablePluginLocaleText,
 ): TableHandlePosition[] =>
   Array.from(tableElement.rows[0]?.cells ?? []).map((cell, index) => {
     const cellRect = cell.getBoundingClientRect();
@@ -829,7 +847,7 @@ const getColumnHandles = (
       cellKey: getTableCellKeyFromElement(cell),
       headerActive: getColumnHeaderActiveFromElement(tableElement, index),
       index,
-      label: `Column ${index + 1} actions`,
+      label: localeText.columnActions(index + 1),
       offset: cellRect.left - tableRect.left,
       size: cellRect.width,
     };
@@ -877,6 +895,7 @@ const syncTableColgroups = (rootElement: HTMLElement) => {
 const getTableOverlayStates = (
   editor: LexicalEditor,
   hoveredTable: TableInteractionTarget | undefined,
+  localeText: TablePluginLocaleText,
 ): TableOverlayState[] => {
   const rootElement = editor.getRootElement();
   const chromeRootElement = rootElement?.closest('[data-editor-root]');
@@ -915,14 +934,14 @@ const getTableOverlayStates = (
 
         return [
           {
-            columnBoundaries: getColumnBoundaries(tableElement, rect),
-            columnHandles: getColumnHandles(tableElement, rect),
+            columnBoundaries: getColumnBoundaries(tableElement, rect, localeText),
+            columnHandles: getColumnHandles(tableElement, rect, localeText),
             height: rect.height,
             isActive: Boolean(target),
             left: rect.left - chromeRootRect.left,
             nodeKey,
-            rowBoundaries: getRowBoundaries(tableElement, rect),
-            rowHandles: getRowHandles(tableElement, rect),
+            rowBoundaries: getRowBoundaries(tableElement, rect, localeText),
+            rowHandles: getRowHandles(tableElement, rect, localeText),
             selectedColumnIndices: target?.selectedColumnIndices ?? [],
             selectedRowIndices: target?.selectedRowIndices ?? [],
             targetCellKey: target?.cellKey,
@@ -943,6 +962,7 @@ const stopTableToolMouseDown = (event: ReactMouseEvent<HTMLElement>) => {
 };
 
 type TableToolsPluginProps = {
+  localeText?: Partial<TablePluginLocaleText>;
   registry?: EditorPluginRegistry;
 };
 
@@ -957,6 +977,7 @@ type TableHandleTriggerProps = {
 type TableAxisToolbarProps = {
   handle: TableHandlePosition;
   kind: 'column' | 'row';
+  localeText: TablePluginLocaleText;
   runCommand: (command: string, payload?: unknown) => void;
   setActiveTool: (tool: TableAxisToolState | undefined) => void;
   tableKey: string;
@@ -993,6 +1014,7 @@ const TableHandleTrigger = ({
 const TableAxisToolbar = ({
   handle,
   kind,
+  localeText,
   runCommand,
   setActiveTool,
   tableKey,
@@ -1002,7 +1024,7 @@ const TableAxisToolbar = ({
     tableKey,
   };
   const isRow = kind === 'row';
-  const headerLabel = isRow ? 'Header row' : 'Header column';
+  const headerLabel = isRow ? localeText.headerRow : localeText.headerColumn;
   const closeAndRun = (command: string, payload: unknown) => {
     setActiveTool(undefined);
     runCommand(command, payload);
@@ -1017,7 +1039,9 @@ const TableAxisToolbar = ({
 
   return (
     <div
-      aria-label={isRow ? `Row ${handle.index + 1} tools` : `Column ${handle.index + 1} tools`}
+      aria-label={
+        isRow ? localeText.rowTools(handle.index + 1) : localeText.columnTools(handle.index + 1)
+      }
       className={styles.tableAxisToolbar}
       data-axis={kind}
       onMouseDown={stopTableToolMouseDown}
@@ -1047,7 +1071,7 @@ const TableAxisToolbar = ({
         </>
       ) : null}
       <button
-        aria-label={isRow ? 'Insert row above' : 'Insert column left'}
+        aria-label={isRow ? localeText.insertRowAbove : localeText.insertColumnLeft}
         className={styles.tableAxisToolButton}
         onClick={() =>
           closeAndRun(isRow ? 'table.add-row' : 'table.add-column', {
@@ -1055,13 +1079,13 @@ const TableAxisToolbar = ({
             insertAfter: false,
           })
         }
-        title={isRow ? 'Insert row above' : 'Insert column left'}
+        title={isRow ? localeText.insertRowAbove : localeText.insertColumnLeft}
         type="button"
       >
         {isRow ? <ArrowUpIcon size="xs" /> : <ArrowLeftIcon size="xs" />}
       </button>
       <button
-        aria-label={isRow ? 'Insert row below' : 'Insert column right'}
+        aria-label={isRow ? localeText.insertRowBelow : localeText.insertColumnRight}
         className={styles.tableAxisToolButton}
         onClick={() =>
           closeAndRun(isRow ? 'table.add-row' : 'table.add-column', {
@@ -1069,20 +1093,20 @@ const TableAxisToolbar = ({
             insertAfter: true,
           })
         }
-        title={isRow ? 'Insert row below' : 'Insert column right'}
+        title={isRow ? localeText.insertRowBelow : localeText.insertColumnRight}
         type="button"
       >
         {isRow ? <ArrowDownIcon size="xs" /> : <ArrowRightIcon size="xs" />}
       </button>
       <span className={styles.tableAxisToolbarSeparator} />
       <button
-        aria-label={isRow ? 'Delete row' : 'Delete column'}
+        aria-label={isRow ? localeText.deleteRow : localeText.deleteColumn}
         className={styles.tableAxisToolButton}
         data-danger="true"
         onClick={() =>
           closeAndRun(isRow ? 'table.delete-row' : 'table.delete-column', tableTargetPayload)
         }
-        title={isRow ? 'Delete row' : 'Delete column'}
+        title={isRow ? localeText.deleteRow : localeText.deleteColumn}
         type="button"
       >
         <Delete1Icon size="xs" />
@@ -1091,7 +1115,8 @@ const TableAxisToolbar = ({
   );
 };
 
-const TableToolsPlugin = ({ registry }: TableToolsPluginProps) => {
+const TableToolsPlugin = ({ localeText, registry }: TableToolsPluginProps) => {
+  const resolvedLocaleText = useTablePluginLocaleText(localeText);
   const [editor] = useLexicalComposerContext();
   const [activeTool, setActiveTool] = useState<TableAxisToolState | undefined>(undefined);
   const [hoveredTable, setHoveredTable] = useState<TableInteractionTarget | undefined>(undefined);
@@ -1104,8 +1129,8 @@ const TableToolsPlugin = ({ registry }: TableToolsPluginProps) => {
       syncTableColgroups(rootElement);
     }
 
-    setOverlays(getTableOverlayStates(editor, hoveredTable));
-  }, [editor, hoveredTable]);
+    setOverlays(getTableOverlayStates(editor, hoveredTable, resolvedLocaleText));
+  }, [editor, hoveredTable, resolvedLocaleText]);
 
   const updateHoveredTable = useCallback((nextHoveredTable: TableInteractionTarget | undefined) => {
     setHoveredTable((currentHoveredTable) => {
@@ -1287,7 +1312,7 @@ const TableToolsPlugin = ({ registry }: TableToolsPluginProps) => {
           >
             {overlay.isActive ? (
               <div
-                aria-label="Row controls"
+                aria-label={resolvedLocaleText.rowControls}
                 className={`${styles.tableControlRail} ${styles.rowControlRail}`}
                 role="toolbar"
               >
@@ -1323,7 +1348,7 @@ const TableToolsPlugin = ({ registry }: TableToolsPluginProps) => {
             ) : null}
             {overlay.isActive ? (
               <div
-                aria-label="Column controls"
+                aria-label={resolvedLocaleText.columnControls}
                 className={`${styles.tableControlRail} ${styles.columnControlRail}`}
                 role="toolbar"
               >
@@ -1361,6 +1386,7 @@ const TableToolsPlugin = ({ registry }: TableToolsPluginProps) => {
               <TableAxisToolbar
                 handle={activeHandle}
                 kind={activeTool.kind === 'row' ? 'row' : 'column'}
+                localeText={resolvedLocaleText}
                 runCommand={runCommand}
                 setActiveTool={setActiveTool}
                 tableKey={overlay.nodeKey}
@@ -1440,7 +1466,7 @@ const InitialTablePlugin = ({ payload }: { payload: TableInsertCommandPayload })
   return null;
 };
 
-export const tablePlugin = ({ initialTable }: TablePluginOptions = {}) => {
+export const tablePlugin = ({ initialTable, localeText }: TablePluginOptions = {}) => {
   const initialTablePayload = getInitialTablePayload(initialTable);
 
   return createEditorPlugin({
@@ -1504,16 +1530,18 @@ export const tablePlugin = ({ initialTable }: TablePluginOptions = {}) => {
         command: 'table.insert',
         icon: TableIcon,
         id: 'table.insert',
-        label: 'Insert table',
+        label: localeText?.insertTable ?? 'Insert table',
       },
     ],
     blockToolbarActions: [],
     setup: ({ registry }) => (
       <>
         <TablePlugin />
-        <TableToolsPlugin registry={registry} />
+        <TableToolsPlugin localeText={localeText} registry={registry} />
         {initialTablePayload ? <InitialTablePlugin payload={initialTablePayload} /> : null}
       </>
     ),
   });
 };
+
+export type { TablePluginLocaleText } from './locale/types.ts';

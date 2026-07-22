@@ -13,6 +13,7 @@ describe('llms text generation', () => {
     expect(text).toContain('npm install @deweyou-design/react @deweyou-design/styles');
     expect(text).toContain("import '@deweyou-design/styles/theme.css';");
     expect(text).toContain("import { Button } from '@deweyou-design/react';");
+    expect(text).toContain("import { ConfigProvider } from '@deweyou-design/react';");
     expect(text).toContain("import { MermaidRender } from '@deweyou-design/react';");
     expect(text).toContain("import { NumberInput } from '@deweyou-design/react';");
     expect(text).toContain('Read-only Mermaid diagram renderer');

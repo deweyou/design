@@ -27,7 +27,7 @@ flowchart LR
 
 - Modify: `packages/react/src/button/index.module.less`
 
-- [x] Keep IconButton surfaces on the 32/40/44/48/56px control-height ladder.
+- [x] Keep IconButton surfaces on the component-wide 24/32/40/48/56px control-height ladder.
 - [x] Apply the 16/20/24/28/32px IconButton icon ladder.
 - [x] Preserve at least a 44px coarse-pointer target without layout growth.
 - [x] Replace the IconButton-only radius branch with one Button float radius.

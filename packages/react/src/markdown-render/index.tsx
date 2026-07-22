@@ -22,6 +22,8 @@ import { ScrollArea } from '../scroll-area/index.tsx';
 import { Text, type TextProps } from '../text/index.tsx';
 
 import styles from './index.module.less';
+import { useMarkdownRenderLocaleText } from './locale/loader.ts';
+import type { MarkdownRenderLocaleText } from './locale/types.ts';
 
 export const markdownRenderSizeOptions = ['sm', 'md', 'lg'] as const;
 const markdownRenderNodeNames = [
@@ -83,6 +85,7 @@ export type MarkdownRenderProps = {
   resolveNodeAttributes?: MarkdownRenderResolveNodeAttributes;
   onLinkClick?: (details: MarkdownRenderLinkClickDetails) => void;
   onCopy?: (details: MarkdownRenderCopyDetails) => void;
+  localeText?: Partial<MarkdownRenderLocaleText>;
   className?: string;
   style?: CSSProperties;
 };
@@ -392,7 +395,7 @@ const createMarkdownListItem =
   };
 
 const createMarkdownTaskMarker =
-  (resolveMarkdownNodeProps: ResolveMarkdownNodeProps) =>
+  (resolveMarkdownNodeProps: ResolveMarkdownNodeProps, localeText: MarkdownRenderLocaleText) =>
   ({
     checked,
     disabled: _disabled,
@@ -412,7 +415,7 @@ const createMarkdownTaskMarker =
         data-readonly="true"
         role="checkbox"
         state={checked ? 'checked' : 'unchecked'}
-        stateLabel={checked ? 'Completed task' : 'Incomplete task'}
+        stateLabel={checked ? localeText.completedTask : localeText.incompleteTask}
       />
     );
   };
@@ -534,6 +537,7 @@ const createMarkdownHr =
 
 const createDefaultComponents = (
   resolveMarkdownNodeProps: ResolveMarkdownNodeProps,
+  localeText: MarkdownRenderLocaleText,
   onLinkClick?: MarkdownRenderProps['onLinkClick'],
 ): MarkdownRenderComponents => ({
   a: createMarkdownLink(resolveMarkdownNodeProps, onLinkClick),
@@ -547,7 +551,7 @@ const createDefaultComponents = (
   h6: createMarkdownHeading6(resolveMarkdownNodeProps),
   hr: createMarkdownHr(resolveMarkdownNodeProps),
   img: createMarkdownImage(resolveMarkdownNodeProps),
-  input: createMarkdownTaskMarker(resolveMarkdownNodeProps),
+  input: createMarkdownTaskMarker(resolveMarkdownNodeProps, localeText),
   li: createMarkdownListItem(resolveMarkdownNodeProps),
   ol: createMarkdownOl(resolveMarkdownNodeProps),
   p: createMarkdownParagraph(resolveMarkdownNodeProps),
@@ -617,6 +621,7 @@ const mergeMarkdownComponents = (
 export const MarkdownRender = ({
   className,
   components,
+  localeText,
   onCopy,
   onLinkClick,
   resolveNodeAttributes,
@@ -624,8 +629,9 @@ export const MarkdownRender = ({
   style,
   value,
 }: MarkdownRenderProps) => {
+  const text = useMarkdownRenderLocaleText(localeText);
   const resolveMarkdownNodeProps = createMarkdownNodePropsResolver(resolveNodeAttributes);
-  const defaultComponents = createDefaultComponents(resolveMarkdownNodeProps, onLinkClick);
+  const defaultComponents = createDefaultComponents(resolveMarkdownNodeProps, text, onLinkClick);
 
   return (
     <div
@@ -660,3 +666,5 @@ export const MarkdownRender = ({
 };
 
 MarkdownRender.displayName = 'MarkdownRender';
+
+export type { MarkdownRenderLocaleText } from './locale/types.ts';

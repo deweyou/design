@@ -1,5 +1,13 @@
 import type { Preview } from '@storybook/react';
-import { createElement } from 'react';
+import { createElement, Suspense } from 'react';
+
+import {
+  ConfigProvider,
+  configLocales,
+  defaultConfigLocale,
+  type ConfigLocale,
+  type ConfigProviderProps,
+} from '@deweyou-design/react/config-provider';
 
 import '@deweyou-design/styles/theme-with-fonts.css';
 
@@ -8,8 +16,21 @@ const storybookThemeBackgrounds = {
   dark: '#000000',
 } as const;
 
+const resolveStorybookLocale = (value: unknown): ConfigLocale =>
+  configLocales.find((locale) => locale === value) ?? defaultConfigLocale;
+
 const preview: Preview = {
   globalTypes: {
+    locale: {
+      name: 'Locale',
+      description: 'Component locale supplied by ConfigProvider',
+      defaultValue: defaultConfigLocale,
+      toolbar: {
+        dynamicTitle: true,
+        icon: 'globe',
+        items: configLocales.map((locale) => ({ title: locale, value: locale })),
+      },
+    },
     themeMode: {
       name: 'Theme',
       description: 'Preview light and dark theme tokens',
@@ -27,9 +48,9 @@ const preview: Preview = {
   decorators: [
     (Story, context) => {
       const themeMode = context.globals.themeMode === 'dark' ? 'dark' : 'light';
+      const locale = resolveStorybookLocale(context.globals.locale);
       const fullViewport = context.parameters.fullViewport === true;
-
-      return createElement(
+      const storyContent = createElement(
         'div',
         {
           'data-theme': themeMode,
@@ -41,8 +62,14 @@ const preview: Preview = {
             width: '100%',
           },
         },
-        createElement(Story),
+        createElement(
+          Suspense,
+          { fallback: createElement('span', null, 'Loading locale…') },
+          createElement(Story),
+        ),
       );
+
+      return createElement(ConfigProvider, { locale } as ConfigProviderProps, storyContent);
     },
   ],
   parameters: {

@@ -2,6 +2,7 @@ export const storybookUrl = 'https://design-storybook-deweyous-projects.vercel.a
 export const websiteUrl = 'https://design.deweyou.me';
 
 export const componentCategories = [
+  { id: 'foundations', label: 'Foundations' },
   { id: 'actions', label: 'Actions' },
   { id: 'forms', label: 'Forms' },
   { id: 'overlays', label: 'Overlays' },
@@ -100,6 +101,17 @@ export const componentCatalog: ComponentCatalogItem[] = [
     storyId: 'components-codeblock--default',
     subpath: 'code-block',
     importSnippet: rootImport('CodeBlock'),
+  },
+  {
+    name: 'ConfigProvider',
+    importName: 'ConfigProvider',
+    category: 'foundations',
+    description:
+      'Shared configuration boundary for typed locale selection and future global settings.',
+    dimensions: ['locale', 'nesting', 'component localeText'],
+    storyId: 'components-configprovider--default',
+    subpath: 'config-provider',
+    importSnippet: rootImport('ConfigProvider'),
   },
   {
     name: 'ContextMenu',
@@ -250,7 +262,7 @@ export const componentCatalog: ComponentCatalogItem[] = [
     importName: 'Pagination',
     category: 'navigation',
     description: 'Paged navigation for lists and document sets.',
-    dimensions: ['page', 'count', 'link'],
+    dimensions: ['page', 'count', 'size', 'link'],
     storyId: 'components-pagination--default',
     subpath: 'pagination',
     importSnippet: rootImport('Pagination'),
@@ -290,7 +302,7 @@ export const componentCatalog: ComponentCatalogItem[] = [
     importName: 'Select',
     category: 'forms',
     description: 'Listbox selection field with trigger, content, and item primitives.',
-    dimensions: ['value', 'placeholder', 'disabled'],
+    dimensions: ['value', 'placeholder', 'size', 'disabled'],
     storyId: 'components-select--default',
     subpath: 'select',
     importSnippet: rootImport('Select'),

@@ -20,6 +20,8 @@ import {
 import { IconButton } from '../button/index.tsx';
 import { Dialog } from '../dialog/index.tsx';
 import styles from './index.module.less';
+import { useImagePreviewLocaleText } from './locale/loader.ts';
+import type { ImagePreviewLocaleText } from './locale/types.ts';
 
 export type ImagePreviewImage = {
   alt?: string;
@@ -48,6 +50,7 @@ export type ImagePreviewProps = {
   trigger?: ReactNode;
   zoomStep?: number;
   'aria-label'?: string;
+  localeText?: Partial<ImagePreviewLocaleText>;
 };
 
 type TriggerElementProps = {
@@ -72,8 +75,10 @@ export const ImagePreview = ({
   open,
   trigger,
   zoomStep = 0.25,
-  'aria-label': ariaLabel = 'Image preview',
+  'aria-label': ariaLabel,
+  localeText,
 }: ImagePreviewProps) => {
+  const text = useImagePreviewLocaleText(localeText);
   const isOpenControlled = open !== undefined;
   const isIndexControlled = currentIndex !== undefined;
   const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
@@ -200,12 +205,12 @@ export const ImagePreview = ({
   return (
     <Dialog.Root open={currentOpen} onOpenChange={setOpen}>
       {renderTrigger()}
-      <Dialog.Content aria-label={ariaLabel} className={styles.content}>
+      <Dialog.Content aria-label={ariaLabel ?? text.imagePreview} className={styles.content}>
         <div className={styles.frame}>
           <div className={styles.toolbar}>
             <div className={styles.toolbarGroup}>
               <IconButton
-                aria-label="Previous image"
+                aria-label={text.previousImage}
                 disabled={!canGoPrevious}
                 icon={<ArrowLeftIcon />}
                 onClick={() => setIndex(activeIndex - 1)}
@@ -216,7 +221,7 @@ export const ImagePreview = ({
                 {imageCount === 0 ? '0 / 0' : `${activeIndex + 1} / ${imageCount}`}
               </span>
               <IconButton
-                aria-label="Next image"
+                aria-label={text.nextImage}
                 disabled={!canGoNext}
                 icon={<ArrowRightIcon />}
                 onClick={() => setIndex(activeIndex + 1)}
@@ -226,7 +231,7 @@ export const ImagePreview = ({
             </div>
             <div className={styles.toolbarGroup}>
               <IconButton
-                aria-label="Zoom out"
+                aria-label={text.zoomOut}
                 disabled={zoom <= safeMinZoom}
                 icon={<ZoomOutIcon />}
                 onClick={() => zoomBy(-zoomStep)}
@@ -234,7 +239,7 @@ export const ImagePreview = ({
                 variant="ghost"
               />
               <IconButton
-                aria-label="Reset zoom"
+                aria-label={text.resetZoom}
                 disabled={zoom === safeDefaultZoom}
                 icon={<RefreshIcon />}
                 onClick={() => setZoom(safeDefaultZoom)}
@@ -242,7 +247,7 @@ export const ImagePreview = ({
                 variant="ghost"
               />
               <IconButton
-                aria-label="Zoom in"
+                aria-label={text.zoomIn}
                 disabled={zoom >= safeMaxZoom}
                 icon={<ZoomInIcon />}
                 onClick={() => zoomBy(zoomStep)}
@@ -250,7 +255,12 @@ export const ImagePreview = ({
                 variant="ghost"
               />
               <Dialog.CloseTrigger>
-                <IconButton aria-label="Close preview" icon={<XIcon />} size="sm" variant="ghost" />
+                <IconButton
+                  aria-label={text.closePreview}
+                  icon={<XIcon />}
+                  size="sm"
+                  variant="ghost"
+                />
               </Dialog.CloseTrigger>
             </div>
           </div>
@@ -263,7 +273,7 @@ export const ImagePreview = ({
                 style={{ transform: `scale(${zoom})` }}
               />
             ) : (
-              <span className={styles.empty}>No image</span>
+              <span className={styles.empty}>{text.noImage}</span>
             )}
           </div>
           <p className={styles.caption}>
@@ -274,3 +284,5 @@ export const ImagePreview = ({
     </Dialog.Root>
   );
 };
+
+export type { ImagePreviewLocaleText } from './locale/types.ts';

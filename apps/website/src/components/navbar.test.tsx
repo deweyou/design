@@ -123,6 +123,22 @@ test('renders the compact top navigation with grouped explore destinations', () 
   expect(screen.getByRole('button', { name: 'Open navigation' })).toHaveClass(/actionButton/);
 });
 
+test('does not advertise website localization before the website copy is translated', () => {
+  renderNavbar();
+
+  expect(screen.queryByRole('button', { name: /^Language:/ })).not.toBeInTheDocument();
+});
+
+test('uses shared compact icon buttons for navbar actions', () => {
+  renderNavbar();
+
+  const githubLink = screen.getByRole('link', { name: 'GitHub' });
+  const modeButton = screen.getByRole('button', { name: 'Switch to dark mode' });
+
+  expect(githubLink).toHaveAttribute('data-size', 'xs');
+  expect(modeButton).toHaveAttribute('data-size', 'xs');
+});
+
 test('marks Overview active on the home route', () => {
   renderNavbar('/');
   expect(screen.getByRole('link', { name: 'Overview' })).toHaveAttribute('aria-current', 'page');

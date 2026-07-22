@@ -15,6 +15,8 @@ import classNames from 'classnames';
 
 import { ScrollArea } from '../scroll-area/index.tsx';
 import styles from './index.module.less';
+import { useVirtualListLocaleText } from './locale/loader.ts';
+import type { VirtualListLocaleText } from './locale/types.ts';
 
 export type VirtualItem = {
   index: number;
@@ -73,6 +75,7 @@ export type VirtualListProps = {
   itemRole?: string | null;
   'aria-label'?: string;
   'aria-labelledby'?: string;
+  localeText?: Partial<VirtualListLocaleText>;
 };
 
 type SizeMap = {
@@ -271,11 +274,13 @@ export const VirtualList = forwardRef<VirtualListRef, VirtualListProps>(
       itemClassName,
       itemStyle,
       itemRole,
-      'aria-label': ariaLabel = 'Virtualized list',
+      'aria-label': ariaLabel,
       'aria-labelledby': ariaLabelledBy,
+      localeText,
     },
     ref,
   ) => {
+    const text = useVirtualListLocaleText(localeText);
     const rootRef = useRef<HTMLDivElement>(null);
     const viewportRef = useRef<HTMLDivElement>(null);
     const [scrollOffset, setScrollOffset] = useState(0);
@@ -642,7 +647,7 @@ export const VirtualList = forwardRef<VirtualListRef, VirtualListProps>(
         >
           <div
             ref={viewportRef}
-            aria-label={ariaLabelledBy ? undefined : ariaLabel}
+            aria-label={ariaLabelledBy ? undefined : (ariaLabel ?? text.virtualizedList)}
             aria-labelledby={ariaLabelledBy}
             className={classNames(styles.viewport, viewportClassName)}
             data-testid="virtual-list-viewport"
@@ -663,7 +668,7 @@ export const VirtualList = forwardRef<VirtualListRef, VirtualListProps>(
       >
         <ScrollArea.Viewport
           ref={viewportRef}
-          aria-label={ariaLabelledBy ? undefined : ariaLabel}
+          aria-label={ariaLabelledBy ? undefined : (ariaLabel ?? text.virtualizedList)}
           aria-labelledby={ariaLabelledBy}
           className={classNames(styles.viewport, viewportClassName)}
           data-testid="virtual-list-viewport"
@@ -682,3 +687,5 @@ export const VirtualList = forwardRef<VirtualListRef, VirtualListProps>(
 );
 
 VirtualList.displayName = 'VirtualList';
+
+export type { VirtualListLocaleText } from './locale/types.ts';

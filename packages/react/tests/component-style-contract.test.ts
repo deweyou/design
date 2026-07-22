@@ -12,6 +12,12 @@ const codeBlockStylesPath = resolve(reactSourceRoot, 'code-block/index.module.le
 const checkboxMarkStylesPath = resolve(reactSourceRoot, 'checkbox-mark/index.module.less');
 const checkboxStylesPath = resolve(reactSourceRoot, 'checkbox/index.module.less');
 const dialogStylesPath = resolve(reactSourceRoot, 'dialog/index.module.less');
+const editorStylesPath = resolve(reactSourceRoot, 'editor/editor/index.module.less');
+const groupedVirtualMasonryStylesPath = resolve(
+  reactSourceRoot,
+  'grouped-virtual-masonry/index.module.less',
+);
+const imageMasonryStylesPath = resolve(reactSourceRoot, 'image-masonry/index.module.less');
 const inputStylesPath = resolve(reactSourceRoot, 'input/index.module.less');
 const menuStylesPath = resolve(reactSourceRoot, 'menu/index.module.less');
 const markdownRenderStylesPath = resolve(reactSourceRoot, 'markdown-render/index.module.less');
@@ -31,6 +37,7 @@ const textareaStylesPath = resolve(reactSourceRoot, 'textarea/index.module.less'
 const textStylesPath = resolve(reactSourceRoot, 'text/index.module.less');
 const toastStylesPath = resolve(reactSourceRoot, 'toast/index.module.less');
 const tooltipStylesPath = resolve(reactSourceRoot, 'tooltip/index.module.less');
+const virtualMasonryStylesPath = resolve(reactSourceRoot, 'virtual-masonry/index.module.less');
 const bridgeStylesPath = resolve(stylesSourceRoot, 'less/bridge.less');
 const legacyMixinsStylesPath = resolve(stylesSourceRoot, 'less/mixins.less');
 
@@ -96,14 +103,18 @@ test('button styles keep visual feedback contracts out of component unit tests',
   expect(stylesheet).toContain('cursor: default;');
 });
 
-test('interactive component styles consume shared control and touch target tokens', () => {
+test('interactive component styles separate visible control density from coarse-pointer targets', () => {
+  const breadcrumbStylesheet = readFileSync(breadcrumbStylesPath, 'utf8');
   const buttonStylesheet = readFileSync(buttonStylesPath, 'utf8');
   const checkboxStylesheet = readFileSync(checkboxStylesPath, 'utf8');
   const inputStylesheet = readFileSync(inputStylesPath, 'utf8');
+  const menuStylesheet = readFileSync(menuStylesPath, 'utf8');
+  const navStylesheet = readFileSync(navStylesPath, 'utf8');
   const paginationStylesheet = readFileSync(paginationStylesPath, 'utf8');
   const radioGroupStylesheet = readFileSync(radioGroupStylesPath, 'utf8');
   const selectStylesheet = readFileSync(selectStylesPath, 'utf8');
   const switchStylesheet = readFileSync(switchStylesPath, 'utf8');
+  const tabsStylesheet = readFileSync(tabsStylesPath, 'utf8');
   const toastStylesheet = readFileSync(toastStylesPath, 'utf8');
 
   expect(buttonStylesheet).toContain('--button-height: var(--ui-control-height-xs);');
@@ -117,20 +128,31 @@ test('interactive component styles consume shared control and touch target token
   expect(buttonStylesheet).toContain('@media (pointer: coarse)');
   expect(buttonStylesheet).toContain('inline-size: max(100%, var(--ui-touch-target-min));');
   expect(buttonStylesheet).toContain('block-size: max(100%, var(--ui-touch-target-min));');
-  expect(paginationStylesheet).toContain('min-inline-size: var(--ui-touch-target-min);');
-  expect(paginationStylesheet).toContain('min-block-size: var(--ui-touch-target-min);');
   expect(inputStylesheet).toContain('min-block-size: var(--ui-control-height-sm);');
   expect(inputStylesheet).toContain('min-block-size: var(--ui-control-height-md);');
   expect(inputStylesheet).toContain('min-block-size: var(--ui-control-height-lg);');
-  expect(selectStylesheet).toContain('min-block-size: var(--ui-touch-target-min);');
-  expect(checkboxStylesheet).toContain('min-block-size: var(--ui-touch-target-min);');
-  expect(checkboxStylesheet).toContain('min-inline-size: var(--ui-touch-target-min);');
-  expect(radioGroupStylesheet).toContain('min-block-size: var(--ui-touch-target-min);');
-  expect(radioGroupStylesheet).toContain('min-inline-size: var(--ui-touch-target-min);');
-  expect(switchStylesheet).toContain('min-block-size: var(--ui-touch-target-min);');
-  expect(switchStylesheet).toContain('min-inline-size: var(--ui-touch-target-min);');
-  expect(toastStylesheet).toContain('inline-size: var(--ui-touch-target-min);');
-  expect(toastStylesheet).toContain('block-size: var(--ui-touch-target-min);');
+
+  for (const stylesheet of [
+    breadcrumbStylesheet,
+    checkboxStylesheet,
+    radioGroupStylesheet,
+    switchStylesheet,
+    toastStylesheet,
+  ]) {
+    expect(stylesheet).toContain('var(--ui-control-height-sm)');
+    expect(stylesheet).toContain('.coarse-pointer-target();');
+  }
+
+  expect(menuStylesheet).toContain('--menu-item-height: var(--ui-control-height-sm);');
+  expect(navStylesheet).toContain('--nav-link-height: var(--ui-control-height-md);');
+  expect(paginationStylesheet).toContain('--pagination-control-size: var(--ui-control-height-md);');
+  expect(selectStylesheet).toContain('--select-trigger-height: var(--ui-control-height-md);');
+  expect(tabsStylesheet).toContain(".root[data-size='md'] .trigger");
+
+  for (const stylesheet of [menuStylesheet, navStylesheet, selectStylesheet, tabsStylesheet]) {
+    expect(stylesheet).toContain('.coarse-pointer-block-target();');
+  }
+  expect(paginationStylesheet).toContain('.coarse-pointer-target();');
 });
 
 test('overlay and motion styles use shared z-index and motion tokens', () => {
@@ -196,11 +218,64 @@ test('interactive surfaces expose hover and focus-visible affordances', () => {
   expect(radioGroupStylesheet).toContain('.item:hover:not([data-disabled]) .control');
   expect(navStylesheet).not.toContain('background var(--ui-motion-duration-fast)');
   expect(navStylesheet).not.toContain('background: color-mix(in srgb, var(--ui-color-text) 8%');
-  expect(navStylesheet).toContain('min-block-size: var(--ui-touch-target-min);');
+  expect(navStylesheet).toContain('min-block-size: var(--nav-link-height);');
   expect(paginationStylesheet).toContain('&:hover:not([data-disabled]):not([data-selected])');
   expect(paginationStylesheet).toContain('&:focus-visible');
-  expect(scrollAreaStylesheet).toContain('&:focus-visible');
+  expect(scrollAreaStylesheet).not.toContain('&:focus-visible');
   expect(scrollAreaStylesheet).toContain('.root:focus-within .scrollbar');
+});
+
+test('focusable surfaces avoid full-container brand frames', () => {
+  const dialogStylesheet = readFileSync(dialogStylesPath, 'utf8');
+  const editorStylesheet = readFileSync(editorStylesPath, 'utf8');
+  const menuStylesheet = readFileSync(menuStylesPath, 'utf8');
+  const navOverlayStylesheet = readFileSync(navOverlayStylesPath, 'utf8');
+  const popoverStylesheet = readFileSync(popoverStylesPath, 'utf8');
+  const scrollAreaStylesheet = readFileSync(scrollAreaStylesPath, 'utf8');
+  const selectStylesheet = readFileSync(selectStylesPath, 'utf8');
+  const tabsStylesheet = readFileSync(tabsStylesPath, 'utf8');
+
+  expect(dialogStylesheet).not.toContain('.panel:focus-visible');
+  expect(editorStylesheet).not.toContain('&:focus-visible');
+  expect(menuStylesheet).not.toContain('.content:focus-visible');
+  expect(navOverlayStylesheet).not.toContain('.content:focus-visible');
+  expect(popoverStylesheet).not.toContain('.surface:focus-visible');
+  expect(scrollAreaStylesheet).not.toContain('&:focus-visible');
+  expect(selectStylesheet).not.toContain('.content:focus-visible');
+  expect(tabsStylesheet).not.toContain('.content:focus-visible');
+
+  expect(menuStylesheet).toContain('.item:focus-visible');
+  expect(selectStylesheet).toContain('.trigger:focus-visible');
+  expect(tabsStylesheet).toContain('.trigger:focus-visible');
+});
+
+test('large clickable content targets use neutral focus feedback', () => {
+  const cardStylesheet = readFileSync(cardStylesPath, 'utf8');
+  const groupedVirtualMasonryStylesheet = readFileSync(groupedVirtualMasonryStylesPath, 'utf8');
+  const imageMasonryStylesheet = readFileSync(imageMasonryStylesPath, 'utf8');
+  const virtualMasonryStylesheet = readFileSync(virtualMasonryStylesPath, 'utf8');
+
+  for (const stylesheet of [
+    cardStylesheet,
+    groupedVirtualMasonryStylesheet,
+    imageMasonryStylesheet,
+    virtualMasonryStylesheet,
+  ]) {
+    expect(stylesheet).toContain('.focus-ring-neutral()');
+    expect(stylesheet).not.toContain('.focus-ring-offset()');
+    expect(stylesheet).not.toContain('var(--ui-color-focus-ring)');
+  }
+
+  for (const [compactControlPath, brandFocusMarker] of [
+    [buttonStylesPath, '.focus-ring-offset()'],
+    [menuStylesPath, '.focus-ring-offset()'],
+    [selectStylesPath, 'var(--ui-color-focus-ring)'],
+    [tabsStylesPath, '.focus-ring-offset()'],
+  ]) {
+    expect(readFileSync(compactControlPath, 'utf8'), compactControlPath).toContain(
+      brandFocusMarker,
+    );
+  }
 });
 
 test('focus mixins keep visible keyboard focus without native outline styling', () => {
@@ -216,6 +291,14 @@ test('focus mixins keep visible keyboard focus without native outline styling', 
   expect(legacyMixinsStylesheet).not.toContain('outline: 2px solid var(--ui-color-focus-ring);');
   expect(legacyMixinsStylesheet).toContain('border-color: var(--ui-color-focus-ring);');
   expect(legacyMixinsStylesheet).not.toMatch(/box-shadow:\s*0 0 0 [234]px/);
+
+  for (const stylesheet of [bridgeStylesheet, legacyMixinsStylesheet]) {
+    expect(stylesheet).toContain('.focus-ring-neutral()');
+    expect(stylesheet).toContain('border-color: var(--ui-color-border-strong);');
+    expect(stylesheet).toContain(
+      'box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ui-color-text) 32%, transparent);',
+    );
+  }
 });
 
 test('field focus states use border color while invalid state keeps priority', () => {

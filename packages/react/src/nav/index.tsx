@@ -18,6 +18,8 @@ import { IconButton } from '../button/index.tsx';
 import { Menu, MenuContent, MenuItem, MenuTrigger } from '../menu/index.tsx';
 import { NavOverlay } from '../nav-overlay/index.tsx';
 import styles from './index.module.less';
+import { useNavLocaleText } from './locale/loader.ts';
+import type { NavLocaleText } from './locale/types.ts';
 
 // ── Context ───────────────────────────────────────────────────────────────
 
@@ -52,34 +54,40 @@ export type NavRootProps = HTMLAttributes<HTMLElement> & {
   size?: NavSize;
   children?: ReactNode;
   className?: string;
+  localeText?: Partial<NavLocaleText>;
   style?: CSSProperties;
 };
 
 const NavRoot = ({
-  'aria-label': ariaLabel = 'navigation',
+  'aria-label': ariaLabel,
   orientation = 'horizontal',
   size = 'md',
   children,
   className,
+  localeText,
   style,
   ...props
-}: NavRootProps) => (
-  <NavContext.Provider value={{ orientation, size }}>
-    <nav
-      {...props}
-      aria-label={ariaLabel}
-      className={classNames(
-        styles.root,
-        orientationClassMap[orientation],
-        sizeClassMap[size],
-        className,
-      )}
-      style={style}
-    >
-      {children}
-    </nav>
-  </NavContext.Provider>
-);
+}: NavRootProps) => {
+  const text = useNavLocaleText(localeText);
+
+  return (
+    <NavContext.Provider value={{ orientation, size }}>
+      <nav
+        {...props}
+        aria-label={ariaLabel ?? text.navigation}
+        className={classNames(
+          styles.root,
+          orientationClassMap[orientation],
+          sizeClassMap[size],
+          className,
+        )}
+        style={style}
+      >
+        {children}
+      </nav>
+    </NavContext.Provider>
+  );
+};
 
 // ── Nav.Link ──────────────────────────────────────────────────────────────
 
@@ -149,6 +157,7 @@ export type NavResponsiveProps = {
   listClassName?: string;
   overlayClassName?: string;
   onSelect?: (details: NavResponsiveSelectDetails) => void;
+  localeText?: Partial<NavLocaleText>;
 };
 
 const breakpointClassMap: Record<NavResponsiveBreakpoint, string> = {
@@ -188,8 +197,8 @@ const MORE_TRIGGER_SIZE_FALLBACK = 88;
 const NavResponsive = ({
   items,
   value,
-  'aria-label': ariaLabel = 'navigation',
-  collapseLabel = 'Open navigation',
+  'aria-label': ariaLabel,
+  collapseLabel,
   collapseTrigger,
   breakpoint = 'sm',
   size = 'md',
@@ -197,7 +206,11 @@ const NavResponsive = ({
   listClassName,
   overlayClassName,
   onSelect,
+  localeText,
 }: NavResponsiveProps) => {
+  const text = useNavLocaleText(localeText);
+  const resolvedAriaLabel = ariaLabel ?? text.navigation;
+  const resolvedCollapseLabel = collapseLabel ?? text.openNavigation;
   const [overlayOpen, setOverlayOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(items.length);
   const responsiveRef = useRef<HTMLDivElement>(null);
@@ -356,7 +369,7 @@ const NavResponsive = ({
         ))}
       </div>
       <NavRoot
-        aria-label={ariaLabel}
+        aria-label={resolvedAriaLabel}
         className={classNames(styles.responsiveList, listClassName)}
         size={size}
       >
@@ -391,12 +404,12 @@ const NavResponsive = ({
           <MenuTrigger>
             <button
               ref={moreTriggerRef}
-              aria-label="More navigation items"
+              aria-label={text.moreNavigationItems}
               className={classNames(styles.link, styles.linkHorizontal, styles.moreTrigger)}
               data-active={hasActiveOverflowItem ? '' : undefined}
               type="button"
             >
-              <span className={styles.linkLabel}>More</span>
+              <span className={styles.linkLabel}>{text.more}</span>
               <span aria-hidden className={styles.moreTriggerIcon}>
                 <ChevronDownIcon size="xs" />
               </span>
@@ -423,7 +436,7 @@ const NavResponsive = ({
           <NavOverlay.Trigger>
             {collapseTrigger ?? (
               <IconButton
-                aria-label={collapseLabel}
+                aria-label={resolvedCollapseLabel}
                 icon={<MenuIcon />}
                 size="sm"
                 variant="ghost"
@@ -435,7 +448,7 @@ const NavResponsive = ({
           >
             <NavOverlay.CloseButton className={styles.responsiveOverlayCloseButton} />
             <NavRoot
-              aria-label={ariaLabel}
+              aria-label={resolvedAriaLabel}
               className={styles.responsiveOverlayList}
               orientation="vertical"
               size={size}
@@ -474,3 +487,5 @@ export const Nav = {
   Link: NavLink,
   Responsive: NavResponsive,
 };
+
+export type { NavLocaleText } from './locale/types.ts';

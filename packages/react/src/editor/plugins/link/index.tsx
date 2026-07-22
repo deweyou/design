@@ -31,6 +31,8 @@ import {
   type EditorCommandContext,
 } from '../../core/index.js';
 import { isLexicalRuntime } from '../../runtime/lexical.js';
+import { useLinkPluginLocaleText } from './locale/loader.ts';
+import type { LinkPluginLocaleText } from './locale/types.ts';
 
 import styles from '../toolbar/index.module.less';
 
@@ -52,6 +54,7 @@ export type LinkUrlRequestResult = string | null | undefined | Promise<string | 
 
 export type LinkPluginOptions = {
   defaultUrl?: string;
+  localeText?: Partial<LinkPluginLocaleText>;
   requestUrl?: (details: LinkUrlRequestDetails) => LinkUrlRequestResult;
 };
 
@@ -82,12 +85,15 @@ const isValidLinkUrl = (url: string) => {
   }
 };
 
-const requestLinkUrl = ({ currentUrl, defaultUrl: nextDefaultUrl }: LinkUrlRequestDetails) => {
+const requestLinkUrl = (
+  { currentUrl, defaultUrl: nextDefaultUrl }: LinkUrlRequestDetails,
+  promptLabel: string,
+) => {
   if (typeof window === 'undefined' || typeof window.prompt !== 'function') {
     return nextDefaultUrl;
   }
 
-  return window.prompt('Link URL', currentUrl ?? nextDefaultUrl);
+  return window.prompt(promptLabel, currentUrl ?? nextDefaultUrl);
 };
 
 type LinkEntityRequestResult =
@@ -102,7 +108,7 @@ type LinkEntityRequestResult =
 
 type LinkValidationError = {
   field: 'text' | 'url';
-  message: string;
+  reason: 'invalid' | 'required';
 };
 
 type LinkEntityRequestHandler = (
@@ -111,6 +117,7 @@ type LinkEntityRequestHandler = (
 
 type LinkUrlRequestController = {
   request: LinkEntityRequestHandler;
+  setFallbackPromptLabel: (label: string) => void;
   subscribe: (handler: LinkEntityRequestHandler) => () => void;
 };
 
@@ -206,13 +213,17 @@ const getLinkUrlPromptPosition = (): LinkUrlPromptPosition => {
 
 const createLinkUrlRequestController = (): LinkUrlRequestController => {
   let activeHandler: LinkEntityRequestHandler | undefined;
+  let fallbackPromptLabel = 'Link URL';
 
   return {
     request: async (details) =>
       activeHandler?.(details) ?? {
         text: details.currentText ?? details.defaultText,
-        url: await Promise.resolve(requestLinkUrl(details)),
+        url: await Promise.resolve(requestLinkUrl(details, fallbackPromptLabel)),
       },
+    setFallbackPromptLabel: (label) => {
+      fallbackPromptLabel = label;
+    },
     subscribe: (handler) => {
       activeHandler = handler;
 
@@ -421,7 +432,14 @@ const runUnlinkCommand = ({ runtime }: EditorCommandContext) => {
   });
 };
 
-const LinkUrlPromptPlugin = ({ controller }: { controller: LinkUrlRequestController }) => {
+const LinkUrlPromptPlugin = ({
+  controller,
+  localeText,
+}: {
+  controller: LinkUrlRequestController;
+  localeText?: Partial<LinkPluginLocaleText>;
+}) => {
+  const resolvedLocaleText = useLinkPluginLocaleText(localeText);
   const textInputId = useId();
   const urlInputId = useId();
   const validationMessageId = useId();
@@ -445,6 +463,10 @@ const LinkUrlPromptPlugin = ({ controller }: { controller: LinkUrlRequestControl
     },
     [request],
   );
+
+  useEffect(() => {
+    controller.setFallbackPromptLabel(resolvedLocaleText.linkUrl);
+  }, [controller, resolvedLocaleText.linkUrl]);
 
   useEffect(() => {
     return controller.subscribe(
@@ -505,15 +527,15 @@ const LinkUrlPromptPlugin = ({ controller }: { controller: LinkUrlRequestControl
     const nextUrl = normalizeUrl(urlInputRef.current?.value);
 
     if (!nextText) {
-      return { field: 'text', message: 'Enter link text.' };
+      return { field: 'text', reason: 'required' };
     }
 
     if (!nextUrl) {
-      return { field: 'url', message: 'Enter link URL.' };
+      return { field: 'url', reason: 'required' };
     }
 
     if (!isValidLinkUrl(nextUrl)) {
-      return { field: 'url', message: 'Enter a valid URL.' };
+      return { field: 'url', reason: 'invalid' };
     }
 
     return undefined;
@@ -544,6 +566,13 @@ const LinkUrlPromptPlugin = ({ controller }: { controller: LinkUrlRequestControl
   };
   const textHasError = validationError?.field === 'text';
   const urlHasError = validationError?.field === 'url';
+  const validationMessage = validationError
+    ? validationError.field === 'text'
+      ? resolvedLocaleText.enterLinkText
+      : validationError.reason === 'invalid'
+        ? resolvedLocaleText.enterValidUrl
+        : resolvedLocaleText.enterLinkUrl
+    : undefined;
   const clearValidationError = () => {
     if (validationError) {
       setValidationError(undefined);
@@ -552,7 +581,7 @@ const LinkUrlPromptPlugin = ({ controller }: { controller: LinkUrlRequestControl
 
   return (
     <form
-      aria-label="Link editor"
+      aria-label={resolvedLocaleText.linkEditor}
       className={styles.linkPrompt}
       onKeyDown={(event) => {
         if (event.key === 'Escape') {
@@ -572,39 +601,39 @@ const LinkUrlPromptPlugin = ({ controller }: { controller: LinkUrlRequestControl
     >
       <div className={styles.linkField}>
         <label className={styles.linkLabel} htmlFor={textInputId}>
-          <span>Text</span>
+          <span>{resolvedLocaleText.text}</span>
           {textHasError ? (
             <span className={styles.linkFieldError} id={validationMessageId} role="alert">
-              {validationError.message}
+              {validationMessage}
             </span>
           ) : null}
         </label>
         <input
           aria-describedby={textHasError ? validationMessageId : undefined}
           aria-invalid={textHasError ? 'true' : undefined}
-          aria-label="Link text"
+          aria-label={resolvedLocaleText.linkText}
           className={styles.linkInput}
           defaultValue={request.initialText}
           id={textInputId}
           onChange={clearValidationError}
-          placeholder="Text"
+          placeholder={resolvedLocaleText.text}
           ref={textInputRef}
           required
         />
       </div>
       <div className={styles.linkField}>
         <label className={styles.linkLabel} htmlFor={urlInputId}>
-          <span>URL</span>
+          <span>{resolvedLocaleText.url}</span>
           {urlHasError ? (
             <span className={styles.linkFieldError} id={validationMessageId} role="alert">
-              {validationError.message}
+              {validationMessage}
             </span>
           ) : null}
         </label>
         <input
           aria-describedby={urlHasError ? validationMessageId : undefined}
           aria-invalid={urlHasError ? 'true' : undefined}
-          aria-label="Link URL"
+          aria-label={resolvedLocaleText.linkUrl}
           autoCapitalize="none"
           className={styles.linkInput}
           defaultValue={request.initialUrl}
@@ -620,7 +649,7 @@ const LinkUrlPromptPlugin = ({ controller }: { controller: LinkUrlRequestControl
       <div className={styles.linkPromptActions}>
         {request.canUnlink ? (
           <button
-            aria-label="Unlink"
+            aria-label={resolvedLocaleText.unlink}
             className={styles.linkPromptButton}
             data-editor-link-action="unlink"
             type="button"
@@ -630,7 +659,7 @@ const LinkUrlPromptPlugin = ({ controller }: { controller: LinkUrlRequestControl
           </button>
         ) : null}
         <button
-          aria-label="Apply link"
+          aria-label={resolvedLocaleText.applyLink}
           className={styles.linkPromptButton}
           data-editor-link-action="apply"
           type="submit"
@@ -638,7 +667,7 @@ const LinkUrlPromptPlugin = ({ controller }: { controller: LinkUrlRequestControl
           <CheckIcon size="sm" />
         </button>
         <button
-          aria-label="Cancel link"
+          aria-label={resolvedLocaleText.cancelLink}
           className={styles.linkPromptButton}
           data-editor-link-action="cancel"
           type="button"
@@ -744,6 +773,7 @@ const ClickableLinkEditorPlugin = ({
 
 export const linkPlugin = ({
   defaultUrl: nextDefaultUrl = defaultUrl,
+  localeText,
   requestUrl,
 }: LinkPluginOptions = {}) => {
   const urlRequestController = createLinkUrlRequestController();
@@ -776,7 +806,7 @@ export const linkPlugin = ({
         icon: LinkIcon,
         id: 'link.insert',
         isVisible: (context) => !isLinkSelectionActive(context),
-        label: 'Link',
+        label: localeText?.link ?? 'Link',
         payload: { requestUrl: true },
       },
       {
@@ -784,7 +814,7 @@ export const linkPlugin = ({
         icon: LinkUnlinkIcon,
         id: 'link.unlink',
         isVisible: isLinkSelectionActive,
-        label: 'Unlink',
+        label: localeText?.unlink ?? 'Unlink',
       },
     ],
     toolbarActions: [
@@ -793,7 +823,7 @@ export const linkPlugin = ({
         icon: LinkIcon,
         id: 'link.insert',
         isActive: isLinkSelectionActive,
-        label: 'Link',
+        label: localeText?.link ?? 'Link',
         payload: { requestUrl: true },
       },
     ],
@@ -801,8 +831,12 @@ export const linkPlugin = ({
       <>
         <LinkPlugin />
         <ClickableLinkEditorPlugin {...options} />
-        {requestUrl ? null : <LinkUrlPromptPlugin controller={urlRequestController} />}
+        {requestUrl ? null : (
+          <LinkUrlPromptPlugin controller={urlRequestController} localeText={localeText} />
+        )}
       </>
     ),
   });
 };
+
+export type { LinkPluginLocaleText } from './locale/types.ts';

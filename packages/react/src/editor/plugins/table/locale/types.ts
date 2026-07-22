@@ -1,0 +1,23 @@
+export type TablePluginLocaleText = {
+  columnActions: (column: number) => string;
+  columnControls: string;
+  columnTools: (column: number) => string;
+  deleteColumn: string;
+  deleteRow: string;
+  headerColumn: string;
+  headerRow: string;
+  insertColumnAfter: (column: number) => string;
+  insertColumnBefore: (column: number) => string;
+  insertColumnBetween: (firstColumn: number, secondColumn: number) => string;
+  insertColumnLeft: string;
+  insertColumnRight: string;
+  insertRowAbove: string;
+  insertRowAfter: (row: number) => string;
+  insertRowBefore: (row: number) => string;
+  insertRowBelow: string;
+  insertRowBetween: (firstRow: number, secondRow: number) => string;
+  insertTable: string;
+  rowActions: (row: number) => string;
+  rowControls: string;
+  rowTools: (row: number) => string;
+};

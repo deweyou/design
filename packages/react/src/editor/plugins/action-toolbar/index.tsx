@@ -17,14 +17,17 @@ import classNames from 'classnames';
 
 import { type EditorAction, type EditorPluginRegistry } from '../../core/index.js';
 import { createLexicalRuntime } from '../../runtime/lexical.js';
+import { useEditorActionToolbarLocaleText } from './locale/loader.ts';
+import type { EditorActionToolbarLocaleText } from './locale/types.ts';
 import styles from '../toolbar/index.module.less';
 
 export type EditorActionToolbarProps = {
   actions: EditorAction[];
   actionIds?: string[];
-  ariaLabel: string;
+  ariaLabel?: string;
   className?: string;
   labels?: Partial<Record<string, string>>;
+  localeText?: Partial<EditorActionToolbarLocaleText>;
   normalizeActionId?: (action: string) => string;
   registry: EditorPluginRegistry;
   surface: 'block' | 'floating' | 'toolbar';
@@ -173,17 +176,39 @@ const getActionPosition = (trigger: HTMLElement) => {
   };
 };
 
+const getLocalizedActionLabel = (actionId: string, localeText: EditorActionToolbarLocaleText) => {
+  const labels: Record<string, string> = {
+    'history.redo': localeText.redo,
+    'history.undo': localeText.undo,
+    'link.insert': localeText.link,
+    'link.unlink': localeText.unlink,
+    'list.ordered': localeText.numberedList,
+    'list.unordered': localeText.bulletedList,
+    'quote.toggle': localeText.quote,
+    'table.insert': localeText.insertTable,
+    'text-format.bold': localeText.bold,
+    'text-format.code': localeText.inlineCode,
+    'text-format.italic': localeText.italic,
+    'text-format.strikethrough': localeText.strikethrough,
+  };
+  const headingMatch = /^heading\.h([1-6])$/.exec(actionId);
+
+  return headingMatch ? localeText.heading(Number(headingMatch[1])) : labels[actionId];
+};
+
 export const EditorActionToolbar = ({
   actionIds = [],
   actions,
   ariaLabel,
   className,
   labels = {},
+  localeText,
   normalizeActionId = (action) => action,
   registry,
   surface,
   visibleWhenTextSelection = false,
 }: EditorActionToolbarProps) => {
+  const resolvedLocaleText = useEditorActionToolbarLocaleText(localeText);
   const [editor] = useLexicalComposerContext();
   const [isEditable, setIsEditable] = useState(() => editor.isEditable());
   const [toolbarState, setToolbarState] = useState<EditorActionToolbarState>(emptyToolbarState);
@@ -292,7 +317,14 @@ export const EditorActionToolbar = ({
 
   return (
     <div
-      aria-label={ariaLabel}
+      aria-label={
+        ariaLabel ??
+        (surface === 'floating'
+          ? resolvedLocaleText.floatingToolbar
+          : surface === 'block'
+            ? resolvedLocaleText.blockToolbar
+            : resolvedLocaleText.toolbar)
+      }
       className={classNames(styles.toolbar, className)}
       data-editor-toolbar={surface === 'toolbar' ? 'true' : undefined}
       data-editor-floating-placement={toolbarState.floatingPosition?.placement}
@@ -303,8 +335,9 @@ export const EditorActionToolbar = ({
       {visibleActions.map((action) => {
         const Icon = getActionIcon(action);
         const labelOverride = labels[action.id] ?? labels[action.command];
-        const label = labelOverride ?? action.label;
-        const visualLabel = labelOverride ?? action.displayLabel ?? label;
+        const localizedLabel = getLocalizedActionLabel(action.id, resolvedLocaleText);
+        const label = labelOverride ?? localizedLabel ?? action.label;
+        const visualLabel = labelOverride ?? action.displayLabel ?? localizedLabel ?? action.label;
         const isActive = toolbarState.activeActions.has(action.id);
         const isDisabled = !isEditable || toolbarState.disabledActions.has(action.id);
 
@@ -330,3 +363,5 @@ export const EditorActionToolbar = ({
     </div>
   );
 };
+
+export type { EditorActionToolbarLocaleText } from './locale/types.ts';

@@ -66,14 +66,14 @@ Ghost and link variants do not support the shape prop.
 
 **Interaction state values**:
 
-| Property               | Required value                                                                                       | Common mistake         |
-| ---------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------- |
-| disabled               | `opacity: 0.56`                                                                                      | 0.3, 0.4               |
-| interaction transition | `140ms ease`                                                                                         | 200ms, 300ms           |
-| floating motion        | `160ms`, cubic-bezier on enter and ease on exit                                                      | 200ms, 300ms           |
-| focus ring             | `box-shadow: 0 0 0 2px var(--ui-color-surface), 0 0 0 4px var(--ui-color-focus-ring); outline: none` | outline, border        |
-| hover mix              | `color-mix(in srgb, <color> 6-12%, transparent)`                                                     | direct background swap |
-| active movement        | `translateY(1px)`                                                                                    | translateY(2px)        |
+| Property               | Required value                                                                                          | Common mistake                                    |
+| ---------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------- |
+| disabled               | `opacity: 0.56`                                                                                         | 0.3, 0.4                                          |
+| interaction transition | `140ms ease`                                                                                            | 200ms, 300ms                                      |
+| floating motion        | `160ms`, cubic-bezier on enter and ease on exit                                                         | 200ms, 300ms                                      |
+| focus ring             | deep emerald on compact controls; neutral border/inset feedback on app chrome and large content targets | exterior glow or brand-colored full-surface frame |
+| hover mix              | `color-mix(in srgb, <color> 6-12%, transparent)`                                                        | direct background swap                            |
+| active movement        | `translateY(1px)`                                                                                       | translateY(2px)                                   |
 
 **Font families**: body/control uses Source Han Sans SC Web -> PingFang SC -> Heiti SC -> Microsoft YaHei -> Noto Sans CJK SC -> sans-serif; content/display uses Source Han Serif CN Web -> Songti SC -> STSong -> SimSun -> NSimSun -> serif.
 
@@ -81,7 +81,7 @@ Ghost and link variants do not support the shape prop.
 
 **Shadows**: cards are border-first and have no shadow by default. Floating surfaces use `--ui-shadow-sm`, `--ui-shadow-md`, or `--ui-shadow-lg` by layer. Do not hardcode shadow values.
 
-**Focus**: every interactive element shows the focus ring only on `:focus-visible`, never from mouse click.
+**Focus**: every interactive element shows focus feedback only on `:focus-visible`, never from mouse click. Compact controls use the shared deep-emerald treatment. Application chrome, navigation utilities, icon or canvas tiles, clickable cards, and masonry items use the shared neutral treatment. Apply either treatment to the local target being operated, not to an entire menu, overlay, dialog, editor, scroll area, or tab panel.
 
 **prefers-reduced-motion**: floating transforms are reset and link clip-path transitions are disabled.
 

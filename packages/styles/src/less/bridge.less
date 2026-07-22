@@ -28,6 +28,27 @@
   outline: none;
 }
 
+// App chrome and large content targets use a quieter, non-brand focus frame.
+.focus-ring-neutral() {
+  border-color: var(--ui-color-border-strong);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ui-color-text) 32%, transparent);
+  outline: none;
+}
+
+// Fine pointers keep the component's visual density; coarse pointers retain a 44px target.
+.coarse-pointer-block-target() {
+  @media (pointer: coarse) {
+    min-block-size: var(--ui-touch-target-min);
+  }
+}
+
+.coarse-pointer-target() {
+  @media (pointer: coarse) {
+    min-block-size: var(--ui-touch-target-min);
+    min-inline-size: var(--ui-touch-target-min);
+  }
+}
+
 .scrollbar-tokens() {
   --ui-scrollbar-size: 8px;
   --ui-scrollbar-size-sm: 4px;

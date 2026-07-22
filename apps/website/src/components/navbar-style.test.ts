@@ -14,10 +14,32 @@ test('mobile navbar uses compact single-row spacing', () => {
   expect(mobileNavbarRule).toContain('padding: 10px 14px');
 });
 
-test('navbar controls use the shared touch target floor', () => {
-  expect(navbarStyles).toContain('min-block-size: var(--ui-touch-target-min);');
-  expect(navbarStyles).toContain('inline-size: var(--ui-touch-target-min);');
-  expect(navbarStyles).toContain('block-size: var(--ui-touch-target-min);');
+test('navbar actions delegate visual size and touch targets to shared buttons', () => {
+  const actionButtonRule = navbarStyles.match(/\.actionButton\s*\{[\s\S]*?\n\}/)?.[0] ?? '';
+
+  expect(actionButtonRule).not.toContain('block-size: var(--ui-touch-target-min)');
+  expect(actionButtonRule).not.toContain('inline-size: var(--ui-touch-target-min)');
+});
+
+test('navbar chrome keeps keyboard focus neutral', () => {
+  expect(navbarStyles).toContain("@import '@deweyou-design/styles/less/bridge';");
+  expect(navbarStyles).not.toContain('var(--ui-color-focus-ring)');
+
+  for (const selector of [
+    '.mark',
+    '.routeLink,\n.routeMenuTrigger',
+    '.routeMenuItem',
+    '.mobileNavCloseButton',
+    '.mobileNavLink',
+    '.actionButton',
+  ]) {
+    const ruleStart = navbarStyles.indexOf(selector);
+    const ruleEnd = navbarStyles.indexOf('\n}\n', ruleStart);
+    const rule = navbarStyles.slice(ruleStart, ruleEnd + 2);
+
+    expect(rule, selector).toContain('&:focus-visible');
+    expect(rule, selector).toContain('.focus-ring-neutral()');
+  }
 });
 
 test('desktop navbar allows the Explore menu to overflow the link row', () => {
