@@ -37,7 +37,7 @@ test('button typography and height scale follows the design-system size ladder',
   expect(stylesheet).toContain('--button-height: var(--ui-control-height-xl);');
 });
 
-test('icon buttons use the dedicated square-size mode', () => {
+test('icon buttons keep their visual size while expanding coarse-pointer hit areas', () => {
   const textMarkup = renderToStaticMarkup(
     createElement(Button, { icon: createElement(SearchIcon) }, 'Search'),
   );
@@ -48,10 +48,32 @@ test('icon buttons use the dedicated square-size mode', () => {
   expect(textMarkup).toContain('data-content-mode="text-with-icon"');
   expect(iconMarkup).toContain('data-content-mode="icon-button"');
   expect(stylesheet).toContain('.modeIconButton');
+  expect(stylesheet).toContain('inline-size: var(--button-square-size);');
+  expect(stylesheet).toContain('block-size: var(--button-square-size);');
+  expect(stylesheet).toContain('@media (pointer: coarse)');
+  expect(stylesheet).toContain('inline-size: max(100%, var(--ui-touch-target-min));');
+  expect(stylesheet).toContain('block-size: max(100%, var(--ui-touch-target-min));');
+});
+
+test('buttons share one derived float radius across modes and variants', () => {
   expect(stylesheet).toContain(
-    'inline-size: max(var(--button-square-size), var(--ui-touch-target-min));',
+    '--button-float-radius: calc(var(--ui-radius-float) + var(--ui-radius-float));',
   );
-  expect(stylesheet).toContain(
-    'block-size: max(var(--button-square-size), var(--ui-touch-target-min));',
-  );
+  expect(stylesheet).toMatch(/\.shapeAuto\s*{[^}]*--button-radius: var\(--button-float-radius\);/);
+  expect(stylesheet).toMatch(/\.shapeFloat\s*{[^}]*--button-radius: var\(--button-float-radius\);/);
+  expect(stylesheet).toMatch(/\.ghost\s*{[^}]*--button-radius: var\(--button-float-radius\);/);
+  expect(stylesheet).toContain('.modeIconButton.ghost');
+  expect(stylesheet).not.toContain('--button-icon-radius');
+  expect(stylesheet).not.toContain('.modeIconButton.shapeAuto');
+});
+
+test('icon buttons keep balanced optical spacing across the size ladder', () => {
+  expect(stylesheet).toMatch(/\.sizeXs\s*{[^}]*--button-icon-size: 1rem;/);
+  expect(stylesheet).toMatch(/\.sizeSm\s*{[^}]*--button-icon-size: 1\.25rem;/);
+  expect(stylesheet).toMatch(/\.sizeMd\s*{[^}]*--button-icon-size: 1\.5rem;/);
+  expect(stylesheet).toMatch(/\.sizeLg\s*{[^}]*--button-icon-size: 1\.75rem;/);
+  expect(stylesheet).toMatch(/\.sizeXl\s*{[^}]*--button-icon-size: 2rem;/);
+  expect(stylesheet).toContain('.modeIconButton .contentGraphic > svg');
+  expect(stylesheet).toContain('inline-size: var(--button-icon-size);');
+  expect(stylesheet).toContain('block-size: var(--button-icon-size);');
 });
