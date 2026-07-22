@@ -15,9 +15,11 @@
   --button-filled-background-active: color-mix(in srgb, var(--ui-color-text) 92%, black);
   --button-filled-border-color: var(--ui-color-text);
   --button-filled-text-color: var(--ui-color-canvas);
+  --button-float-radius: calc(var(--ui-radius-float) + var(--ui-radius-float));
   --button-font-size: 0.875rem;
   --button-gap: 0.55rem;
   --button-height: var(--ui-control-height-md);
+  --button-icon-size: 1.5rem;
   --button-ghost-background-active: color-mix(in srgb, var(--ui-color-text) 10%, transparent);
   --button-ghost-background-hover: color-mix(in srgb, var(--ui-color-text) 6%, transparent);
   --button-ghost-text-color: var(--ui-color-text);
@@ -28,7 +30,7 @@
   --button-outlined-text-color: var(--ui-color-text);
   --button-padding-block: 0.34rem;
   --button-padding-inline: 0.72rem;
-  --button-radius: 0.8rem;
+  --button-radius: var(--button-float-radius);
   --button-square-size: var(--button-height);
   --button-text-color: var(--ui-color-text);
 
@@ -108,10 +110,33 @@
 .modeIconButton {
   --button-gap: 0;
 
-  min-inline-size: max(var(--button-square-size), var(--ui-touch-target-min));
+  min-inline-size: var(--button-square-size);
   padding: 0;
-  inline-size: max(var(--button-square-size), var(--ui-touch-target-min));
-  block-size: max(var(--button-square-size), var(--ui-touch-target-min));
+  inline-size: var(--button-square-size);
+  block-size: var(--button-square-size);
+}
+
+.modeIconButton.ghost {
+  padding: 0;
+}
+
+.modeIconButton .contentGraphic > svg,
+.modeIconButton .contentGraphic > img,
+.modeIconButton .contentGraphic > :global(.dy-icon) {
+  inline-size: var(--button-icon-size);
+  block-size: var(--button-icon-size);
+}
+
+@media (pointer: coarse) {
+  .modeIconButton::before {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    inline-size: max(100%, var(--ui-touch-target-min));
+    block-size: max(100%, var(--ui-touch-target-min));
+    content: '';
+    transform: translate(-50%, -50%);
+  }
 }
 
 .contentGraphic {
@@ -294,7 +319,7 @@
   --button-background-hover: var(--button-ghost-background-hover);
   --button-background-active: var(--button-ghost-background-active);
   --button-border-color: transparent;
-  --button-radius: var(--ui-radius-float);
+  --button-radius: var(--button-float-radius);
   --button-text-color: var(--button-ghost-text-color);
   font-weight: 500;
   padding-block: 0.3rem;
@@ -306,7 +331,7 @@
   --button-background-hover: transparent;
   --button-background-active: transparent;
   --button-border-color: transparent;
-  --button-radius: var(--ui-radius-float);
+  --button-radius: var(--button-float-radius);
   --button-text-color: var(--button-link-text-color);
   font-weight: 500;
   gap: 0.35rem;
@@ -358,6 +383,7 @@
 .sizeXs {
   --button-font-size: 0.75rem;
   --button-height: var(--ui-control-height-xs);
+  --button-icon-size: 1rem;
   --button-padding-block: 0;
   --button-padding-inline: 0.5rem;
 }
@@ -365,6 +391,7 @@
 .sizeSm {
   --button-font-size: 0.875rem;
   --button-height: var(--ui-control-height-sm);
+  --button-icon-size: 1.25rem;
   --button-padding-block: 0;
   --button-padding-inline: 0.75rem;
 }
@@ -372,6 +399,7 @@
 .sizeMd {
   --button-font-size: 1rem;
   --button-height: var(--ui-control-height-md);
+  --button-icon-size: 1.5rem;
   --button-padding-block: 0;
   --button-padding-inline: 1rem;
 }
@@ -379,6 +407,7 @@
 .sizeLg {
   --button-font-size: 1.0625rem;
   --button-height: var(--ui-control-height-lg);
+  --button-icon-size: 1.75rem;
   --button-padding-block: 0;
   --button-padding-inline: 1.25rem;
 }
@@ -386,12 +415,13 @@
 .sizeXl {
   --button-font-size: 1.125rem;
   --button-height: var(--ui-control-height-xl);
+  --button-icon-size: 2rem;
   --button-padding-block: 0;
   --button-padding-inline: 1.5rem;
 }
 
 .shapeAuto {
-  --button-radius: var(--ui-radius-float);
+  --button-radius: var(--button-float-radius);
 }
 
 .shapeRect {
@@ -399,7 +429,7 @@
 }
 
 .shapeFloat {
-  --button-radius: var(--ui-radius-float);
+  --button-radius: var(--button-float-radius);
 }
 
 .shapePill {

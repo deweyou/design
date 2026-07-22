@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useRef, useState } from 'react';
+import { expect, userEvent, within } from 'storybook/test';
 
 import { Button, IconButton } from '@deweyou-design/react/button';
 import { MenuIcon, PlusIcon, SearchIcon } from '@deweyou-design/react-icons';
@@ -653,6 +654,14 @@ const InvalidCombinationPreview = () => {
 
 export const Variants: Story = {
   render: () => <VariantGallery />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    for (const name of ['Primary action', 'Secondary action', 'Contextual action']) {
+      const button = canvas.getByRole('button', { name });
+      await expect(getComputedStyle(button).borderRadius).toBe('8px');
+    }
+  },
 };
 
 export const Entrypoints: Story = {
@@ -673,10 +682,55 @@ export const LoadingStates: Story = {
 
 export const Sizes: Story = {
   render: () => <SizeGallery />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const expectedSizes = {
+      xs: '32px',
+      sm: '40px',
+      md: '44px',
+      lg: '48px',
+      xl: '56px',
+    } as const;
+    const expectedIconSizes = {
+      xs: '16px',
+      sm: '20px',
+      md: '24px',
+      lg: '28px',
+      xl: '32px',
+    } as const;
+
+    for (const [size, expectedSize] of Object.entries(expectedSizes)) {
+      const iconButton = canvas.getByRole('button', { name: `Open search at ${size}` });
+      const icon = iconButton.querySelector('svg');
+      const computedStyle = getComputedStyle(iconButton);
+
+      await expect(icon).not.toBeNull();
+      await expect(computedStyle.inlineSize).toBe(expectedSize);
+      await expect(computedStyle.blockSize).toBe(expectedSize);
+      await expect(computedStyle.borderRadius).toBe('8px');
+      await expect(computedStyle.padding).toBe('0px');
+      await expect(getComputedStyle(icon!).inlineSize).toBe(
+        expectedIconSizes[size as keyof typeof expectedIconSizes],
+      );
+    }
+  },
 };
 
 export const ShapeSupport: Story = {
   render: () => <ShapeGallery />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    for (const button of canvas.getAllByRole('button', { name: 'rect' })) {
+      await expect(getComputedStyle(button).borderRadius).toBe('0px');
+    }
+    for (const button of canvas.getAllByRole('button', { name: 'float' })) {
+      await expect(getComputedStyle(button).borderRadius).toBe('8px');
+    }
+    for (const button of canvas.getAllByRole('button', { name: 'pill' })) {
+      await expect(getComputedStyle(button).borderRadius).toBe('999px');
+    }
+  },
 };
 
 export const Boundaries: Story = {
@@ -690,12 +744,6 @@ export const HoverFeedback: Story = {
 export const InvalidCombinations: Story = {
   render: () => <InvalidCombinationPreview />,
 };
-
-// ---------------------------------------------------------------------------
-// Story: Interaction — play function tests
-// ---------------------------------------------------------------------------
-
-import { expect, userEvent, within } from 'storybook/test';
 
 export const Interaction: Story = {
   name: 'Interaction',

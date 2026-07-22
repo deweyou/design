@@ -112,12 +112,11 @@ test('interactive component styles consume shared control and touch target token
   expect(buttonStylesheet).toContain('--button-height: var(--ui-control-height-lg);');
   expect(buttonStylesheet).toContain('--button-height: var(--ui-control-height-xl);');
   expect(buttonStylesheet).toContain('min-block-size: var(--button-height);');
-  expect(buttonStylesheet).toContain(
-    'inline-size: max(var(--button-square-size), var(--ui-touch-target-min));',
-  );
-  expect(buttonStylesheet).toContain(
-    'block-size: max(var(--button-square-size), var(--ui-touch-target-min));',
-  );
+  expect(buttonStylesheet).toContain('inline-size: var(--button-square-size);');
+  expect(buttonStylesheet).toContain('block-size: var(--button-square-size);');
+  expect(buttonStylesheet).toContain('@media (pointer: coarse)');
+  expect(buttonStylesheet).toContain('inline-size: max(100%, var(--ui-touch-target-min));');
+  expect(buttonStylesheet).toContain('block-size: max(100%, var(--ui-touch-target-min));');
   expect(paginationStylesheet).toContain('min-inline-size: var(--ui-touch-target-min);');
   expect(paginationStylesheet).toContain('min-block-size: var(--ui-touch-target-min);');
   expect(inputStylesheet).toContain('min-block-size: var(--ui-control-height-sm);');

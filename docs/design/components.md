@@ -60,6 +60,8 @@ Use root imports when a file consumes several components together. Use subpath i
 
 Icon-only actions must use `IconButton`, `Button.Icon`, or `Button` with the explicit `icon` prop and an accessible name.
 
+Button shape stays orthogonal to variant, mode, and size: `rect` is 0, `auto`/`float` is 8px, and `pill` is 999px. Filled, outlined, ghost, and IconButton modes share the same float radius. IconButton surfaces follow the 32/40/44/48/56px control-height ladder with 16/20/24/28/32px icons; coarse pointers expand the target to at least 44px without inflating the visible surface. See the [Button visual density design](../superpowers/specs/2026-07-22-button-visual-density-design.md).
+
 ### Field
 
 ```tsx
