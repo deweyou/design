@@ -80,6 +80,8 @@ import { Button, Input } from '@deweyou-design/react';
 
 ```ts
 import { Button } from '@deweyou-design/react/button';
+import { DatePicker } from '@deweyou-design/react/date-picker';
+import { DateRangePicker } from '@deweyou-design/react/date-range-picker';
 import { Input } from '@deweyou-design/react/input';
 import { NumberInput } from '@deweyou-design/react/number-input';
 import { ConfigProvider } from '@deweyou-design/react/config-provider';
@@ -160,38 +162,40 @@ owns it, such as `Pagination`, `codePlugin()`, or `toolbarPlugin()`.
 
 ## Components
 
-| Component               | Description                                                         |
-| ----------------------- | ------------------------------------------------------------------- |
-| `Button`                | Button with multiple variants and sizes                             |
-| `Input`                 | Single-line text input                                              |
-| `NumberInput`           | Numeric input with step controls, formatting, and range constraints |
-| `Textarea`              | Multi-line text input                                               |
-| `Select`                | Select dropdown                                                     |
-| `Checkbox`              | Checkbox                                                            |
-| `RadioGroup`            | Radio group                                                         |
-| `Switch`                | Switch                                                              |
-| `Badge`                 | Status badge                                                        |
-| `Text`                  | Typographic text                                                    |
-| `ConfigProvider`        | Shared locale configuration boundary                                |
-| `Editor`                | Rich text editor surface with adapters and plugins                  |
-| `ImagePreview`          | Modal image preview with zoom and gallery navigation                |
-| `ImageMasonry`          | Responsive image masonry layout with fixed or fluid columns         |
-| `GroupedVirtualMasonry` | Grouped virtual masonry renderer for long image sections            |
-| `Card`                  | Card container                                                      |
-| `Separator`             | Separator                                                           |
-| `Skeleton`              | Loading placeholder                                                 |
-| `Spinner`               | Loading indicator                                                   |
-| `Breadcrumb`            | Breadcrumb navigation                                               |
-| `Tabs`                  | Tabs                                                                |
-| `Pagination`            | Pagination                                                          |
-| `Menu`                  | Dropdown menu / context menu                                        |
-| `Popover`               | Popover                                                             |
-| `Tooltip`               | Tooltip                                                             |
-| `Dialog`                | Modal dialog                                                        |
-| `Toast`                 | Toast notification                                                  |
-| `ScrollArea`            | Custom scrollbar container                                          |
-| `VirtualList`           | Virtualized list with dynamic document heights and anchor scrolling |
-| `VirtualMasonry`        | Virtualized masonry renderer for long irregular image collections   |
+| Component               | Description                                                                                  |
+| ----------------------- | -------------------------------------------------------------------------------------------- |
+| `Button`                | Button with multiple variants and sizes                                                      |
+| `Input`                 | Single-line text input                                                                       |
+| `DatePicker`            | Date, month, year, or optional date-time field with time wheels, Today/Now, and confirmation |
+| `DateRangePicker`       | One contiguous date, month, year, or date-time range in a unified two-input field            |
+| `NumberInput`           | Numeric input with step controls, formatting, and range constraints                          |
+| `Textarea`              | Multi-line text input                                                                        |
+| `Select`                | Select dropdown                                                                              |
+| `Checkbox`              | Checkbox                                                                                     |
+| `RadioGroup`            | Radio group                                                                                  |
+| `Switch`                | Switch                                                                                       |
+| `Badge`                 | Status badge                                                                                 |
+| `Text`                  | Typographic text                                                                             |
+| `ConfigProvider`        | Shared locale configuration boundary                                                         |
+| `Editor`                | Rich text editor surface with adapters and plugins                                           |
+| `ImagePreview`          | Modal image preview with zoom and gallery navigation                                         |
+| `ImageMasonry`          | Responsive image masonry layout with fixed or fluid columns                                  |
+| `GroupedVirtualMasonry` | Grouped virtual masonry renderer for long image sections                                     |
+| `Card`                  | Card container                                                                               |
+| `Separator`             | Separator                                                                                    |
+| `Skeleton`              | Loading placeholder                                                                          |
+| `Spinner`               | Loading indicator                                                                            |
+| `Breadcrumb`            | Breadcrumb navigation                                                                        |
+| `Tabs`                  | Tabs                                                                                         |
+| `Pagination`            | Pagination                                                                                   |
+| `Menu`                  | Dropdown menu / context menu                                                                 |
+| `Popover`               | Popover                                                                                      |
+| `Tooltip`               | Tooltip                                                                                      |
+| `Dialog`                | Modal dialog                                                                                 |
+| `Toast`                 | Toast notification                                                                           |
+| `ScrollArea`            | Custom scrollbar container                                                                   |
+| `VirtualList`           | Virtualized list with dynamic document heights and anchor scrolling                          |
+| `VirtualMasonry`        | Virtualized masonry renderer for long irregular image collections                            |
 
 Interactive controls use the shared visible-height ladder `24 / 32 / 40 / 48 / 56px`.
 Component `sm / md / lg` sizes map to `32 / 40 / 48px`; coarse-pointer environments retain a

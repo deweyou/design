@@ -1,0 +1,149 @@
+@import '@deweyou-design/styles/less/bridge';
+
+.timePanel {
+  display: grid;
+  gap: var(--date-picker-panel-view-gap);
+}
+
+.timeHeader {
+  display: grid;
+  grid-template-columns:
+    var(--date-picker-panel-control-size) 1fr
+    var(--date-picker-panel-control-size);
+  align-items: center;
+  min-block-size: var(--date-picker-panel-control-size);
+}
+
+.backButton {
+  grid-column: 1;
+}
+
+.timeTitle {
+  grid-column: 2;
+  color: var(--ui-color-text);
+  font: var(--ui-font-weight-strong) var(--date-picker-panel-title-font-size) / 1.35
+    var(--ui-font-control);
+  text-align: center;
+}
+
+.wheelColumns {
+  position: relative;
+  display: grid;
+  overflow: hidden;
+  min-block-size: calc(var(--date-picker-panel-day-size) * 5);
+  border-block: 1px solid var(--ui-color-border);
+}
+
+.wheelColumns::after {
+  position: absolute;
+  z-index: 1;
+  inset-block-start: calc(
+    var(--date-picker-panel-control-size) + var(--date-picker-panel-day-size) * 2
+  );
+  inset-inline: 0;
+  box-sizing: border-box;
+  block-size: var(--date-picker-panel-day-size);
+  border-block: 1px solid var(--ui-color-border-strong);
+  pointer-events: none;
+  content: '';
+}
+
+.wheelColumns[data-columns='2'] {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.wheelColumns[data-columns='3'] {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.wheelColumns[data-columns='4'] {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.wheelColumn {
+  display: grid;
+  grid-template-rows: var(--date-picker-panel-control-size) minmax(0, 1fr);
+  min-inline-size: 0;
+}
+
+.wheelColumn + .wheelColumn {
+  border-inline-start: 1px solid var(--ui-color-border);
+}
+
+.wheelLabel {
+  display: grid;
+  place-items: center;
+  color: var(--ui-color-text-muted);
+  font: var(--ui-font-weight-body) var(--date-picker-panel-weekday-font-size) / 1
+    var(--ui-font-control);
+}
+
+.wheelContent {
+  overflow-y: auto;
+  block-size: calc(var(--date-picker-panel-day-size) * 5);
+  padding-block: calc(var(--date-picker-panel-day-size) * 2);
+  outline: none;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-snap-type: y mandatory;
+}
+
+.wheelContent::-webkit-scrollbar {
+  display: none;
+}
+
+.wheelContent:focus-visible {
+  .focus-ring();
+}
+
+.wheelItem {
+  display: grid;
+  place-items: center;
+  block-size: var(--date-picker-panel-day-size);
+  outline: none;
+  color: var(--ui-color-text);
+  font: var(--ui-font-weight-body) var(--date-picker-panel-cell-font-size) / 1
+    var(--ui-font-control);
+  cursor: pointer;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  transition:
+    color var(--ui-motion-duration-fast) ease,
+    box-shadow var(--ui-motion-duration-fast) ease;
+}
+
+.wheelItem[data-focus] {
+  color: var(--ui-color-brand-text);
+}
+
+.wheelItem[data-selected] {
+  color: var(--ui-color-brand-text);
+  font-weight: var(--ui-font-weight-strong);
+}
+
+.wheelItem[data-disabled] {
+  opacity: 0.4;
+  color: var(--ui-color-text-muted);
+  cursor: not-allowed;
+}
+
+@media (pointer: coarse) {
+  .wheelColumns {
+    min-block-size: calc(var(--ui-touch-target-min) * 5);
+  }
+
+  .wheelContent {
+    block-size: calc(var(--ui-touch-target-min) * 5);
+    padding-block: calc(var(--ui-touch-target-min) * 2);
+  }
+
+  .wheelItem {
+    block-size: var(--ui-touch-target-min);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wheelItem {
+    transition: none;
+  }
+}

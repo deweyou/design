@@ -14,6 +14,8 @@ describe('component catalog', () => {
     expect(names).toContain('Button');
     expect(names).toContain('ConfigProvider');
     expect(names).toContain('Dialog');
+    expect(names).toContain('DatePicker');
+    expect(names).toContain('DateRangePicker');
     expect(names).toContain('Editor');
     expect(names).toContain('GroupedVirtualMasonry');
     expect(names).toContain('ImageMasonry');
@@ -30,6 +32,16 @@ describe('component catalog', () => {
     ).toMatchObject({
       dimensions: expect.arrayContaining(['renderGroupHeader']),
       subpath: 'grouped-virtual-masonry',
+    });
+    expect(componentCatalog.find((component) => component.name === 'DatePicker')).toMatchObject({
+      dimensions: expect.arrayContaining(['mode', 'showTime', 'showNow', 'showToday']),
+      subpath: 'date-picker',
+    });
+    expect(
+      componentCatalog.find((component) => component.name === 'DateRangePicker'),
+    ).toMatchObject({
+      dimensions: expect.arrayContaining(['mode', 'showTime', 'showNow', 'showToday']),
+      subpath: 'date-range-picker',
     });
   });
 
@@ -61,6 +73,12 @@ describe('component catalog', () => {
     );
     expect(getComponentImportSnippet('ConfigProvider', { subpath: true })).toBe(
       "import { ConfigProvider } from '@deweyou-design/react/config-provider';",
+    );
+    expect(getComponentImportSnippet('DatePicker', { subpath: true })).toBe(
+      "import { DatePicker } from '@deweyou-design/react/date-picker';",
+    );
+    expect(getComponentImportSnippet('DateRangePicker', { subpath: true })).toBe(
+      "import { DateRangePicker } from '@deweyou-design/react/date-range-picker';",
     );
     expect(getComponentImportSnippet('MermaidRender', { subpath: true })).toBe(
       "import { MermaidRender } from '@deweyou-design/react/mermaid-render';",

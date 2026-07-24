@@ -133,6 +133,76 @@ together.
   disabled/read-only behavior, and narrow coarse-pointer layouts in component
   tests and Storybook Interaction coverage.
 
+## Date And Date-Time Input
+
+Use `DatePicker` for one calendar date when users should be able to type a
+year-first value or choose it from a locale-aware calendar popup.
+Use `DateRangePicker` for one contiguous inclusive range; do not represent a
+range with two unrelated `DatePicker` instances.
+
+- Import standalone usage from `@deweyou-design/react/date-picker`; prefer the
+  `date-range-picker` subpath for standalone range usage and the root package
+  import when composing several components.
+- Keep `value`, `defaultValue`, `min`, and `max` as `CalendarDate` objects.
+  Use `parseDatePickerValue` when converting canonical `YYYY-MM-DD` strings at
+  a serialization boundary.
+- The default input displays `YYYY/MM/DD`, accepts `/`, `-`, or spaces as
+  separators, and normalizes committed text to slashes. Locale still controls
+  calendar conventions and component-owned copy.
+- Use `mode="month"` when the selected unit is a month: the input uses
+  `YYYY/MM`, month selection emits the first day of that month, and the header
+  can still open the year grid. Use `mode="year"` for a year-only grid and
+  `YYYY` input; values normalize to January 1. The default `date` mode keeps the
+  full day -> month -> year navigation hierarchy.
+- Provide `format` and `parse` together when DatePicker needs a custom text
+  representation. Keep the callbacks semantic (`CalendarDate`) and use their
+  ConfigProvider locale detail instead of adding an instance locale prop.
+- Treat `size` as one field-and-panel density contract. The portalled calendar
+  must receive the same `sm`, `md`, or `lg` size while coarse pointers retain
+  the shared minimum touch target.
+- Type component copy overrides as `DatePickerLocaleTextOverrides`; the resolved
+  `DatePickerLocaleText` remains complete inside the component.
+- Treat the DatePicker trailing calendar glyph as a non-interactive field
+  indicator. The input opens the popup; a populated clearable field swaps that
+  slot to the clear action on hover or focus.
+- Use `DatePicker showTime` for a calendar date plus wall-clock time. Its public
+  value becomes `CalendarDateTime`, it does not attach a time zone, and calendar
+  or time-wheel edits commit only through the localized Confirm action. Use
+  `parseDatePickerDateTimeValue` for canonical `YYYY-MM-DDTHH:mm` or
+  `YYYY-MM-DDTHH:mm:ss` strings.
+- Configure `showTime` with `defaultTime`, 12/24-hour cycle, minute or second
+  granularity, wheel steps, optional `showNow`, and `isTimeUnavailable`. The Now
+  action changes only the draft wall-clock time, preserves the selected date,
+  respects steps and constraints, and still requires Confirm. Time selection is
+  only valid with the default date mode.
+- Today is opt-in through `showToday`. Date-only selection commits the local
+  calendar unit and closes; a time-enabled picker preserves the draft time and
+  waits for explicit confirmation.
+- Use `min`, `max`, and `isDateUnavailable` for selection constraints. Do not
+  turn `DatePicker` into a range, standalone time, duration, or zoned instant
+  picker; those require separate public contracts.
+- Keep `DateRangePicker` values as named `{ start, end }` objects rather than
+  positional tuples. It supports date, month, year, and optional date-time
+  ranges, but only one contiguous range; do not add speculative multi-range
+  state to this contract.
+- Render the range field as two real inputs inside one visual control with one
+  separator and one contextual clear action. Apply paired `format` and `parse`
+  callbacks to both endpoints.
+- With range `showTime`, keep start and end wheel edits independent and draft
+  them until Confirm. `defaultTime` has named endpoint values, `showNow` changes
+  only the active endpoint, and choices that invert the range are unavailable.
+- Use `label`, `hint`, `error`, and `required` instead of recreating Field
+  semantics. Supply `aria-label` or `aria-labelledby` when no visible label is
+  appropriate, and localize icon-only action labels when needed.
+- Keep calendar parsing, grid semantics, keyboard navigation, focus restoration,
+  selection, positioning, calendar dismissal, and time-wheel listbox semantics
+  delegated to Ark UI.
+- Verify mode-specific normalization and input formats, default separator
+  normalization, semantic callbacks, month/year navigation, field-and-panel
+  sizing, clearing, constraints, disabled/read-only states, `showTime` draft
+  confirmation and cancellation, wheel keyboard behavior, narrow layouts, dark
+  mode, and Storybook Interaction coverage.
+
 ## MCP Resources
 
 The Deweyou Design MCP server is read-only. It exposes:

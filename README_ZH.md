@@ -80,6 +80,8 @@ import { Button, Input } from '@deweyou-design/react';
 
 ```ts
 import { Button } from '@deweyou-design/react/button';
+import { DatePicker } from '@deweyou-design/react/date-picker';
+import { DateRangePicker } from '@deweyou-design/react/date-range-picker';
 import { Input } from '@deweyou-design/react/input';
 import { NumberInput } from '@deweyou-design/react/number-input';
 import { ConfigProvider } from '@deweyou-design/react/config-provider';
@@ -156,38 +158,40 @@ import { ConfigProvider, Pagination } from '@deweyou-design/react';
 
 ## 组件
 
-| 组件                    | 说明                                       |
-| ----------------------- | ------------------------------------------ |
-| `Button`                | 按钮，支持多种变体和尺寸                   |
-| `Input`                 | 单行文本输入框                             |
-| `NumberInput`           | 支持步进、格式化和范围约束的数字输入框     |
-| `Textarea`              | 多行文本输入框                             |
-| `Select`                | 下拉选择器                                 |
-| `Checkbox`              | 复选框                                     |
-| `RadioGroup`            | 单选组                                     |
-| `Switch`                | 开关                                       |
-| `Badge`                 | 状态标签                                   |
-| `Text`                  | 排版文本                                   |
-| `ConfigProvider`        | 全局语言等配置的上下文边界                 |
-| `Editor`                | 支持适配器和插件的富文本编辑器             |
-| `ImagePreview`          | 图片预览，支持缩放和组图切换               |
-| `ImageMasonry`          | 图片瀑布流，支持固定列和响应式列           |
-| `GroupedVirtualMasonry` | 分组虚拟瀑布流，用于长图片分组列表         |
-| `Card`                  | 卡片容器                                   |
-| `Separator`             | 分隔线                                     |
-| `Skeleton`              | 加载占位符                                 |
-| `Spinner`               | 加载指示器                                 |
-| `Breadcrumb`            | 面包屑导航                                 |
-| `Tabs`                  | 标签页                                     |
-| `Pagination`            | 分页器                                     |
-| `Menu`                  | 下拉菜单 / 右键菜单                        |
-| `Popover`               | 弹出层                                     |
-| `Tooltip`               | 文字提示                                   |
-| `Dialog`                | 模态对话框                                 |
-| `Toast`                 | 轻提示通知                                 |
-| `ScrollArea`            | 自定义滚动条容器                           |
-| `VirtualList`           | 虚拟列表，支持动态正文高度和长文档锚点滚动 |
-| `VirtualMasonry`        | 虚拟瀑布流，用于长图片列表和不规则图片集合 |
+| 组件                    | 说明                                                               |
+| ----------------------- | ------------------------------------------------------------------ |
+| `Button`                | 按钮，支持多种变体和尺寸                                           |
+| `Input`                 | 单行文本输入框                                                     |
+| `DatePicker`            | 支持日期、月份、年份，以及可选的时间滚轮、今天／此刻操作和显式确认 |
+| `DateRangePicker`       | 在统一双输入框中选择单段日期、月份、年份或日期时间范围             |
+| `NumberInput`           | 支持步进、格式化和范围约束的数字输入框                             |
+| `Textarea`              | 多行文本输入框                                                     |
+| `Select`                | 下拉选择器                                                         |
+| `Checkbox`              | 复选框                                                             |
+| `RadioGroup`            | 单选组                                                             |
+| `Switch`                | 开关                                                               |
+| `Badge`                 | 状态标签                                                           |
+| `Text`                  | 排版文本                                                           |
+| `ConfigProvider`        | 全局语言等配置的上下文边界                                         |
+| `Editor`                | 支持适配器和插件的富文本编辑器                                     |
+| `ImagePreview`          | 图片预览，支持缩放和组图切换                                       |
+| `ImageMasonry`          | 图片瀑布流，支持固定列和响应式列                                   |
+| `GroupedVirtualMasonry` | 分组虚拟瀑布流，用于长图片分组列表                                 |
+| `Card`                  | 卡片容器                                                           |
+| `Separator`             | 分隔线                                                             |
+| `Skeleton`              | 加载占位符                                                         |
+| `Spinner`               | 加载指示器                                                         |
+| `Breadcrumb`            | 面包屑导航                                                         |
+| `Tabs`                  | 标签页                                                             |
+| `Pagination`            | 分页器                                                             |
+| `Menu`                  | 下拉菜单 / 右键菜单                                                |
+| `Popover`               | 弹出层                                                             |
+| `Tooltip`               | 文字提示                                                           |
+| `Dialog`                | 模态对话框                                                         |
+| `Toast`                 | 轻提示通知                                                         |
+| `ScrollArea`            | 自定义滚动条容器                                                   |
+| `VirtualList`           | 虚拟列表，支持动态正文高度和长文档锚点滚动                         |
+| `VirtualMasonry`        | 虚拟瀑布流，用于长图片列表和不规则图片集合                         |
 
 交互组件统一使用 `24 / 32 / 40 / 48 / 56px` 可见高度阶梯。组件的 `sm / md / lg` 分别对应
 `32 / 40 / 48px`；粗指针环境仍保留最小 `44px` 点击区域，不再因此放大桌面端组件外观。

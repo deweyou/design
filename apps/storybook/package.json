@@ -12,6 +12,7 @@
     "@deweyou-design/react": "workspace:*",
     "@deweyou-design/react-icons": "workspace:*",
     "@deweyou-design/styles": "workspace:*",
+    "@internationalized/date": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:"
   },

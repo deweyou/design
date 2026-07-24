@@ -182,6 +182,16 @@
       "import": "./dist/input/index.js",
       "default": "./dist/input/index.js"
     },
+    "./date-picker": {
+      "types": "./dist/date-picker/index.d.ts",
+      "import": "./dist/date-picker/index.js",
+      "default": "./dist/date-picker/index.js"
+    },
+    "./date-range-picker": {
+      "types": "./dist/date-range-picker/index.d.ts",
+      "import": "./dist/date-range-picker/index.js",
+      "default": "./dist/date-range-picker/index.js"
+    },
     "./number-input": {
       "types": "./dist/number-input/index.d.ts",
       "import": "./dist/number-input/index.js",
@@ -308,6 +318,7 @@
     "@deweyou-design/react-hooks": "workspace:*",
     "@deweyou-design/react-icons": "workspace:*",
     "@deweyou-design/styles": "workspace:*",
+    "@internationalized/date": "catalog:",
     "@lexical/code": "catalog:",
     "@lexical/link": "catalog:",
     "@lexical/list": "catalog:",

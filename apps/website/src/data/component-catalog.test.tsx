@@ -20,6 +20,8 @@ const PUBLIC_COMPONENTS = [
   'ImageMasonry',
   'GroupedVirtualMasonry',
   'Input',
+  'DatePicker',
+  'DateRangePicker',
   'NumberInput',
   'MarkdownRender',
   'Editor',
@@ -66,4 +68,18 @@ test('storybook links target the component docs overview on the deployed storybo
   expect(getStorybookUrl('components-breadcrumb--default')).toBe(
     'https://design-storybook-deweyous-projects.vercel.app/?path=/docs/components-breadcrumb--overview',
   );
+});
+
+test('picker catalog entries expose optional Today navigation', () => {
+  const picker = COMPONENT_CATALOG.find((item) => item.name === 'DatePicker');
+  const rangePicker = COMPONENT_CATALOG.find((item) => item.name === 'DateRangePicker');
+
+  expect(picker?.dimensions).toEqual(
+    expect.arrayContaining(['mode', 'showTime', 'showNow', 'showToday']),
+  );
+  expect(picker?.description).toContain('time wheels');
+  expect(rangePicker?.dimensions).toEqual(
+    expect.arrayContaining(['mode', 'showTime', 'showNow', 'showToday']),
+  );
+  expect(rangePicker?.description).toContain('contiguous');
 });

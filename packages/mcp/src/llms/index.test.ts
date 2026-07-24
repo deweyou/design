@@ -16,6 +16,10 @@ describe('llms text generation', () => {
     expect(text).toContain("import { ConfigProvider } from '@deweyou-design/react';");
     expect(text).toContain("import { MermaidRender } from '@deweyou-design/react';");
     expect(text).toContain("import { NumberInput } from '@deweyou-design/react';");
+    expect(text).toContain("import { DatePicker } from '@deweyou-design/react';");
+    expect(text).toContain("import { DateRangePicker } from '@deweyou-design/react';");
+    expect(text).toContain('contiguous date');
+    expect(text).toContain('optional time wheels');
     expect(text).toContain('Read-only Mermaid diagram renderer');
     expect(text).toContain('@deweyou-design/styles/unplugin-font-subset');
     expect(text).toContain('@deweyou-design/react-icons');

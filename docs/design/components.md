@@ -1,5 +1,12 @@
 # React Component Contracts
 
+```mermaid
+flowchart LR
+    PublicAPI["Public component API"] --> Semantics["Deweyou semantic contract"]
+    Semantics --> Behavior["Ark UI or project-owned behavior"]
+    Behavior --> Surfaces["Package, Storybook, website, and MCP surfaces"]
+```
+
 > Audience: AI agents, contributors, and consumers who need the public composition, import, and accessibility contract without reading every source file.
 
 This document is the human-readable companion to `packages/react/package.json` exports. Keep it synchronized with the package export map whenever a component is added, renamed, or removed.
@@ -15,6 +22,8 @@ This document is the human-readable companion to `packages/react/package.json` e
 | `Checkbox`              | `@deweyou-design/react` | `@deweyou-design/react/checkbox`                |
 | `CodeBlock`             | `@deweyou-design/react` | `@deweyou-design/react/code-block`              |
 | `ConfigProvider`        | `@deweyou-design/react` | `@deweyou-design/react/config-provider`         |
+| `DatePicker`            | `@deweyou-design/react` | `@deweyou-design/react/date-picker`             |
+| `DateRangePicker`       | `@deweyou-design/react` | `@deweyou-design/react/date-range-picker`       |
 | `Dialog`                | `@deweyou-design/react` | `@deweyou-design/react/dialog`                  |
 | `Field`                 | `@deweyou-design/react` | `@deweyou-design/react/field`                   |
 | `GroupedVirtualMasonry` | `@deweyou-design/react` | `@deweyou-design/react/grouped-virtual-masonry` |
@@ -101,7 +110,7 @@ Button shape stays orthogonal to variant, mode, and size: `rect` is 0, `auto`/`f
 </Field.Root>
 ```
 
-`Field` owns the label/control/description/error id wiring. `Input`, `Textarea`, and `Select` use it internally.
+`Field` owns the label/control/description/error id wiring. `Input`, `DatePicker`, `NumberInput`, `Textarea`, and `Select` use it internally.
 
 ### NumberInput
 
@@ -124,6 +133,125 @@ Button shape stays orthogonal to variant, mode, and size: `rect` is 0, `auto`/`f
 ```
 
 `NumberInput` combines direct text editing with decrement/increment controls. Ark UI owns parsing, keyboard stepping, press-and-hold, clamping, and spinbutton semantics. `precision` supplies default fraction-digit bounds while explicit `formatOptions` values take precedence.
+
+### DatePicker
+
+```tsx
+const firstDay = parseDatePickerValue('2026-01-01');
+const lastDay = parseDatePickerValue('2026-12-31');
+
+<DatePicker
+  clearable
+  defaultValue={parseDatePickerValue('2026-07-22')}
+  format={(value) =>
+    `${String(value.day).padStart(2, '0')}/${String(value.month).padStart(2, '0')}/${value.year}`
+  }
+  label="Published"
+  min={firstDay}
+  max={lastDay}
+  parse={(input) => {
+    const [day, month, year] = input.split('/').map(Number);
+    return year && month && day ? new CalendarDate(year, month, day) : undefined;
+  }}
+  showToday
+/>;
+
+<DatePicker defaultValue={parseDatePickerValue('2026-07-01')} label="Billing month" mode="month" />;
+
+<DatePicker defaultValue={parseDatePickerValue('2026-01-01')} label="Reporting year" mode="year" />;
+
+<DatePicker
+  defaultValue={parseDatePickerDateTimeValue('2026-07-22T14:30')}
+  label="Published at"
+  showTime={{ hourCycle: 24, minuteStep: 5, showNow: true }}
+/>;
+```
+
+`DatePicker` uses `CalendarDate` for `value`, `defaultValue`, `min`, `max`, and `onValueChange`. Its default text display is always `YYYY/MM/DD`; direct input also accepts `YYYY-MM-DD` and `YYYY MM DD`, then normalizes the committed display to slashes. `parseDatePickerValue` is the package-owned parsing boundary for canonical `YYYY-MM-DD` strings. The public value remains a calendar date with no time or time zone.
+
+`mode="date" | "month" | "year"` controls the minimum selectable calendar unit and defaults to `date`. Date mode keeps the day -> month -> year navigation hierarchy. Month mode starts on the month grid, may open the year grid for navigation, displays and accepts `YYYY/MM`, `YYYY-MM`, or `YYYY MM`, and emits the selected month as its first day. Year mode stays on the year grid, displays and accepts `YYYY`, and emits January 1 of the selected year. Incoming values, `min`, `max`, parsed text, Today, unavailable-date checks, and emitted values are normalized to the selected unit so one `CalendarDate` contract remains deterministic across modes.
+
+Provide `format` and `parse` together when an application needs a non-default text representation. Both callbacks receive the semantic `CalendarDate` contract and the current ConfigProvider locale; parsing returns `undefined` for incomplete or invalid text. Calendar month names, weekday labels, first day of week, month/year title order, and component-owned copy inherit the nearest `ConfigProvider` locale, while the default input order stays year-first. DatePicker has no instance `locale`, `startOfWeek`, or `fixedWeeks` prop. Use the exported `DatePickerLocaleTextOverrides` type when `localeText` needs to override component-owned action copy.
+
+`size="sm" | "md" | "lg"` is one density contract for the whole picker: it scales the field and the portalled calendar panel together. Coarse-pointer environments retain the shared minimum touch target even when the visual size is small.
+
+Set `showToday` to display the localized Today action; it is hidden by default. The action selects the local calendar day, month, or year according to `mode` and closes DatePicker, and is disabled when that normalized value is outside `min`, `max`, or `isDateUnavailable`. The field itself opens the popup. Its trailing calendar icon is decorative and changes into the clear action on hover or focus when a value can be cleared.
+
+Set `showTime` to `true` or a `DatePickerTimeOptions` object to select a
+`CalendarDateTime` instead. The value represents a calendar date plus
+wall-clock time without an implicit time zone; convert it to a zoned instant
+only at the application boundary where the intended time zone is known.
+`parseDatePickerDateTimeValue` accepts canonical `YYYY-MM-DDTHH:mm` and
+`YYYY-MM-DDTHH:mm:ss` strings.
+
+The time-enabled panel keeps calendar and wheel edits as a draft. The user may
+switch between the calendar and scroll-wheel time view without committing;
+only the localized Confirm action emits the value, while Escape or outside
+dismissal restores the committed value. The options object configures the
+locale-derived or explicit 12/24-hour cycle, minute or second precision,
+per-column steps, the first selected date's `defaultTime`, and
+`isTimeUnavailable`. Set `showNow` inside that object to expose a localized Now
+action only in the time view. It applies the nearest stepped local wall-clock
+time to the existing draft date, remains subject to date-time constraints, and
+still waits for Confirm. `showTime` is available only in the default date mode.
+When `showToday` is also enabled, Today changes the draft date, preserves its
+time, and still waits for confirmation.
+
+### DateRangePicker
+
+```tsx
+<DateRangePicker
+  clearable
+  defaultValue={{
+    start: parseDatePickerValue('2026-07-22'),
+    end: parseDatePickerValue('2026-07-25'),
+  }}
+  label="Publishing period"
+/>;
+
+<DateRangePicker
+  defaultValue={{
+    start: parseDatePickerValue('2026-07-01'),
+    end: parseDatePickerValue('2026-10-01'),
+  }}
+  label="Billing period"
+  mode="month"
+/>;
+
+<DateRangePicker
+  defaultValue={{
+    start: parseDatePickerDateTimeValue('2026-07-22T09:00'),
+    end: parseDatePickerDateTimeValue('2026-07-25T18:00'),
+  }}
+  label="Booking period"
+  showTime={{ hourCycle: 24, minuteStep: 15, showNow: true }}
+/>;
+```
+
+`DateRangePicker` selects one contiguous inclusive range and intentionally does
+not model multiple disjoint ranges. The public value is an object with named
+`start` and `end` members. It uses `CalendarDate` by default and
+`CalendarDateTime` when `showTime` is enabled. Both values must use the same
+semantic type and the start must not be after the end.
+
+The field contains two real inputs for form and accessibility semantics, but
+renders them inside one shared visual control with one separator and one
+contextual clear action. Endpoint labels, actions, calendar copy, week layout,
+and formatting locale inherit `ConfigProvider`; there is no per-instance
+`locale` prop.
+
+Date, month, and year modes mirror `DatePicker`. Month and year selections are
+normalized to the first day of their unit. `format` and `parse` apply to both
+endpoint inputs, while `min`, `max`, `isDateUnavailable`, `showToday`, `size`,
+`variant`, controlled state, portal placement, and field states keep the same
+meaning as the single-value picker.
+
+With `showTime`, each endpoint has an independent time-wheel entry point.
+Calendar and wheel changes remain a draft until Confirm. `defaultTime` accepts
+named `start` and `end` times, and `showNow` applies only to the active endpoint.
+Choices that would make the start later than the end are unavailable. As with
+`DatePicker`, values are wall-clock calendar values without an implicit time
+zone.
 
 ### Dialog
 
@@ -438,24 +566,25 @@ Toast
 └── toast.create(options)
 ```
 
-`Popover`, `Tooltip`, `Dialog`, `Menu`, `Select`, and `Toast` rely on Ark UI for behavior and must keep focus, keyboard, and portal behavior delegated to Ark primitives.
+`Popover`, `Tooltip`, `Dialog`, `DatePicker`, `Menu`, `Select`, and `Toast` rely on Ark UI for behavior and must keep focus, keyboard, and portal behavior delegated to Ark primitives.
 
 ## Accessibility Contracts
 
-| Component                          | Contract                                                                                                                                                                |
-| ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Button`                           | Text buttons render visible content. Icon-only buttons require `aria-label` or `aria-labelledby`. Loading buttons set `aria-busy` and block repeated activation.        |
-| `ConfigProvider`                   | Defaults to `en-US`; non-English descendants suspend only for their own uncached locale chunks, and application-owned boundaries provide loading UI.                    |
-| `Field`                            | `Field.Label` points at the control id. `Field.Description` and `Field.ErrorText` provide `aria-describedby`; errors set `role="alert"` and take precedence over hints. |
-| `Input`, `Textarea`                | Label, hint, error, `required`, `disabled`, and invalid state are wired through `Field`.                                                                                |
-| `NumberInput`                      | Ark UI owns spinbutton semantics, keyboard and press stepping, boundary-disabled triggers, parsing, and clamping; `Field` owns label, hint, and error relationships.    |
-| `Checkbox`, `RadioGroup`, `Switch` | Ark UI owns native hidden inputs, checked state, disabled state, and keyboard behavior.                                                                                 |
-| `Select`                           | Trigger uses `role="combobox"`, listbox/options come from Ark UI, and field copy is exposed through label and description ids.                                          |
-| `Dialog`, `NavOverlay`             | Modal focus management and Escape handling come from Ark UI. Content is SSR-safe and portals to `document.body` only in the browser.                                    |
-| `Menu`, `ContextMenu`              | Menu roles, item selection, nested triggers, and keyboard navigation come from Ark UI.                                                                                  |
-| `Tabs`                             | Tablist, tab, panel, selected state, and keyboard activation come from Ark UI plus local overflow handling.                                                             |
-| `Tooltip`, `Popover`               | Floating content must remain non-destructive and dismissible; focus/hover/click behavior is explicit through props.                                                     |
-| `Toast`                            | `Toaster` should be mounted once per position; notifications are created with `toast.create`.                                                                           |
+| Component                          | Contract                                                                                                                                                                                                                          |
+| ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Button`                           | Text buttons render visible content. Icon-only buttons require `aria-label` or `aria-labelledby`. Loading buttons set `aria-busy` and block repeated activation.                                                                  |
+| `ConfigProvider`                   | Defaults to `en-US`; non-English descendants suspend only for their own uncached locale chunks, and application-owned boundaries provide loading UI.                                                                              |
+| `Field`                            | `Field.Label` points at the control id. `Field.Description` and `Field.ErrorText` provide `aria-describedby`; errors set `role="alert"` and take precedence over hints.                                                           |
+| `Input`, `Textarea`                | Label, hint, error, `required`, `disabled`, and invalid state are wired through `Field`.                                                                                                                                          |
+| `DatePicker`, `DateRangePicker`    | Ark UI owns calendar grid, range hover, listbox wheel, roving focus, constraints, selection, and popup dismissal semantics; Deweyou owns the year-first text, unified range field, and explicit date-time confirmation contracts. |
+| `NumberInput`                      | Ark UI owns spinbutton semantics, keyboard and press stepping, boundary-disabled triggers, parsing, and clamping; `Field` owns label, hint, and error relationships.                                                              |
+| `Checkbox`, `RadioGroup`, `Switch` | Ark UI owns native hidden inputs, checked state, disabled state, and keyboard behavior.                                                                                                                                           |
+| `Select`                           | Trigger uses `role="combobox"`, listbox/options come from Ark UI, and field copy is exposed through label and description ids.                                                                                                    |
+| `Dialog`, `NavOverlay`             | Modal focus management and Escape handling come from Ark UI. Content is SSR-safe and portals to `document.body` only in the browser.                                                                                              |
+| `Menu`, `ContextMenu`              | Menu roles, item selection, nested triggers, and keyboard navigation come from Ark UI.                                                                                                                                            |
+| `Tabs`                             | Tablist, tab, panel, selected state, and keyboard activation come from Ark UI plus local overflow handling.                                                                                                                       |
+| `Tooltip`, `Popover`               | Floating content must remain non-destructive and dismissible; focus/hover/click behavior is explicit through props.                                                                                                               |
+| `Toast`                            | `Toaster` should be mounted once per position; notifications are created with `toast.create`.                                                                                                                                     |
 
 ## Component Notes
 
@@ -467,4 +596,4 @@ Toast
 - New public components must include source, CSS module, colocated unit tests, Storybook `Interaction`, README entry, this component contract entry, root and subpath exports, and package/docs contract coverage.
 - New component designs with non-obvious trade-offs or future extension paths must be recorded in `docs/superpowers/specs/` and `docs/superpowers/plans/` before implementation continues.
 
-_Last updated: 2026-07-22 | Reason: document ConfigProvider localization ownership and lazy-loading contracts_
+_Last updated: 2026-07-24 | Reason: document DateRangePicker range and endpoint time contracts_
