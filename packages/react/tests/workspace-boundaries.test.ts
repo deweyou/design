@@ -49,6 +49,7 @@ test('cross-package boundary coverage stays in top-level tests', () => {
     '@deweyou-design/react-hooks': 'workspace:*',
     '@deweyou-design/react-icons': 'workspace:*',
     '@deweyou-design/styles': 'workspace:*',
+    '@internationalized/date': 'catalog:',
     '@lexical/code': 'catalog:',
     '@lexical/react': 'catalog:',
     lexical: 'catalog:',
@@ -106,6 +107,16 @@ test('components package keeps root compatibility while exposing documented subp
       default: './dist/button/index.js',
       import: './dist/button/index.js',
       types: './dist/button/index.d.ts',
+    },
+    './date-picker': {
+      default: './dist/date-picker/index.js',
+      import: './dist/date-picker/index.js',
+      types: './dist/date-picker/index.d.ts',
+    },
+    './date-range-picker': {
+      default: './dist/date-range-picker/index.js',
+      import: './dist/date-range-picker/index.js',
+      types: './dist/date-range-picker/index.d.ts',
     },
     './popover': {
       default: './dist/popover/index.js',

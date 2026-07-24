@@ -6,6 +6,8 @@ import { expect, test } from 'vite-plus/test';
 import * as buttonEntry from '../src/button/index.tsx';
 import * as codeBlockEntry from '../src/code-block/index.tsx';
 import * as configProviderEntry from '../src/config-provider/index.tsx';
+import * as datePickerEntry from '../src/date-picker/index.tsx';
+import * as dateRangePickerEntry from '../src/date-range-picker/index.tsx';
 import * as fieldEntry from '../src/field/index.tsx';
 import * as groupedVirtualMasonryEntry from '../src/grouped-virtual-masonry/index.tsx';
 import * as imageMasonryEntry from '../src/image-masonry/index.tsx';
@@ -53,6 +55,16 @@ test('components package exposes button, popover, and text subpath exports in pa
       default: './dist/config-provider/index.js',
       import: './dist/config-provider/index.js',
       types: './dist/config-provider/index.d.ts',
+    },
+    './date-picker': {
+      default: './dist/date-picker/index.js',
+      import: './dist/date-picker/index.js',
+      types: './dist/date-picker/index.d.ts',
+    },
+    './date-range-picker': {
+      default: './dist/date-range-picker/index.js',
+      import: './dist/date-range-picker/index.js',
+      types: './dist/date-range-picker/index.d.ts',
     },
     './field': {
       default: './dist/field/index.js',
@@ -228,6 +240,10 @@ test('components subpath entries match the root entry public contract', () => {
   expect(configProviderEntry.ConfigProvider).toBe(rootEntry.ConfigProvider);
   expect(configProviderEntry.configLocales).toBe(rootEntry.configLocales);
   expect(configProviderEntry.defaultConfigLocale).toBe(rootEntry.defaultConfigLocale);
+  expect(datePickerEntry.DatePicker).toBe(rootEntry.DatePicker);
+  expect(datePickerEntry.parseDatePickerDateTimeValue).toBe(rootEntry.parseDatePickerDateTimeValue);
+  expect(datePickerEntry.parseDatePickerValue).toBe(rootEntry.parseDatePickerValue);
+  expect(dateRangePickerEntry.DateRangePicker).toBe(rootEntry.DateRangePicker);
   expect(fieldEntry.Field).toBe(rootEntry.Field);
   expect(editorEntry.Editor).toBe(rootEntry.Editor);
   expect(editorEntry.markdownEditorAdapter).toBe(rootEntry.markdownEditorAdapter);
@@ -276,6 +292,12 @@ test('components subpath entries expose their public API without requiring the p
     'configLocales',
     'defaultConfigLocale',
   ]);
+  expect(Object.keys(datePickerEntry).sort()).toEqual([
+    'DatePicker',
+    'parseDatePickerDateTimeValue',
+    'parseDatePickerValue',
+  ]);
+  expect(Object.keys(dateRangePickerEntry).sort()).toEqual(['DateRangePicker']);
   expect(Object.keys(fieldEntry).sort()).toEqual([
     'Field',
     'useFieldContext',

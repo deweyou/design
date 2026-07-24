@@ -10,6 +10,8 @@ import {
   ConfigProvider,
   configLocales,
   type ConfigLocale,
+  DatePicker,
+  DateRangePicker,
   Dialog,
   Editor,
   Field,
@@ -52,6 +54,8 @@ import {
   VirtualList,
   VirtualMasonry,
   toast,
+  parseDatePickerDateTimeValue,
+  parseDatePickerValue,
 } from '@deweyou-design/react';
 import { SettingsIcon } from '@deweyou-design/react-icons';
 
@@ -374,6 +378,60 @@ export const COMPONENT_CATALOG: ComponentCatalogItem[] = [
     dimensions: ['size', 'disabled', 'invalid'],
     storyId: 'components-input--default',
     preview: <Input hint="Filters the component catalog." label="Search" placeholder="Search…" />,
+  },
+  {
+    name: 'DatePicker',
+    category: 'forms',
+    description:
+      'Date, month, year, or date-time field with shared sizing, custom text parsing, optional time wheels, Today and Now actions, constraints, and validation.',
+    importSnippet: "import { DatePicker } from '@deweyou-design/react';",
+    dimensions: [
+      'mode',
+      'showTime',
+      'showNow',
+      'size',
+      'variant',
+      'locale',
+      'formatting',
+      'showToday',
+      'constraints',
+    ],
+    storyId: 'components-datepicker--default',
+    preview: (
+      <DatePicker
+        defaultValue={parseDatePickerDateTimeValue('2026-07-22T14:30')}
+        label="Published at"
+        showTime={{ showNow: true }}
+      />
+    ),
+  },
+  {
+    name: 'DateRangePicker',
+    category: 'forms',
+    description:
+      'One contiguous date, month, year, or date-time range with two real inputs in one visual field.',
+    importSnippet: "import { DateRangePicker } from '@deweyou-design/react';",
+    dimensions: [
+      'mode',
+      'showTime',
+      'showNow',
+      'size',
+      'variant',
+      'locale',
+      'formatting',
+      'showToday',
+      'constraints',
+    ],
+    storyId: 'components-daterangepicker--default',
+    preview: (
+      <DateRangePicker
+        defaultValue={{
+          end: parseDatePickerValue('2026-07-25'),
+          start: parseDatePickerValue('2026-07-22'),
+        }}
+        label="Publishing period"
+      />
+    ),
   },
   {
     name: 'NumberInput',

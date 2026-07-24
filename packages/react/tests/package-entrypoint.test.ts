@@ -1,5 +1,6 @@
 import { createElement, createRef } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
+import { Time } from '@internationalized/date';
 import { expect, test } from 'vite-plus/test';
 
 import * as components from '../src';
@@ -86,6 +87,63 @@ const exampleNumberInputProps: import('../src').NumberInputProps = {
   step: 1,
 };
 
+const exampleDatePickerProps: import('../src').DatePickerProps = {
+  defaultValue: components.parseDatePickerValue('2026-07-22'),
+  format: (value, { locale }) => `${locale}: ${value.toString()}`,
+  label: 'Published',
+  max: components.parseDatePickerValue('2026-12-31'),
+  min: components.parseDatePickerValue('2026-01-01'),
+  mode: 'month',
+  onValueChange: ({ value }) => {
+    void value;
+  },
+  parse: (input) => components.parseDatePickerValue(input.split(': ').at(-1) ?? input),
+  showToday: true,
+};
+
+const exampleDatePickerMode: import('../src').DatePickerMode = 'year';
+
+const exampleDatePickerLocaleText: import('../src').DatePickerLocaleTextOverrides = {
+  openCalendar: 'Open release calendar',
+  today: 'Today',
+};
+
+const exampleDatePickerTimeProps: import('../src').DatePickerDateTimeProps = {
+  defaultValue: components.parseDatePickerDateTimeValue('2026-07-22T14:30'),
+  label: 'Published at',
+  onValueChange: ({ value }) => {
+    void value;
+  },
+  showToday: true,
+  showTime: true,
+};
+
+const exampleDateRangePickerProps: import('../src').DateRangePickerProps = {
+  defaultValue: {
+    end: components.parseDatePickerValue('2026-07-25'),
+    start: components.parseDatePickerValue('2026-07-22'),
+  },
+  label: 'Publishing period',
+  onValueChange: ({ value }) => {
+    void value?.start;
+    void value?.end;
+  },
+};
+
+const exampleDateRangePickerTimeProps: import('../src').DateRangePickerDateTimeProps = {
+  defaultValue: {
+    end: components.parseDatePickerDateTimeValue('2026-07-25T18:00'),
+    start: components.parseDatePickerDateTimeValue('2026-07-22T09:00'),
+  },
+  label: 'Booking period',
+  showTime: {
+    defaultTime: {
+      end: new Time(18, 0),
+      start: new Time(9, 0),
+    },
+  },
+};
+
 const exampleEditorProps: import('../src').EditorProps<string> = {
   adapter: components.markdownEditorAdapter(),
   defaultValue: '# Editor',
@@ -93,6 +151,12 @@ const exampleEditorProps: import('../src').EditorProps<string> = {
 };
 
 void exampleButtonProps;
+void exampleDatePickerProps;
+void exampleDatePickerMode;
+void exampleDatePickerLocaleText;
+void exampleDatePickerTimeProps;
+void exampleDateRangePickerProps;
+void exampleDateRangePickerTimeProps;
 void exampleEditorProps;
 void exampleIconButtonProps;
 void exampleMarkdownRenderProps;
@@ -115,6 +179,8 @@ test('components root entry exposes Button, IconButton, Popover, Text, Menu fami
     'CodeBlockToolbar',
     'ConfigProvider',
     'ContextMenu',
+    'DatePicker',
+    'DateRangePicker',
     'Dialog',
     'Editor',
     'EditorPluginCompatibilityError',
@@ -181,6 +247,8 @@ test('components root entry exposes Button, IconButton, Popover, Text, Menu fami
     'markdownEditorAdapter',
     'markdownRenderSizeOptions',
     'markdownShortcutPlugin',
+    'parseDatePickerDateTimeValue',
+    'parseDatePickerValue',
     'pastePlugin',
     'quotePlugin',
     'richTextPlugin',
