@@ -1,6 +1,6 @@
 {
   "name": "@deweyou-design/styles",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "Theme tokens, global CSS entrypoints, and Less bridges for Deweyou UI.",
   "repository": {
     "type": "git",
