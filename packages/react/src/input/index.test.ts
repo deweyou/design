@@ -1,11 +1,19 @@
+// @vitest-environment jsdom
+
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { expect, test } from 'vite-plus/test';
+import { cleanup, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { afterEach, expect, expectTypeOf, test } from 'vite-plus/test';
 
 import { Input, type InputProps } from './index';
 import styles from './index.module.less';
 
 const renderMarkup = (props: InputProps) => renderToStaticMarkup(createElement(Input, props));
+
+afterEach(() => {
+  cleanup();
+});
 
 test('input renders a root div with an inner input element by default', () => {
   const markup = renderMarkup({});
@@ -102,4 +110,57 @@ test('input renders ghost variant without border class', () => {
   const markup = renderMarkup({ variant: 'ghost' });
   expect(markup).toContain(styles.variantGhost);
   expect(markup).not.toContain(styles.variantOutlined);
+});
+
+test('input exposes placeholder and clearable as public props', () => {
+  expectTypeOf<InputProps['placeholder']>().toEqualTypeOf<string | undefined>();
+  expectTypeOf<InputProps['clearable']>().toEqualTypeOf<boolean | undefined>();
+
+  const markup = renderMarkup({ placeholder: 'Type a name' });
+  expect(markup).toContain('placeholder="Type a name"');
+  expect(markup).not.toContain('Clear input');
+});
+
+test('input clears an editable value through the existing change callback', async () => {
+  const changedValues: string[] = [];
+  const user = userEvent.setup();
+
+  render(
+    createElement(Input, {
+      clearable: true,
+      defaultValue: 'Alice',
+      onChange: (event) => changedValues.push(event.currentTarget.value),
+      placeholder: 'Type a name',
+    }),
+  );
+
+  const input = screen.getByRole('textbox');
+  await user.click(screen.getByRole('button', { name: 'Clear input' }));
+
+  expect((input as HTMLInputElement).value).toBe('');
+  expect(document.activeElement).toBe(input);
+  expect(changedValues).toEqual(['']);
+  expect(screen.queryByRole('button', { name: 'Clear input' })).toBeNull();
+  expect(input.getAttribute('placeholder')).toBe('Type a name');
+});
+
+test('input hides the clear action when disabled or read only', () => {
+  render(
+    createElement('div', null, [
+      createElement(Input, {
+        clearable: true,
+        defaultValue: 'Disabled',
+        disabled: true,
+        key: 'disabled',
+      }),
+      createElement(Input, {
+        clearable: true,
+        defaultValue: 'Read only',
+        key: 'read-only',
+        readOnly: true,
+      }),
+    ]),
+  );
+
+  expect(screen.queryByRole('button', { name: 'Clear input' })).toBeNull();
 });

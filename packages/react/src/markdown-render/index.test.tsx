@@ -15,6 +15,53 @@ describe('MarkdownRender', () => {
     cleanup();
   });
 
+  it('recognizes and renders leading YAML frontmatter by default', () => {
+    const markup = renderMarkdown({
+      value: [
+        '---',
+        'title: Frontmatter support',
+        'draft: true',
+        'tags: [markdown, editor]',
+        '---',
+        '',
+        '# Body',
+      ].join('\n'),
+    });
+
+    expect(markup).toContain('data-frontmatter-root="true"');
+    expect(markup).toContain('data-frontmatter-property="draft"');
+    expect(markup).toContain('data-property-type="checkbox"');
+    expect(markup).toContain('data-frontmatter-property="tags"');
+    expect(markup).toContain('data-markdown-node="h1"');
+    expect(markup).not.toContain('<p data-markdown-node="p">title: Frontmatter support</p>');
+  });
+
+  it('supports hidden, source, and disabled frontmatter presentation', () => {
+    const value = ['---', 'draft: true', '---', '', 'Body'].join('\n');
+    const hidden = renderMarkdown({ frontmatter: { display: 'hidden' }, value });
+    const source = renderMarkdown({ frontmatter: { display: 'source' }, value });
+    const disabled = renderMarkdown({ frontmatter: false, value });
+
+    expect(hidden).not.toContain('data-frontmatter-root');
+    expect(hidden).toContain('Body');
+    expect(source).toContain('data-mode="source"');
+    expect(source).toContain('draft: true');
+    expect(disabled).not.toContain('data-frontmatter-root');
+    expect(disabled).toContain('data-markdown-node="hr"');
+  });
+
+  it('keeps invalid frontmatter recoverable in source mode', () => {
+    const markup = renderMarkdown({
+      value: ['---', 'title: [broken', '---', 'Body'].join('\n'),
+    });
+
+    expect(markup).toContain('data-frontmatter-root="true"');
+    expect(markup).toContain('data-mode="source"');
+    expect(markup).toContain('role="alert"');
+    expect(markup).toContain('title: [broken');
+    expect(markup).toContain('Body');
+  });
+
   it('renders CommonMark and GFM nodes with stable data attributes', () => {
     const markup = renderMarkdown({
       value: [

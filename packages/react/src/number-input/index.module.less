@@ -5,6 +5,8 @@
   --number-input-font-size: 0.9375rem;
   --number-input-padding-inline: 0.75rem;
   --number-input-trigger-size: var(--number-input-height);
+  --number-input-clear-button-size: 1.5rem;
+  --number-input-clear-surface-size: 1rem;
 
   display: grid;
   gap: 6px;
@@ -33,8 +35,27 @@
     box-shadow var(--ui-motion-duration-fast) var(--ui-motion-ease-exit);
 }
 
-.control:focus-within {
+.control:not([data-focus-ring='false']):focus-within {
   .focus-ring();
+}
+
+.control[data-controls='false'] {
+  grid-template-columns: minmax(3.5rem, 1fr);
+
+  .input {
+    border-inline: 0;
+    text-align: start;
+  }
+}
+
+.control[data-clearable='true'] {
+  grid-template-columns:
+    var(--number-input-trigger-size) minmax(3.5rem, 1fr) var(--number-input-trigger-size)
+    var(--number-input-clear-button-size);
+}
+
+.control[data-controls='false'][data-clearable='true'] {
+  grid-template-columns: minmax(3.5rem, 1fr) var(--number-input-clear-button-size);
 }
 
 .input {
@@ -102,6 +123,53 @@
   }
 }
 
+.clearAction {
+  display: inline-grid;
+  place-items: center;
+  inline-size: var(--number-input-clear-button-size);
+  min-block-size: calc(var(--number-input-height) - 2px);
+}
+
+.clearButton {
+  display: inline-grid;
+  place-items: center;
+  inline-size: 100%;
+  block-size: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  outline: none;
+  background: transparent;
+  color: var(--ui-color-text-muted);
+  cursor: pointer;
+}
+
+.clearButtonSurface {
+  display: inline-grid;
+  place-items: center;
+  inline-size: var(--number-input-clear-surface-size);
+  block-size: var(--number-input-clear-surface-size);
+  border-radius: var(--ui-radius-pill);
+  background: color-mix(in srgb, var(--ui-color-text) 9%, transparent);
+  transition:
+    background var(--ui-motion-duration-fast) var(--ui-motion-ease-exit),
+    color var(--ui-motion-duration-fast) var(--ui-motion-ease-exit);
+}
+
+.clearButton:hover .clearButtonSurface {
+  background: color-mix(in srgb, var(--ui-color-text) 14%, transparent);
+  color: var(--ui-color-text);
+}
+
+.clearButton:active .clearButtonSurface {
+  background: color-mix(in srgb, var(--ui-color-text) 18%, transparent);
+}
+
+.clearButton:focus-visible {
+  background: color-mix(in srgb, var(--ui-color-focus-ring) 10%, transparent);
+  color: var(--ui-color-focus-ring);
+}
+
 .variantOutlined .control {
   border-color: color-mix(in srgb, var(--ui-color-border-strong) 82%, var(--ui-color-border));
   background: color-mix(in srgb, var(--ui-color-surface) 96%, var(--ui-color-canvas));
@@ -141,6 +209,8 @@
   --number-input-height: var(--ui-control-height-sm);
   --number-input-font-size: 0.875rem;
   --number-input-padding-inline: 0.625rem;
+  --number-input-clear-button-size: 1.375rem;
+  --number-input-clear-surface-size: 0.875rem;
 
   .label {
     font-size: 0.8rem;
@@ -151,6 +221,8 @@
   --number-input-height: var(--ui-control-height-lg);
   --number-input-font-size: 1rem;
   --number-input-padding-inline: 0.875rem;
+  --number-input-clear-button-size: 1.625rem;
+  --number-input-clear-surface-size: 1.125rem;
 
   .label {
     font-size: 1rem;
@@ -160,6 +232,7 @@
 @media (pointer: coarse) {
   .control {
     --number-input-trigger-size: max(var(--number-input-height), var(--ui-touch-target-min));
+    --number-input-clear-button-size: var(--ui-touch-target-min);
   }
 
   .trigger {
@@ -169,7 +242,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .control,
-  .trigger {
+  .trigger,
+  .clearButtonSurface {
     transition-duration: 0.01ms;
   }
 }

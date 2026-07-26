@@ -34,5 +34,7 @@ describe('component docs contract', () => {
     expect(docs).toContain('Dialog.Root');
     expect(docs).toContain('Select.Trigger');
     expect(docs).toContain('Field.Label');
+    expect(docs).toContain('showControls={false}');
+    expect(docs).toContain('showFocusRing={false}');
   });
 });

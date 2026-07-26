@@ -113,15 +113,18 @@ export type EditorPluginRegistry = {
 export type EditorAdapterInitialStateDetails<TValue> = {
   value: TValue | undefined;
   defaultValue: TValue | undefined;
+  registry?: EditorPluginRegistry;
 };
 
 export type EditorAdapterReadDetails = {
   runtime: EditorRuntime;
+  registry?: EditorPluginRegistry;
 };
 
 export type EditorAdapterApplyValueDetails<TValue> = {
   runtime: EditorRuntime;
   value: TValue;
+  registry?: EditorPluginRegistry;
 };
 
 export type EditorAdapter<TValue = unknown> = {

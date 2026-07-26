@@ -2,14 +2,27 @@ import {
   $convertFromMarkdownString,
   $convertToMarkdownString,
   TRANSFORMERS,
+  type Transformer,
 } from '@lexical/markdown';
 
-import type { EditorAdapter } from '../../core/index.js';
+import type { EditorAdapter, EditorPluginRegistry } from '../../core/index.js';
+import { FRONTMATTER_TRANSFORMER } from '../../frontmatter/index.js';
 import { isLexicalRuntime } from '../../runtime/lexical.js';
 
 export type MarkdownEditorAdapterOptions = {
-  transformers?: typeof TRANSFORMERS;
+  transformers?: Transformer[];
 };
+
+const withFrontmatterTransformer = (transformers: Transformer[]) =>
+  transformers.includes(FRONTMATTER_TRANSFORMER)
+    ? transformers
+    : [FRONTMATTER_TRANSFORMER, ...transformers];
+
+const getImportTransformers = (
+  transformers: Transformer[],
+  registry: EditorPluginRegistry | undefined,
+) =>
+  registry?.features.has('frontmatter') ? withFrontmatterTransformer(transformers) : transformers;
 
 export const markdownEditorAdapter = (
   options: MarkdownEditorAdapterOptions = {},
@@ -18,18 +31,21 @@ export const markdownEditorAdapter = (
 
   return {
     name: 'markdown',
-    createInitialState: ({ value, defaultValue }) => {
-      $convertFromMarkdownString(value ?? defaultValue ?? '', transformers);
+    createInitialState: ({ value, defaultValue, registry }) => {
+      $convertFromMarkdownString(
+        value ?? defaultValue ?? '',
+        getImportTransformers(transformers, registry),
+      );
     },
     readValue: ({ runtime }) => {
       if (!isLexicalRuntime(runtime)) {
         return '';
       }
 
-      return $convertToMarkdownString(transformers);
+      return $convertToMarkdownString(withFrontmatterTransformer(transformers));
     },
-    applyValue: ({ value }) => {
-      $convertFromMarkdownString(value, transformers);
+    applyValue: ({ registry, value }) => {
+      $convertFromMarkdownString(value, getImportTransformers(transformers, registry));
     },
   };
 };

@@ -61,6 +61,8 @@ test('renders the default markdown sample in the live preview', () => {
 
   expect(screen.getByRole('heading', { name: 'Markdown Render' })).toBeInTheDocument();
   expect(within(preview).getByRole('heading', { name: 'Release note' })).toBeInTheDocument();
+  expect(within(preview).getByRole('checkbox', { name: 'draft' })).not.toBeChecked();
+  expect(within(preview).getByText('design-system')).toBeInTheDocument();
   expect(within(preview).getByText('Inline code')).toBeInTheDocument();
   expect(within(preview).getByRole('table')).toBeInTheDocument();
 });

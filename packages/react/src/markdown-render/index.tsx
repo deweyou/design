@@ -16,6 +16,13 @@ import remarkGfm from 'remark-gfm';
 
 import { CheckboxMark } from '../checkbox-mark/index.tsx';
 import { CodeBlock, type CodeBlockProps } from '../code-block/index.tsx';
+import {
+  Frontmatter,
+  type FrontmatterPropertyTypes,
+  type FrontmatterProps,
+  type FrontmatterRenderValueContext,
+} from '../frontmatter/index.tsx';
+import { parseMarkdownFrontmatter } from '../frontmatter/parser.ts';
 import { MermaidRender } from '../mermaid-render/index.tsx';
 import { Separator } from '../separator/index.tsx';
 import { ScrollArea } from '../scroll-area/index.tsx';
@@ -78,6 +85,18 @@ export type MarkdownRenderCopyDetails = {
   text: string;
 };
 
+export type MarkdownRenderFrontmatterDisplay = 'visible' | 'hidden' | 'source';
+export type MarkdownRenderFrontmatterOptions = {
+  className?: string;
+  display?: MarkdownRenderFrontmatterDisplay;
+  label?: FrontmatterProps['label'];
+  localeText?: FrontmatterProps['localeText'];
+  propertyOptions?: FrontmatterProps['propertyOptions'];
+  propertyTypes?: FrontmatterPropertyTypes;
+  renderValue?: (context: FrontmatterRenderValueContext) => ReactNode;
+  style?: CSSProperties;
+};
+
 export type MarkdownRenderProps = {
   value: string;
   size?: MarkdownRenderSize;
@@ -86,6 +105,7 @@ export type MarkdownRenderProps = {
   onLinkClick?: (details: MarkdownRenderLinkClickDetails) => void;
   onCopy?: (details: MarkdownRenderCopyDetails) => void;
   localeText?: Partial<MarkdownRenderLocaleText>;
+  frontmatter?: boolean | MarkdownRenderFrontmatterOptions;
   className?: string;
   style?: CSSProperties;
 };
@@ -621,6 +641,7 @@ const mergeMarkdownComponents = (
 export const MarkdownRender = ({
   className,
   components,
+  frontmatter = true,
   localeText,
   onCopy,
   onLinkClick,
@@ -630,6 +651,9 @@ export const MarkdownRender = ({
   value,
 }: MarkdownRenderProps) => {
   const text = useMarkdownRenderLocaleText(localeText);
+  const frontmatterOptions = typeof frontmatter === 'object' ? frontmatter : {};
+  const parsedMarkdown = frontmatter === false ? { body: value } : parseMarkdownFrontmatter(value);
+  const frontmatterDisplay = frontmatterOptions.display ?? 'visible';
   const resolveMarkdownNodeProps = createMarkdownNodePropsResolver(resolveNodeAttributes);
   const defaultComponents = createDefaultComponents(resolveMarkdownNodeProps, text, onLinkClick);
 
@@ -650,6 +674,25 @@ export const MarkdownRender = ({
       }}
       style={style}
     >
+      {parsedMarkdown.frontmatter && frontmatterDisplay !== 'hidden' && (
+        <Frontmatter
+          className={frontmatterOptions.className}
+          error={parsedMarkdown.frontmatter.error}
+          label={frontmatterOptions.label}
+          localeText={frontmatterOptions.localeText}
+          mode={
+            frontmatterDisplay === 'source' || parsedMarkdown.frontmatter.error
+              ? 'source'
+              : 'properties'
+          }
+          propertyOptions={frontmatterOptions.propertyOptions}
+          propertyTypes={frontmatterOptions.propertyTypes}
+          renderValue={frontmatterOptions.renderValue}
+          source={parsedMarkdown.frontmatter.source}
+          style={frontmatterOptions.style}
+          value={parsedMarkdown.frontmatter.value}
+        />
+      )}
       <ReactMarkdown
         components={mergeMarkdownComponents(
           defaultComponents,
@@ -659,7 +702,7 @@ export const MarkdownRender = ({
         rehypePlugins={[[rehypeHighlight, { detect: false, ignoreMissing: true }]]}
         remarkPlugins={[remarkGfm]}
       >
-        {value}
+        {parsedMarkdown.body}
       </ReactMarkdown>
     </div>
   );

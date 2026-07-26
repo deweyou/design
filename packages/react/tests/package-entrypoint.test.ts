@@ -56,6 +56,9 @@ const examplePopoverProps: import('../src').PopoverProps = {
 };
 
 const exampleMarkdownRenderProps: import('../src').MarkdownRenderProps = {
+  frontmatter: {
+    propertyTypes: { published: 'date' },
+  },
   value: '# 标题\n\n- 事项',
   size: 'md',
   onCopy: ({ text }) => {
@@ -147,7 +150,21 @@ const exampleDateRangePickerTimeProps: import('../src').DateRangePickerDateTimeP
 const exampleEditorProps: import('../src').EditorProps<string> = {
   adapter: components.markdownEditorAdapter(),
   defaultValue: '# Editor',
-  plugins: [components.richTextPlugin(), components.markdownShortcutPlugin()],
+  plugins: [
+    components.frontmatterPlugin(),
+    components.richTextPlugin(),
+    components.markdownShortcutPlugin(),
+  ],
+};
+
+const exampleFrontmatterProps: import('../src').FrontmatterProps = {
+  localeText: { addProperty: 'New metadata' },
+  propertyOptions: {
+    priority: { number: { max: 5, min: 0, step: 1 }, placeholder: 'Set priority' },
+    slug: { editable: false },
+  },
+  propertyTypes: { published: 'date' },
+  value: { draft: true, published: '2026-07-22', tags: ['markdown'] },
 };
 
 void exampleButtonProps;
@@ -158,6 +175,7 @@ void exampleDatePickerTimeProps;
 void exampleDateRangePickerProps;
 void exampleDateRangePickerTimeProps;
 void exampleEditorProps;
+void exampleFrontmatterProps;
 void exampleIconButtonProps;
 void exampleMarkdownRenderProps;
 void exampleMermaidRenderProps;
@@ -185,6 +203,7 @@ test('components root entry exposes Button, IconButton, Popover, Text, Menu fami
     'Editor',
     'EditorPluginCompatibilityError',
     'Field',
+    'Frontmatter',
     'GroupedVirtualMasonry',
     'IconButton',
     'ImageMasonry',
@@ -237,6 +256,8 @@ test('components root entry exposes Button, IconButton, Popover, Text, Menu fami
     'detectMermaidDiagramType',
     'floatingToolbarPlugin',
     'formatJsonPreservingDuplicateKeys',
+    'frontmatterPlugin',
+    'frontmatterPropertyTypeOptions',
     'hasDuplicateJsonObjectKeys',
     'headingPlugin',
     'historyPlugin',

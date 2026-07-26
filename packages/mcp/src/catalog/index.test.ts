@@ -43,6 +43,14 @@ describe('component catalog', () => {
       dimensions: expect.arrayContaining(['mode', 'showTime', 'showNow', 'showToday']),
       subpath: 'date-range-picker',
     });
+    expect(componentCatalog.find((component) => component.name === 'NumberInput')).toMatchObject({
+      dimensions: expect.arrayContaining(['placeholder', 'clearable', 'controls', 'focusRing']),
+      subpath: 'number-input',
+    });
+    expect(componentCatalog.find((component) => component.name === 'Input')).toMatchObject({
+      dimensions: expect.arrayContaining(['placeholder', 'clearable']),
+      subpath: 'input',
+    });
   });
 
   test('keeps catalog categories aligned with website navigation', () => {
@@ -100,6 +108,9 @@ describe('component catalog', () => {
     );
     expect(getComponentImportSnippet('Editor', { subpath: true })).toBe(
       "import { Editor } from '@deweyou-design/react/editor';",
+    );
+    expect(getComponentImportSnippet('Frontmatter', { subpath: true })).toBe(
+      "import { Frontmatter } from '@deweyou-design/react/frontmatter';",
     );
   });
 });

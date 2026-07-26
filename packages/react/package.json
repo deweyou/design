@@ -82,6 +82,11 @@
       "import": "./dist/field/index.js",
       "default": "./dist/field/index.js"
     },
+    "./frontmatter": {
+      "types": "./dist/frontmatter/index.d.ts",
+      "import": "./dist/frontmatter/index.js",
+      "default": "./dist/frontmatter/index.js"
+    },
     "./editor": {
       "types": "./dist/editor/index.d.ts",
       "import": "./dist/editor/index.js",
@@ -111,6 +116,11 @@
       "types": "./dist/editor/plugins/floating-toolbar/index.d.ts",
       "import": "./dist/editor/plugins/floating-toolbar/index.js",
       "default": "./dist/editor/plugins/floating-toolbar/index.js"
+    },
+    "./editor/plugins/frontmatter": {
+      "types": "./dist/editor/plugins/frontmatter/index.d.ts",
+      "import": "./dist/editor/plugins/frontmatter/index.js",
+      "default": "./dist/editor/plugins/frontmatter/index.js"
     },
     "./editor/plugins/heading": {
       "types": "./dist/editor/plugins/heading/index.d.ts",
@@ -336,7 +346,8 @@
     "prismjs": "catalog:",
     "react-markdown": "catalog:",
     "rehype-highlight": "catalog:",
-    "remark-gfm": "catalog:"
+    "remark-gfm": "catalog:",
+    "yaml": "catalog:"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "catalog:",

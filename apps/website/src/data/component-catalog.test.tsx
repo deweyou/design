@@ -24,6 +24,7 @@ const PUBLIC_COMPONENTS = [
   'DateRangePicker',
   'NumberInput',
   'MarkdownRender',
+  'Frontmatter',
   'Editor',
   'Menu',
   'ContextMenu',
@@ -82,4 +83,20 @@ test('picker catalog entries expose optional Today navigation', () => {
     expect.arrayContaining(['mode', 'showTime', 'showNow', 'showToday']),
   );
   expect(rangePicker?.description).toContain('contiguous');
+});
+
+test('NumberInput catalog entry exposes optional chrome', () => {
+  const numberInput = COMPONENT_CATALOG.find((item) => item.name === 'NumberInput');
+
+  expect(numberInput?.dimensions).toEqual(
+    expect.arrayContaining(['placeholder', 'clearable', 'controls', 'focusRing']),
+  );
+  expect(numberInput?.description).toContain('optional clear and step controls');
+});
+
+test('Input catalog entry exposes placeholder and clearable behavior', () => {
+  const input = COMPONENT_CATALOG.find((item) => item.name === 'Input');
+
+  expect(input?.dimensions).toEqual(expect.arrayContaining(['placeholder', 'clearable']));
+  expect(input?.description).toContain('optional localized clear action');
 });

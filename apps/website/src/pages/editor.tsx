@@ -2,6 +2,7 @@ import {
   codePlugin,
   Editor,
   floatingToolbarPlugin,
+  frontmatterPlugin,
   headingPlugin,
   historyPlugin,
   keyboardShortcutPlugin,
@@ -21,6 +22,7 @@ import {
 import styles from './editor.module.less';
 
 const editorPlugins = [
+  frontmatterPlugin({ propertyTypes: { published: 'date' } }),
   historyPlugin(),
   textFormatPlugin(),
   headingPlugin({ levels: [1, 2, 3] }),
@@ -48,6 +50,13 @@ const editorPlugins = [
 ];
 const markdownAdapter = markdownEditorAdapter();
 const DEFAULT_VALUE = [
+  '---',
+  'title: Editor playground',
+  'draft: false',
+  'tags: [markdown, editor]',
+  'published: 2026-07-22',
+  '---',
+  '',
   '# Editor',
   '',
   'A focused writing surface with structured text, links, lists, quotes, code blocks, and table commands.',

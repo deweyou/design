@@ -128,6 +128,27 @@ export {
   type DateRangePickerValueChangeDetails,
 } from './date-range-picker/index.tsx';
 export {
+  Frontmatter,
+  frontmatterPropertyTypeOptions,
+  type FrontmatterChangeAction,
+  type FrontmatterChangeDetails,
+  type FrontmatterLocaleText,
+  type FrontmatterMode,
+  type FrontmatterNumberPropertyOptions,
+  type FrontmatterPropertyOptions,
+  type FrontmatterPropertyOptionsMap,
+  type FrontmatterPropertyType,
+  type FrontmatterPropertyTypeChangeDetails,
+  type FrontmatterPropertyTypes,
+  type FrontmatterProps,
+  type FrontmatterRecord,
+  type FrontmatterRenderValueContext,
+  type FrontmatterScalar,
+  type FrontmatterTypeSource,
+  type FrontmatterValue,
+  type FrontmatterValueType,
+} from './frontmatter/index.tsx';
+export {
   NumberInput,
   type NumberInputInvalidDetails,
   type NumberInputProps,

@@ -15,6 +15,7 @@ import {
   Dialog,
   Editor,
   Field,
+  Frontmatter,
   GroupedVirtualMasonry,
   headingPlugin,
   historyPlugin,
@@ -373,11 +374,20 @@ export const COMPONENT_CATALOG: ComponentCatalogItem[] = [
   {
     name: 'Input',
     category: 'forms',
-    description: 'Single-line text input with Deweyou field styling.',
+    description:
+      'Single-line text input with placeholder, optional localized clear action, and Deweyou field styling.',
     importSnippet: "import { Input } from '@deweyou-design/react';",
-    dimensions: ['size', 'disabled', 'invalid'],
+    dimensions: ['size', 'placeholder', 'clearable', 'disabled', 'invalid'],
     storyId: 'components-input--default',
-    preview: <Input hint="Filters the component catalog." label="Search" placeholder="Search…" />,
+    preview: (
+      <Input
+        clearable
+        defaultValue="Deweyou"
+        hint="Filters the component catalog."
+        label="Search"
+        placeholder="Search…"
+      />
+    ),
   },
   {
     name: 'DatePicker',
@@ -437,20 +447,60 @@ export const COMPONENT_CATALOG: ComponentCatalogItem[] = [
     name: 'NumberInput',
     category: 'forms',
     description:
-      'Numeric input with direct editing, step controls, formatting, and range feedback.',
+      'Numeric input with placeholder, direct editing, optional clear and step controls, formatting, and range feedback.',
     importSnippet: "import { NumberInput } from '@deweyou-design/react';",
-    dimensions: ['size', 'variant', 'range', 'formatting'],
+    dimensions: [
+      'size',
+      'variant',
+      'placeholder',
+      'clearable',
+      'range',
+      'formatting',
+      'controls',
+      'focusRing',
+    ],
     storyId: 'components-numberinput--default',
-    preview: <NumberInput defaultValue="4" label="Quantity" max={10} min={0} />,
+    preview: (
+      <NumberInput
+        clearable
+        defaultValue="4"
+        label="Quantity"
+        max={10}
+        min={0}
+        placeholder="Enter quantity"
+      />
+    ),
   },
   {
     name: 'MarkdownRender',
     category: 'content',
     description: 'Safe CommonMark and GFM rendering surface for product content.',
     importSnippet: "import { MarkdownRender } from '@deweyou-design/react';",
-    dimensions: ['size', 'components', 'callbacks'],
+    dimensions: ['size', 'frontmatter', 'components', 'callbacks'],
     storyId: 'components-markdownrender--default',
     preview: <MarkdownRender size="sm" value={'### Markdown\nCompact rendering.'} />,
+  },
+  {
+    name: 'Frontmatter',
+    category: 'content',
+    description:
+      'Markdown-native property surface with property CRUD, compatible type controls, and optional editing.',
+    importSnippet: "import { Frontmatter } from '@deweyou-design/react';",
+    dimensions: [
+      'editable',
+      'propertyTypes',
+      'propertyOptions',
+      'localeText',
+      'mode',
+      'renderValue',
+    ],
+    storyId: 'components-frontmatter--default',
+    preview: (
+      <Frontmatter
+        propertyTypes={{ published: 'date' }}
+        value={{ draft: false, published: '2026-07-22', tags: ['markdown', 'editor'] }}
+      />
+    ),
   },
   {
     name: 'Editor',

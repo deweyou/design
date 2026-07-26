@@ -4,6 +4,13 @@ import { expect, waitFor, within } from 'storybook/test';
 import { MarkdownRender, markdownRenderSizeOptions } from '@deweyou-design/react/markdown-render';
 
 const comprehensiveMarkdown = [
+  '---',
+  'title: Building a Markdown Renderer',
+  'draft: false',
+  'tags: [markdown, renderer]',
+  'published: 2026-07-22',
+  '---',
+  '',
   '# Building a Markdown Renderer',
   '',
   'A production markdown surface needs to feel comfortable in long-form articles, compact LLM messages, release notes, and copied issue comments. It should support [external links](https://example.com/docs), **strong emphasis**, *emphasis*, ***combined emphasis***, ~~deleted text~~, and `inline code` without changing the surrounding rhythm.',
@@ -206,7 +213,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'MarkdownRender provides a styled CommonMark and GFM surface for long-form content, release notes, task lists, tables, links, and code fences.',
+          'MarkdownRender provides a styled CommonMark and GFM surface with visible-by-default YAML frontmatter properties for long-form content, release notes, task lists, tables, links, and code fences.',
       },
     },
     layout: 'padded',
@@ -296,6 +303,9 @@ export const Interaction: Story = {
     const root = story.querySelector('[data-markdown-root="true"]');
     await expect(root).toBeInTheDocument();
     await expect(root).toHaveAttribute('data-markdown-size', 'md');
+    await expect(story.querySelector('[data-frontmatter-root="true"]')).toBeInTheDocument();
+    await expect(canvas.getByRole('checkbox', { name: 'draft' })).not.toBeChecked();
+    await expect(canvas.getByText('renderer')).toBeVisible();
 
     const paragraph = story.querySelector('[data-markdown-node="p"]');
     await expect(paragraph?.tagName.toLowerCase()).toBe('p');
