@@ -160,42 +160,60 @@ import { ConfigProvider, Pagination } from '@deweyou-design/react';
 `ConfigProvider` does not expose `localeText`. Override copy on the component or Editor plugin that
 owns it, such as `Pagination`, `codePlugin()`, or `toolbarPlugin()`.
 
+## Markdown frontmatter
+
+`MarkdownRender` recognizes a leading YAML frontmatter mapping by default and renders it through the shared `Frontmatter` component. The property surface follows a Markdown-native model: booleans use checkboxes, scalar arrays use free-form Badge lists, and optional host-owned type hints enable shared DatePicker controls for canonical date and datetime strings without adding a Notion-style option schema. Editable instances support adding, renaming, and deleting top-level properties through typed `onChange` actions. Type menus disable incompatible YAML shapes instead of coercing values, and non-string scalar lists cannot silently append string items. Use `propertyOptions` for per-property editability, placeholders, and number constraints; component-owned copy follows `ConfigProvider` and can be overridden with `localeText`.
+
+```tsx
+<MarkdownRender
+  value={markdown}
+  frontmatter={{ propertyTypes: { published: 'date' } }}
+/>
+
+<Editor
+  adapter={markdownEditorAdapter()}
+  plugins={[frontmatterPlugin({ propertyTypes: { published: 'date' } })]}
+/>
+```
+
 ## Components
 
-| Component               | Description                                                                                  |
-| ----------------------- | -------------------------------------------------------------------------------------------- |
-| `Button`                | Button with multiple variants and sizes                                                      |
-| `Input`                 | Single-line text input                                                                       |
-| `DatePicker`            | Date, month, year, or optional date-time field with time wheels, Today/Now, and confirmation |
-| `DateRangePicker`       | One contiguous date, month, year, or date-time range in a unified two-input field            |
-| `NumberInput`           | Numeric input with step controls, formatting, and range constraints                          |
-| `Textarea`              | Multi-line text input                                                                        |
-| `Select`                | Select dropdown                                                                              |
-| `Checkbox`              | Checkbox                                                                                     |
-| `RadioGroup`            | Radio group                                                                                  |
-| `Switch`                | Switch                                                                                       |
-| `Badge`                 | Status badge                                                                                 |
-| `Text`                  | Typographic text                                                                             |
-| `ConfigProvider`        | Shared locale configuration boundary                                                         |
-| `Editor`                | Rich text editor surface with adapters and plugins                                           |
-| `ImagePreview`          | Modal image preview with zoom and gallery navigation                                         |
-| `ImageMasonry`          | Responsive image masonry layout with fixed or fluid columns                                  |
-| `GroupedVirtualMasonry` | Grouped virtual masonry renderer for long image sections                                     |
-| `Card`                  | Card container                                                                               |
-| `Separator`             | Separator                                                                                    |
-| `Skeleton`              | Loading placeholder                                                                          |
-| `Spinner`               | Loading indicator                                                                            |
-| `Breadcrumb`            | Breadcrumb navigation                                                                        |
-| `Tabs`                  | Tabs                                                                                         |
-| `Pagination`            | Pagination                                                                                   |
-| `Menu`                  | Dropdown menu / context menu                                                                 |
-| `Popover`               | Popover                                                                                      |
-| `Tooltip`               | Tooltip                                                                                      |
-| `Dialog`                | Modal dialog                                                                                 |
-| `Toast`                 | Toast notification                                                                           |
-| `ScrollArea`            | Custom scrollbar container                                                                   |
-| `VirtualList`           | Virtualized list with dynamic document heights and anchor scrolling                          |
-| `VirtualMasonry`        | Virtualized masonry renderer for long irregular image collections                            |
+| Component               | Description                                                                                         |
+| ----------------------- | --------------------------------------------------------------------------------------------------- |
+| `Button`                | Button with multiple variants and sizes                                                             |
+| `Input`                 | Single-line text input with placeholder and optional clear action                                   |
+| `DatePicker`            | Date, month, year, or optional date-time field with time wheels, Today/Now, and confirmation        |
+| `DateRangePicker`       | One contiguous date, month, year, or date-time range in a unified two-input field                   |
+| `NumberInput`           | Numeric input with placeholder, optional clear and step controls, formatting, and range constraints |
+| `Textarea`              | Multi-line text input                                                                               |
+| `Select`                | Select dropdown                                                                                     |
+| `Checkbox`              | Checkbox                                                                                            |
+| `RadioGroup`            | Radio group                                                                                         |
+| `Switch`                | Switch                                                                                              |
+| `Badge`                 | Status badge                                                                                        |
+| `Text`                  | Typographic text                                                                                    |
+| `ConfigProvider`        | Shared locale configuration boundary                                                                |
+| `Frontmatter`           | Markdown-native metadata properties with optional inline editing                                    |
+| `MarkdownRender`        | CommonMark/GFM renderer with visible-by-default YAML frontmatter                                    |
+| `Editor`                | Rich text editor surface with adapters and plugins                                                  |
+| `ImagePreview`          | Modal image preview with zoom and gallery navigation                                                |
+| `ImageMasonry`          | Responsive image masonry layout with fixed or fluid columns                                         |
+| `GroupedVirtualMasonry` | Grouped virtual masonry renderer for long image sections                                            |
+| `Card`                  | Card container                                                                                      |
+| `Separator`             | Separator                                                                                           |
+| `Skeleton`              | Loading placeholder                                                                                 |
+| `Spinner`               | Loading indicator                                                                                   |
+| `Breadcrumb`            | Breadcrumb navigation                                                                               |
+| `Tabs`                  | Tabs                                                                                                |
+| `Pagination`            | Pagination                                                                                          |
+| `Menu`                  | Dropdown menu / context menu                                                                        |
+| `Popover`               | Popover                                                                                             |
+| `Tooltip`               | Tooltip                                                                                             |
+| `Dialog`                | Modal dialog                                                                                        |
+| `Toast`                 | Toast notification                                                                                  |
+| `ScrollArea`            | Custom scrollbar container                                                                          |
+| `VirtualList`           | Virtualized list with dynamic document heights and anchor scrolling                                 |
+| `VirtualMasonry`        | Virtualized masonry renderer for long irregular image collections                                   |
 
 Interactive controls use the shared visible-height ladder `24 / 32 / 40 / 48 / 56px`.
 Component `sm / md / lg` sizes map to `32 / 40 / 48px`; coarse-pointer environments retain a

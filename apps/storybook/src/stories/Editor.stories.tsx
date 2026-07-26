@@ -9,6 +9,7 @@ import {
   type EditorPlugin,
   type EditorProps,
   floatingToolbarPlugin,
+  frontmatterPlugin,
   headingPlugin,
   historyPlugin,
   keyboardShortcutPlugin,
@@ -24,6 +25,12 @@ import {
 } from '@deweyou-design/react';
 
 const markdownAdapter = markdownEditorAdapter();
+
+const frontmatterPlugins = [
+  frontmatterPlugin({
+    propertyTypes: { published: 'date' },
+  }),
+];
 
 const textPlugins = [
   historyPlugin(),
@@ -41,6 +48,7 @@ const codePlugins = [
 const tablePlugins = [tablePlugin()];
 const linkPlugins = [linkPlugin()];
 const fullPlugins = [
+  ...frontmatterPlugins,
   ...textPlugins,
   ...linkPlugins,
   ...codePlugins,
@@ -70,6 +78,7 @@ const pluginToggleOptions: Array<{ label: string; value: PluginToggle }> = [
 ];
 
 const createPlugins = (enabled: Record<PluginToggle, boolean>): EditorPlugin[] => [
+  ...frontmatterPlugins,
   ...textPlugins,
   ...(enabled.link ? linkPlugins : []),
   ...(enabled.code ? codePlugins : []),
@@ -126,6 +135,13 @@ const PluginPlaygroundExample = () => {
       <Editor
         adapter={markdownAdapter}
         defaultValue={[
+          '---',
+          'title: Plugin playground',
+          'draft: false',
+          'tags: [markdown, editor]',
+          'published: 2026-07-22',
+          '---',
+          '',
           '# Plugin playground',
           '',
           'Toggle plugin groups and keep editing the same content.',
@@ -218,7 +234,8 @@ export const Interaction: Story = {
   play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
     const canvas = within(canvasElement);
     const codeToggle = canvas.getByRole('checkbox', { name: 'Code' });
-    const textbox = canvas.getByRole('textbox');
+    const textbox = canvas.getByRole('textbox', { name: 'Write a note...' });
+    const titleInput = canvas.getByRole('textbox', { name: 'title' });
     const getCodeBlock = () => {
       const codeBlock = canvasElement.querySelector('code[data-language="json"]');
 
@@ -230,6 +247,10 @@ export const Interaction: Story = {
     };
 
     await expect(canvas.getByRole('toolbar', { name: 'Editor formatting toolbar' })).toBeTruthy();
+    await expect(canvas.getByRole('checkbox', { name: 'draft' })).toBeTruthy();
+    await userEvent.clear(titleInput);
+    await userEvent.type(titleInput, 'Updated playground');
+    await expect(titleInput).toHaveValue('Updated playground');
     await expect(canvas.queryByRole('toolbar', { name: 'Editor block toolbar' })).toBeNull();
 
     await userEvent.click(getCodeBlock());

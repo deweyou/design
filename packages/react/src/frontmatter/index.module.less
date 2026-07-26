@@ -1,0 +1,610 @@
+@import '@deweyou-design/styles/less/bridge';
+
+.root {
+  box-sizing: border-box;
+  inline-size: 100%;
+  margin-block: var(--frontmatter-margin-block, 0 1.25rem);
+  padding-block: 0.45rem;
+  border-block: 1px solid var(--ui-color-border);
+  color: var(--ui-color-text);
+  font-family: var(--ui-font-control);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-block-size: 1.75rem;
+  margin-block-end: 0.2rem;
+}
+
+.label {
+  color: var(--ui-color-text-muted);
+  font-size: 0.72rem;
+  font-weight: var(--ui-font-weight-strong);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.properties {
+  display: grid;
+  gap: 0;
+  margin: 0;
+}
+
+.property {
+  display: grid;
+  grid-template-columns: 8.75rem minmax(0, 1fr);
+  align-items: center;
+  min-block-size: 2.25rem;
+  padding: 0.125rem 0.25rem;
+  border-radius: var(--ui-radius-float);
+  transition: background var(--ui-motion-duration-fast) var(--ui-motion-ease-exit);
+}
+
+.root[data-editable='true'] .property:hover,
+.root[data-editable='true'] .property:focus-within {
+  background: color-mix(in srgb, var(--ui-color-text) 4%, transparent);
+}
+
+.propertyKey {
+  display: flex;
+  align-items: center;
+  min-inline-size: 0;
+  min-block-size: 2.25rem;
+  gap: 0.25rem;
+  padding-inline-end: 0.5rem;
+  color: var(--ui-color-text-muted);
+  font-size: 0.8rem;
+}
+
+.propertyName {
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.propertyNameButton {
+  display: inline-flex;
+  min-inline-size: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: inherit;
+  cursor: text;
+  font: inherit;
+}
+
+.propertyNameButton:focus-visible .propertyName {
+  color: var(--ui-color-text);
+  text-decoration-color: var(--ui-color-focus-ring);
+  text-decoration-line: underline;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
+}
+
+.propertyNameEditor {
+  display: grid;
+  flex: 1;
+  align-content: center;
+  align-self: stretch;
+  min-inline-size: 0;
+}
+
+.propertyNameInput {
+  min-inline-size: 0;
+  inline-size: 100%;
+}
+
+.propertyNameInput input,
+.propertyNameInput input:hover:not(:disabled),
+.propertyNameInput input:focus-visible {
+  min-inline-size: 0;
+  padding-inline: 0;
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+  color: var(--ui-color-text);
+  font: inherit;
+}
+
+.propertyNameError,
+.addPropertyError {
+  color: var(--ui-color-danger-text);
+  font-size: 0.72rem;
+  line-height: 1.35;
+}
+
+.propertyNameError {
+  inline-size: max-content;
+  max-inline-size: 16rem;
+  margin-block-start: -0.2rem;
+  white-space: nowrap;
+}
+
+.propertyValue {
+  display: flex;
+  align-items: center;
+  min-inline-size: 0;
+  min-block-size: 2.25rem;
+  margin: 0;
+  color: var(--ui-color-text);
+  font-family: inherit;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.textValue {
+  display: inline-flex;
+  min-block-size: 2rem;
+  align-items: center;
+  white-space: pre-wrap;
+}
+
+.emptyValue {
+  display: inline-flex;
+  min-block-size: 2rem;
+  align-items: center;
+  color: var(--ui-color-text-muted);
+  font-style: italic;
+}
+
+.checkboxValue {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 2rem;
+}
+
+.list,
+.editableList {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  min-block-size: 2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.editableList > li {
+  display: inline-flex;
+  align-items: center;
+  min-inline-size: 0;
+}
+
+.editableListItem {
+  gap: 0;
+}
+
+.editableBadge {
+  --frontmatter-badge-surface: color-mix(in srgb, var(--badge-color) 12%, var(--ui-color-surface));
+
+  position: relative;
+  gap: 0.1rem;
+}
+
+.editableBadge:has(.editableBadgeTrigger:focus-visible) {
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.editableBadge:has(.editableBadgeTrigger:focus-visible) .editableBadgeText {
+  text-decoration-color: var(--ui-color-focus-ring);
+  text-decoration-line: underline;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
+}
+
+.editableBadgeText {
+  pointer-events: none;
+}
+
+.editableBadgeTrigger {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  appearance: none;
+  padding: 0;
+  border: 0;
+  border-radius: inherit;
+  outline: none;
+  background: transparent;
+  cursor: text;
+}
+
+.listEditInput {
+  --frontmatter-list-edit-color: var(--ui-color-text);
+
+  max-inline-size: 12rem;
+  inline-size: fit-content;
+}
+
+.listEditInputPrimary {
+  --frontmatter-list-edit-color: var(--ui-color-brand-bg);
+}
+
+.editableListItem .listEditInput input,
+.editableListItem .listEditInput input:hover:not(:disabled) {
+  field-sizing: content;
+  min-inline-size: 3rem;
+  max-inline-size: 12rem;
+  inline-size: auto;
+  min-block-size: 1.375rem;
+  padding: 0.15rem 0.55rem;
+  border-color: transparent;
+  border-radius: var(--ui-radius-pill);
+  background: color-mix(in srgb, var(--frontmatter-list-edit-color) 12%, var(--ui-color-surface));
+  color: var(--frontmatter-list-edit-color);
+  font: 600 0.75rem / 1.25 var(--ui-font-control);
+}
+
+.editableListItem .listEditInput input:focus-visible {
+  border-color: transparent;
+  background: color-mix(in srgb, var(--frontmatter-list-edit-color) 12%, var(--ui-color-surface));
+  box-shadow: none;
+  outline: none;
+}
+
+.listAddForm {
+  display: flex;
+  align-items: center;
+  gap: 0.125rem;
+  max-inline-size: 100%;
+  inline-size: fit-content;
+}
+
+.inlineValueInput {
+  inline-size: 100%;
+}
+
+.property .inlineValueInput input {
+  padding-inline: 0.45rem;
+  padding-inline-start: 0;
+}
+
+.inlineValueInput input,
+.inlineValueInput input:hover:not(:disabled),
+.inlineValueInput input:focus-visible,
+.listAddInput input,
+.listAddInput input:hover:not(:disabled),
+.listAddInput input:focus-visible {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+}
+
+.numberValueInput {
+  max-inline-size: 100%;
+  inline-size: 7.5rem;
+}
+
+.property .numberValueInput input {
+  padding-inline-start: 0;
+}
+
+.dateValueInput {
+  max-inline-size: 100%;
+  inline-size: fit-content;
+}
+
+.property .dateValueInput input {
+  field-sizing: content;
+  padding-inline-start: 0;
+}
+
+.dateValueInput [data-scope='date-picker'][data-part='control'],
+.dateValueInput [data-scope='date-picker'][data-part='control']:hover,
+.dateValueInput [data-scope='date-picker'][data-part='control']:focus-within {
+  border-width: 0;
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+}
+
+.checkboxEditor {
+  justify-content: flex-start;
+  min-inline-size: 2rem;
+  min-block-size: 2rem;
+}
+
+.typeIndicator,
+.typeTrigger {
+  align-items: center;
+  display: inline-flex;
+  flex: none;
+  justify-content: center;
+  color: var(--ui-color-text-muted);
+  font-size: 0.9rem;
+}
+
+.typeIndicator {
+  inline-size: 1.75rem;
+  block-size: 1.75rem;
+}
+
+.typeTrigger,
+.listRemoveButton,
+.listAddButton {
+  --button-height: 1.75rem;
+  --button-square-size: 1.75rem;
+
+  min-inline-size: 1.75rem;
+  min-block-size: 1.75rem;
+  inline-size: 1.75rem;
+  block-size: 1.75rem;
+}
+
+.typeTrigger {
+  opacity: 0.68;
+}
+
+.typeTrigger:hover,
+.typeTrigger:focus-visible,
+.typeTrigger[data-state='open'],
+.property:hover .typeTrigger {
+  opacity: 1;
+}
+
+.deletePropertyItem {
+  color: var(--ui-color-danger-text);
+}
+
+.listRemoveButton {
+  --button-height: 1rem;
+  --button-square-size: 1rem;
+  --button-ghost-background-active: transparent;
+  --button-ghost-background-hover: transparent;
+  --button-ghost-text-color: var(--badge-color);
+
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: 0;
+  z-index: 1;
+  box-sizing: border-box;
+  justify-content: flex-end;
+  min-inline-size: 1rem;
+  min-block-size: calc(100% + 0.125rem);
+  inline-size: 1rem;
+  block-size: calc(100% + 0.125rem);
+  margin-inline-start: 0;
+  opacity: 0;
+  pointer-events: auto;
+  transform: translateY(-50%);
+}
+
+.listRemoveButton::before {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 0;
+  inset-inline-start: -2.125rem;
+  z-index: 0;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--frontmatter-badge-surface) 50%,
+    var(--frontmatter-badge-surface)
+  );
+  border-start-end-radius: var(--ui-radius-pill);
+  border-end-end-radius: var(--ui-radius-pill);
+  content: '';
+  pointer-events: none;
+}
+
+.listRemoveGlyph {
+  position: relative;
+  display: block;
+  inline-size: 0.55rem;
+  block-size: 0.55rem;
+  margin-inline-end: 0.3rem;
+}
+
+.listRemoveGlyph::before,
+.listRemoveGlyph::after {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 0;
+  inline-size: 100%;
+  block-size: 1px;
+  background: currentColor;
+  content: '';
+}
+
+.listRemoveGlyph::before {
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.listRemoveGlyph::after {
+  transform: translateY(-50%) rotate(-45deg);
+}
+
+.listRemoveButton:hover,
+.listRemoveButton:focus-visible {
+  opacity: 1;
+}
+
+.listAddButton {
+  color: var(--ui-color-text-muted);
+  opacity: 0.72;
+}
+
+.listAddInput {
+  max-inline-size: 10rem;
+  inline-size: fit-content;
+}
+
+.listAddInput input {
+  field-sizing: content;
+  min-inline-size: 4rem;
+  max-inline-size: 10rem;
+  inline-size: auto;
+  padding-inline: 0.45rem;
+}
+
+.emptyProperties {
+  margin: 0;
+  padding: 0.5rem 0.25rem;
+  color: var(--ui-color-text-muted);
+  font-size: 0.8rem;
+}
+
+.addPropertyButton {
+  margin-block-start: 0.125rem;
+  color: var(--ui-color-text-muted);
+}
+
+.addPropertyForm {
+  display: grid;
+  grid-template-columns: 8.75rem minmax(0, 1fr);
+  align-items: center;
+  min-block-size: 2.25rem;
+  padding: 0.125rem 0.25rem;
+}
+
+.addPropertyKey,
+.addPropertyActions {
+  display: flex;
+  align-items: center;
+  min-inline-size: 0;
+}
+
+.addPropertyKey {
+  min-block-size: 2.25rem;
+  gap: 0.25rem;
+  padding-inline-end: 0.5rem;
+  color: var(--ui-color-text-muted);
+  font-size: 0.8rem;
+}
+
+.addPropertyActions {
+  gap: 0.125rem;
+}
+
+.addPropertyInput {
+  flex: 1;
+  min-inline-size: 0;
+  inline-size: 100%;
+}
+
+.addPropertyInput input,
+.addPropertyInput input:hover:not(:disabled),
+.addPropertyInput input:focus-visible {
+  min-inline-size: 0;
+  inline-size: 100%;
+  padding-inline: 0;
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+  font: inherit;
+}
+
+.addPropertyError {
+  grid-column: 2;
+}
+
+.sourceEditor {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.fence {
+  color: var(--ui-color-text-muted);
+  font-family: var(--ui-font-mono);
+  font-size: 0.78rem;
+}
+
+.sourcePreview {
+  box-sizing: border-box;
+  max-block-size: 20rem;
+  margin: 0;
+  padding: 0.75rem;
+  border: 1px solid var(--ui-color-border);
+  border-radius: var(--ui-radius-rect);
+  background: var(--ui-color-surface);
+  color: var(--ui-color-text);
+  font-family: var(--ui-font-mono);
+  font-size: 0.8rem;
+  line-height: 1.55;
+  overflow: auto;
+  white-space: pre-wrap;
+}
+
+.sourceTextarea textarea {
+  font-family: var(--ui-font-mono);
+  font-size: 0.8rem;
+  line-height: 1.55;
+}
+
+.sourceValue {
+  display: block;
+  font-family: var(--ui-font-mono);
+  font-size: 0.8rem;
+  white-space: pre-wrap;
+}
+
+.mismatch {
+  display: grid;
+  gap: 0.25rem;
+  padding-block: 0.25rem;
+  color: var(--ui-color-text-muted);
+  font-size: 0.78rem;
+}
+
+.error {
+  margin-block: 0.25rem 0.5rem;
+  color: var(--ui-color-danger-text);
+  font-size: 0.8rem;
+}
+
+@media (pointer: coarse) {
+  .typeTrigger,
+  .listAddButton {
+    min-inline-size: var(--ui-touch-target-min);
+    min-block-size: var(--ui-touch-target-min);
+    inline-size: var(--ui-touch-target-min);
+    block-size: var(--ui-touch-target-min);
+  }
+
+  .listRemoveButton {
+    --button-height: 1.5rem;
+    --button-square-size: 1.5rem;
+
+    min-inline-size: 2rem;
+    min-block-size: 1.5rem;
+    inline-size: 2rem;
+    block-size: 1.5rem;
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+@media (max-width: @ui-breakpoint-compact) {
+  .property {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .propertyKey {
+    padding-inline-end: 0;
+  }
+
+  .propertyValue {
+    padding-inline-start: 2rem;
+  }
+
+  .addPropertyForm {
+    grid-template-columns: 1fr;
+  }
+
+  .addPropertyKey {
+    padding-inline-end: 0;
+  }
+
+  .addPropertyActions,
+  .addPropertyError {
+    grid-column: 1;
+    padding-inline-start: 2rem;
+  }
+}

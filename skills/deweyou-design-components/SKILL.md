@@ -127,6 +127,15 @@ together.
 - Use `label`, `hint`, `error`, and `required` on `NumberInput` instead of
   manually recreating field semantics. Supply `aria-label` or `aria-labelledby`
   when no visible label is appropriate.
+- Use `placeholder` for an empty-value hint and opt into `clearable` when users
+  benefit from resetting the value inline. The localized clear action is hidden
+  for empty, disabled, and read-only values and preserves input focus.
+- Use `showControls={false}` for compact inline editing that does not need
+  visible decrement/increment buttons; direct typing and Arrow Up/Arrow Down
+  stepping remain available.
+- Keep `showFocusRing` enabled by default. Disable it only when the surrounding
+  composite provides an equivalent focus indicator, such as a row-level
+  `:focus-within` treatment.
 - Use `onValueChange` for live state, `onValueCommit` for blur/Enter workflows,
   and `onValueInvalid` when consumers need underflow or overflow feedback.
 - Verify keyboard stepping, trigger boundaries, direct typing, formatting,
@@ -202,6 +211,19 @@ range with two unrelated `DatePicker` instances.
   sizing, clearing, constraints, disabled/read-only states, `showTime` draft
   confirmation and cancellation, wheel keyboard behavior, narrow layouts, dark
   mode, and Storybook Interaction coverage.
+
+## Markdown Frontmatter
+
+- Use `Frontmatter` for parsed Markdown metadata and `MarkdownRender` for complete Markdown strings. Do not parse the full Markdown document inside the presentational component.
+- Treat YAML as the source of truth. The built-in property types are `text`, `list`, `number`, `checkbox`, `date`, `datetime`, and `tags`; do not model free-form YAML arrays as fixed-option multi-select fields.
+- Use the optional host-owned `propertyTypes` registry only to disambiguate presentation and editing by property name. Do not hide option catalogs, persistence, or vault state inside the component.
+- Treat `FrontmatterChangeDetails.action` as the property lifecycle contract: `set` updates a value, `add` creates a key, `rename` includes `previousKey`, and `delete` removes a key. Keep a host-owned `propertyTypes` registry synchronized from rename and delete actions.
+- Disable incompatible property type choices instead of coercing YAML values. Existing scalar list entries must preserve their YAML type; only string lists expose free-form item addition.
+- Use `propertyOptions` for per-key editability, placeholders, and NumberInput constraints. Frontmatter copy inherits `ConfigProvider`; use `localeText` only for an explicit local override.
+- `MarkdownRender` displays valid leading frontmatter by default. Use `visible`, `hidden`, or `source` display modes, and reserve `frontmatter={false}` for explicit raw compatibility.
+- In `Editor`, pair `markdownEditorAdapter()` with one `frontmatterPlugin()`. The adapter owns whole-document import/export; the plugin owns FrontmatterNode registration and the shared editable surface. Do not route document-head frontmatter through `markdownShortcutPlugin()`.
+- Preserve comments, ordering, quoting, invalid drafts, and unsupported nested values through the project-owned YAML boundary and source-mode recovery. Never silently coerce or drop metadata.
+- Verify parser recovery, add/rename/delete preservation, compatible type choices, scalar list type stability, render-value type context, Checkbox and free-form string list editing, adapter round trips, per-key read-only state, locale inheritance, package/subpath exports, Storybook Interaction, and live MarkdownRender/Editor examples.
 
 ## MCP Resources
 

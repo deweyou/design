@@ -26,6 +26,7 @@ This document is the human-readable companion to `packages/react/package.json` e
 | `DateRangePicker`       | `@deweyou-design/react` | `@deweyou-design/react/date-range-picker`       |
 | `Dialog`                | `@deweyou-design/react` | `@deweyou-design/react/dialog`                  |
 | `Field`                 | `@deweyou-design/react` | `@deweyou-design/react/field`                   |
+| `Frontmatter`           | `@deweyou-design/react` | `@deweyou-design/react/frontmatter`             |
 | `GroupedVirtualMasonry` | `@deweyou-design/react` | `@deweyou-design/react/grouped-virtual-masonry` |
 | `ImageMasonry`          | `@deweyou-design/react` | `@deweyou-design/react/image-masonry`           |
 | `ImagePreview`          | `@deweyou-design/react` | `@deweyou-design/react/image-preview`           |
@@ -112,16 +113,26 @@ Button shape stays orthogonal to variant, mode, and size: `rect` is 0, `auto`/`f
 
 `Field` owns the label/control/description/error id wiring. `Input`, `DatePicker`, `NumberInput`, `Textarea`, and `Select` use it internally.
 
+### Input
+
+```tsx
+<Input clearable label="Search" placeholder="Search components…" />
+```
+
+`Input` accepts the native `placeholder` prop. Set `clearable` to show a localized clear action only while an editable value is present. Clearing uses the existing `onChange` contract and returns focus to the input; disabled and read-only inputs do not expose the action.
+
 ### NumberInput
 
 ```tsx
 <NumberInput
+  clearable
   defaultValue="2"
   label="Quantity"
   hint="Choose from 1 to 10."
   min={1}
   max={10}
   step={1}
+  placeholder="Enter quantity"
 />
 
 <NumberInput
@@ -132,7 +143,9 @@ Button shape stays orthogonal to variant, mode, and size: `rect` is 0, `auto`/`f
 />
 ```
 
-`NumberInput` combines direct text editing with decrement/increment controls. Ark UI owns parsing, keyboard stepping, press-and-hold, clamping, and spinbutton semantics. `precision` supplies default fraction-digit bounds while explicit `formatOptions` values take precedence.
+`NumberInput` combines direct text editing with decrement/increment controls. Ark UI owns parsing, keyboard stepping, press-and-hold, clamping, and spinbutton semantics. `precision` supplies default fraction-digit bounds while explicit `formatOptions` values take precedence. `placeholder` is shown while empty; `clearable` adds a localized clear action that uses `onValueChange` and restores input focus. The action is absent for disabled and read-only values.
+
+Set `showControls={false}` for compact inline numeric editing without the decrement/increment buttons; direct typing and keyboard stepping remain available. `showFocusRing={false}` suppresses the control-owned focus ring and should be used only inside a surrounding surface that provides equivalent `:focus-within` feedback.
 
 ### DatePicker
 
@@ -353,6 +366,41 @@ an item from the overflow menu follows the same route or command.
 </Tabs>
 ```
 
+### Frontmatter
+
+```tsx
+<Frontmatter
+  value={{
+    title: 'Frontmatter support',
+    draft: true,
+    tags: ['markdown', 'editor'],
+    published: '2026-07-22',
+  }}
+  propertyTypes={{ published: 'date' }}
+/>
+
+<Frontmatter
+  editable
+  value={metadata}
+  propertyTypes={propertyTypes}
+  propertyOptions={{
+    slug: { editable: false },
+    priority: { number: { min: 0, max: 5, step: 1 } },
+  }}
+  onChange={({ action, frontmatter, key, previousKey }) => {
+    setMetadata(frontmatter)
+    syncPropertyTypeRegistry({ action, key, previousKey })
+  }}
+  onPropertyTypeChange={({ key, type }) =>
+    setPropertyTypes((current) => ({ ...current, [key]: type }))
+  }
+/>
+```
+
+`Frontmatter` is the shared Obsidian-style property surface for Markdown metadata. YAML remains the storage source of truth; the component receives an already parsed string-keyed mapping. It infers text, number, checkbox, and free-form list controls from value shape, treats `tags` as the built-in tag list, and accepts an optional host-owned `propertyTypes` registry for ambiguous string-backed date and datetime fields. Editable surfaces add, rename, delete, and set top-level properties through the discriminated `FrontmatterChangeDetails.action` contract. Rename and delete actions include enough key context for the host to keep its separate `propertyTypes` registry synchronized.
+
+Editable date and datetime fields compose the shared `DatePicker`; values remain canonical YAML strings (`YYYY-MM-DD`, `YYYY-MM-DDTHH:mm`, or second precision) and are never converted to JavaScript `Date` or an implicit time zone. Property type menus only enable types compatible with the current YAML value. Arrays are ordinary YAML lists rendered as Badges, not fixed-option multi-select fields; existing scalar items preserve their YAML type, and only string lists expose free-form addition. Use `propertyOptions` for per-key editing, placeholder, and numeric constraint policy. Use `renderValue` for application-specific presentation; its context includes both structural `valueType` and resolved `propertyType`/`typeSource`. Component-owned copy inherits `ConfigProvider` and supports `localeText` overrides. Invalid YAML and unsupported nested values should remain recoverable through source mode instead of being coerced into generated forms.
+
 ### MarkdownRender
 
 ```tsx
@@ -376,9 +424,17 @@ an item from the overflow menu follows the same route or command.
 />
 
 <MarkdownRender value={content} components={{ a: CustomLink, pre: CodeBlock }} />
+
+<MarkdownRender
+  value={contentWithFrontmatter}
+  frontmatter={{
+    display: 'visible',
+    propertyTypes: { published: 'date' },
+  }}
+/>
 ```
 
-`MarkdownRender` is the safe runtime Markdown path for CommonMark plus GFM content. Use `size` to adjust typography density, `onLinkClick` and `onCopy` for light interaction hooks, `resolveNodeAttributes` to attach light DOM attributes such as heading ids, `components` to replace rendered nodes, and `className` with `[data-markdown-node]` selectors for light style overrides. Event callbacks preserve default browser behavior unless the consumer calls `event.preventDefault()`. `resolveNodeAttributes` receives the node name, text content, and a zero-based per-node `index`, which keeps repeated headings addressable without a component override. Fenced code blocks render through `CodeBlock`, with syntax highlighting from Markdown parsing and a compact language tag when a language is present. Tables and code blocks use default max-height guards with scrolling; override `--markdown-table-max-height` or `--markdown-code-max-height` from the consumer surface when needed. MDX and executable content belong in a separate rendering boundary.
+`MarkdownRender` is the safe runtime Markdown path for CommonMark plus GFM content. A valid leading YAML frontmatter mapping is recognized and rendered through `Frontmatter` by default; use `frontmatter.display` with `visible`, `hidden`, or `source`, or pass `frontmatter={false}` for the legacy raw-Markdown path. Invalid leading YAML remains visible in source mode. Use `size` to adjust typography density, `onLinkClick` and `onCopy` for light interaction hooks, `resolveNodeAttributes` to attach light DOM attributes such as heading ids, `components` to replace rendered nodes, and `className` with `[data-markdown-node]` selectors for light style overrides. Event callbacks preserve default browser behavior unless the consumer calls `event.preventDefault()`. `resolveNodeAttributes` receives the node name, text content, and a zero-based per-node `index`, which keeps repeated headings addressable without a component override. Fenced code blocks render through `CodeBlock`, with syntax highlighting from Markdown parsing and a compact language tag when a language is present. Tables and code blocks use default max-height guards with scrolling; override `--markdown-table-max-height` or `--markdown-code-max-height` from the consumer surface when needed. MDX and executable content belong in a separate rendering boundary.
 
 ### Editor
 
@@ -386,6 +442,7 @@ an item from the overflow menu follows the same route or command.
 <Editor
   adapter={markdownEditorAdapter()}
   plugins={[
+    frontmatterPlugin({ propertyTypes: { published: 'date' } }),
     historyPlugin(),
     textFormatPlugin(),
     headingPlugin(),
@@ -399,7 +456,7 @@ an item from the overflow menu follows the same route or command.
 
 `Editor` is the editor capability surface for Deweyou Design. Keep content
 formats behind adapters; do not add a `format` prop to the component. Use
-`markdownEditorAdapter()` for Markdown strings. Prefer focused feature plugins
+`markdownEditorAdapter()` for Markdown strings. Add `frontmatterPlugin()` when leading YAML metadata should import as one editable property node and serialize back to Markdown; the adapter only activates that transformer when the feature plugin is present. Prefer focused feature plugins
 for text, heading, list, quote, link, code, and table behavior; entrypoint plugins
 such as `toolbarPlugin()`, `floatingToolbarPlugin()`, `blockToolbarPlugin()`,
 `markdownShortcutPlugin()`, `keyboardShortcutPlugin()`, and `pastePlugin()` should
@@ -414,6 +471,7 @@ Editor subpath exports:
 - `@deweyou-design/react/editor/plugins/block-toolbar`
 - `@deweyou-design/react/editor/plugins/code`
 - `@deweyou-design/react/editor/plugins/floating-toolbar`
+- `@deweyou-design/react/editor/plugins/frontmatter`
 - `@deweyou-design/react/editor/plugins/heading`
 - `@deweyou-design/react/editor/plugins/history`
 - `@deweyou-design/react/editor/plugins/keyboard-shortcut`

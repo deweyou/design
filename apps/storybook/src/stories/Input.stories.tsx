@@ -30,6 +30,15 @@ const meta = {
       description: 'Disables the input field.',
       control: { type: 'boolean' },
     },
+    placeholder: {
+      description: 'Placeholder text shown while the input is empty.',
+      control: { type: 'text' },
+    },
+    clearable: {
+      description: 'Shows a localized clear action while the editable input has a value.',
+      control: { type: 'boolean' },
+      table: { defaultValue: { summary: 'false' } },
+    },
   },
   parameters: {
     docs: {
@@ -46,6 +55,8 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
+    clearable: true,
+    defaultValue: 'hello@deweyou.design',
     label: 'Email address',
     hint: 'We will never share your email.',
     autoComplete: 'email',
@@ -80,6 +91,7 @@ export const Interaction: Story = {
   render: () => (
     <div style={{ display: 'grid', gap: '16px', maxWidth: '360px' }}>
       <Input
+        clearable
         label="Your name"
         hint="Enter your full name."
         placeholder="John Doe"
@@ -111,6 +123,10 @@ export const Interaction: Story = {
     await expect(nameInput).toBeInTheDocument();
     await userEvent.type(nameInput, 'Alice');
     await expect(nameInput).toHaveValue('Alice');
+    await userEvent.click(canvas.getByRole('button', { name: 'Clear input' }));
+    await expect(nameInput).toHaveValue('');
+    await expect(nameInput).toHaveFocus();
+    await expect(nameInput).toHaveAttribute('placeholder', 'John Doe');
 
     // error state: error message is present
     const errorInput = canvas.getByTestId('error-input');

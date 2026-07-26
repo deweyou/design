@@ -9,6 +9,7 @@ import * as configProviderEntry from '../src/config-provider/index.tsx';
 import * as datePickerEntry from '../src/date-picker/index.tsx';
 import * as dateRangePickerEntry from '../src/date-range-picker/index.tsx';
 import * as fieldEntry from '../src/field/index.tsx';
+import * as frontmatterEntry from '../src/frontmatter/index.tsx';
 import * as groupedVirtualMasonryEntry from '../src/grouped-virtual-masonry/index.tsx';
 import * as imageMasonryEntry from '../src/image-masonry/index.tsx';
 import * as imagePreviewEntry from '../src/image-preview/index.tsx';
@@ -20,6 +21,7 @@ import * as numberInputEntry from '../src/number-input/index.tsx';
 import * as editorEntry from '../src/editor/index.ts';
 import * as editorCoreEntry from '../src/editor/core/index.ts';
 import * as editorMarkdownAdapterEntry from '../src/editor/adapters/markdown/index.ts';
+import * as editorFrontmatterPluginEntry from '../src/editor/plugins/frontmatter/index.tsx';
 import * as editorRichTextPluginEntry from '../src/editor/plugins/rich-text/index.tsx';
 import * as rootEntry from '../src';
 import * as popoverEntry from '../src/popover/index.tsx';
@@ -71,6 +73,11 @@ test('components package exposes button, popover, and text subpath exports in pa
       import: './dist/field/index.js',
       types: './dist/field/index.d.ts',
     },
+    './frontmatter': {
+      default: './dist/frontmatter/index.js',
+      import: './dist/frontmatter/index.js',
+      types: './dist/frontmatter/index.d.ts',
+    },
     './editor': {
       default: './dist/editor/index.js',
       import: './dist/editor/index.js',
@@ -100,6 +107,11 @@ test('components package exposes button, popover, and text subpath exports in pa
       default: './dist/editor/plugins/floating-toolbar/index.js',
       import: './dist/editor/plugins/floating-toolbar/index.js',
       types: './dist/editor/plugins/floating-toolbar/index.d.ts',
+    },
+    './editor/plugins/frontmatter': {
+      default: './dist/editor/plugins/frontmatter/index.js',
+      import: './dist/editor/plugins/frontmatter/index.js',
+      types: './dist/editor/plugins/frontmatter/index.d.ts',
     },
     './editor/plugins/heading': {
       default: './dist/editor/plugins/heading/index.js',
@@ -245,11 +257,13 @@ test('components subpath entries match the root entry public contract', () => {
   expect(datePickerEntry.parseDatePickerValue).toBe(rootEntry.parseDatePickerValue);
   expect(dateRangePickerEntry.DateRangePicker).toBe(rootEntry.DateRangePicker);
   expect(fieldEntry.Field).toBe(rootEntry.Field);
+  expect(frontmatterEntry.Frontmatter).toBe(rootEntry.Frontmatter);
   expect(editorEntry.Editor).toBe(rootEntry.Editor);
   expect(editorEntry.markdownEditorAdapter).toBe(rootEntry.markdownEditorAdapter);
   expect(editorEntry.richTextPlugin).toBe(rootEntry.richTextPlugin);
   expect(editorCoreEntry.createEditorPlugin).toBe(rootEntry.createEditorPlugin);
   expect(editorMarkdownAdapterEntry.markdownEditorAdapter).toBe(rootEntry.markdownEditorAdapter);
+  expect(editorFrontmatterPluginEntry.frontmatterPlugin).toBe(rootEntry.frontmatterPlugin);
   expect(editorRichTextPluginEntry.richTextPlugin).toBe(rootEntry.richTextPlugin);
   expect(groupedVirtualMasonryEntry.GroupedVirtualMasonry).toBe(rootEntry.GroupedVirtualMasonry);
   expect(imageMasonryEntry.ImageMasonry).toBe(rootEntry.ImageMasonry);
@@ -313,6 +327,7 @@ test('components subpath entries expose their public API without requiring the p
     'createEditorPluginCompatibilityError',
     'floatingToolbarPlugin',
     'formatJsonPreservingDuplicateKeys',
+    'frontmatterPlugin',
     'hasDuplicateJsonObjectKeys',
     'headingPlugin',
     'historyPlugin',
@@ -330,6 +345,10 @@ test('components subpath entries expose their public API without requiring the p
     'toolbarPlugin',
   ]);
   expect(Object.keys(groupedVirtualMasonryEntry).sort()).toEqual(['GroupedVirtualMasonry']);
+  expect(Object.keys(frontmatterEntry).sort()).toEqual([
+    'Frontmatter',
+    'frontmatterPropertyTypeOptions',
+  ]);
   expect(Object.keys(imageMasonryEntry).sort()).toEqual(['ImageMasonry']);
   expect(Object.keys(imagePreviewEntry).sort()).toEqual(['ImagePreview']);
   expect(Object.keys(markdownRenderEntry).sort()).toEqual([

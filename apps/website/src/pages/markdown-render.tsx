@@ -5,7 +5,14 @@ import { EditIcon, EyeIcon } from '@deweyou-design/react-icons';
 
 import styles from './markdown-render.module.less';
 
-const DEFAULT_MARKDOWN = `# Release note
+const DEFAULT_MARKDOWN = `---
+title: Release note
+draft: false
+tags: [markdown, design-system]
+published: 2026-07-22
+---
+
+# Release note
 
 Deweyou Design renders Markdown with editorial spacing, readable CJK-friendly typography, and product UI details.
 
@@ -83,7 +90,10 @@ export const MarkdownRenderPage = () => {
             <strong>live</strong>
           </div>
           <div className={styles.previewSurface}>
-            <MarkdownRender value={markdown} />
+            <MarkdownRender
+              frontmatter={{ propertyTypes: { published: 'date' } }}
+              value={markdown}
+            />
           </div>
         </section>
       </section>

@@ -31,9 +31,14 @@ import styles from './index.module.less';
 type EditorChangePluginProps<TValue> = {
   adapter: EditorAdapter<TValue>;
   onChange: EditorProps<TValue>['onChange'];
+  registry: EditorPluginRegistry;
 };
 
-const EditorChangePlugin = <TValue,>({ adapter, onChange }: EditorChangePluginProps<TValue>) => {
+const EditorChangePlugin = <TValue,>({
+  adapter,
+  onChange,
+  registry,
+}: EditorChangePluginProps<TValue>) => {
   const [editor] = useLexicalComposerContext();
 
   useEffect(() => {
@@ -44,21 +49,26 @@ const EditorChangePlugin = <TValue,>({ adapter, onChange }: EditorChangePluginPr
     return editor.registerUpdateListener(({ editorState }) => {
       editorState.read(() => {
         onChange({
-          value: adapter.readValue({ runtime: createLexicalRuntime(editor) }),
+          value: adapter.readValue({ registry, runtime: createLexicalRuntime(editor) }),
         });
       });
     });
-  }, [adapter, editor, onChange]);
+  }, [adapter, editor, onChange, registry]);
 
   return null;
 };
 
 type EditorValueSyncPluginProps<TValue> = {
   adapter: EditorAdapter<TValue>;
+  registry: EditorPluginRegistry;
   value: TValue | undefined;
 };
 
-const EditorValueSyncPlugin = <TValue,>({ adapter, value }: EditorValueSyncPluginProps<TValue>) => {
+const EditorValueSyncPlugin = <TValue,>({
+  adapter,
+  registry,
+  value,
+}: EditorValueSyncPluginProps<TValue>) => {
   const [editor] = useLexicalComposerContext();
   const previousValue = useRef(value);
 
@@ -69,9 +79,9 @@ const EditorValueSyncPlugin = <TValue,>({ adapter, value }: EditorValueSyncPlugi
 
     previousValue.current = value;
     editor.update(() => {
-      adapter.applyValue?.({ runtime: createLexicalRuntime(editor), value });
+      adapter.applyValue?.({ registry, runtime: createLexicalRuntime(editor), value });
     });
-  }, [adapter, editor, value]);
+  }, [adapter, editor, registry, value]);
 
   return null;
 };
@@ -116,10 +126,10 @@ const EditorImperativeHandlePlugin = <TValue,>({
       getValue: () =>
         editor
           .getEditorState()
-          .read(() => adapter.readValue({ runtime: createLexicalRuntime(editor) })),
+          .read(() => adapter.readValue({ registry, runtime: createLexicalRuntime(editor) })),
       insertContent: (content) => {
         editor.update(() => {
-          adapter.applyValue?.({ runtime: createLexicalRuntime(editor), value: content });
+          adapter.applyValue?.({ registry, runtime: createLexicalRuntime(editor), value: content });
         });
       },
       runCommand: (command, payload) => {
@@ -133,7 +143,11 @@ const EditorImperativeHandlePlugin = <TValue,>({
       },
       setValue: (nextValue) => {
         editor.update(() => {
-          adapter.applyValue?.({ runtime: createLexicalRuntime(editor), value: nextValue });
+          adapter.applyValue?.({
+            registry,
+            runtime: createLexicalRuntime(editor),
+            value: nextValue,
+          });
         });
       },
     }),
@@ -186,7 +200,7 @@ const EditorInner = <TValue,>(
         throw error;
       },
       editorState: () => {
-        adapter.createInitialState({ defaultValue, value });
+        adapter.createInitialState({ defaultValue, registry, value });
       },
       theme: {
         root: styles.content,
@@ -248,7 +262,7 @@ const EditorInner = <TValue,>(
         },
       },
     }),
-    [adapter, defaultValue, editable, editorNodes, value],
+    [adapter, defaultValue, editable, editorNodes, registry, value],
   );
 
   return (
@@ -286,8 +300,8 @@ const EditorInner = <TValue,>(
           />
         </div>
         <EditorEditablePlugin editable={editable} />
-        <EditorChangePlugin adapter={adapter} onChange={onChange} />
-        <EditorValueSyncPlugin adapter={adapter} value={value} />
+        <EditorChangePlugin adapter={adapter} onChange={onChange} registry={registry} />
+        <EditorValueSyncPlugin adapter={adapter} registry={registry} value={value} />
         <EditorImperativeHandlePlugin
           adapter={adapter}
           forwardedRef={forwardedRef}

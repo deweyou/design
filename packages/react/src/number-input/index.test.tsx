@@ -4,15 +4,25 @@ import '../test-setup';
 
 import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { afterEach, describe, expect, it, vi } from 'vite-plus/test';
+import { afterEach, describe, expect, expectTypeOf, it, vi } from 'vite-plus/test';
 
-import { NumberInput } from './index.tsx';
+import { NumberInput, type NumberInputProps } from './index.tsx';
 
 afterEach(() => {
   cleanup();
 });
 
 describe('NumberInput field semantics', () => {
+  it('exposes placeholder and clearable as public props', () => {
+    expectTypeOf<NumberInputProps['placeholder']>().toEqualTypeOf<string | undefined>();
+    expectTypeOf<NumberInputProps['clearable']>().toEqualTypeOf<boolean | undefined>();
+
+    render(<NumberInput placeholder="Enter quantity" />);
+
+    expect(screen.getByRole('spinbutton')).toHaveAttribute('placeholder', 'Enter quantity');
+    expect(screen.queryByRole('button', { name: 'Clear value' })).toBeNull();
+  });
+
   it('connects the label, hint, and error to the spinbutton', () => {
     render(
       <NumberInput
@@ -149,6 +159,71 @@ describe('NumberInput constraints and formatting', () => {
 });
 
 describe('NumberInput states', () => {
+  it('clears an editable value through Ark UI while preserving input focus', async () => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+    render(<NumberInput clearable defaultValue="4" onValueChange={onValueChange} />);
+
+    const input = screen.getByRole('spinbutton');
+    await user.click(screen.getByRole('button', { name: 'Clear value' }));
+
+    await waitFor(() => {
+      expect(input).toHaveValue('');
+      expect(input).toHaveFocus();
+      expect(onValueChange).toHaveBeenLastCalledWith({
+        value: '',
+        valueAsNumber: Number.NaN,
+      });
+      expect(screen.queryByRole('button', { name: 'Clear value' })).toBeNull();
+    });
+  });
+
+  it('hides the clear action when disabled or read only', () => {
+    render(
+      <>
+        <NumberInput clearable defaultValue="2" disabled />
+        <NumberInput clearable defaultValue="3" readOnly />
+      </>,
+    );
+
+    expect(screen.queryByRole('button', { name: 'Clear value' })).toBeNull();
+  });
+
+  it('supports a custom localized clear label', () => {
+    render(
+      <NumberInput clearable defaultValue="2" localeText={{ clearValue: 'Reset quantity' }} />,
+    );
+
+    expect(screen.getByRole('button', { name: 'Reset quantity' })).toBeInTheDocument();
+  });
+
+  it('can hide visual controls and the focus ring without disabling keyboard stepping', async () => {
+    expectTypeOf<NumberInputProps['showControls']>().toEqualTypeOf<boolean | undefined>();
+    expectTypeOf<NumberInputProps['showFocusRing']>().toEqualTypeOf<boolean | undefined>();
+
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+    render(
+      <NumberInput
+        defaultValue="2"
+        onValueChange={onValueChange}
+        showControls={false}
+        showFocusRing={false}
+      />,
+    );
+
+    const input = screen.getByRole('spinbutton');
+    const control = input.closest('[data-part="control"]');
+
+    expect(control).toHaveAttribute('data-focus-ring', 'false');
+    expect(screen.queryByRole('button', { name: 'Increase value' })).toBeNull();
+    expect(screen.queryByRole('button', { name: 'Decrease value' })).toBeNull();
+
+    await user.click(input);
+    await user.keyboard('{ArrowUp}');
+    expect(onValueChange).toHaveBeenLastCalledWith({ value: '3', valueAsNumber: 3 });
+  });
+
   it('disables the input and both triggers', () => {
     render(<NumberInput defaultValue="2" disabled />);
 

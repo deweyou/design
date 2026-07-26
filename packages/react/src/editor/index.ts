@@ -4,6 +4,7 @@ export * from './editor/index.js';
 export * from './plugins/block-toolbar/index.js';
 export * from './plugins/code/index.js';
 export * from './plugins/floating-toolbar/index.js';
+export * from './plugins/frontmatter/index.js';
 export * from './plugins/heading/index.js';
 export * from './plugins/history/index.js';
 export * from './plugins/keyboard-shortcut/index.js';

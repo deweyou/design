@@ -1,6 +1,7 @@
 import {
   useCallback,
   useId,
+  useRef,
   type CSSProperties,
   type InputHTMLAttributes,
   type ReactNode,
@@ -11,8 +12,9 @@ import {
   NumberInputIncrementTrigger as ArkNumberInputIncrementTrigger,
   NumberInputInput as ArkNumberInputInput,
   NumberInputRoot as ArkNumberInputRoot,
+  useNumberInputContext,
 } from '@ark-ui/react/number-input';
-import { MinusIcon, PlusIcon } from '@deweyou-design/react-icons';
+import { MinusIcon, PlusIcon, XIcon } from '@deweyou-design/react-icons';
 import classNames from 'classnames';
 
 import { useConfigLocale } from '../config-provider/context.ts';
@@ -67,6 +69,8 @@ export type NumberInputProps = {
   name?: string;
   form?: string;
   placeholder?: string;
+  /** Whether to show a clear action when the editable input has a value. */
+  clearable?: boolean;
   autoFocus?: boolean;
   autoComplete?: string;
   'aria-label'?: string;
@@ -74,6 +78,10 @@ export type NumberInputProps = {
   incrementLabel?: string;
   decrementLabel?: string;
   localeText?: Partial<NumberInputLocaleText>;
+  /** Whether to render the decrement and increment buttons. */
+  showControls?: boolean;
+  /** Whether the control draws its own focus ring. */
+  showFocusRing?: boolean;
   size?: NumberInputSize;
   variant?: NumberInputVariant;
   className?: string;
@@ -86,12 +94,17 @@ type NumberInputControlProps = Pick<
   | 'aria-labelledby'
   | 'autoComplete'
   | 'autoFocus'
+  | 'clearable'
   | 'decrementLabel'
   | 'disabled'
   | 'incrementLabel'
   | 'placeholder'
   | 'readOnly'
->;
+  | 'showControls'
+  | 'showFocusRing'
+> & {
+  clearLabel: string;
+};
 
 const sizeClassMap: Record<NumberInputSize, string> = {
   sm: styles.sizeSm,
@@ -123,12 +136,19 @@ const NumberInputControl = ({
   'aria-labelledby': ariaLabelledBy,
   autoComplete,
   autoFocus,
+  clearable,
+  clearLabel,
   decrementLabel,
   disabled,
   incrementLabel,
   placeholder,
   readOnly,
+  showControls,
+  showFocusRing,
 }: NumberInputControlProps) => {
+  const numberInput = useNumberInputContext();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const canClear = Boolean(clearable && !disabled && !readOnly && !numberInput.empty);
   const inputProps = useFieldControlProps<
     Pick<
       InputHTMLAttributes<HTMLInputElement>,
@@ -143,22 +163,51 @@ const NumberInputControl = ({
   });
 
   return (
-    <ArkNumberInputControl className={styles.control}>
-      <ArkNumberInputDecrementTrigger
-        aria-label={decrementLabel}
-        className={styles.trigger}
-        disabled={disabled || readOnly}
-      >
-        <MinusIcon aria-hidden size="1em" />
-      </ArkNumberInputDecrementTrigger>
-      <ArkNumberInputInput {...inputProps} className={styles.input} />
-      <ArkNumberInputIncrementTrigger
-        aria-label={incrementLabel}
-        className={styles.trigger}
-        disabled={disabled || readOnly}
-      >
-        <PlusIcon aria-hidden size="1em" />
-      </ArkNumberInputIncrementTrigger>
+    <ArkNumberInputControl
+      className={styles.control}
+      data-clearable={clearable ? 'true' : undefined}
+      data-controls={showControls ? undefined : 'false'}
+      data-focus-ring={showFocusRing ? undefined : 'false'}
+    >
+      {showControls && (
+        <ArkNumberInputDecrementTrigger
+          aria-label={decrementLabel}
+          className={styles.trigger}
+          disabled={disabled || readOnly}
+        >
+          <MinusIcon aria-hidden size="1em" />
+        </ArkNumberInputDecrementTrigger>
+      )}
+      <ArkNumberInputInput {...inputProps} className={styles.input} ref={inputRef} />
+      {showControls && (
+        <ArkNumberInputIncrementTrigger
+          aria-label={incrementLabel}
+          className={styles.trigger}
+          disabled={disabled || readOnly}
+        >
+          <PlusIcon aria-hidden size="1em" />
+        </ArkNumberInputIncrementTrigger>
+      )}
+      {clearable && (
+        <span className={styles.clearAction}>
+          {canClear && (
+            <button
+              aria-label={clearLabel}
+              className={styles.clearButton}
+              onClick={() => {
+                numberInput.clearValue();
+                inputRef.current?.focus();
+              }}
+              onPointerDown={(event) => event.preventDefault()}
+              type="button"
+            >
+              <span className={styles.clearButtonSurface}>
+                <XIcon aria-hidden size="0.625em" />
+              </span>
+            </button>
+          )}
+        </span>
+      )}
     </ArkNumberInputControl>
   );
 };
@@ -188,6 +237,7 @@ export const NumberInput = ({
   name,
   form,
   placeholder,
+  clearable = false,
   autoFocus,
   autoComplete,
   'aria-label': ariaLabel,
@@ -195,6 +245,8 @@ export const NumberInput = ({
   incrementLabel,
   decrementLabel,
   localeText,
+  showControls = true,
+  showFocusRing = true,
   size = 'md',
   variant = 'outlined',
   className,
@@ -266,11 +318,15 @@ export const NumberInput = ({
           aria-labelledby={ariaLabelledBy}
           autoComplete={autoComplete}
           autoFocus={autoFocus}
+          clearable={clearable}
+          clearLabel={text.clearValue}
           decrementLabel={resolvedDecrementLabel}
           disabled={disabled}
           incrementLabel={resolvedIncrementLabel}
           placeholder={placeholder}
           readOnly={readOnly}
+          showControls={showControls}
+          showFocusRing={showFocusRing}
         />
       </ArkNumberInputRoot>
       {hint && <Field.Description className={styles.hint}>{hint}</Field.Description>}

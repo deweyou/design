@@ -1,6 +1,9 @@
 @import '@deweyou-design/styles/less/bridge';
 
 .root {
+  --input-clear-button-size: 1.5rem;
+  --input-clear-surface-size: 1rem;
+
   display: grid;
   gap: 6px;
 }
@@ -8,6 +11,12 @@
 .label {
   color: var(--ui-color-text);
   font: var(--ui-font-weight-emphasis) 0.875rem / 1.35 var(--ui-font-control);
+}
+
+.control {
+  position: relative;
+  display: block;
+  min-inline-size: 0;
 }
 
 .field {
@@ -33,6 +42,60 @@
   &:focus-visible {
     border-color: var(--ui-color-focus-ring);
   }
+}
+
+.control[data-clearable='true'] .field {
+  padding-inline-end: calc(var(--input-clear-button-size) + 0.5rem);
+}
+
+.clearAction {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: 0.25rem;
+  display: inline-grid;
+  place-items: center;
+  inline-size: var(--input-clear-button-size);
+  block-size: var(--input-clear-button-size);
+  transform: translateY(-50%);
+}
+
+.clearButton {
+  display: inline-grid;
+  place-items: center;
+  inline-size: 100%;
+  block-size: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: var(--ui-radius-pill);
+  outline: none;
+  background: transparent;
+  color: var(--ui-color-text-muted);
+  cursor: pointer;
+}
+
+.clearButtonSurface {
+  display: inline-grid;
+  place-items: center;
+  inline-size: var(--input-clear-surface-size);
+  block-size: var(--input-clear-surface-size);
+  border-radius: var(--ui-radius-pill);
+  background: color-mix(in srgb, var(--ui-color-text) 9%, transparent);
+  transition:
+    background var(--ui-motion-duration-fast) var(--ui-motion-ease-exit),
+    color var(--ui-motion-duration-fast) var(--ui-motion-ease-exit);
+}
+
+.clearButton:hover .clearButtonSurface {
+  background: color-mix(in srgb, var(--ui-color-text) 14%, transparent);
+  color: var(--ui-color-text);
+}
+
+.clearButton:active .clearButtonSurface {
+  background: color-mix(in srgb, var(--ui-color-text) 18%, transparent);
+}
+
+.clearButton:focus-visible {
+  .focus-ring-offset();
 }
 
 .fieldError {
@@ -70,6 +133,9 @@
 
 // Size variants
 .sizeSm {
+  --input-clear-button-size: 1.375rem;
+  --input-clear-surface-size: 0.875rem;
+
   .field {
     padding: 0.375rem 0.625rem;
     font-size: 0.875rem;
@@ -90,6 +156,9 @@
 }
 
 .sizeLg {
+  --input-clear-button-size: 1.625rem;
+  --input-clear-surface-size: 1.125rem;
+
   .field {
     padding: 0.625rem 0.875rem;
     font-size: 1rem;
@@ -98,6 +167,18 @@
 
   .label {
     font-size: 1rem;
+  }
+}
+
+@media (pointer: coarse) {
+  .root {
+    --input-clear-button-size: var(--ui-touch-target-min);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .clearButtonSurface {
+    transition-duration: 0.01ms;
   }
 }
 

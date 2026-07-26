@@ -52,12 +52,16 @@ The prop surface includes:
 - formatting: `locale`, `formatOptions`, `inputMode`
 - field: `label`, `hint`, `error`, `required`, `disabled`, `readOnly`
 - form: `id`, `name`, `form`, `placeholder`
-- presentation: `size`, `variant`, `className`, `style`
+- presentation: `size`, `variant`, `clearable`, `showControls`, `showFocusRing`, `className`, `style`
 - accessibility overrides: `incrementLabel`, `decrementLabel`
 
 `precision` is a convenience contract. When present, it supplies both minimum and maximum fraction digits unless either corresponding `formatOptions` field is explicitly set.
 
 The component exposes Deweyou-owned detail types instead of re-exporting Ark UI types. Consumers should not need to know which behavior primitive is used.
+
+`showControls` defaults to `true`. Setting it to `false` removes the visible decrement and increment buttons while preserving direct entry and Ark UI keyboard stepping. `showFocusRing` also defaults to `true`; it may be disabled only when a surrounding composite owns equivalent visible focus feedback.
+
+`clearable` defaults to `false`. When enabled, a localized clear action appears only for a non-empty editable value, clears through Ark UI's value-change contract, and restores focus to the spinbutton. Disabled and read-only inputs never expose the action.
 
 ## Architecture
 
@@ -73,6 +77,7 @@ The component exposes Deweyou-owned detail types instead of re-exporting Ark UI 
 - Use semantic tokens only; no raw palette values, decorative gradients, or new radius/shadow tiers.
 - Preserve `sm`, `md`, and `lg` control heights. On coarse pointers, step buttons reach the shared minimum touch target without inflating desktop density.
 - Focus belongs to the whole connected control while the input retains correct focus semantics.
+- When controls are hidden, the input becomes a single-column, start-aligned inline field without internal dividers.
 - Error wins over focus border color. Disabled and read-only remain visually distinct.
 - Motion is limited to fast color/background transitions and respects reduced motion.
 
@@ -82,6 +87,7 @@ The component exposes Deweyou-owned detail types instead of re-exporting Ark UI 
 - A visible label is connected to the input; label-less usage must provide `aria-label` or `aria-labelledby` through the public props.
 - Hint and error ids remain cumulative in `aria-describedby`.
 - Increment and decrement buttons have localized default labels and accept overrides.
+- The optional clear action has a localized label, is absent for disabled and read-only values, and returns focus to the spinbutton.
 - Button disabled states reflect configured boundaries.
 - Keyboard and pointer paths are covered in unit tests and Storybook Interaction.
 
@@ -100,7 +106,7 @@ The public component change updates:
 - Typing, Arrow Up/Down, and step buttons produce the same value-change contract.
 - Controlled and uncontrolled examples work.
 - `min`, `max`, `step`, precision, formatting, commit, invalid, required, disabled, and read-only behavior are covered.
-- The control is usable by keyboard and screen reader and has visible focus, error, disabled, and boundary states.
+- The control is usable by keyboard and screen reader and has visible focus, error, disabled, and boundary states. Consumers that disable the built-in focus ring must provide an equivalent surrounding focus indicator.
 - The rendered Storybook component is visually verified at desktop and narrow widths.
 - Repository checks, tests, Storybook e2e, and build pass.
 

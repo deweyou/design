@@ -156,15 +156,31 @@ import { ConfigProvider, Pagination } from '@deweyou-design/react';
 `ConfigProvider` 不暴露 `localeText`。文案覆盖由对应组件或 Editor 插件单独提供，例如
 `Pagination`、`codePlugin()` 和 `toolbarPlugin()`。
 
+## Markdown Frontmatter
+
+`MarkdownRender` 默认识别 Markdown 开头的 YAML frontmatter，并通过共享的 `Frontmatter` 组件渲染。属性界面保持 Markdown 友好：boolean 使用 Checkbox，标量数组使用自由 Badge List；日期和日期时间通过宿主可选的类型提示启用共享 DatePicker，并继续存储为规范字符串，不引入 Notion 风格的固定选项 Schema。编辑态可以通过带类型的 `onChange` action 新增、重命名和删除顶层属性。类型菜单会禁用与当前 YAML 形状不兼容的类型，而不是隐式转换；非字符串标量数组也不会静默追加字符串。使用 `propertyOptions` 配置逐属性可编辑性、placeholder 和数字约束；组件文案继承 `ConfigProvider`，也可通过 `localeText` 覆盖。
+
+```tsx
+<MarkdownRender
+  value={markdown}
+  frontmatter={{ propertyTypes: { published: 'date' } }}
+/>
+
+<Editor
+  adapter={markdownEditorAdapter()}
+  plugins={[frontmatterPlugin({ propertyTypes: { published: 'date' } })]}
+/>
+```
+
 ## 组件
 
 | 组件                    | 说明                                                               |
 | ----------------------- | ------------------------------------------------------------------ |
 | `Button`                | 按钮，支持多种变体和尺寸                                           |
-| `Input`                 | 单行文本输入框                                                     |
+| `Input`                 | 支持 placeholder 和可选清空操作的单行文本输入框                    |
 | `DatePicker`            | 支持日期、月份、年份，以及可选的时间滚轮、今天／此刻操作和显式确认 |
 | `DateRangePicker`       | 在统一双输入框中选择单段日期、月份、年份或日期时间范围             |
-| `NumberInput`           | 支持步进、格式化和范围约束的数字输入框                             |
+| `NumberInput`           | 支持 placeholder、可选清空与步进按钮、格式化和范围约束的数字输入框 |
 | `Textarea`              | 多行文本输入框                                                     |
 | `Select`                | 下拉选择器                                                         |
 | `Checkbox`              | 复选框                                                             |
@@ -173,6 +189,8 @@ import { ConfigProvider, Pagination } from '@deweyou-design/react';
 | `Badge`                 | 状态标签                                                           |
 | `Text`                  | 排版文本                                                           |
 | `ConfigProvider`        | 全局语言等配置的上下文边界                                         |
+| `Frontmatter`           | 支持可选行内编辑的 Markdown 元数据属性                             |
+| `MarkdownRender`        | 默认展示 YAML frontmatter 的 CommonMark/GFM 渲染器                 |
 | `Editor`                | 支持适配器和插件的富文本编辑器                                     |
 | `ImagePreview`          | 图片预览，支持缩放和组图切换                                       |
 | `ImageMasonry`          | 图片瀑布流，支持固定列和响应式列                                   |

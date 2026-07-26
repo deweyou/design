@@ -14,11 +14,21 @@ test('renders the editor playground as the first page experience', () => {
   render(<EditorPage />);
 
   expect(screen.getAllByRole('heading', { level: 1, name: 'Editor' }).length).toBeGreaterThan(0);
-  expect(screen.getByRole('textbox')).toBeInTheDocument();
+  expect(screen.getByRole('textbox', { name: 'Write a comment...' })).toBeInTheDocument();
+  expect(screen.getByRole('textbox', { name: 'title' })).toHaveValue('Editor playground');
   expect(screen.getByRole('toolbar', { name: 'Editor formatting toolbar' })).toBeInTheDocument();
-  expect(screen.getByRole('textbox')).toHaveAttribute('spellcheck', 'false');
-  expect(screen.getByRole('textbox')).toHaveAttribute('autocorrect', 'off');
-  expect(screen.getByRole('textbox')).toHaveAttribute('autocapitalize', 'off');
+  expect(screen.getByRole('textbox', { name: 'Write a comment...' })).toHaveAttribute(
+    'spellcheck',
+    'false',
+  );
+  expect(screen.getByRole('textbox', { name: 'Write a comment...' })).toHaveAttribute(
+    'autocorrect',
+    'off',
+  );
+  expect(screen.getByRole('textbox', { name: 'Write a comment...' })).toHaveAttribute(
+    'autocapitalize',
+    'off',
+  );
 });
 
 test('does not render a raw markdown output preview', () => {
@@ -30,7 +40,7 @@ test('does not render a raw markdown output preview', () => {
 
 test('seeds the full feature editor with each markdown-backed content type', async () => {
   render(<EditorPage />);
-  const editorElement = screen.getByRole('textbox');
+  const editorElement = screen.getByRole('textbox', { name: 'Write a comment...' });
   const editor = within(editorElement);
 
   expect(editor.getByRole('heading', { level: 1, name: 'Editor' })).toBeInTheDocument();

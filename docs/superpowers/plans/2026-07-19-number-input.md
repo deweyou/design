@@ -88,3 +88,18 @@
 - [ ] Run the `repo-memory` incremental pass against the final diff.
 - [ ] Update only durable design/component guidance if the existing spec and component docs do not already capture it.
 - [ ] Leave unrelated work untouched and offer commit, push, PR, and CI follow-up after verification.
+
+### Follow-up: Optional inline chrome
+
+- [x] Add `showControls` and `showFocusRing` as default-preserving public props.
+- [x] Keep direct editing and Arrow Up/Arrow Down stepping active when controls are hidden.
+- [x] Document that disabling the focus ring requires equivalent surrounding focus feedback.
+- [x] Cover the options in NumberInput and Frontmatter unit tests, Storybook Interaction, website/MCP metadata, and generated `llms.txt`.
+
+### Follow-up: Placeholder and clear action
+
+- [x] Keep `placeholder` available as the empty-value hint.
+- [x] Add default-off `clearable` behavior through the Ark UI value-change contract.
+- [x] Localize the clear action and hide it for empty, disabled, and read-only values.
+- [x] Restore focus after clearing and cover the behavior in unit and Storybook interaction tests.
+- [x] Update public docs, catalog metadata, agent guidance, and generated `llms.txt`.

@@ -1,6 +1,7 @@
 import type { NumberInputLocaleText } from './types.ts';
 
 const localeText = {
+  clearValue: '値をクリア',
   decreaseValue: '値を減らす',
   increaseValue: '値を増やす',
 } satisfies NumberInputLocaleText;
